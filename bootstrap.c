@@ -14,6 +14,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <signal.h>
+#include <execinfo.h>
 #ifdef _WIN32
 #include <io.h>
 #include <direct.h>
@@ -6404,7 +6406,9 @@ std__string__string std__os__read_file(std__string__string path)
 
     if ((!f))
     {
-        std__errors__panic(std__errors__error__create(sprintf("Failed to open file: %s", path.data)));
+        char buf[256];
+        snprintf(buf, sizeof(buf), "Failed to open file: %s", path.data);
+        std__errors__panic(std__errors__error__create(buf));
     }
 
     fseek(f, 0, SEEK_END);
@@ -27311,10 +27315,20 @@ std__string__string renderer__generate_c(structs__ASTNode *ast)
 #endif
 #ifndef _WIN32
 #endif
+void signal_handler(int sig)
+{
+    void *array[10];
+    size_t size = backtrace(array, 10);
+    fprintf(stderr, "Error: signal %d:\n", sig);
+    backtrace_symbols_fd(array, size, STDERR_FILENO);
+    exit(1);
+}
 int main(int argc, char **argv)
 {
     __axe_argc = argc;
     __axe_argv = argv;
+    signal(SIGSEGV, signal_handler);
+    signal(SIGABRT, signal_handler);
 #ifdef _WIN32
     SetConsoleOutputCP(65001);
 #endif
