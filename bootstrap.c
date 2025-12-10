@@ -6089,11 +6089,51 @@ void std__lists__DoubleList__print_all(std__lists__DoubleList *lst)
 
 std__lists__StringList *std__lists__StringList__create(std__arena__Arena *arena, int32_t capacity)
 {
-    std__lists__StringList *lst = {0};
-    lst = std__arena__Arena__alloc(arena, sizeof(std__lists__StringList));
-    lst->data = std__arena__Arena__alloc_array(arena, sizeof(std__string__string), capacity);
+    if (!arena)
+    {
+        fprintf(stderr, "StringList__create: NULL arena\n");
+        abort();
+    }
+    if (capacity == 0)
+    {
+        capacity = 1;
+    }
+
+    std__lists__StringList *lst = std__arena__Arena__alloc(arena, sizeof(std__lists__StringList));
+    if (!lst)
+    {
+        fprintf(stderr, "StringList__create: failed to alloc list struct (arena used=%d cap=%d)\n",
+                arena->offset, arena->capacity);
+        abort();
+    }
+
+    // compute using size_t to avoid overflow
+    size_t elem = sizeof(std__string__string);
+    uint64_t total64 = (uint64_t)elem * (uint64_t)capacity;
+    if (total64 > (uint64_t)SIZE_MAX)
+    {
+        fprintf(stderr, "StringList__create: allocation overflow elem=%zu cap=%zu total=\n",
+                elem, capacity, total64);
+        abort();
+    }
+    size_t total = (size_t)total64;
+
+    if (total > (size_t)std__arena__Arena__remaining(arena))
+    {
+        fprintf(stderr, "StringList__create: arena too small remain=%d req=%zu (elem=%zu cap=%zu)\n",
+                arena->capacity - arena->offset, total, elem, capacity);
+        abort();
+    }
+
+    lst->data = std__arena__Arena__alloc_array(arena, (int32_t)elem, (int32_t)capacity);
+    if (!lst->data)
+    {
+        fprintf(stderr, "StringList__create: alloc_array returned NULL\n");
+        abort();
+    }
+
     lst->len = 0;
-    lst->cap = capacity;
+    lst->cap = (int32_t)capacity;
     return lst;
 }
 
