@@ -7534,7 +7534,7 @@ std__string__string builds__get_output_filename(std__string__string specified_ou
     }
     else
     {
-        result = builds__replace_extension(input_filename, std__string__str(".exe"));
+        result = builds__replace_extension(input_filename, std__string__str(""));
     }
 #ifdef _WIN32
     if (compile_only)
