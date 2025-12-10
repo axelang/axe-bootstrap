@@ -18651,7 +18651,11 @@ structs__ASTNode imports__process_imports(structs__ASTNode *ast, std__string__st
                 }
             }
             structs__ASTNode import_ast = parser__parse(&toks, import_is_axec, false, use_mod, module_path);
-            const std__string__string import_base = imports__get_dir_from_path(module_path);
+            std__string__string import_base = imports__get_dir_from_path(module_path);
+            if (std__string__has_prefix(use_mod, std__string__str("std.")))
+            {
+                import_base = imports__get_dir_from_path(import_base);
+            }
             import_ast = imports__process_imports(&import_ast, import_base, import_is_axec, module_path, false, use_mod);
             imports__merge_imported_module(ast, &import_ast, use_mod);
         }
