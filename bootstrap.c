@@ -2065,8 +2065,8 @@ bool std__lists__BoolList__contains(std__lists__BoolList *lst, bool value);
 void std__lists__BoolList__print_all(std__lists__BoolList *lst);
 std__arena__Arena std__arena__Arena__create(int32_t size);
 void std__arena__Arena__destroy(std__arena__Arena *arena);
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size);
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count);
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size);
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count);
 void std__arena__Arena__reset(std__arena__Arena *arena);
 int32_t std__arena__Arena__used(std__arena__Arena *arena);
 int32_t std__arena__Arena__remaining(std__arena__Arena *arena);
@@ -2120,8 +2120,8 @@ bool std__lists__BoolList__contains(std__lists__BoolList *lst, bool value);
 void std__lists__BoolList__print_all(std__lists__BoolList *lst);
 std__arena__Arena std__arena__Arena__create(int32_t size);
 void std__arena__Arena__destroy(std__arena__Arena *arena);
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size);
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count);
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size);
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count);
 void std__arena__Arena__reset(std__arena__Arena *arena);
 int32_t std__arena__Arena__used(std__arena__Arena *arena);
 int32_t std__arena__Arena__remaining(std__arena__Arena *arena);
@@ -2322,8 +2322,8 @@ std__typecons__Any std__typecons__Any__from_bool(bool v);
 std__typecons__Any std__typecons__Any__from_ptr(void *v);
 std__arena__Arena std__arena__Arena__create(int32_t size);
 void std__arena__Arena__destroy(std__arena__Arena *arena);
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size);
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count);
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size);
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count);
 void std__arena__Arena__reset(std__arena__Arena *arena);
 int32_t std__arena__Arena__used(std__arena__Arena *arena);
 int32_t std__arena__Arena__remaining(std__arena__Arena *arena);
@@ -2682,8 +2682,8 @@ bool std__lists__BoolList__contains(std__lists__BoolList *lst, bool value);
 void std__lists__BoolList__print_all(std__lists__BoolList *lst);
 std__arena__Arena std__arena__Arena__create(int32_t size);
 void std__arena__Arena__destroy(std__arena__Arena *arena);
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size);
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count);
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size);
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count);
 void std__arena__Arena__reset(std__arena__Arena *arena);
 int32_t std__arena__Arena__used(std__arena__Arena *arena);
 int32_t std__arena__Arena__remaining(std__arena__Arena *arena);
@@ -3478,8 +3478,8 @@ int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap *map);
 bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap *map, bool key);
 std__arena__Arena std__arena__Arena__create(int32_t size);
 void std__arena__Arena__destroy(std__arena__Arena *arena);
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size);
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count);
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size);
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count);
 void std__arena__Arena__reset(std__arena__Arena *arena);
 int32_t std__arena__Arena__used(std__arena__Arena *arena);
 int32_t std__arena__Arena__remaining(std__arena__Arena *arena);
@@ -4577,7 +4577,7 @@ void std__arena__Arena__destroy(std__arena__Arena *arena)
     arena->capacity = 0;
 }
 
-void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size)
+void *std__arena__Arena__alloc(std__arena__Arena *arena, size_t size)
 {
     void *result = nil;
     if ((arena->offset + size > arena->capacity))
@@ -4598,9 +4598,9 @@ void *std__arena__Arena__alloc(std__arena__Arena *arena, int32_t size)
     return result;
 }
 
-void *std__arena__Arena__alloc_array(std__arena__Arena *arena, int32_t element_size, int32_t count)
+void *std__arena__Arena__alloc_array(std__arena__Arena *arena, size_t element_size, size_t count)
 {
-    const int32_t total_size = element_size * count;
+    const size_t total_size = element_size * count;
     return std__arena__Arena__alloc(arena, total_size);
 }
 
