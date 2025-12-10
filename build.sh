@@ -1,0 +1,1 @@
+clang bootstrap.c -o axe -fmax-errors=1 -Wno-everything

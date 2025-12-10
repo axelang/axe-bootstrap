@@ -6404,7 +6404,7 @@ std__string__string std__os__read_file(std__string__string path)
 
     if ((!f))
     {
-        std__errors__panic(std__errors__error__create("Failed to open file"));
+        std__errors__panic(std__errors__error__create(sprintf("Failed to open file: %s", path.data)));
     }
 
     fseek(f, 0, SEEK_END);
