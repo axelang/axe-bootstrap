@@ -582,8 +582,8 @@ typedef enum {
 
 typedef struct std__arena__Arena {
     uintptr_t buffer;
-    int32_t capacity;
-    int32_t offset;
+    uintptr_t capacity;
+    uintptr_t offset;
 } std__arena__Arena;
 
 typedef struct std__string__StringBuilder {
@@ -600,44 +600,44 @@ typedef struct std__string__string {
 
 typedef struct std__lists__IntList {
     int32_t* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__IntList;
 
 typedef struct std__lists__FloatList {
     float* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__FloatList;
 
 typedef struct std__lists__CharList {
     char* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__CharList;
 
 typedef struct std__lists__LongList {
     int64_t* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__LongList;
 
 typedef struct std__lists__DoubleList {
     double* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__DoubleList;
 
 typedef struct std__lists__StringList {
     std__string__string* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__StringList;
 
 typedef struct std__lists__BoolList {
     bool* data;
-    int32_t len;
-    int32_t cap;
+    uintptr_t len;
+    uintptr_t cap;
 } std__lists__BoolList;
 
 typedef struct std__errors__error {
@@ -1141,13 +1141,13 @@ bool g_emit_line_directives;
 bool std__algorithms__strlst_contains(std__lists__StringList lst, std__string__string value);
 bool std__algorithms__strlst_contains_c(std__lists__StringList lst, char* value);
 bool std__algorithms__intlst_contains(std__lists__IntList lst, int32_t vlue);
-std__arena__Arena std__arena__Arena__create(int32_t size);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
 void std__arena__Arena__destroy(std__arena__Arena* arena);
-void* std__arena__Arena__alloc(std__arena__Arena* arena, int32_t size);
-void* std__arena__Arena__alloc_array(std__arena__Arena* arena, int32_t element_size, int32_t count);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
 void std__arena__Arena__reset(std__arena__Arena* arena);
 int32_t std__arena__Arena__used(std__arena__Arena* arena);
-int32_t std__arena__Arena__remaining(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
 void std__io__print_char(char value);
 void std__io__println_char(char value);
 void std__io__print_chrptr(char* value);
@@ -1230,43 +1230,43 @@ bool std__lists__float_eq(float a, float b);
 bool std__lists__double_eq(double a, double b);
 bool std__lists__char_eq(char a, char b);
 bool std__lists__bool_eq(bool a, bool b);
-std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
 int32_t std__lists__IntList__get(std__lists__IntList* lst, int32_t index);
 void std__lists__IntList__clear(std__lists__IntList* lst);
 bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
 void std__lists__IntList__print_all(std__lists__IntList* lst);
-std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
 float std__lists__FloatList__get(std__lists__FloatList* lst, int32_t index);
 void std__lists__FloatList__clear(std__lists__FloatList* lst);
 bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
 void std__lists__FloatList__print_all(std__lists__FloatList* lst);
-std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
 char std__lists__CharList__get(std__lists__CharList* lst, int32_t index);
 void std__lists__CharList__clear(std__lists__CharList* lst);
 bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
 void std__lists__CharList__print_all(std__lists__CharList* lst);
-std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
 int64_t std__lists__LongList__get(std__lists__LongList* lst, int32_t index);
 void std__lists__LongList__clear(std__lists__LongList* lst);
 bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
 void std__lists__LongList__print_all(std__lists__LongList* lst);
-std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
 double std__lists__DoubleList__get(std__lists__DoubleList* lst, int32_t index);
 void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
 bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
 void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
-std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
 std__string__string std__lists__StringList__get(std__lists__StringList* lst, int32_t index);
 void std__lists__StringList__clear(std__lists__StringList* lst);
 bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
 void std__lists__StringList__print_all(std__lists__StringList* lst);
-std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, int32_t capacity);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
 bool std__lists__BoolList__get(std__lists__BoolList* lst, int32_t index);
 void std__lists__BoolList__clear(std__lists__BoolList* lst);
@@ -1990,9 +1990,12 @@ return true;
 return false;
 }
 
-std__arena__Arena std__arena__Arena__create(int32_t size) {
+std__arena__Arena std__arena__Arena__create(uintptr_t size) {
 std__arena__Arena arena = {0};
 arena.buffer = malloc ( size * 100 );
+if (arena.buffer== 0) {
+std__errors__panic(std__errors__error__create(                     std__string__concat(std__string__str("Arena: failed to allocate "),                     std__string__i32_to_string((int32_t)(size * 100))).data                 ));
+}
 arena.capacity = size * 100;
 arena.offset = 0;
 return arena;
@@ -2005,7 +2008,7 @@ arena->offset = 0;
 arena->capacity = 0;
 }
 
-void* std__arena__Arena__alloc(std__arena__Arena* arena, int32_t size) {
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size) {
 void* result = nil;
 if (( arena->offset+ size > arena->capacity)) {
 std__string__string msg = std__string__str( "Arena out of memory! cap=" );
@@ -2024,8 +2027,8 @@ arena->offset = ( arena->offset+ 7 ) & ~ 7;
 return result;
 }
 
-void* std__arena__Arena__alloc_array(std__arena__Arena* arena, int32_t element_size, int32_t count) {
-const int32_t total_size = element_size * count;
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count) {
+const uintptr_t total_size = element_size * count;
 return std__arena__Arena__alloc( arena , total_size );
 }
 
@@ -2040,8 +2043,8 @@ result = arena->offset;
 return result;
 }
 
-int32_t std__arena__Arena__remaining(std__arena__Arena* arena) {
-int32_t result = 0;
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena) {
+uintptr_t result = 0;
 result = ( arena->capacity) - ( arena->offset);
 return result;
 }
@@ -2964,10 +2967,16 @@ bool std__lists__bool_eq(bool a, bool b) {
 return a == b;
 }
 
-std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__IntList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__IntList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(int32_t) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3017,10 +3026,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__FloatList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__FloatList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(float) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3070,10 +3085,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__CharList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__CharList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(char) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3123,10 +3144,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__LongList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__LongList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(int64_t) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3176,10 +3203,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__DoubleList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__DoubleList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(double) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3229,10 +3262,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__StringList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__StringList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(std__string__string) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -3282,10 +3321,16 @@ std__io__print(" ");
 std__io__println("");
 }
 
-std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, int32_t capacity) {
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity) {
 std__lists__BoolList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__BoolList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(bool) , capacity );
+if (lst == nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list header"));
+}
+if (lst->data== nil) {
+std__errors__panic(std__errors__error__create("List: failed to allocate list data"));
+}
 lst->len = 0;
 lst->cap = capacity;
 return lst;
@@ -17207,7 +17252,7 @@ std__string__StringBuilder__destroy(&sb_final);
 const std__string__string first_pass = std__string__strip( out_final );
 gstate__debug_print_raw("\nFIRST PASS:");
 gstate__debug_print_str(first_pass);
-const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
+const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
 const std__string__string addr_fixed2 = renderer__rewrite_adr( fixed );
@@ -18590,7 +18635,7 @@ i++;
 result = std__string__StringBuilder__to_string( &sb_prog );
 std__string__StringBuilder__destroy(&sb_prog);
 }
-result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
+result = std__string__replace_all ( result , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 std__string__string fixed_result = std__string__str( "" );
 int32_t start_idx = 0;
 int32_t idx_line = 0;
@@ -18782,7 +18827,7 @@ if (std__string__equals_c ( node_type , "Program" )) {
 result = renderer__strip_all_c_prefixes ( result );
 result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
 result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
-result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
+result = std__string__replace_all ( result , std__string__str ( "C__" ) , std__string__str ( "" ) );
 result = renderer__collapse_duplicate_segments ( result );
 result = renderer__rewrite_method_calls ( result );
 result = renderer__rewrite_function_prefixes ( result );
