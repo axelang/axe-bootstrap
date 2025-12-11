@@ -462,6 +462,7 @@ typedef struct __list_structs__ASTNode_t __list_structs__ASTNode_t;
 typedef struct __list_lexer__Token_t __list_lexer__Token_t;
 typedef struct __list_std__string_t __list_std__string_t;
 typedef struct __list_structs__MacroDef_t __list_structs__MacroDef_t;
+typedef struct __list_int32_t_t __list_int32_t_t;
 typedef struct __list_bool_t __list_bool_t;
 #ifndef _WIN32
 typedef struct dirent dirent;
@@ -577,7 +578,9 @@ typedef enum {
     lexer__TokenType_OVERLOAD,
     lexer__TokenType_EXTERNAL,
     lexer__TokenType_SWITCH,
-    lexer__TokenType_XOR
+    lexer__TokenType_XOR,
+    lexer__TokenType_WHEN,
+    lexer__TokenType_IS
 } lexer__TokenType;
 
 typedef struct std__arena__Arena {
@@ -741,6 +744,11 @@ typedef struct structs__ASTNode {
             struct std__string__string return_type;
             bool is_public;
             __list_std__string_t* tags;
+            __list_std__string_t* type_params;
+            bool is_generic;
+            __list_std__string_t* when_branch_types;
+            __list_int32_t_t* when_branch_counts;
+            __list_int32_t_t* when_branch_starts;
         } function;
         struct {
             struct std__string__string name;
@@ -1041,6 +1049,31 @@ static inline void __list_structs__MacroDef_push(__list_structs__MacroDef_t* lis
     list->data[list->len++] = item;
 }
 
+typedef struct __list_int32_t_t {
+    int32_t* data;
+    int len;
+    int capacity;
+} __list_int32_t_t;
+
+static inline __list_int32_t_t __list_int32_t_init(void) {
+    __list_int32_t_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_int32_t_push(__list_int32_t_t* list, int32_t item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        int32_t* new_data = (int32_t*)realloc(list->data, new_capacity * sizeof(int32_t));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
 typedef struct __list_bool_t {
     bool* data;
     int len;
@@ -1132,6 +1165,7 @@ std__string__StringBuilder* g_renderer_sb = {0};
 std__maps__StringBoolMap g_emitted_globals = {0};
 std__maps__StringBoolMap g_emitted_prototypes = {0};
 std__maps__StringStringMap g_global_var_prefixes = {0};
+std__maps__StringBoolMap g_generic_functions = {0};
 std__maps__StringStringMap g_function_param_types = {0};
 std__maps__StringStringMap g_function_return_types = {0};
 std__maps__StringBoolMap g_extern_functions = {0};
@@ -1627,6 +1661,7 @@ bool renderer__is_pointer_field(std__string__string model_name, std__string__str
 std__string__string renderer__parse_ident_at(std__string__string expr, int32_t* pos);
 void renderer__skip_ws_at(std__string__string expr, int32_t* pos);
 std__string__string renderer__rewrite_ref_member_access(std__string__string expr);
+std__string__string renderer__rewrite_generic_calls(std__string__string expr);
 std__string__string renderer__rewrite_method_calls(std__string__string expr);
 std__string__string renderer__rewrite_function_prefixes(std__string__string expr);
 std__string__string renderer__rewrite_sizeof_types(std__string__string expr);
@@ -1705,126 +1740,198 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -1837,42 +1944,66 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -1885,42 +2016,66 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -1933,28 +2088,44 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
-    char: std__io__println_char \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
     )(x)
 
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
-    char: std__io__print_char \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -4287,7 +4458,7 @@ else {
 if (builds__command_exists ( std__string__str ( "cc" ) )) {
 compiler = std__string__str ( "cc" );
 if (! quiet_mode) {
-std__io__println("\nWarning: clang not found, using cc instead");
+std__io__println("\ncc: Linking.");
 }
 }
 if (std__string__str_len ( compiler ) == 0) {
@@ -6728,6 +6899,10 @@ else if (lexer__str_equals ( source , "if" , pos , 2 , source_len ) && lexer__ch
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IF, "if"));
 pos = pos + 2;
 }
+else if (lexer__str_equals ( source , "is" , pos , 2 , source_len ) && lexer__check_boundary ( source , pos + 2 , source_len )) {
+__list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IS, "is"));
+pos = pos + 2;
+}
 else {
 const int32_t start = pos;
 while (1) {
@@ -7017,6 +7192,10 @@ else if (ch == 'w') {
 if (lexer__str_equals ( source , "while" , pos , 5 , source_len ) && lexer__check_boundary ( source , pos + 5 , source_len )) {
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_WHILE, "while"));
 pos = pos + 5;
+}
+else if (lexer__str_equals ( source , "when" , pos , 4 , source_len ) && lexer__check_boundary ( source , pos + 4 , source_len )) {
+__list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_WHEN, "when"));
+pos = pos + 4;
 }
 else {
 const int32_t start = pos;
@@ -9200,7 +9379,45 @@ std__os__quit(1);
 func.data.function.name = func_name;
 func.data.function.return_type = std__string__str ( "" );
 func.data.function.is_public = false;
+func.data.function.is_generic = false;
 ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACKET) {
+ctx->pos++;
+func.data.function.is_generic = true;
+__list_std__string_t type_params = {0};
+while (1) {
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACKET) {
+ctx->pos++;
+break;
+}
+if (ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type parameter name in generic function declaration" ) );
+std__errors__enforce_raw(false, err.data);
+return func;
+}
+const std__string__string type_param = ctx->tokens->data[ ctx->pos].value;
+__list_std__string_push(&type_params, type_param);
+ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_COMMA) {
+ctx->pos++;
+continue;
+}
+}
+if (len_v(type_params) > 0) {
+const uintptr_t params_size = sizeof(__list_std__string_t);
+const __list_std__string_t* heap_type_params = (__list_std__string_t*)( malloc( params_size ) );
+if (heap_type_params != nil) {
+memcpy(heap_type_params, &type_params, params_size);
+func.data.function.type_params = heap_type_params;
+}
+}
+}
 parser__skip_whitespace(ctx);
 if (ctx->pos+ 1 < len_ptr(ctx->tokens)) {
 if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_IDENTIFIER&& std__string__equals_c ( ctx->tokens->data[ ctx->pos+ 1 ].value, "(" )) {
@@ -9388,6 +9605,62 @@ return func;
 }
 parser__consume(ctx);
 __list_structs__ASTNode_t children = {0};
+__list_std__string_t when_branch_types = {0};
+__list_int32_t_t when_branch_counts = {0};
+__list_int32_t_t when_branch_starts = {0};
+if (func.data.function.is_generic) {
+while (1) {
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
+ctx->pos++;
+break;
+}
+if (ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_WHEN) {
+const structs__ASTNode common_stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
+if (std__string__str_len ( common_stmt.node_type) > 0) {
+__list_structs__ASTNode_push(&children, common_stmt);
+}
+continue;
+}
+__list_int32_t_push(&when_branch_starts, len_v(children));
+ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type parameter after 'when'" ) );
+std__errors__enforce_raw(false, err.data);
+return func;
+}
+ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IS) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected 'is' after type parameter in when clause" ) );
+std__errors__enforce_raw(false, err.data);
+return func;
+}
+ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected concrete type after 'is' in when clause" ) );
+std__errors__enforce_raw(false, err.data);
+return func;
+}
+const std__string__string concrete_type = ctx->tokens->data[ ctx->pos].value;
+__list_std__string_push(&when_branch_types, concrete_type);
+ctx->pos++;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after type in when clause" ) );
+std__errors__enforce_raw(false, err.data);
+return func;
+}
+ctx->pos++;
+int32_t branch_child_count = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
@@ -9403,6 +9676,57 @@ break;
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&children, stmt);
+branch_child_count++;
+}
+}
+__list_int32_t_push(&when_branch_counts, branch_child_count);
+parser__skip_whitespace(ctx);
+}
+if (len_v(when_branch_types) == 0) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(func.line));
+std__io__print(": error: generic function '");
+std__io__print(func_name);
+std__io__println("' must have at least one 'when' branch");
+std__os__quit(1);
+}
+const uintptr_t types_size = sizeof(__list_std__string_t);
+const __list_std__string_t* heap_types = (__list_std__string_t*)( malloc( types_size ) );
+if (heap_types != nil) {
+memcpy(heap_types, &when_branch_types, types_size);
+func.data.function.when_branch_types = heap_types;
+}
+const uintptr_t counts_size = sizeof(__list_int32_t_t);
+const __list_int32_t_t* heap_counts = (__list_int32_t_t*)( malloc( counts_size ) );
+if (heap_counts != nil) {
+memcpy(heap_counts, &when_branch_counts, counts_size);
+func.data.function.when_branch_counts = heap_counts;
+}
+const uintptr_t starts_size = sizeof(__list_int32_t_t);
+const __list_int32_t_t* heap_starts = (__list_int32_t_t*)( malloc( starts_size ) );
+if (heap_starts != nil) {
+memcpy(heap_starts, &when_branch_starts, starts_size);
+func.data.function.when_branch_starts = heap_starts;
+}
+}
+else {
+while (1) {
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
+ctx->pos++;
+break;
+}
+const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
+if (std__string__str_len ( stmt.node_type) > 0) {
+__list_structs__ASTNode_push(&children, stmt);
+}
 }
 }
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
@@ -10988,6 +11312,62 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+parser__consume(ctx);
+parser__skip_whitespace(ctx);
+std__string__string args_str = std__string__str( "" );
+int32_t paren_depth_args = 0;
+while (1) {
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+const lexer__Token t = parser__peek( ctx );
+if (t.token_type== lexer__TokenType_RPAREN&& paren_depth_args == 0) {
+break;
+}
+if (t.token_type== lexer__TokenType_LPAREN) {
+paren_depth_args = paren_depth_args + 1;
+}
+if (t.token_type== lexer__TokenType_RPAREN) {
+paren_depth_args = paren_depth_args - 1;
+}
+if (t.token_type!= lexer__TokenType_WHITESPACE&& t.token_type!= lexer__TokenType_NEWLINE) {
+args_str = std__string__concat ( args_str , t.value);
+args_str = std__string__concat ( args_str , std__string__str ( " " ) );
+}
+parser__consume(ctx);
+}
+if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after generic function call arguments" ) );
+std__errors__enforce_raw(false, err.data);
+return node;
+}
+parser__consume(ctx);
+parser__skip_whitespace(ctx);
+if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after generic function call" ) );
+std__errors__enforce_raw(false, err.data);
+return node;
+}
+parser__consume(ctx);
+const std__string__string type_arg = std__string__strip( index_expr );
+std__string__string mangled_name = std__string__concat( ident_name , std__string__str ( "__T_" ) );
+mangled_name = std__string__concat ( mangled_name , type_arg );
+node.node_type = std__string__str ( "FunctionCall" );
+node.data.func_call.function_name = mangled_name;
+__list_std__string_t args_list = {0};
+const std__string__string trimmed_args = std__string__strip( args_str );
+if (std__string__str_len ( trimmed_args ) > 0) {
+__list_std__string_push(&args_list, trimmed_args);
+}
+const uintptr_t list_size = sizeof(__list_std__string_t);
+__list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
+if (heap_list != nil) {
+memcpy(heap_list, &args_list, list_size);
+node.data.func_call.args = heap_list;
+}
+return node;
+}
 std__string__string index2_expr = std__string__str( "" );
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
@@ -13645,34 +14025,7 @@ g_emit_line_directives = v;
 }
 
 bool renderer__has_external_header(std__string__string header_name) {
-if (std__lists__StringList__contains( g_global_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_windows_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_posix_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_linux_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_macos_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_freebsd_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_openbsd_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_netbsd_external_headers , header_name )) {
-return true;
-}
-if (std__lists__StringList__contains( g_dragonflybsd_external_headers , header_name )) {
-return true;
-}
-return false;
+return std__lists__StringList__contains( g_global_external_headers , header_name ) || std__lists__StringList__contains( g_windows_external_headers , header_name ) || std__lists__StringList__contains( g_posix_external_headers , header_name ) || std__lists__StringList__contains( g_linux_external_headers , header_name ) || std__lists__StringList__contains( g_macos_external_headers , header_name ) || std__lists__StringList__contains( g_freebsd_external_headers , header_name ) || std__lists__StringList__contains( g_openbsd_external_headers , header_name ) || std__lists__StringList__contains( g_netbsd_external_headers , header_name ) || std__lists__StringList__contains( g_dragonflybsd_external_headers , header_name );
 }
 
 std__string__string renderer__platform_macro_start(std__string__string platform_name) {
@@ -13753,6 +14106,7 @@ g_netbsd_external_headers = std__lists__StringList__create( &arena , 32 );
 g_dragonflybsd_external_headers = std__lists__StringList__create( &arena , 32 );
 g_emitted_globals = (*std__maps__StringBoolMap__create( &arena , 128 ));
 g_global_var_prefixes = (*std__maps__StringStringMap__create( &arena , 128 ));
+g_generic_functions = (*std__maps__StringBoolMap__create( &arena , 128 ));
 g_function_param_types = (*std__maps__StringStringMap__create( &arena , 256 ));
 g_extern_functions = (*std__maps__StringBoolMap__create( &arena , 128 ));
 g_emitted_prototypes = (*std__maps__StringBoolMap__create( &arena , 1024 ));
@@ -13858,31 +14212,7 @@ return std__string__equals_c( name , "append" ) || std__string__equals_c ( name 
 }
 
 bool renderer__is_valid_symbol(std__string__string symbol_name) {
-if (std__string__str_len ( symbol_name ) == 0) {
-return true;
-}
-if (renderer__is_builtin_type ( symbol_name )) {
-return true;
-}
-if (renderer__is_language_keyword ( symbol_name )) {
-return true;
-}
-if (std__maps__StringBoolMap__contains( &g_opaque_types , symbol_name )) {
-return true;
-}
-if (std__maps__StringBoolMap__contains( &g_foreign_types , symbol_name )) {
-return true;
-}
-if (imports__is_symbol_imported ( symbol_name )) {
-return true;
-}
-if (std__maps__StringStringMap__contains( &g_model_names , symbol_name )) {
-return true;
-}
-if (std__maps__StringBoolMap__contains( &g_enum_names , symbol_name )) {
-return true;
-}
-return false;
+return std__string__str_len( symbol_name ) == 0 || renderer__is_builtin_type ( symbol_name ) || renderer__is_language_keyword ( symbol_name ) || std__maps__StringBoolMap__contains( &g_opaque_types , symbol_name ) || std__maps__StringBoolMap__contains( &g_foreign_types , symbol_name ) || imports__is_symbol_imported ( symbol_name ) || std__maps__StringStringMap__contains( &g_model_names , symbol_name ) || std__maps__StringBoolMap__contains( &g_enum_names , symbol_name );
 }
 
 void renderer__validate_type_imported(std__string__string type_name) {
@@ -14172,12 +14502,12 @@ const std__string__string arg_expr = arg_list.data[ arg_idx ];
 const std__string__string inferred_type = renderer__infer_expression_type( arg_expr );
 const std__string__string expected_type = expected_types.data[ arg_idx ];
 if (std__string__equals_c ( expected_type , "..." )) {
-arg_idx = arg_idx + 1;
+arg_idx++;
 continue;
 }
 const std__string__string mapped_inferred = renderer__map_axe_type_to_c( inferred_type );
 const std__string__string mapped_expected = renderer__map_axe_type_to_c( expected_type );
-if (! std__maps__StringBoolMap__contains( &g_extern_functions , func_name )) {
+if (! std__maps__StringBoolMap__contains( &g_extern_functions , func_name ) && ! std__maps__StringBoolMap__contains( &g_generic_functions , func_name )) {
 if (std__string__str_len ( inferred_type ) > 0 && ! std__string__equals_c ( inferred_type , "auto" ) && std__string__compare ( mapped_inferred , mapped_expected ) != 0) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
 std__io__print(":");
@@ -14194,7 +14524,7 @@ std__io__println("'");
 exit(1);
 }
 }
-arg_idx = arg_idx + 1;
+arg_idx++;
 }
 }
 
@@ -14207,6 +14537,9 @@ const std__string__string func_name = node->data.function.name;
 const __list_std__string_t* params = node->data.function.params;
 const std__string__string ret_type = node->data.function.return_type;
 renderer__register_function_signature(func_name, params, ret_type, arena);
+if (node->data.function.is_generic) {
+std__maps__StringBoolMap__set(&g_generic_functions, arena, func_name, true);
+}
 }
 if (std__string__equals_c ( node->node_type, "Extern" )) {
 const std__string__string func_name = node->data.extern_node.function_name;
@@ -15171,6 +15504,310 @@ continue;
 }
 std__string__StringBuilder__append_char(&sb, ch);
 pos = pos + 1;
+}
+const std__string__string result = std__string__StringBuilder__to_string( &sb );
+std__string__StringBuilder__destroy(&sb);
+return result;
+}
+
+std__string__string renderer__rewrite_generic_calls(std__string__string expr) {
+std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
+int32_t i = 0;
+bool in_string = false;
+bool in_char_literal = false;
+const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
+while (1) {
+if (i >= expr_len) {
+break;
+}
+const char ch = std__string__get_char( expr , i );
+if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+in_char_literal = ! in_char_literal;
+std__string__StringBuilder__append_char(&sb, ch);
+i++;
+continue;
+}
+if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+in_string = ! in_string;
+std__string__StringBuilder__append_char(&sb, ch);
+i++;
+continue;
+}
+if (in_string || in_char_literal) {
+std__string__StringBuilder__append_char(&sb, ch);
+i++;
+continue;
+}
+if (renderer__is_ident_start ( ch )) {
+const int32_t ident_start = i;
+int32_t j = i;
+while (1) {
+if (j >= expr_len) {
+break;
+}
+const char cj = std__string__get_char( expr , j );
+if (! renderer__is_token_char ( cj )) {
+break;
+}
+j = j + 1;
+}
+const std__string__string ident = std__string__substring_se( expr , ident_start , j );
+if (std__string__equals_c ( ident , "cast" )) {
+std__string__StringBuilder__append(&sb, ident);
+i = j;
+continue;
+}
+int32_t k = j;
+while (1) {
+if (k >= expr_len) {
+break;
+}
+const char ws = std__string__get_char( expr , k );
+if (ws != ' ' && ws != '\t' && ws != '\n') {
+break;
+}
+k = k + 1;
+}
+if (k < expr_len && std__string__get_char ( expr , k ) == '[') {
+k = k + 1;
+const int32_t type_start = k;
+int32_t bracket_depth = 1;
+while (1) {
+if (k >= expr_len || bracket_depth == 0) {
+break;
+}
+const char tc = std__string__get_char( expr , k );
+if (tc == '[') {
+bracket_depth = bracket_depth + 1;
+}
+else if (tc == ']') {
+bracket_depth = bracket_depth - 1;
+}
+if (bracket_depth > 0) {
+k = k + 1;
+}
+}
+const int32_t type_end = k;
+const std__string__string type_arg = std__string__strip( std__string__substring_se ( expr , type_start , type_end ) );
+if (k < expr_len && std__string__get_char ( expr , k ) == ']') {
+k = k + 1;
+while (1) {
+if (k >= expr_len) {
+break;
+}
+const char ws2 = std__string__get_char( expr , k );
+if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
+break;
+}
+k = k + 1;
+}
+if (k < expr_len && std__string__get_char ( expr , k ) == '(') {
+std__string__StringBuilder__append(&sb, ident);
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, type_arg);
+i = k;
+continue;
+}
+}
+}
+if (k < expr_len && std__string__get_char ( expr , k ) == '.') {
+int32_t m = k + 1;
+while (1) {
+if (m >= expr_len) {
+break;
+}
+const char wc = std__string__get_char( expr , m );
+if (wc != ' ' && wc != '\t' && wc != '\n') {
+break;
+}
+m++;
+}
+if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
+const int32_t method_start = m;
+while (1) {
+if (m >= expr_len) {
+break;
+}
+const char mc = std__string__get_char( expr , m );
+if (! renderer__is_token_char ( mc )) {
+break;
+}
+m++;
+}
+const std__string__string method_name = std__string__substring_se( expr , method_start , m );
+while (1) {
+if (m >= expr_len) {
+break;
+}
+const char wc2 = std__string__get_char( expr , m );
+if (wc2 != ' ' && wc2 != '\t' && wc2 != '\n') {
+break;
+}
+m++;
+}
+if (m < expr_len && std__string__get_char ( expr , m ) == '[') {
+m++;
+const int32_t type_start2 = m;
+int32_t bd2 = 1;
+while (1) {
+if (m >= expr_len || bd2 == 0) {
+break;
+}
+const char tc2 = std__string__get_char( expr , m );
+if (tc2 == '[') {
+bd2++;
+}
+else if (tc2 == ']') {
+bd2--;
+}
+if (bd2 > 0) {
+m++;
+}
+}
+const std__string__string type_arg2 = std__string__strip( std__string__substring_se ( expr , type_start2 , m ) );
+if (m < expr_len && std__string__get_char ( expr , m ) == ']') {
+m++;
+while (1) {
+if (m >= expr_len) {
+break;
+}
+const char wc3 = std__string__get_char( expr , m );
+if (wc3 != ' ' && wc3 != '\t' && wc3 != '\n') {
+break;
+}
+m++;
+}
+if (m < expr_len && std__string__get_char ( expr , m ) == '(') {
+std__string__StringBuilder__append(&sb, ident);
+std__string__StringBuilder__append_c(&sb, "__");
+std__string__StringBuilder__append(&sb, method_name);
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, type_arg2);
+i = m;
+continue;
+}
+}
+}
+else if (m < expr_len && std__string__get_char ( expr , m ) == '(') {
+std__string__StringBuilder sb_full_name = std__string__StringBuilder__init( std__string__str_len ( ident ) + std__string__str_len ( method_name ) + 2 );
+std__string__StringBuilder__append(&sb_full_name, ident);
+std__string__StringBuilder__append_c(&sb_full_name, "__");
+std__string__StringBuilder__append(&sb_full_name, method_name);
+const std__string__string full_name = std__string__StringBuilder__to_string( &sb_full_name );
+std__string__StringBuilder__destroy(&sb_full_name);
+if (std__maps__StringBoolMap__contains( &g_generic_functions , full_name )) {
+int32_t arg_start2 = m + 1;
+while (1) {
+if (arg_start2 >= expr_len) {
+break;
+}
+const char wc4 = std__string__get_char( expr , arg_start2 );
+if (wc4 != ' ' && wc4 != '\t' && wc4 != '\n') {
+break;
+}
+arg_start2++;
+}
+std__string__string inferred_type2 = std__string__str( "" );
+if (arg_start2 < expr_len) {
+const char first_ch2 = std__string__get_char( expr , arg_start2 );
+if (first_ch2 == '"') {
+inferred_type2 = std__string__str ( "ref char" );
+}
+else if (first_ch2 == '-' || ( first_ch2 >= '0' && first_ch2 <= '9' )) {
+bool has_decimal2 = false;
+int32_t scan_pos2 = arg_start2;
+while (1) {
+if (scan_pos2 >= expr_len) {
+break;
+}
+const char sc2 = std__string__get_char( expr , scan_pos2 );
+if (sc2 == '.') {
+has_decimal2 = true;
+break;
+}
+if (sc2 == ',' || sc2 == ')' || sc2 == ' ' || sc2 == '\t') {
+break;
+}
+scan_pos2++;
+}
+if (has_decimal2) {
+inferred_type2 = std__string__str ( "f32" );
+}
+else {
+inferred_type2 = std__string__str ( "i32" );
+}
+}
+}
+if (std__string__str_len ( inferred_type2 ) > 0) {
+std__string__StringBuilder__append(&sb, full_name);
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, inferred_type2);
+i = m;
+continue;
+}
+}
+}
+}
+}
+if (k < expr_len && std__string__get_char ( expr , k ) == '(') {
+if (std__maps__StringBoolMap__contains( &g_generic_functions , ident )) {
+int32_t arg_start = k + 1;
+while (1) {
+if (arg_start >= expr_len) {
+break;
+}
+const char wc = std__string__get_char( expr , arg_start );
+if (wc != ' ' && wc != '\t' && wc != '\n') {
+break;
+}
+arg_start++;
+}
+std__string__string inferred_type = std__string__str( "" );
+if (arg_start < expr_len) {
+const char first_ch = std__string__get_char( expr , arg_start );
+if (first_ch == '"') {
+inferred_type = std__string__str ( "ref char" );
+}
+else if (first_ch == '-' || ( first_ch >= '0' && first_ch <= '9' )) {
+bool has_decimal = false;
+int32_t scan_pos = arg_start;
+while (1) {
+if (scan_pos >= expr_len) {
+break;
+}
+const char sc = std__string__get_char( expr , scan_pos );
+if (sc == '.') {
+has_decimal = true;
+break;
+}
+if (sc == ',' || sc == ')' || sc == ' ' || sc == '\t') {
+break;
+}
+scan_pos++;
+}
+if (has_decimal) {
+inferred_type = std__string__str ( "f32" );
+}
+else {
+inferred_type = std__string__str ( "i32" );
+}
+}
+}
+if (std__string__str_len ( inferred_type ) > 0) {
+std__string__StringBuilder__append(&sb, ident);
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, inferred_type);
+i = k;
+continue;
+}
+}
+}
+std__string__StringBuilder__append(&sb, ident);
+i = j;
+continue;
+}
+std__string__StringBuilder__append_char(&sb, ch);
+i++;
 }
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
@@ -16932,6 +17569,7 @@ renderer__check_variable_declared(trimmed);
 bool has_pointer_sugar = false;
 bool in_string = false;
 int32_t i = 0;
+trimmed = renderer__rewrite_generic_calls ( trimmed );
 trimmed = renderer__rewrite_global_scope_refs ( trimmed );
 if (std__string__has_prefix ( trimmed , std__string__str ( "__INTERPOLATED__" ) ) && std__string__has_suffix ( trimmed , std__string__str ( "__INTERPOLATED__" ) )) {
 const int32_t inner_len = std__string__str_len( trimmed ) - 32;
@@ -18452,6 +19090,10 @@ break;
 }
 const structs__ASTNode* proto_child = &(children->data[ i_proto ]);
 if (std__string__equals_c ( proto_child->node_type, "Function" )) {
+if (proto_child->data.function.is_generic) {
+i_proto++;
+continue;
+}
 const std__string__string proto_code = renderer__generate_function_prototype( proto_child );
 if (std__string__str_len ( proto_code ) > 0) {
 const std__string__string proto_name = proto_child->data.function.name;
@@ -18935,6 +19577,152 @@ if (std__string__equals_c ( node_type , "Function" )) {
 std__string__string func_name = ast->data.function.name;
 std__string__string return_type = ast->data.function.return_type;
 const bool is_public = ast->data.function.is_public;
+const bool is_generic = ast->data.function.is_generic;
+if (is_generic) {
+const __list_std__string_t* when_types = ast->data.function.when_branch_types;
+const __list_int32_t_t* when_counts = ast->data.function.when_branch_counts;
+const __list_int32_t_t* when_starts = ast->data.function.when_branch_starts;
+const __list_std__string_t* type_params = ast->data.function.type_params;
+if (when_types == nil || when_counts == nil || when_starts == nil || type_params == nil) {
+return std__string__str( "" );
+}
+const std__string__string type_param_name = type_params->data[ 0 ];
+std__string__StringBuilder sb_all_funcs = std__string__StringBuilder__init( 8192 );
+int32_t branch_idx = 0;
+while (1) {
+if (branch_idx >= len_v((*when_types))) {
+break;
+}
+const std__string__string concrete_type = when_types->data[ branch_idx ];
+const int32_t child_count = when_counts->data[ branch_idx ];
+std__string__StringBuilder sb_spec_name = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb_spec_name, func_name);
+std__string__StringBuilder__append_c(&sb_spec_name, "__");
+std__string__StringBuilder__append(&sb_spec_name, type_param_name);
+std__string__StringBuilder__append_c(&sb_spec_name, "_");
+std__string__StringBuilder__append(&sb_spec_name, concrete_type);
+const std__string__string spec_func_name = std__string__StringBuilder__to_string( &sb_spec_name );
+std__string__StringBuilder__destroy(&sb_spec_name);
+if (std__maps__StringBoolMap__contains( &g_generated_functions , spec_func_name )) {
+branch_idx++;
+continue;
+}
+std__arena__Arena gen_arena = std__arena__Arena__create( 1024 );
+std__maps__StringBoolMap__set(&g_generated_functions, &gen_arena, spec_func_name, true);
+std__string__string spec_return_type = return_type;
+if (std__string__equals_c ( return_type , type_param_name.data)) {
+spec_return_type = concrete_type;
+}
+const std__string__string mapped_ret = renderer__map_axe_type_to_c( spec_return_type );
+std__string__StringBuilder sb_func = std__string__StringBuilder__init( 4096 );
+std__string__StringBuilder__append(&sb_func, renderer__emit_line_directive(ast->line));
+const __list_std__string_t* func_tags = ast->data.function.tags;
+if (func_tags != nil) {
+int32_t tag_idx = 0;
+while (1) {
+if (tag_idx >= len_v((*func_tags))) {
+break;
+}
+const std__string__string tag = func_tags->data[ tag_idx ];
+if (std__string__equals_c ( tag , "inline" )) {
+std__string__StringBuilder__append_c(&sb_func, "static inline ");
+}
+else if (std__string__equals_c ( tag , "noinline" )) {
+std__string__StringBuilder__append_c(&sb_func, "__attribute__((noinline)) ");
+}
+else if (std__string__equals_c ( tag , "cold" )) {
+std__string__StringBuilder__append_c(&sb_func, "__attribute__((cold)) ");
+}
+else if (std__string__equals_c ( tag , "hot" )) {
+std__string__StringBuilder__append_c(&sb_func, "__attribute__((hot)) ");
+}
+tag_idx++;
+}
+}
+std__string__StringBuilder__append(&sb_func, mapped_ret);
+std__string__StringBuilder__append_char(&sb_func, ' ');
+std__string__StringBuilder__append(&sb_func, spec_func_name);
+std__string__StringBuilder__append_char(&sb_func, '(');
+const __list_std__string_t* params = ast->data.function.params;
+if (params != nil) {
+int32_t param_idx = 0;
+while (1) {
+if (param_idx >= len_v((*params))) {
+break;
+}
+if (param_idx > 0) {
+std__string__StringBuilder__append_c(&sb_func, ", ");
+}
+const std__string__string param = params->data[ param_idx ];
+const int32_t colon_pos = std__string__find_char_from( param , ':' , 0 );
+if (colon_pos >= 0) {
+const std__string__string param_name = std__string__strip( std__string__substring_se ( param , 0 , colon_pos ) );
+std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
+if (std__string__equals_c ( param_type , type_param_name.data)) {
+param_type = concrete_type;
+}
+const std__string__string processed_type = renderer__process_parameter_type( param_type );
+std__string__StringBuilder__append(&sb_func, processed_type);
+std__string__StringBuilder__append_char(&sb_func, ' ');
+std__string__StringBuilder__append(&sb_func, param_name);
+std__maps__StringStringMap__set(&g_var_types, &gen_arena, param_name, param_type);
+}
+else {
+std__string__StringBuilder__append(&sb_func, param);
+}
+param_idx++;
+}
+}
+std__string__StringBuilder__append_c(&sb_func, ") {\n");
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+int32_t ci = 0;
+int32_t next_check_branch = 0;
+while (1) {
+if (ci >= len_v((*children))) {
+break;
+}
+bool is_branch_start = false;
+if (next_check_branch < len_v((*when_starts))) {
+if (ci == when_starts->data[ next_check_branch ]) {
+is_branch_start = true;
+}
+}
+if (is_branch_start) {
+const std__string__string branch_type = when_types->data[ next_check_branch ];
+const int32_t b_count = when_counts->data[ next_check_branch ];
+const bool is_match = std__string__equals_c( branch_type , concrete_type.data);
+if (is_match) {
+int32_t bi = 0;
+while (1) {
+if (bi >= b_count) {
+break;
+}
+const int32_t child_idx = ci + bi;
+if (child_idx < len_v((*children))) {
+const std__string__string child_code = renderer__generate_c( &(children->data[ child_idx ]) );
+std__string__StringBuilder__append(&sb_func, child_code);
+}
+bi++;
+}
+}
+ci = ci + b_count;
+next_check_branch++;
+continue;
+}
+const std__string__string common_code = renderer__generate_c( &(children->data[ ci ]) );
+std__string__StringBuilder__append(&sb_func, common_code);
+ci++;
+}
+}
+std__string__StringBuilder__append_c(&sb_func, "}\n\n");
+const std__string__string func_code = std__string__StringBuilder__to_string( &sb_func );
+std__string__StringBuilder__destroy(&sb_func);
+std__string__StringBuilder__append(&sb_all_funcs, func_code);
+branch_idx = branch_idx + 1;
+}
+return std__string__StringBuilder__to_string( &sb_all_funcs );
+}
 if (! std__string__equals_c ( func_name , "main" )) {
 int32_t sep2 = - 1;
 int32_t i2 = 0;
@@ -18948,7 +19736,7 @@ const char c2b = std__string__get_char( func_name , i2 + 1 );
 if (c1b == '_' && c2b == '_') {
 sep2 = i2;
 }
-i2 = i2 + 1;
+i2++;
 }
 if (sep2 >= 0 && sep2 + 2 < n2) {
 const std__string__string model_part2 = std__string__substring_se( func_name , 0 , sep2 );
@@ -18966,7 +19754,7 @@ if (mc1b == '_' && mc2b == '_') {
 has_inner_sep2 = true;
 break;
 }
-j2 = j2 + 1;
+j2++;
 }
 if (! has_inner_sep2) {
 const std__string__string canon_model2 = renderer__canonical_model_c_name( model_part2 );
@@ -19050,7 +19838,7 @@ break;
 }
 const std__string__string tag = func_tags->data[ tag_idx ];
 if (std__string__equals_c ( tag , "inline" )) {
-std__string__StringBuilder__append_c(&sb_func, "inline ");
+std__string__StringBuilder__append_c(&sb_func, "static inline ");
 }
 else if (std__string__equals_c ( tag , "noinline" )) {
 std__string__StringBuilder__append_c(&sb_func, "__attribute__((noinline)) ");
@@ -20985,7 +21773,7 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.6");
+std__io__println("Axe v0.0.7");
 std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025)\n");
 std__os__quit(0);
 }
