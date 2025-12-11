@@ -1272,12 +1272,530 @@ bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
 void std__lists__BoolList__clear(std__lists__BoolList* lst);
 bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
 void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
 std__errors__error std__errors__error__create(char* msg);
 void std__errors__error__print_self(std__errors__error err);
 void std__errors__panic(std__errors__error err);
 void std__errors__enforce(bool condition, std__errors__error err);
 void std__errors__enforce_raw(bool condition, char* msg);
 std__errors__error std__errors__test_error();
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__typecons__Any std__typecons__Any__from_i32(int32_t v);
+std__typecons__Any std__typecons__Any__from_f32(float v);
+std__typecons__Any std__typecons__Any__from_string(std__string__string v);
+std__typecons__Any std__typecons__Any__from_bool(bool v);
+std__typecons__Any std__typecons__Any__from_ptr(void* v);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__typecons__Any std__typecons__Any__from_i32(int32_t v);
+std__typecons__Any std__typecons__Any__from_f32(float v);
+std__typecons__Any std__typecons__Any__from_string(std__string__string v);
+std__typecons__Any std__typecons__Any__from_bool(bool v);
+std__typecons__Any std__typecons__Any__from_ptr(void* v);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
 std__typecons__Any std__typecons__Any__from_i32(int32_t v);
 std__typecons__Any std__typecons__Any__from_f32(float v);
 std__typecons__Any std__typecons__Any__from_string(std__string__string v);
@@ -1326,6 +1844,416 @@ std__string__string std__os__get_cwd();
 std__string__string std__os__get_executable_path();
 std__string__string std__os__get_executable_dir();
 std__string__string std__os__get_short_filename(std__string__string path);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__typecons__Any std__typecons__Any__from_i32(int32_t v);
+std__typecons__Any std__typecons__Any__from_f32(float v);
+std__typecons__Any std__typecons__Any__from_string(std__string__string v);
+std__typecons__Any std__typecons__Any__from_bool(bool v);
+std__typecons__Any std__typecons__Any__from_ptr(void* v);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
 bool builds__command_exists(std__string__string cmd);
 void builds__filter_and_print_errors(std__string__string output);
 bool builds__has_double_underscore(std__string__string name);
@@ -1363,6 +2291,146 @@ std__lists__StringList* gstate__get_link_libraries();
 void gstate__debug_print_i32(int32_t msg);
 void gstate__debug_print_str(std__string__string msg);
 void gstate__debug_print_raw(char* msg);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
 std__maps__StringIntMap* std__maps__StringIntMap__create(std__arena__Arena* arena, int32_t capacity);
 void std__maps__StringIntMap__clear(std__maps__StringIntMap* map);
 void std__maps__StringIntMap__add(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
@@ -1476,6 +2544,237 @@ bool std__maps__BoolBoolMap__get(std__maps__BoolBoolMap* map, bool key);
 bool std__maps__BoolBoolMap__contains(std__maps__BoolBoolMap* map, bool key);
 int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap* map);
 bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap* map, bool key);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+lexer__Token lexer__create_token(int32_t token_type, char* value);
+lexer__Token lexer__create_token_with_line(int32_t token_type, char* value, int32_t line);
+bool lexer__is_hex_digit(char ch);
+bool lexer__is_whitespace(char ch);
+bool lexer__is_ident_char(char ch);
+bool lexer__check_boundary(std__string__string source, int32_t pos, int32_t source_len);
+bool lexer__str_equals(std__string__string s1, char* s2, int32_t start, int32_t len, int32_t source_len);
+__list_lexer__Token_t lexer__lex(std__string__string source);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
 lexer__Token lexer__create_token(int32_t token_type, char* value);
 lexer__Token lexer__create_token_with_line(int32_t token_type, char* value, int32_t line);
 bool lexer__is_hex_digit(char ch);
@@ -1522,6 +2821,14 @@ std__string__string parser__parse_type(structs__ParserContext* ctx);
 int32_t parser__parse_ref_depth(structs__ParserContext* ctx);
 structs__ASTNode parser__parse_function(structs__ParserContext* ctx);
 structs__ASTNode parser__parse_statement_helper(structs__ParserContext* ctx, structs__Scope* scope);
+lexer__Token lexer__create_token(int32_t token_type, char* value);
+lexer__Token lexer__create_token_with_line(int32_t token_type, char* value, int32_t line);
+bool lexer__is_hex_digit(char ch);
+bool lexer__is_whitespace(char ch);
+bool lexer__is_ident_char(char ch);
+bool lexer__check_boundary(std__string__string source, int32_t pos, int32_t source_len);
+bool lexer__str_equals(std__string__string s1, char* s2, int32_t start, int32_t len, int32_t source_len);
+__list_lexer__Token_t lexer__lex(std__string__string source);
 void imports__reset_processed_modules();
 void imports__register_model_name(std__string__string short_name, std__string__string prefixed_name);
 std__string__string imports__lookup_model_name(std__string__string short_name);
@@ -1544,10 +2851,305 @@ void imports__prefix_types_in_node(structs__ASTNode* node, std__string__string m
 bool imports__check_symbol_exists_in_program(structs__ASTNode* program, std__string__string symbol_name);
 void imports__merge_imported_module(structs__ASTNode* program, structs__ASTNode* imported, std__string__string use_module);
 structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name);
+lexer__Token lexer__create_token(int32_t token_type, char* value);
+lexer__Token lexer__create_token_with_line(int32_t token_type, char* value, int32_t line);
+bool lexer__is_hex_digit(char ch);
+bool lexer__is_whitespace(char ch);
+bool lexer__is_ident_char(char ch);
+bool lexer__check_boundary(std__string__string source, int32_t pos, int32_t source_len);
+bool lexer__str_equals(std__string__string s1, char* s2, int32_t start, int32_t len, int32_t source_len);
+__list_lexer__Token_t lexer__lex(std__string__string source);
+void parser__initialize_all();
+void parser__macros_add(std__string__string name, structs__MacroDef defn);
+bool parser__macros_contains(std__string__string name);
+structs__MacroDef parser__macros_get(std__string__string name);
+bool parser__is_all_digits(std__string__string s);
+std__string__string parser__expand_macros_in_expression(std__string__string expr);
+void parser__register_variable(std__string__string var_name, bool is_mutable, int32_t line_num, std__string__string source_file);
+void parser__register_for_mutation_tracking(std__string__string var_name);
+void parser__register_for_usage_tracking(std__string__string var_name);
+void parser__push_scope();
+void parser__pop_scope();
+void parser__clear_local_variables();
+bool parser__is_variable_declared(std__string__string var_name);
+bool parser__is_variable_mutable(std__string__string var_name);
+void parser__mark_variable_mutated(std__string__string var_name);
+void parser__mark_variable_used(std__string__string var_name);
+void parser__scan_expression_for_usage(std__string__string expr);
+bool parser__contains_c_call(std__string__string s);
+void parser__scan_expression_for_addr(std__string__string expr);
+void parser__scan_expression_for_c_calls(std__string__string expr);
+void parser__scan_function_args_for_ref_params(std__string__string args_str);
+void parser__check_null_usage(structs__ParserContext* ctx, std__string__string ident);
+bool parser__has_function_call_in_expression(std__string__string expr);
+std__string__string parser__extract_function_name(std__string__string expr);
+bool parser__has_pointer_syntax(std__string__string type_str);
+void parser__add_child_to_ast(structs__ASTNode* ast, structs__ASTNode child);
+structs__ASTNode parser__parse(__list_lexer__Token_t* tokens, bool is_axec, bool check_entry_point, std__string__string current_module, std__string__string filename);
+void parser__parse_top_level(structs__ParserContext* ctx, structs__ASTNode* ast);
+void parser__skip_whitespace(structs__ParserContext* ctx);
+lexer__Token parser__peek(structs__ParserContext* ctx);
+int32_t parser__current_line(structs__ParserContext* ctx);
+std__string__string parser__format_error(structs__ParserContext* ctx, std__string__string message);
+lexer__Token parser__consume(structs__ParserContext* ctx);
+bool parser__expect(structs__ParserContext* ctx, int32_t expected_type);
+std__string__string parser__parse_type(structs__ParserContext* ctx);
+int32_t parser__parse_ref_depth(structs__ParserContext* ctx);
+structs__ASTNode parser__parse_function(structs__ParserContext* ctx);
+structs__ASTNode parser__parse_statement_helper(structs__ParserContext* ctx, structs__Scope* scope);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__maps__StringIntMap* std__maps__StringIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringIntMap__clear(std__maps__StringIntMap* map);
+void std__maps__StringIntMap__add(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+void std__maps__StringIntMap__set(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+int32_t std__maps__StringIntMap__get(std__maps__StringIntMap* map, std__string__string key);
+bool std__maps__StringIntMap__contains(std__maps__StringIntMap* map, std__string__string key);
+int32_t std__maps__StringIntMap__size(std__maps__StringIntMap* map);
+int32_t std__maps__StringIntMap__pop(std__maps__StringIntMap* map, std__string__string key);
+std__maps__StringFloatMap* std__maps__StringFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringFloatMap__clear(std__maps__StringFloatMap* map);
+void std__maps__StringFloatMap__add(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+void std__maps__StringFloatMap__set(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+float std__maps__StringFloatMap__get(std__maps__StringFloatMap* map, std__string__string key);
+bool std__maps__StringFloatMap__contains(std__maps__StringFloatMap* map, std__string__string key);
+int32_t std__maps__StringFloatMap__size(std__maps__StringFloatMap* map);
+float std__maps__StringFloatMap__pop(std__maps__StringFloatMap* map, std__string__string key);
+std__maps__StringBoolMap* std__maps__StringBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringBoolMap__clear(std__maps__StringBoolMap* map);
+void std__maps__StringBoolMap__add(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+void std__maps__StringBoolMap__set(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+bool std__maps__StringBoolMap__get(std__maps__StringBoolMap* map, std__string__string key);
+bool std__maps__StringBoolMap__contains(std__maps__StringBoolMap* map, std__string__string key);
+int32_t std__maps__StringBoolMap__size(std__maps__StringBoolMap* map);
+bool std__maps__StringBoolMap__pop(std__maps__StringBoolMap* map, std__string__string key);
+std__maps__StringStringMap* std__maps__StringStringMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringStringMap__clear(std__maps__StringStringMap* map);
+void std__maps__StringStringMap__add(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+void std__maps__StringStringMap__set(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+std__string__string std__maps__StringStringMap__get(std__maps__StringStringMap* map, std__string__string key);
+bool std__maps__StringStringMap__contains(std__maps__StringStringMap* map, std__string__string key);
+int32_t std__maps__StringStringMap__size(std__maps__StringStringMap* map);
+std__string__string std__maps__StringStringMap__pop(std__maps__StringStringMap* map, std__string__string key);
+std__maps__IntIntMap* std__maps__IntIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntIntMap__clear(std__maps__IntIntMap* map);
+void std__maps__IntIntMap__append(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__add(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__set(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+int32_t std__maps__IntIntMap__get(std__maps__IntIntMap* map, int32_t key);
+bool std__maps__IntIntMap__contains(std__maps__IntIntMap* map, int32_t key);
+int32_t std__maps__IntIntMap__size(std__maps__IntIntMap* map);
+int32_t std__maps__IntIntMap__pop(std__maps__IntIntMap* map, int32_t key);
+std__maps__FloatIntMap* std__maps__FloatIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatIntMap__clear(std__maps__FloatIntMap* map);
+void std__maps__FloatIntMap__append(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__add(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__set(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+int32_t std__maps__FloatIntMap__get(std__maps__FloatIntMap* map, float key);
+bool std__maps__FloatIntMap__contains(std__maps__FloatIntMap* map, float key);
+int32_t std__maps__FloatIntMap__size(std__maps__FloatIntMap* map);
+int32_t std__maps__FloatIntMap__pop(std__maps__FloatIntMap* map, float key);
+std__maps__IntFloatMap* std__maps__IntFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntFloatMap__clear(std__maps__IntFloatMap* map);
+void std__maps__IntFloatMap__append(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__add(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__set(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+float std__maps__IntFloatMap__get(std__maps__IntFloatMap* map, int32_t key);
+bool std__maps__IntFloatMap__contains(std__maps__IntFloatMap* map, int32_t key);
+int32_t std__maps__IntFloatMap__size(std__maps__IntFloatMap* map);
+float std__maps__IntFloatMap__pop(std__maps__IntFloatMap* map, int32_t key);
+std__maps__FloatFloatMap* std__maps__FloatFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatFloatMap__clear(std__maps__FloatFloatMap* map);
+void std__maps__FloatFloatMap__append(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__add(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__set(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+float std__maps__FloatFloatMap__get(std__maps__FloatFloatMap* map, float key);
+bool std__maps__FloatFloatMap__contains(std__maps__FloatFloatMap* map, float key);
+int32_t std__maps__FloatFloatMap__size(std__maps__FloatFloatMap* map);
+float std__maps__FloatFloatMap__pop(std__maps__FloatFloatMap* map, float key);
+std__maps__IntBoolMap* std__maps__IntBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntBoolMap__clear(std__maps__IntBoolMap* map);
+void std__maps__IntBoolMap__append(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__add(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__set(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+bool std__maps__IntBoolMap__get(std__maps__IntBoolMap* map, int32_t key);
+bool std__maps__IntBoolMap__contains(std__maps__IntBoolMap* map, int32_t key);
+int32_t std__maps__IntBoolMap__size(std__maps__IntBoolMap* map);
+bool std__maps__IntBoolMap__pop(std__maps__IntBoolMap* map, int32_t key);
+std__maps__BoolIntMap* std__maps__BoolIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolIntMap__clear(std__maps__BoolIntMap* map);
+void std__maps__BoolIntMap__append(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__add(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__set(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+int32_t std__maps__BoolIntMap__get(std__maps__BoolIntMap* map, bool key);
+bool std__maps__BoolIntMap__contains(std__maps__BoolIntMap* map, bool key);
+int32_t std__maps__BoolIntMap__size(std__maps__BoolIntMap* map);
+int32_t std__maps__BoolIntMap__pop(std__maps__BoolIntMap* map, bool key);
+std__maps__FloatBoolMap* std__maps__FloatBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatBoolMap__clear(std__maps__FloatBoolMap* map);
+void std__maps__FloatBoolMap__append(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__add(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__set(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+bool std__maps__FloatBoolMap__get(std__maps__FloatBoolMap* map, float key);
+bool std__maps__FloatBoolMap__contains(std__maps__FloatBoolMap* map, float key);
+int32_t std__maps__FloatBoolMap__size(std__maps__FloatBoolMap* map);
+bool std__maps__FloatBoolMap__pop(std__maps__FloatBoolMap* map, float key);
+std__maps__BoolFloatMap* std__maps__BoolFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolFloatMap__clear(std__maps__BoolFloatMap* map);
+void std__maps__BoolFloatMap__append(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__add(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__set(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+float std__maps__BoolFloatMap__get(std__maps__BoolFloatMap* map, bool key);
+bool std__maps__BoolFloatMap__contains(std__maps__BoolFloatMap* map, bool key);
+int32_t std__maps__BoolFloatMap__size(std__maps__BoolFloatMap* map);
+float std__maps__BoolFloatMap__pop(std__maps__BoolFloatMap* map, bool key);
+std__maps__BoolBoolMap* std__maps__BoolBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolBoolMap__clear(std__maps__BoolBoolMap* map);
+void std__maps__BoolBoolMap__append(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__add(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__set(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+bool std__maps__BoolBoolMap__get(std__maps__BoolBoolMap* map, bool key);
+bool std__maps__BoolBoolMap__contains(std__maps__BoolBoolMap* map, bool key);
+int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap* map);
+bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap* map, bool key);
+int32_t std__os__exec_from_string(std__string__string cmd);
+int32_t std__os__exec(char* cmd);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
+std__os__ExecResult std__os__exec_capture(std__string__string cmd);
+void std__os__quit(int32_t code);
+bool std__os__file_exists(std__string__string path);
+std__string__string std__os__read_file(std__string__string path);
+bool std__os__write_file(std__string__string path, std__string__string contents);
+bool std__os__is_directory(std__string__string path);
+bool std__os__is_file(std__string__string path);
+bool std__os__is_symbolic_link(std__string__string path);
+bool std__os__delete_file(std__string__string path);
+bool std__os__rm_dir(std__string__string path);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1560,15 +3162,422 @@ int32_t std__os__stat_is_dir(uintptr_t st);
 char* std__os__finddata_name(uintptr_t data);
 int32_t std__os__finddata_is_dir(uintptr_t data);
 #endif
+bool std__os__rm_dir_recursive(std__string__string path);
 #ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
+void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena);
+std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena);
+std__string__string std__os__get_user_home_dir();
+std__string__string std__os__get_env(std__string__string name);
+std__lists__StringList* std__os__get_cmdline_args(std__arena__Arena* arena);
+std__string__string std__os__get_cwd();
 #ifdef __APPLE__
 #endif
+std__string__string std__os__get_executable_path();
+std__string__string std__os__get_executable_dir();
+std__string__string std__os__get_short_filename(std__string__string path);
+void gstate__set_loud_logger(bool v);
+void gstate__set_release_build(bool v);
+void gstate__set_keep_emitted_file(bool v);
+void gstate__set_run_after_compile(bool v);
+void gstate__set_print_tokens(bool v);
+void gstate__set_print_ast(bool v);
+void gstate__set_build_shared_lib(bool v);
+void gstate__set_bootstrap_mode(bool v);
+void gstate__set_include_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_include_paths();
+void gstate__set_quiet_mode(bool v);
+void gstate__set_syntax_check_only(bool v);
+void gstate__set_target_triple(std__string__string triple);
+std__string__string gstate__get_target_triple();
+void gstate__set_sysroot_path(std__string__string path);
+std__string__string gstate__get_sysroot_path();
+void gstate__set_compile_only(bool v);
+bool gstate__get_compile_only();
+void gstate__set_library_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_library_paths();
+void gstate__set_link_libraries(std__lists__StringList* libs);
+std__lists__StringList* gstate__get_link_libraries();
+void gstate__debug_print_i32(int32_t msg);
+void gstate__debug_print_str(std__string__string msg);
+void gstate__debug_print_raw(char* msg);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__maps__StringIntMap* std__maps__StringIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringIntMap__clear(std__maps__StringIntMap* map);
+void std__maps__StringIntMap__add(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+void std__maps__StringIntMap__set(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+int32_t std__maps__StringIntMap__get(std__maps__StringIntMap* map, std__string__string key);
+bool std__maps__StringIntMap__contains(std__maps__StringIntMap* map, std__string__string key);
+int32_t std__maps__StringIntMap__size(std__maps__StringIntMap* map);
+int32_t std__maps__StringIntMap__pop(std__maps__StringIntMap* map, std__string__string key);
+std__maps__StringFloatMap* std__maps__StringFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringFloatMap__clear(std__maps__StringFloatMap* map);
+void std__maps__StringFloatMap__add(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+void std__maps__StringFloatMap__set(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+float std__maps__StringFloatMap__get(std__maps__StringFloatMap* map, std__string__string key);
+bool std__maps__StringFloatMap__contains(std__maps__StringFloatMap* map, std__string__string key);
+int32_t std__maps__StringFloatMap__size(std__maps__StringFloatMap* map);
+float std__maps__StringFloatMap__pop(std__maps__StringFloatMap* map, std__string__string key);
+std__maps__StringBoolMap* std__maps__StringBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringBoolMap__clear(std__maps__StringBoolMap* map);
+void std__maps__StringBoolMap__add(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+void std__maps__StringBoolMap__set(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+bool std__maps__StringBoolMap__get(std__maps__StringBoolMap* map, std__string__string key);
+bool std__maps__StringBoolMap__contains(std__maps__StringBoolMap* map, std__string__string key);
+int32_t std__maps__StringBoolMap__size(std__maps__StringBoolMap* map);
+bool std__maps__StringBoolMap__pop(std__maps__StringBoolMap* map, std__string__string key);
+std__maps__StringStringMap* std__maps__StringStringMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringStringMap__clear(std__maps__StringStringMap* map);
+void std__maps__StringStringMap__add(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+void std__maps__StringStringMap__set(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+std__string__string std__maps__StringStringMap__get(std__maps__StringStringMap* map, std__string__string key);
+bool std__maps__StringStringMap__contains(std__maps__StringStringMap* map, std__string__string key);
+int32_t std__maps__StringStringMap__size(std__maps__StringStringMap* map);
+std__string__string std__maps__StringStringMap__pop(std__maps__StringStringMap* map, std__string__string key);
+std__maps__IntIntMap* std__maps__IntIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntIntMap__clear(std__maps__IntIntMap* map);
+void std__maps__IntIntMap__append(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__add(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__set(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+int32_t std__maps__IntIntMap__get(std__maps__IntIntMap* map, int32_t key);
+bool std__maps__IntIntMap__contains(std__maps__IntIntMap* map, int32_t key);
+int32_t std__maps__IntIntMap__size(std__maps__IntIntMap* map);
+int32_t std__maps__IntIntMap__pop(std__maps__IntIntMap* map, int32_t key);
+std__maps__FloatIntMap* std__maps__FloatIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatIntMap__clear(std__maps__FloatIntMap* map);
+void std__maps__FloatIntMap__append(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__add(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__set(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+int32_t std__maps__FloatIntMap__get(std__maps__FloatIntMap* map, float key);
+bool std__maps__FloatIntMap__contains(std__maps__FloatIntMap* map, float key);
+int32_t std__maps__FloatIntMap__size(std__maps__FloatIntMap* map);
+int32_t std__maps__FloatIntMap__pop(std__maps__FloatIntMap* map, float key);
+std__maps__IntFloatMap* std__maps__IntFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntFloatMap__clear(std__maps__IntFloatMap* map);
+void std__maps__IntFloatMap__append(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__add(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__set(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+float std__maps__IntFloatMap__get(std__maps__IntFloatMap* map, int32_t key);
+bool std__maps__IntFloatMap__contains(std__maps__IntFloatMap* map, int32_t key);
+int32_t std__maps__IntFloatMap__size(std__maps__IntFloatMap* map);
+float std__maps__IntFloatMap__pop(std__maps__IntFloatMap* map, int32_t key);
+std__maps__FloatFloatMap* std__maps__FloatFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatFloatMap__clear(std__maps__FloatFloatMap* map);
+void std__maps__FloatFloatMap__append(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__add(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__set(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+float std__maps__FloatFloatMap__get(std__maps__FloatFloatMap* map, float key);
+bool std__maps__FloatFloatMap__contains(std__maps__FloatFloatMap* map, float key);
+int32_t std__maps__FloatFloatMap__size(std__maps__FloatFloatMap* map);
+float std__maps__FloatFloatMap__pop(std__maps__FloatFloatMap* map, float key);
+std__maps__IntBoolMap* std__maps__IntBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntBoolMap__clear(std__maps__IntBoolMap* map);
+void std__maps__IntBoolMap__append(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__add(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__set(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+bool std__maps__IntBoolMap__get(std__maps__IntBoolMap* map, int32_t key);
+bool std__maps__IntBoolMap__contains(std__maps__IntBoolMap* map, int32_t key);
+int32_t std__maps__IntBoolMap__size(std__maps__IntBoolMap* map);
+bool std__maps__IntBoolMap__pop(std__maps__IntBoolMap* map, int32_t key);
+std__maps__BoolIntMap* std__maps__BoolIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolIntMap__clear(std__maps__BoolIntMap* map);
+void std__maps__BoolIntMap__append(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__add(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__set(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+int32_t std__maps__BoolIntMap__get(std__maps__BoolIntMap* map, bool key);
+bool std__maps__BoolIntMap__contains(std__maps__BoolIntMap* map, bool key);
+int32_t std__maps__BoolIntMap__size(std__maps__BoolIntMap* map);
+int32_t std__maps__BoolIntMap__pop(std__maps__BoolIntMap* map, bool key);
+std__maps__FloatBoolMap* std__maps__FloatBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatBoolMap__clear(std__maps__FloatBoolMap* map);
+void std__maps__FloatBoolMap__append(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__add(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__set(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+bool std__maps__FloatBoolMap__get(std__maps__FloatBoolMap* map, float key);
+bool std__maps__FloatBoolMap__contains(std__maps__FloatBoolMap* map, float key);
+int32_t std__maps__FloatBoolMap__size(std__maps__FloatBoolMap* map);
+bool std__maps__FloatBoolMap__pop(std__maps__FloatBoolMap* map, float key);
+std__maps__BoolFloatMap* std__maps__BoolFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolFloatMap__clear(std__maps__BoolFloatMap* map);
+void std__maps__BoolFloatMap__append(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__add(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__set(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+float std__maps__BoolFloatMap__get(std__maps__BoolFloatMap* map, bool key);
+bool std__maps__BoolFloatMap__contains(std__maps__BoolFloatMap* map, bool key);
+int32_t std__maps__BoolFloatMap__size(std__maps__BoolFloatMap* map);
+float std__maps__BoolFloatMap__pop(std__maps__BoolFloatMap* map, bool key);
+std__maps__BoolBoolMap* std__maps__BoolBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolBoolMap__clear(std__maps__BoolBoolMap* map);
+void std__maps__BoolBoolMap__append(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__add(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__set(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+bool std__maps__BoolBoolMap__get(std__maps__BoolBoolMap* map, bool key);
+bool std__maps__BoolBoolMap__contains(std__maps__BoolBoolMap* map, bool key);
+int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap* map);
+bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap* map, bool key);
+std__arena__Arena std__arena__Arena__create(uintptr_t size);
+void std__arena__Arena__destroy(std__arena__Arena* arena);
+void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size);
+void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count);
+void std__arena__Arena__reset(std__arena__Arena* arena);
+int32_t std__arena__Arena__used(std__arena__Arena* arena);
+uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+int32_t std__os__exec_from_string(std__string__string cmd);
+int32_t std__os__exec(char* cmd);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
+std__os__ExecResult std__os__exec_capture(std__string__string cmd);
+void std__os__quit(int32_t code);
+bool std__os__file_exists(std__string__string path);
+std__string__string std__os__read_file(std__string__string path);
+bool std__os__write_file(std__string__string path, std__string__string contents);
+bool std__os__is_directory(std__string__string path);
+bool std__os__is_file(std__string__string path);
+bool std__os__is_symbolic_link(std__string__string path);
+bool std__os__delete_file(std__string__string path);
+bool std__os__rm_dir(std__string__string path);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1581,11 +3590,43 @@ int32_t std__os__stat_is_dir(uintptr_t st);
 char* std__os__finddata_name(uintptr_t data);
 int32_t std__os__finddata_is_dir(uintptr_t data);
 #endif
+bool std__os__rm_dir_recursive(std__string__string path);
 #ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
+void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena);
+std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena);
+std__string__string std__os__get_user_home_dir();
+std__string__string std__os__get_env(std__string__string name);
+std__lists__StringList* std__os__get_cmdline_args(std__arena__Arena* arena);
+std__string__string std__os__get_cwd();
 #ifdef __APPLE__
 #endif
+std__string__string std__os__get_executable_path();
+std__string__string std__os__get_executable_dir();
+std__string__string std__os__get_short_filename(std__string__string path);
+void imports__reset_processed_modules();
+void imports__register_model_name(std__string__string short_name, std__string__string prefixed_name);
+std__string__string imports__lookup_model_name(std__string__string short_name);
+void imports__register_imported_symbol(std__string__string symbol_name);
+bool imports__is_symbol_imported(std__string__string symbol_name);
+bool imports__has_imported_module(std__string__string name);
+void imports__add_processed_module(std__string__string path);
+bool imports__is_module_processed(std__string__string path);
+std__string__string imports__get_module_prefix(std__string__string module_name);
+std__string__string imports__get_dir_from_path(std__string__string path);
+std__string__string imports__join_path(std__string__string base_dir, std__string__string rel);
+std__string__string imports__make_module_path(std__string__string base_dir, std__string__string use_module);
+void imports__append_child(structs__ASTNode* program, structs__ASTNode child);
+void imports__prefix_function_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+void imports__prefix_model_node(structs__ASTNode* node, std__string__string module_prefix);
+void imports__prefix_enum_node(structs__ASTNode* node, std__string__string module_prefix);
+std__maps__StringBoolMap imports__build_exported_name_map(structs__ASTNode* imported);
+std__string__string imports__prefix_type_name(std__string__string type_name, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+void imports__prefix_types_in_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+bool imports__check_symbol_exists_in_program(structs__ASTNode* program, std__string__string symbol_name);
+void imports__merge_imported_module(structs__ASTNode* program, structs__ASTNode* imported, std__string__string use_module);
+structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name);
 void renderer__set_source_file(std__string__string filename);
 void renderer__set_emit_line_directives(bool v);
 bool renderer__has_external_header(std__string__string header_name);
@@ -1658,10 +3699,193 @@ std__string__string renderer__generate_stack_trace_setup();
 std__string__string renderer__generate_function_prototype(structs__ASTNode* ast);
 std__string__string renderer__generate_global_decl(structs__ASTNode* ast);
 std__string__string renderer__generate_c(structs__ASTNode* ast);
+void gstate__set_loud_logger(bool v);
+void gstate__set_release_build(bool v);
+void gstate__set_keep_emitted_file(bool v);
+void gstate__set_run_after_compile(bool v);
+void gstate__set_print_tokens(bool v);
+void gstate__set_print_ast(bool v);
+void gstate__set_build_shared_lib(bool v);
+void gstate__set_bootstrap_mode(bool v);
+void gstate__set_include_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_include_paths();
+void gstate__set_quiet_mode(bool v);
+void gstate__set_syntax_check_only(bool v);
+void gstate__set_target_triple(std__string__string triple);
+std__string__string gstate__get_target_triple();
+void gstate__set_sysroot_path(std__string__string path);
+std__string__string gstate__get_sysroot_path();
+void gstate__set_compile_only(bool v);
+bool gstate__get_compile_only();
+void gstate__set_library_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_library_paths();
+void gstate__set_link_libraries(std__lists__StringList* libs);
+std__lists__StringList* gstate__get_link_libraries();
+void gstate__debug_print_i32(int32_t msg);
+void gstate__debug_print_str(std__string__string msg);
+void gstate__debug_print_raw(char* msg);
+void imports__reset_processed_modules();
+void imports__register_model_name(std__string__string short_name, std__string__string prefixed_name);
+std__string__string imports__lookup_model_name(std__string__string short_name);
+void imports__register_imported_symbol(std__string__string symbol_name);
+bool imports__is_symbol_imported(std__string__string symbol_name);
+bool imports__has_imported_module(std__string__string name);
+void imports__add_processed_module(std__string__string path);
+bool imports__is_module_processed(std__string__string path);
+std__string__string imports__get_module_prefix(std__string__string module_name);
+std__string__string imports__get_dir_from_path(std__string__string path);
+std__string__string imports__join_path(std__string__string base_dir, std__string__string rel);
+std__string__string imports__make_module_path(std__string__string base_dir, std__string__string use_module);
+void imports__append_child(structs__ASTNode* program, structs__ASTNode child);
+void imports__prefix_function_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+void imports__prefix_model_node(structs__ASTNode* node, std__string__string module_prefix);
+void imports__prefix_enum_node(structs__ASTNode* node, std__string__string module_prefix);
+std__maps__StringBoolMap imports__build_exported_name_map(structs__ASTNode* imported);
+std__string__string imports__prefix_type_name(std__string__string type_name, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+void imports__prefix_types_in_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported);
+bool imports__check_symbol_exists_in_program(structs__ASTNode* program, std__string__string symbol_name);
+void imports__merge_imported_module(structs__ASTNode* program, structs__ASTNode* imported, std__string__string use_module);
+structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+int32_t std__os__exec_from_string(std__string__string cmd);
+int32_t std__os__exec(char* cmd);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
+std__os__ExecResult std__os__exec_capture(std__string__string cmd);
+void std__os__quit(int32_t code);
+bool std__os__file_exists(std__string__string path);
+std__string__string std__os__read_file(std__string__string path);
+bool std__os__write_file(std__string__string path, std__string__string contents);
+bool std__os__is_directory(std__string__string path);
+bool std__os__is_file(std__string__string path);
+bool std__os__is_symbolic_link(std__string__string path);
+bool std__os__delete_file(std__string__string path);
+bool std__os__rm_dir(std__string__string path);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1674,15 +3898,156 @@ int32_t std__os__stat_is_dir(uintptr_t st);
 char* std__os__finddata_name(uintptr_t data);
 int32_t std__os__finddata_is_dir(uintptr_t data);
 #endif
+bool std__os__rm_dir_recursive(std__string__string path);
 #ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
+void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena);
+std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena);
+std__string__string std__os__get_user_home_dir();
+std__string__string std__os__get_env(std__string__string name);
+std__lists__StringList* std__os__get_cmdline_args(std__arena__Arena* arena);
+std__string__string std__os__get_cwd();
 #ifdef __APPLE__
 #endif
+std__string__string std__os__get_executable_path();
+std__string__string std__os__get_executable_dir();
+std__string__string std__os__get_short_filename(std__string__string path);
+std__maps__StringIntMap* std__maps__StringIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringIntMap__clear(std__maps__StringIntMap* map);
+void std__maps__StringIntMap__add(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+void std__maps__StringIntMap__set(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value);
+int32_t std__maps__StringIntMap__get(std__maps__StringIntMap* map, std__string__string key);
+bool std__maps__StringIntMap__contains(std__maps__StringIntMap* map, std__string__string key);
+int32_t std__maps__StringIntMap__size(std__maps__StringIntMap* map);
+int32_t std__maps__StringIntMap__pop(std__maps__StringIntMap* map, std__string__string key);
+std__maps__StringFloatMap* std__maps__StringFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringFloatMap__clear(std__maps__StringFloatMap* map);
+void std__maps__StringFloatMap__add(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+void std__maps__StringFloatMap__set(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value);
+float std__maps__StringFloatMap__get(std__maps__StringFloatMap* map, std__string__string key);
+bool std__maps__StringFloatMap__contains(std__maps__StringFloatMap* map, std__string__string key);
+int32_t std__maps__StringFloatMap__size(std__maps__StringFloatMap* map);
+float std__maps__StringFloatMap__pop(std__maps__StringFloatMap* map, std__string__string key);
+std__maps__StringBoolMap* std__maps__StringBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringBoolMap__clear(std__maps__StringBoolMap* map);
+void std__maps__StringBoolMap__add(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+void std__maps__StringBoolMap__set(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value);
+bool std__maps__StringBoolMap__get(std__maps__StringBoolMap* map, std__string__string key);
+bool std__maps__StringBoolMap__contains(std__maps__StringBoolMap* map, std__string__string key);
+int32_t std__maps__StringBoolMap__size(std__maps__StringBoolMap* map);
+bool std__maps__StringBoolMap__pop(std__maps__StringBoolMap* map, std__string__string key);
+std__maps__StringStringMap* std__maps__StringStringMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__StringStringMap__clear(std__maps__StringStringMap* map);
+void std__maps__StringStringMap__add(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+void std__maps__StringStringMap__set(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value);
+std__string__string std__maps__StringStringMap__get(std__maps__StringStringMap* map, std__string__string key);
+bool std__maps__StringStringMap__contains(std__maps__StringStringMap* map, std__string__string key);
+int32_t std__maps__StringStringMap__size(std__maps__StringStringMap* map);
+std__string__string std__maps__StringStringMap__pop(std__maps__StringStringMap* map, std__string__string key);
+std__maps__IntIntMap* std__maps__IntIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntIntMap__clear(std__maps__IntIntMap* map);
+void std__maps__IntIntMap__append(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__add(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+void std__maps__IntIntMap__set(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value);
+int32_t std__maps__IntIntMap__get(std__maps__IntIntMap* map, int32_t key);
+bool std__maps__IntIntMap__contains(std__maps__IntIntMap* map, int32_t key);
+int32_t std__maps__IntIntMap__size(std__maps__IntIntMap* map);
+int32_t std__maps__IntIntMap__pop(std__maps__IntIntMap* map, int32_t key);
+std__maps__FloatIntMap* std__maps__FloatIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatIntMap__clear(std__maps__FloatIntMap* map);
+void std__maps__FloatIntMap__append(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__add(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+void std__maps__FloatIntMap__set(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value);
+int32_t std__maps__FloatIntMap__get(std__maps__FloatIntMap* map, float key);
+bool std__maps__FloatIntMap__contains(std__maps__FloatIntMap* map, float key);
+int32_t std__maps__FloatIntMap__size(std__maps__FloatIntMap* map);
+int32_t std__maps__FloatIntMap__pop(std__maps__FloatIntMap* map, float key);
+std__maps__IntFloatMap* std__maps__IntFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntFloatMap__clear(std__maps__IntFloatMap* map);
+void std__maps__IntFloatMap__append(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__add(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+void std__maps__IntFloatMap__set(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value);
+float std__maps__IntFloatMap__get(std__maps__IntFloatMap* map, int32_t key);
+bool std__maps__IntFloatMap__contains(std__maps__IntFloatMap* map, int32_t key);
+int32_t std__maps__IntFloatMap__size(std__maps__IntFloatMap* map);
+float std__maps__IntFloatMap__pop(std__maps__IntFloatMap* map, int32_t key);
+std__maps__FloatFloatMap* std__maps__FloatFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatFloatMap__clear(std__maps__FloatFloatMap* map);
+void std__maps__FloatFloatMap__append(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__add(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+void std__maps__FloatFloatMap__set(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value);
+float std__maps__FloatFloatMap__get(std__maps__FloatFloatMap* map, float key);
+bool std__maps__FloatFloatMap__contains(std__maps__FloatFloatMap* map, float key);
+int32_t std__maps__FloatFloatMap__size(std__maps__FloatFloatMap* map);
+float std__maps__FloatFloatMap__pop(std__maps__FloatFloatMap* map, float key);
+std__maps__IntBoolMap* std__maps__IntBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__IntBoolMap__clear(std__maps__IntBoolMap* map);
+void std__maps__IntBoolMap__append(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__add(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+void std__maps__IntBoolMap__set(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value);
+bool std__maps__IntBoolMap__get(std__maps__IntBoolMap* map, int32_t key);
+bool std__maps__IntBoolMap__contains(std__maps__IntBoolMap* map, int32_t key);
+int32_t std__maps__IntBoolMap__size(std__maps__IntBoolMap* map);
+bool std__maps__IntBoolMap__pop(std__maps__IntBoolMap* map, int32_t key);
+std__maps__BoolIntMap* std__maps__BoolIntMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolIntMap__clear(std__maps__BoolIntMap* map);
+void std__maps__BoolIntMap__append(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__add(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+void std__maps__BoolIntMap__set(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value);
+int32_t std__maps__BoolIntMap__get(std__maps__BoolIntMap* map, bool key);
+bool std__maps__BoolIntMap__contains(std__maps__BoolIntMap* map, bool key);
+int32_t std__maps__BoolIntMap__size(std__maps__BoolIntMap* map);
+int32_t std__maps__BoolIntMap__pop(std__maps__BoolIntMap* map, bool key);
+std__maps__FloatBoolMap* std__maps__FloatBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__FloatBoolMap__clear(std__maps__FloatBoolMap* map);
+void std__maps__FloatBoolMap__append(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__add(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+void std__maps__FloatBoolMap__set(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value);
+bool std__maps__FloatBoolMap__get(std__maps__FloatBoolMap* map, float key);
+bool std__maps__FloatBoolMap__contains(std__maps__FloatBoolMap* map, float key);
+int32_t std__maps__FloatBoolMap__size(std__maps__FloatBoolMap* map);
+bool std__maps__FloatBoolMap__pop(std__maps__FloatBoolMap* map, float key);
+std__maps__BoolFloatMap* std__maps__BoolFloatMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolFloatMap__clear(std__maps__BoolFloatMap* map);
+void std__maps__BoolFloatMap__append(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__add(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+void std__maps__BoolFloatMap__set(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value);
+float std__maps__BoolFloatMap__get(std__maps__BoolFloatMap* map, bool key);
+bool std__maps__BoolFloatMap__contains(std__maps__BoolFloatMap* map, bool key);
+int32_t std__maps__BoolFloatMap__size(std__maps__BoolFloatMap* map);
+float std__maps__BoolFloatMap__pop(std__maps__BoolFloatMap* map, bool key);
+std__maps__BoolBoolMap* std__maps__BoolBoolMap__create(std__arena__Arena* arena, int32_t capacity);
+void std__maps__BoolBoolMap__clear(std__maps__BoolBoolMap* map);
+void std__maps__BoolBoolMap__append(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__add(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+void std__maps__BoolBoolMap__set(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value);
+bool std__maps__BoolBoolMap__get(std__maps__BoolBoolMap* map, bool key);
+bool std__maps__BoolBoolMap__contains(std__maps__BoolBoolMap* map, bool key);
+int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap* map);
+bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap* map, bool key);
+std__errors__error std__errors__error__create(char* msg);
+void std__errors__error__print_self(std__errors__error err);
+void std__errors__panic(std__errors__error err);
+void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce_raw(bool condition, char* msg);
+std__errors__error std__errors__test_error();
+int32_t std__os__exec_from_string(std__string__string cmd);
+int32_t std__os__exec(char* cmd);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
+std__os__ExecResult std__os__exec_capture(std__string__string cmd);
+void std__os__quit(int32_t code);
+bool std__os__file_exists(std__string__string path);
+std__string__string std__os__read_file(std__string__string path);
+bool std__os__write_file(std__string__string path, std__string__string contents);
+bool std__os__is_directory(std__string__string path);
+bool std__os__is_file(std__string__string path);
+bool std__os__is_symbolic_link(std__string__string path);
+bool std__os__delete_file(std__string__string path);
+bool std__os__rm_dir(std__string__string path);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1695,11 +4060,170 @@ int32_t std__os__stat_is_dir(uintptr_t st);
 char* std__os__finddata_name(uintptr_t data);
 int32_t std__os__finddata_is_dir(uintptr_t data);
 #endif
+bool std__os__rm_dir_recursive(std__string__string path);
 #ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
+void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena);
+std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena);
+std__string__string std__os__get_user_home_dir();
+std__string__string std__os__get_env(std__string__string name);
+std__lists__StringList* std__os__get_cmdline_args(std__arena__Arena* arena);
+std__string__string std__os__get_cwd();
 #ifdef __APPLE__
 #endif
+std__string__string std__os__get_executable_path();
+std__string__string std__os__get_executable_dir();
+std__string__string std__os__get_short_filename(std__string__string path);
+void std__io__print_char(char value);
+void std__io__println_char(char value);
+void std__io__print_chrptr(char* value);
+void std__io__println_chrptr(char* value);
+void std__io__print_str(std__string__string value);
+void std__io__println_str(std__string__string value);
+void std__io__print_f32(float value);
+void std__io__println_f32(float value);
+void std__io__println_f64(double value);
+void std__io__print_f64(double value);
+void std__io__println_i64(int64_t value);
+void std__io__print_i64(int64_t value);
+void std__io__print_i32(int32_t value);
+void std__io__println_i32(int32_t value);
+void std__io__print_bool(bool value);
+void std__io__println_bool(bool value);
+std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity);
+void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional);
+void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s);
+void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s);
+void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c);
+std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb);
+void std__string__StringBuilder__clear(std__string__StringBuilder* sb);
+void std__string__StringBuilder__destroy(std__string__StringBuilder* sb);
+std__string__string std__string__string__create(char* data);
+std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity);
+void std__string__string__destroy(std__string__string* s);
+std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest);
+std__string__string std__string__i32_to_string(int32_t value);
+uintptr_t std__string__str_len(std__string__string s);
+std__string__string std__string__to_title_case(std__string__string s);
+std__string__string std__string__to_upper(std__string__string s);
+std__string__string std__string__to_lower(std__string__string s);
+void std__string__str_copy(std__string__string src, std__string__string desta);
+std__string__string std__string__concat_chr(std__string__string a, char b);
+std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end);
+char* std__string__substring_cse(char* s, int32_t start, int32_t end);
+int32_t std__string__equals_c(std__string__string a, char* b);
+int32_t std__string__compare(std__string__string a, std__string__string b);
+bool std__string_equals(std__string__string a, std__string__string b);
+std__string__string std__string__concat_c(std__string__string original, char* addon);
+std__string__string std__string__concat(std__string__string dest, std__string__string src);
+char* std__string__first_occurrence(std__string__string s, int32_t c);
+char* std__string__substring(std__string__string haystack, std__string__string needle);
+bool std__string__str_contains(std__string__string s, std__string__string substr);
+bool std__string__str_contains_c(std__string__string s, char* substr);
+int32_t std__string__str_to_int(std__string__string s);
+int64_t std__string__str_to_long(char* s);
+int32_t std__string__is_alpha(int32_t c);
+int32_t std__string__is_digit(int32_t c);
+int32_t std__string__is_alphanum(int32_t c);
+char* std__string__to_upper_chrptr(char* s);
+char* std__string__to_lower_chrptr(char* s);
+int32_t std__string__to_upper_chr(int32_t c);
+int32_t std__string__to_lower_chr(int32_t c);
+char* std__string__str_dup(char* s);
+int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n);
+char* std__string__str_ncopy(char* dest, char* src, int32_t n);
+char* std__string__int_to_str(int32_t value, char* buffer);
+char* std__string__long_to_str(int64_t value, char* buffer);
+char* std__string__float_to_str(float value, char* buffer);
+char* std__string__double_to_str(double value, char* buffer);
+char std__string__get_char(std__string__string s, int32_t pos);
+int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start);
+int32_t std__string__find_last_char(std__string__string s, char c);
+int32_t std__string__find_substr(std__string__string s, std__string__string substr);
+std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length);
+bool std__string__has_prefix(std__string__string s, std__string__string prefix);
+bool std__string__has_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix);
+std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix);
+std__string__string std__string__lstrip(std__string__string s);
+std__string__string std__string__rstrip(std__string__string s);
+std__string__string std__string__strip(std__string__string s);
+std__string__string std__string__str(char* data);
+bool std__lists__int_eq(int32_t a, int32_t b);
+bool std__lists__long_eq(int64_t a, int64_t b);
+bool std__lists__float_eq(float a, float b);
+bool std__lists__double_eq(double a, double b);
+bool std__lists__char_eq(char a, char b);
+bool std__lists__bool_eq(bool a, bool b);
+std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
+void std__lists__IntList__clear(std__lists__IntList* lst);
+bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
+void std__lists__IntList__print_all(std__lists__IntList* lst);
+std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
+void std__lists__FloatList__clear(std__lists__FloatList* lst);
+bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
+void std__lists__FloatList__print_all(std__lists__FloatList* lst);
+std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
+void std__lists__CharList__clear(std__lists__CharList* lst);
+bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
+void std__lists__CharList__print_all(std__lists__CharList* lst);
+std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
+void std__lists__LongList__clear(std__lists__LongList* lst);
+bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
+void std__lists__LongList__print_all(std__lists__LongList* lst);
+std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
+void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
+bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
+void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
+std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
+void std__lists__StringList__clear(std__lists__StringList* lst);
+bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
+void std__lists__StringList__print_all(std__lists__StringList* lst);
+std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
+void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
+void std__lists__BoolList__clear(std__lists__BoolList* lst);
+bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
+void std__lists__BoolList__print_all(std__lists__BoolList* lst);
+void gstate__set_loud_logger(bool v);
+void gstate__set_release_build(bool v);
+void gstate__set_keep_emitted_file(bool v);
+void gstate__set_run_after_compile(bool v);
+void gstate__set_print_tokens(bool v);
+void gstate__set_print_ast(bool v);
+void gstate__set_build_shared_lib(bool v);
+void gstate__set_bootstrap_mode(bool v);
+void gstate__set_include_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_include_paths();
+void gstate__set_quiet_mode(bool v);
+void gstate__set_syntax_check_only(bool v);
+void gstate__set_target_triple(std__string__string triple);
+std__string__string gstate__get_target_triple();
+void gstate__set_sysroot_path(std__string__string path);
+std__string__string gstate__get_sysroot_path();
+void gstate__set_compile_only(bool v);
+bool gstate__get_compile_only();
+void gstate__set_library_paths(std__lists__StringList* paths);
+std__lists__StringList* gstate__get_library_paths();
+void gstate__set_link_libraries(std__lists__StringList* libs);
+std__lists__StringList* gstate__get_link_libraries();
+void gstate__debug_print_i32(int32_t msg);
+void gstate__debug_print_str(std__string__string msg);
+void gstate__debug_print_raw(char* msg);
 
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__print_str, \
@@ -1963,6 +4487,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     int32_t: gstate__debug_print_int \
     )(x)
 
+#line 7
 bool std__algorithms__strlst_contains(std__lists__StringList lst, std__string__string value) {
 for (int32_t i = 0; i < lst.len; i ++) {
 if (std__string__compare ( lst.data[ i ], value ) == 0) {
@@ -1972,6 +4497,7 @@ return true;
 return false;
 }
 
+#line 17
 bool std__algorithms__strlst_contains_c(std__lists__StringList lst, char* value) {
 for (int32_t i = 0; i < lst.len; i ++) {
 if (std__string__equals_c ( lst.data[ i ], value )) {
@@ -1981,6 +4507,7 @@ return true;
 return false;
 }
 
+#line 27
 bool std__algorithms__intlst_contains(std__lists__IntList lst, int32_t vlue) {
 for (int32_t i = 0; i < lst.len; i ++) {
 if (lst.data[ i ]== vlue) {
@@ -1990,7 +4517,9 @@ return true;
 return false;
 }
 
+#line 24
 std__arena__Arena std__arena__Arena__create(uintptr_t size) {
+#line 25 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 std__arena__Arena arena = {0};
 arena.buffer = malloc ( size * 100 );
 if (arena.buffer== 0) {
@@ -2001,6 +4530,7 @@ arena.offset = 0;
 return arena;
 }
 
+#line 43
 void std__arena__Arena__destroy(std__arena__Arena* arena) {
 free((void*)(arena->buffer));
 arena->buffer = 0;
@@ -2008,9 +4538,12 @@ arena->offset = 0;
 arena->capacity = 0;
 }
 
+#line 53
 void* std__arena__Arena__alloc(std__arena__Arena* arena, uintptr_t size) {
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 void* result = nil;
 if (( arena->offset+ size > arena->capacity)) {
+#line 58 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 std__string__string msg = std__string__str( "Arena out of memory! cap=" );
 msg = std__string__concat ( msg , std__string__i32_to_string ( arena->capacity) );
 msg = std__string__concat_c ( msg , " used=" );
@@ -2027,84 +4560,106 @@ arena->offset = ( arena->offset+ 7 ) & ~ 7;
 return result;
 }
 
+#line 77
 void* std__arena__Arena__alloc_array(std__arena__Arena* arena, uintptr_t element_size, uintptr_t count) {
+#line 78 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 const uintptr_t total_size = element_size * count;
 return std__arena__Arena__alloc( arena , total_size );
 }
 
+#line 83
 void std__arena__Arena__reset(std__arena__Arena* arena) {
 arena->offset = 0;
 memset((void*)(arena->buffer), 0, arena->capacity);
 }
 
+#line 91
 int32_t std__arena__Arena__used(std__arena__Arena* arena) {
+#line 92 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 int32_t result = 0;
 result = arena->offset;
 return result;
 }
 
+#line 100
 uintptr_t std__arena__Arena__remaining(std__arena__Arena* arena) {
+#line 101 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/arena.axec"
 uintptr_t result = 0;
 result = ( arena->capacity) - ( arena->offset);
 return result;
 }
 
+#line 21
 void std__io__print_char(char value) {
 printf("%c", value);
 }
 
+#line 28
 void std__io__println_char(char value) {
 printf("%c\n", value);
 }
 
+#line 35
 void std__io__print_chrptr(char* value) {
 printf("%s", value);
 }
 
+#line 42
 void std__io__println_chrptr(char* value) {
 printf("%s\n", value);
 }
 
+#line 49
 void std__io__print_str(std__string__string value) {
 printf("%s", value.data);
 }
 
+#line 56
 void std__io__println_str(std__string__string value) {
 printf("%s\n", value.data);
 }
 
+#line 63
 void std__io__print_f32(float value) {
 printf("%.10f", value);
 }
 
+#line 70
 void std__io__println_f32(float value) {
 printf("%.10f\n", value);
 }
 
+#line 76
 void std__io__println_f64(double value) {
 printf("%.10f\n", value);
 }
 
+#line 82
 void std__io__print_f64(double value) {
 printf("%.10f", value);
 }
 
+#line 88
 void std__io__println_i64(int64_t value) {
 printf("%ld\n", value);
 }
 
+#line 94
 void std__io__print_i64(int64_t value) {
 printf("%ld", value);
 }
 
+#line 101
 void std__io__print_i32(int32_t value) {
 printf("%d", value);
 }
 
+#line 108
 void std__io__println_i32(int32_t value) {
 printf("%d\n", value);
 }
 
+#line 115
 void std__io__print_bool(bool value) {
 if (value) {
 printf("true");
@@ -2114,6 +4669,7 @@ printf("false");
 }
 }
 
+#line 126
 void std__io__println_bool(bool value) {
 if (value) {
 printf("true\n");
@@ -2123,7 +4679,9 @@ printf("false\n");
 }
 }
 
+#line 24
 std__string__StringBuilder std__string__StringBuilder__init(uintptr_t initial_capacity) {
+#line 25 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__StringBuilder sb = {0};
 sb.cap = initial_capacity;
 if (sb.cap< 64) {
@@ -2137,11 +4695,14 @@ sb.data[0] = '\0';
 return sb;
 }
 
+#line 41
 void std__string__StringBuilder__ensure_capacity(std__string__StringBuilder* sb, uintptr_t additional) {
+#line 42 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t needed = sb->len+ additional + 1;
 if (needed <= sb->cap) {
 return ;
 }
+#line 46 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t new_cap = sb->cap;
 while (1) {
 if (new_cap >= needed) {
@@ -2149,6 +4710,7 @@ break;
 }
 new_cap = new_cap * 2;
 }
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char* new_data = realloc ( sb->data, new_cap );
 if (new_data != nil) {
 sb->data = new_data;
@@ -2156,6 +4718,7 @@ sb->cap = new_cap;
 }
 }
 
+#line 63
 void std__string__StringBuilder__append(std__string__StringBuilder* sb, std__string__string s) {
 if (s.len== 0) {
 return ;
@@ -2166,7 +4729,9 @@ sb->len = sb->len+ s.len;
 sb->data[sb->len] = '\0';
 }
 
+#line 76
 void std__string__StringBuilder__append_c(std__string__StringBuilder* sb, char* s) {
+#line 78 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t s_len = strlen ( s );
 if (s_len == 0) {
 return ;
@@ -2177,9 +4742,12 @@ sb->len = sb->len+ s_len;
 sb->data[sb->len] = '\0';
 }
 
+#line 91
 void std__string__StringBuilder__append_char(std__string__StringBuilder* sb, char c) {
+#line 93 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t needed = sb->len+ 2;
 if (needed > sb->cap) {
+#line 95 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t new_cap = sb->cap;
 while (1) {
 if (new_cap >= needed) {
@@ -2187,6 +4755,7 @@ break;
 }
 new_cap = new_cap * 2;
 }
+#line 102 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char* new_data = realloc ( sb->data, new_cap );
 if (new_data != nil) {
 sb->data = new_data;
@@ -2198,7 +4767,9 @@ sb->len = sb->len+ 1;
 sb->data[sb->len] = '\0';
 }
 
+#line 116
 std__string__string std__string__StringBuilder__to_string(std__string__StringBuilder* sb) {
+#line 117 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = malloc ( sb->len+ 1 );
 if (result.data!= nil) {
@@ -2214,6 +4785,7 @@ result.cap = 0;
 return result;
 }
 
+#line 134
 void std__string__StringBuilder__clear(std__string__StringBuilder* sb) {
 sb->len = 0;
 if (sb->data!= nil) {
@@ -2221,6 +4793,7 @@ sb->data[0] = '\0';
 }
 }
 
+#line 142
 void std__string__StringBuilder__destroy(std__string__StringBuilder* sb) {
 free(sb->data);
 sb->data = nil;
@@ -2228,11 +4801,14 @@ sb->len = 0;
 sb->cap = 0;
 }
 
+#line 159
 std__string__string std__string__string__create(char* data) {
+#line 160 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 165 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = strlen ( data );
 result.data = malloc ( len + 1 );
 if (result.data!= nil) {
@@ -2243,7 +4819,9 @@ result.cap = len + 1;
 return result;
 }
 
+#line 178
 std__string__string std__string__string__create_with_capacity(std__arena__Arena* arena, int32_t capacity) {
+#line 179 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = std__string__str( "" );
 result.data = nil;
 result.len = 0;
@@ -2259,6 +4837,7 @@ result.cap = capacity + 1;
 return result;
 }
 
+#line 195
 void std__string__string__destroy(std__string__string* s) {
 free((void*)s->data);
 s->data = nil;
@@ -2266,19 +4845,26 @@ s->len = 0;
 s->cap = 0;
 }
 
+#line 207
 std__string__string std__string__replace_all(std__string__string s, std__string__string from, std__string__string dest) {
 if (std__string__str_len ( from ) == 0) {
 return std__string__substring_se( s , 0 , std__string__str_len ( s ) );
 }
+#line 212 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__StringBuilder sb = std__string__StringBuilder__init( s.len+ 64 );
+#line 213 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t i = 0;
+#line 214 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t n = (int32_t)( std__string__str_len ( s ) );
+#line 215 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t from_len = (int32_t)( std__string__str_len ( from ) );
 while (1) {
 if (i >= n) {
 break;
 }
+#line 222 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t j = 0;
+#line 223 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 bool match = true;
 while (1) {
 if (j >= from_len) {
@@ -2288,7 +4874,9 @@ if (i + j >= n) {
 match = false;
 break;
 }
+#line 233 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch_s = std__string__get_char( s , i + j );
+#line 234 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch_f = std__string__get_char( from , j );
 if (ch_s != ch_f) {
 match = false;
@@ -2305,34 +4893,43 @@ std__string__StringBuilder__append_char(&sb, std__string__get_char(s, i));
 i++;
 }
 }
+#line 251 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 257
 std__string__string std__string__i32_to_string(int32_t value) {
+#line 259 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* buffer = malloc ( 12 );
 sprintf(buffer, "%d", value);
 return std__string__string__create( buffer );
 }
 
+#line 266
 uintptr_t std__string__str_len(std__string__string s) {
 return s.len;
 }
 
+#line 271
 std__string__string std__string__to_title_case(std__string__string s) {
+#line 272 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 278 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = s.len;
 result.data = malloc ( len + 1 );
 if (result.data!= nil) {
+#line 282 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 287 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t ch = (int32_t)( s.data[ i ]);
 if (i == 0 || isalpha( (int32_t)( s.data[ i - 1 ]) ) == 0) {
 result.data[i] = (char)( toupper( ch ) );
@@ -2349,19 +4946,24 @@ result.cap = len + 1;
 return result;
 }
 
+#line 304
 std__string__string std__string__to_upper(std__string__string s) {
+#line 305 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 311 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = s.len;
 result.data = malloc ( len + 1 );
 if (result.data!= nil) {
+#line 315 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 320 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t ch = (int32_t)( s.data[ i ]);
 result.data[i] = (char)( toupper( ch ) );
 i++;
@@ -2373,19 +4975,24 @@ result.cap = len + 1;
 return result;
 }
 
+#line 333
 std__string__string std__string__to_lower(std__string__string s) {
+#line 334 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 340 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = s.len;
 result.data = malloc ( len + 1 );
 if (result.data!= nil) {
+#line 344 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 349 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t ch = (int32_t)( s.data[ i ]);
 result.data[i] = (char)( tolower( ch ) );
 i++;
@@ -2397,14 +5004,18 @@ result.cap = len + 1;
 return result;
 }
 
+#line 362
 void std__string__str_copy(std__string__string src, std__string__string desta) {
 for (int32_t i = 0; i < src.len; i ++) {
 desta.data[i] = src.data[ i ];
 }
 }
 
+#line 370
 std__string__string std__string__concat_chr(std__string__string a, char b) {
+#line 372 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t new_len = a.len+ 1;
+#line 373 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* new_data = malloc ( new_len + 1 );
 if (( new_data != NULL )) {
 if (( a.len> 0 )) {
@@ -2420,7 +5031,9 @@ a.cap = new_len + 1;
 return a;
 }
 
+#line 392
 std__string__string std__string__substring_se(std__string__string s, int32_t start, int32_t end) {
+#line 393 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
@@ -2428,7 +5041,9 @@ result.cap = 0;
 if (start >= end || start < 0) {
 return result;
 }
+#line 403 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t s_len = (int32_t)( s.len);
+#line 404 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t actual_end = end;
 if (actual_end > s_len) {
 actual_end = s_len;
@@ -2436,6 +5051,7 @@ actual_end = s_len;
 if (start >= actual_end) {
 return result;
 }
+#line 412 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = (uintptr_t)( actual_end - start );
 result.data = malloc ( len + 1 );
 if (result.data!= nil) {
@@ -2447,8 +5063,11 @@ result.cap = len + 1;
 return result;
 }
 
+#line 425
 char* std__string__substring_scse(std__string__string s, int32_t start, int32_t end) {
+#line 427 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t len = end - start;
+#line 428 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = malloc ( len + 1 );
 if (( result != nil )) {
 memcpy(result, s.data+ start, len);
@@ -2457,8 +5076,11 @@ result[len] = '\0';
 return result;
 }
 
+#line 439
 char* std__string__substring_cse(char* s, int32_t start, int32_t end) {
+#line 441 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t len = end - start;
+#line 442 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = malloc ( len + 1 );
 if (( result != nil )) {
 memcpy(result, s + start, len);
@@ -2467,13 +5089,17 @@ result[len] = '\0';
 return result;
 }
 
+#line 452
 int32_t std__string__equals_c(std__string__string a, char* b) {
+#line 453 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = strcmp ( ( char * ) a.data, ( char * ) b );
 return result == 0;
 }
 
+#line 461
 int32_t std__string__compare(std__string__string a, std__string__string b) {
+#line 462 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t len = 0;
 if (a.len< b.len) {
 len = a.len;
@@ -2498,16 +5124,21 @@ return 1;
 return 0;
 }
 
+#line 482
 bool std__string_equals(std__string__string a, std__string__string b) {
 return std__string__compare( a , b ) == 0;
 }
 
+#line 487
 std__string__string std__string__concat_c(std__string__string original, char* addon) {
+#line 488 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = std__string__str( "" );
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 494 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t addon_len = strlen ( addon );
+#line 495 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t new_len = original.len+ addon_len;
 result.data = malloc ( new_len + 1 );
 if (result.data!= nil) {
@@ -2524,11 +5155,14 @@ result.cap = new_len + 1;
 return result;
 }
 
+#line 514
 std__string__string std__string__concat(std__string__string dest, std__string__string src) {
+#line 515 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
 result.cap = 0;
+#line 521 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t new_len = dest.len+ src.len;
 result.data = malloc ( new_len + 1 );
 if (result.data!= nil) {
@@ -2545,67 +5179,88 @@ result.cap = new_len + 1;
 return result;
 }
 
+#line 540
 char* std__string__first_occurrence(std__string__string s, int32_t c) {
+#line 541 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
 result = strchr ( s.data, c );
 return result;
 }
 
+#line 549
 char* std__string__substring(std__string__string haystack, std__string__string needle) {
+#line 550 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
 result = strstr ( haystack.data, needle.data);
 return result;
 }
 
+#line 558
 bool std__string__str_contains(std__string__string s, std__string__string substr) {
 return std__string__substring( s , substr ) != 0;
 }
 
+#line 563
 bool std__string__str_contains_c(std__string__string s, char* substr) {
 return std__string__substring( s , std__string__str ( substr ) ) != 0;
 }
 
+#line 568
 int32_t std__string__str_to_int(std__string__string s) {
+#line 569 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = atoi ( s.data);
 return result;
 }
 
+#line 577
 int64_t std__string__str_to_long(char* s) {
+#line 578 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int64_t result = 0;
 result = atol ( s );
 return result;
 }
 
+#line 586
 int32_t std__string__is_alpha(int32_t c) {
+#line 587 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = isalpha ( c );
 return result;
 }
 
+#line 595
 int32_t std__string__is_digit(int32_t c) {
+#line 596 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = isdigit ( c );
 return result;
 }
 
+#line 604
 int32_t std__string__is_alphanum(int32_t c) {
+#line 605 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = isalnum ( c );
 return result;
 }
 
+#line 613
 char* std__string__to_upper_chrptr(char* s) {
+#line 614 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
+#line 616 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = strlen ( s );
 result = malloc ( len + 1 );
 if (result != nil) {
 strcpy(result, s);
+#line 620 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 625 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t ch = (int32_t)( result [ i ] );
 result[i] = (char)( toupper( ch ) );
 i++;
@@ -2614,17 +5269,22 @@ i++;
 return result;
 }
 
+#line 635
 char* std__string__to_lower_chrptr(char* s) {
+#line 636 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
+#line 638 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = strlen ( s );
 result = malloc ( len + 1 );
 if (result != nil) {
 strcpy(result, s);
+#line 642 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 647 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const int32_t ch = (int32_t)( result [ i ] );
 result[i] = (char)( tolower( ch ) );
 i++;
@@ -2633,20 +5293,27 @@ i++;
 return result;
 }
 
+#line 657
 int32_t std__string__to_upper_chr(int32_t c) {
+#line 658 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = toupper ( c );
 return result;
 }
 
+#line 666
 int32_t std__string__to_lower_chr(int32_t c) {
+#line 667 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = tolower ( c );
 return result;
 }
 
+#line 675
 char* std__string__str_dup(char* s) {
+#line 676 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
+#line 678 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t len = strlen ( s );
 result = malloc ( len + 1 );
 if (result != nil) {
@@ -2655,46 +5322,57 @@ strcpy(result, s);
 return result;
 }
 
+#line 688
 int32_t std__string__str_ncmp(char* s1, char* s2, int32_t n) {
+#line 689 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 int32_t result = 0;
 result = strncmp ( s1 , s2 , (uintptr_t)( n ) );
 return result;
 }
 
+#line 697
 char* std__string__str_ncopy(char* dest, char* src, int32_t n) {
+#line 698 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 char* result = nil;
 result = strncpy ( dest , src , (uintptr_t)( n ) );
 return result;
 }
 
+#line 706
 char* std__string__int_to_str(int32_t value, char* buffer) {
 sprintf(buffer, "%d", value);
 return buffer;
 }
 
+#line 714
 char* std__string__long_to_str(int64_t value, char* buffer) {
 sprintf(buffer, "%ld", value);
 return buffer;
 }
 
+#line 722
 char* std__string__float_to_str(float value, char* buffer) {
 sprintf(buffer, "%f", value);
 return buffer;
 }
 
+#line 730
 char* std__string__double_to_str(double value, char* buffer) {
 sprintf(buffer, "%lf", value);
 return buffer;
 }
 
+#line 738
 char std__string__get_char(std__string__string s, int32_t pos) {
 return s.data[ pos ];
 }
 
+#line 744
 int32_t std__string__find_char_from(std__string__string s, char c, uintptr_t start) {
 if (start >= s.len) {
 return - 1;
 }
+#line 748 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = start;
 while (1) {
 if (i >= s.len) {
@@ -2708,10 +5386,12 @@ i++;
 return - 1;
 }
 
+#line 763
 int32_t std__string__find_last_char(std__string__string s, char c) {
 if (s.len== 0) {
 return - 1;
 }
+#line 767 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = s.len- 1;
 while (1) {
 if (s.data[ i ]== c) {
@@ -2725,6 +5405,7 @@ i--;
 return - 1;
 }
 
+#line 781
 int32_t std__string__find_substr(std__string__string s, std__string__string substr) {
 if (substr.len== 0) {
 return 0;
@@ -2732,12 +5413,15 @@ return 0;
 if (substr.len> s.len) {
 return - 1;
 }
+#line 790 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i + substr.len> s.len) {
 break;
 }
+#line 795 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t j = 0;
+#line 796 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 bool match_found = true;
 while (1) {
 if (j >= substr.len) {
@@ -2757,7 +5441,9 @@ i++;
 return - 1;
 }
 
+#line 818
 std__string__string std__string__substr(std__string__string s, int32_t start, int32_t length) {
+#line 819 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 std__string__string result = {0};
 result.data = nil;
 result.len = 0;
@@ -2765,7 +5451,9 @@ result.cap = 0;
 if (start >= s.len|| length == 0) {
 return result;
 }
+#line 828 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t max_len = s.len- start;
+#line 829 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t copy_len = length;
 if (copy_len > max_len) {
 copy_len = max_len;
@@ -2781,6 +5469,7 @@ result.cap = copy_len + 1;
 return result;
 }
 
+#line 846
 bool std__string__has_prefix(std__string__string s, std__string__string prefix) {
 if (prefix.len== 0) {
 return true;
@@ -2788,6 +5477,7 @@ return true;
 if (prefix.len> s.len) {
 return false;
 }
+#line 854 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= prefix.len) {
@@ -2801,6 +5491,7 @@ i = i + 1;
 return true;
 }
 
+#line 869
 bool std__string__has_suffix(std__string__string s, std__string__string suffix) {
 if (suffix.len== 0) {
 return true;
@@ -2808,7 +5499,9 @@ return true;
 if (suffix.len> s.len) {
 return false;
 }
+#line 877 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
+#line 878 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t start = s.len- suffix.len;
 while (1) {
 if (i >= suffix.len) {
@@ -2822,10 +5515,12 @@ i = i + 1;
 return true;
 }
 
+#line 893
 std__string__string std__string__trim_prefix(std__string__string s, std__string__string prefix) {
 if (prefix.len== 0 || prefix.len> s.len) {
 return s;
 }
+#line 898 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
 while (1) {
 if (i >= prefix.len) {
@@ -2839,11 +5534,14 @@ i = i + 1;
 return std__string__substr( s , prefix.len, s.len- prefix.len);
 }
 
+#line 913
 std__string__string std__string__trim_suffix(std__string__string s, std__string__string suffix) {
 if (suffix.len== 0 || suffix.len> s.len) {
 return s;
 }
+#line 918 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t i = 0;
+#line 919 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const uintptr_t start = s.len- suffix.len;
 while (1) {
 if (i >= suffix.len) {
@@ -2857,15 +5555,18 @@ i = i + 1;
 return std__string__substr( s , 0 , s.len- suffix.len);
 }
 
+#line 934
 std__string__string std__string__lstrip(std__string__string s) {
 if (s.len== 0) {
 return s;
 }
+#line 939 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t start = 0;
 while (1) {
 if (start >= s.len) {
 break;
 }
+#line 944 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch = s.data[ start ];
 if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n') {
 start++;
@@ -2880,15 +5581,18 @@ return std__string__string__create( "" );
 return std__string__substr( s , start , s.len- start );
 }
 
+#line 960
 std__string__string std__string__rstrip(std__string__string s) {
 if (s.len== 0) {
 return s;
 }
+#line 965 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t end = s.len;
 while (1) {
 if (end == 0) {
 break;
 }
+#line 970 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch = s.data[ end - 1 ];
 if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n') {
 end--;
@@ -2903,15 +5607,18 @@ return std__string__string__create( "" );
 return std__string__substr( s , 0 , end );
 }
 
+#line 986
 std__string__string std__string__strip(std__string__string s) {
 if (s.len== 0) {
 return s;
 }
+#line 991 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t start = 0;
 while (1) {
 if (start >= s.len) {
 break;
 }
+#line 996 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch = s.data[ start ];
 if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n') {
 start++;
@@ -2923,11 +5630,13 @@ break;
 if (start >= s.len) {
 return std__string__string__create( "" );
 }
+#line 1008 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 uintptr_t end = s.len;
 while (1) {
 if (end == 0) {
 break;
 }
+#line 1013 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/string.axec"
 const char ch = s.data[ end - 1 ];
 if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n') {
 end--;
@@ -2939,35 +5648,44 @@ break;
 return std__string__substr( s , start , end - start );
 }
 
+#line 1024
 std__string__string std__string__str(char* data) {
 return std__string__string__create( data );
 }
 
+#line 99
 bool std__lists__int_eq(int32_t a, int32_t b) {
 return a == b;
 }
 
+#line 100
 bool std__lists__long_eq(int64_t a, int64_t b) {
 return a == b;
 }
 
+#line 101
 bool std__lists__float_eq(float a, float b) {
 return a == b;
 }
 
+#line 102
 bool std__lists__double_eq(double a, double b) {
 return a == b;
 }
 
+#line 103
 bool std__lists__char_eq(char a, char b) {
 return a == b;
 }
 
+#line 104
 bool std__lists__bool_eq(bool a, bool b) {
 return a == b;
 }
 
+#line 34
 std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__IntList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__IntList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(int32_t) , capacity );
@@ -2982,9 +5700,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 int32_t* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(int32_t) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -2997,6 +5718,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3005,10 +5727,12 @@ return 0;
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__IntList__clear(std__lists__IntList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__int_eq ( lst->data[ i ], value )) {
@@ -3018,6 +5742,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__IntList__print_all(std__lists__IntList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_i32(lst->data[i]);
@@ -3026,7 +5751,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__FloatList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__FloatList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(float) , capacity );
@@ -3041,9 +5768,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 float* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(float) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3056,6 +5786,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3064,10 +5795,12 @@ return 0.0;
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__FloatList__clear(std__lists__FloatList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__float_eq ( lst->data[ i ], value )) {
@@ -3077,6 +5810,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__FloatList__print_all(std__lists__FloatList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_i32(lst->data[i]);
@@ -3085,7 +5819,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__CharList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__CharList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(char) , capacity );
@@ -3100,9 +5836,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 char* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(char) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3115,6 +5854,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3123,10 +5863,12 @@ return "";
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__CharList__clear(std__lists__CharList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__CharList__contains(std__lists__CharList* lst, char value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__char_eq ( lst->data[ i ], value )) {
@@ -3136,6 +5878,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__CharList__print_all(std__lists__CharList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_char(lst->data[i]);
@@ -3144,7 +5887,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__LongList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__LongList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(int64_t) , capacity );
@@ -3159,9 +5904,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 int64_t* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(int64_t) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3174,6 +5922,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3182,10 +5931,12 @@ return 0;
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__LongList__clear(std__lists__LongList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__long_eq ( lst->data[ i ], value )) {
@@ -3195,6 +5946,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__LongList__print_all(std__lists__LongList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_i32(lst->data[i]);
@@ -3203,7 +5955,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__DoubleList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__DoubleList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(double) , capacity );
@@ -3218,9 +5972,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 double* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(double) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3233,6 +5990,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3241,10 +5999,12 @@ return 0.0;
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__DoubleList__clear(std__lists__DoubleList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__double_eq ( lst->data[ i ], value )) {
@@ -3254,6 +6014,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__DoubleList__print_all(std__lists__DoubleList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_i32(lst->data[i]);
@@ -3262,7 +6023,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__StringList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__StringList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(std__string__string) , capacity );
@@ -3277,9 +6040,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__string__string* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(std__string__string) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3292,6 +6058,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3300,10 +6067,12 @@ return std__string__string__create("");
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__StringList__clear(std__lists__StringList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__string_equals ( lst->data[ i ], value )) {
@@ -3313,6 +6082,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__StringList__print_all(std__lists__StringList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_str(lst->data[i]);
@@ -3321,7 +6091,9 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 34
 std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity) {
+#line 35 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 std__lists__BoolList* lst = {0};
 lst = std__arena__Arena__alloc( arena , sizeof(std__lists__BoolList) );
 lst->data = std__arena__Arena__alloc_array( arena , sizeof(bool) , capacity );
@@ -3336,9 +6108,12 @@ lst->cap = capacity;
 return lst;
 }
 
+#line 51
 void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value) {
 if (lst->len>= lst->cap) {
+#line 53 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 const uintptr_t new_cap = lst->cap* 2;
+#line 54 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/lists.axec"
 bool* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(bool) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3351,6 +6126,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
+#line 68
 bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
@@ -3359,10 +6135,12 @@ return false;
 return lst->data[ index ];
 }
 
+#line 76
 void std__lists__BoolList__clear(std__lists__BoolList* lst) {
 lst->len = 0;
 }
 
+#line 80
 bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value) {
 for (int32_t i = 0; i < lst->len; i ++) {
 if (std__lists__bool_eq ( lst->data[ i ], value )) {
@@ -3372,6 +6150,7 @@ return true;
 return false;
 }
 
+#line 89
 void std__lists__BoolList__print_all(std__lists__BoolList* lst) {
 for (int32_t i = 0; i < lst->len; i ++) {
 std__io__print_i32(lst->data[i]);
@@ -3380,78 +6159,98 @@ std__io__print(" ");
 std__io__println("");
 }
 
+#line 13
 std__errors__error std__errors__error__create(char* msg) {
 return (std__errors__error){.msg = std__string__string__create( msg )};
 }
 
+#line 17
 void std__errors__error__print_self(std__errors__error err) {
 std__io__print(err.msg);
 }
 
+#line 23
 void std__errors__panic(std__errors__error err) {
 std__io__print("\nerror: ");
 std__errors__error__print_self(err);
 exit(1);
 }
 
+#line 33
 void std__errors__enforce(bool condition, std__errors__error err) {
 if (! condition) {
 std__errors__panic(err);
 }
 }
 
+#line 40
 void std__errors__enforce_raw(bool condition, char* msg) {
 if (! condition) {
 std__errors__panic(std__errors__error__create(msg));
 }
 }
 
+#line 46
 std__errors__error std__errors__test_error() {
 return (std__errors__error){.msg = std__string__string__create( "Some bad thing happened" )};
 }
 
+#line 27
 std__typecons__Any std__typecons__Any__from_i32(int32_t v) {
+#line 28 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/typecons.axec"
 std__typecons__Any result = {0};
 result.kind = std__typecons__AnyKind_INT_T;
 result.value.i = v;
 return result;
 }
 
+#line 35
 std__typecons__Any std__typecons__Any__from_f32(float v) {
+#line 36 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/typecons.axec"
 std__typecons__Any result = {0};
 result.kind = std__typecons__AnyKind_FLOAT_T;
 result.value.f = v;
 return result;
 }
 
+#line 43
 std__typecons__Any std__typecons__Any__from_string(std__string__string v) {
+#line 44 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/typecons.axec"
 std__typecons__Any result = {0};
 result.kind = std__typecons__AnyKind_STRING_T;
 result.value.s = v;
 return result;
 }
 
+#line 51
 std__typecons__Any std__typecons__Any__from_bool(bool v) {
+#line 52 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/typecons.axec"
 std__typecons__Any result = {0};
 result.kind = std__typecons__AnyKind_BOOL_T;
 result.value.b = v;
 return result;
 }
 
+#line 59
 std__typecons__Any std__typecons__Any__from_ptr(void* v) {
+#line 60 "/Users/Navid/Projects/Apps/Axe2/axe/source/compiler/std/typecons.axec"
 std__typecons__Any result = {0};
 result.kind = std__typecons__AnyKind_PTR_T;
 result.value.ptr = v;
 return result;
 }
 
+#line 20
 int32_t std__os__exec_from_string(std__string__string cmd) {
+#line 21 "std/os.axec"
 int32_t result = 0;
 result = system ( cmd.data);
 return result;
 }
 
+#line 30
 int32_t std__os__exec(char* cmd) {
+#line 31 "std/os.axec"
 int32_t result = 0;
 result = system ( cmd );
 return result;
@@ -3461,12 +6260,16 @@ return result;
 #endif
 #ifndef _WIN32
 #endif
+#line 62
 std__os__ExecResult std__os__exec_capture(std__string__string cmd) {
+#line 63 "std/os.axec"
 std__os__ExecResult result = {0};
 result.exit_code = - 1;
 result.output = std__string__str ( "" );
+#line 67 "std/os.axec"
 char full_cmd[4096] = {0};
 snprintf(full_cmd, 4096, "%s 2>&1", cmd.data);
+#line 72 "std/os.axec"
 uintptr_t pipe = 0;
 #ifdef _WIN32
 pipe = _popen ( full_cmd , "r" );
@@ -3477,7 +6280,9 @@ pipe = popen ( full_cmd , "r" );
 if (pipe == 0) {
 return result;
 }
+#line 84 "std/os.axec"
 uintptr_t capacity = 4096;
+#line 85 "std/os.axec"
 uintptr_t output_buf = malloc ( capacity );
 if (output_buf == 0) {
 #ifdef _WIN32
@@ -3488,16 +6293,21 @@ pclose(pipe);
 #endif
 return result;
 }
+#line 96 "std/os.axec"
 uintptr_t total_len = 0;
+#line 97 "std/os.axec"
 char buffer[1024] = {0};
 while (1) {
+#line 100 "std/os.axec"
 const char* read_result = fgets ( buffer , 1024 , pipe );
 if (read_result == nil) {
 break;
 }
+#line 105 "std/os.axec"
 const uintptr_t len = strlen ( buffer );
 if (total_len + len + 1 > capacity) {
 capacity = capacity * 2;
+#line 109 "std/os.axec"
 const uintptr_t new_buf = realloc ( output_buf , capacity );
 if (new_buf == 0) {
 free(output_buf);
@@ -3511,6 +6321,7 @@ return result;
 }
 output_buf = new_buf;
 }
+#line 124 "std/os.axec"
 const char* dest = output_buf + total_len;
 strcpy(dest, buffer);
 total_len = total_len + len;
@@ -3519,6 +6330,7 @@ total_len = total_len + len;
 result.exit_code = _pclose ( pipe );
 #endif
 #ifndef _WIN32
+#line 135 "std/os.axec"
 const int32_t status = pclose ( pipe );
 result.exit_code = WEXITSTATUS ( status );
 #endif
@@ -3527,11 +6339,14 @@ result.output.len = total_len;
 return result;
 }
 
+#line 150
 void std__os__quit(int32_t code) {
 exit(code);
 }
 
+#line 157
 bool std__os__file_exists(std__string__string path) {
+#line 158 "std/os.axec"
 bool out = false;
 
         FILE *f = fopen(path.data, "r");
@@ -3543,7 +6358,9 @@ bool out = false;
 return out;
 }
 
+#line 164
 std__string__string std__os__read_file(std__string__string path) {
+#line 165 "std/os.axec"
 std__string__string out = {0};
 
         FILE *f = fopen(path.data, "rb");
@@ -3564,7 +6381,9 @@ std__errors__panic(std__errors__error__create("Failed to open file"));
 return std__string__string__create( buf );
 }
 
+#line 178
 bool std__os__write_file(std__string__string path, std__string__string contents) {
+#line 179 "std/os.axec"
 bool ok = false;
 
         FILE *f = fopen(path.data, "wb");
@@ -3578,7 +6397,9 @@ bool ok = false;
 return ok;
 }
 
+#line 190
 bool std__os__is_directory(std__string__string path) {
+#line 191 "std/os.axec"
 bool out = false;
 #ifndef _WIN32
 
@@ -3599,7 +6420,9 @@ bool out = false;
 return out;
 }
 
+#line 205
 bool std__os__is_file(std__string__string path) {
+#line 206 "std/os.axec"
 bool out = false;
 #ifndef _WIN32
 
@@ -3620,7 +6443,9 @@ bool out = false;
 return out;
 }
 
+#line 221
 bool std__os__is_symbolic_link(std__string__string path) {
+#line 222 "std/os.axec"
 bool out = false;
 #ifndef _WIN32
 
@@ -3636,7 +6461,9 @@ return false;
 return out;
 }
 
+#line 235
 bool std__os__delete_file(std__string__string path) {
+#line 236 "std/os.axec"
 bool ok = false;
 
         if (remove(path.data) == 0) {
@@ -3646,7 +6473,9 @@ bool ok = false;
 return ok;
 }
 
+#line 242
 bool std__os__rm_dir(std__string__string path) {
+#line 243 "std/os.axec"
 bool ok = false;
 
         if (rmdir(path.data) == 0) {
@@ -3661,11 +6490,14 @@ return ok;
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
+#line 265
 char* std__os__dirent_d_name(uintptr_t entry) {
+#line 267 "std/os.axec"
 const dirent* d = entry;
 return d->d_name;
 }
 
+#line 272
 int32_t std__os__stat_is_dir(uintptr_t st) {
 
                 struct stat* s = (struct stat*)st;
@@ -3675,29 +6507,40 @@ int32_t std__os__stat_is_dir(uintptr_t st) {
 
 #endif
 #ifdef _WIN32
+#line 286
 char* std__os__finddata_name(uintptr_t data) {
+#line 288 "std/os.axec"
 const _finddata_t* info = data;
 return info->name;
 }
 
+#line 293
 int32_t std__os__finddata_is_dir(uintptr_t data) {
+#line 295 "std/os.axec"
 const _finddata_t* info = data;
 return ( info->attrib& _A_SUBDIR ) != 0;
 }
 
 #endif
+#line 311
 bool std__os__rm_dir_recursive(std__string__string path) {
+#line 312 "std/os.axec"
 bool ok = true;
 #ifndef _WIN32
+#line 315 "std/os.axec"
 const uintptr_t d = opendir ( path.data);
+#line 316 "std/os.axec"
 const uintptr_t path_len = strlen ( path.data);
+#line 317 "std/os.axec"
 int32_t r = 0;
 if (d != 0) {
 while (1) {
+#line 321 "std/os.axec"
 const uintptr_t p = readdir ( d );
 if (p == 0) {
 break;
 }
+#line 326 "std/os.axec"
 const char* name = std__os__dirent_d_name( p );
 if (strcmp ( name , "." ) == 0) {
 continue;
@@ -3705,16 +6548,20 @@ continue;
 if (strcmp ( name , ".." ) == 0) {
 continue;
 }
+#line 334 "std/os.axec"
 const uintptr_t len = path_len + strlen ( name ) + 2;
+#line 335 "std/os.axec"
 const uintptr_t buf = malloc ( len );
 if (buf == 0) {
 r = - 1;
 break;
 }
 snprintf(buf, len, "%s/%s", path.data, name);
+#line 343 "std/os.axec"
 const uintptr_t statbuf = malloc ( 256 );
 if (stat ( buf , statbuf ) == 0) {
 if (std__os__stat_is_dir ( statbuf ) != 0) {
+#line 346 "std/os.axec"
 const std__string__string sub_path = std__string__string__create( buf );
 if (! std__os__rm_dir_recursive ( sub_path )) {
 r = - 1;
@@ -3745,20 +6592,27 @@ ok = false;
 }
 #endif
 #ifdef _WIN32
+#line 381 "std/os.axec"
 int32_t r = 0;
+#line 382 "std/os.axec"
 const uintptr_t search_buf = malloc ( 260 );
 snprintf(search_buf, 260, "%s\\*", path.data);
+#line 385 "std/os.axec"
 const uintptr_t fileinfo = malloc ( 320 );
+#line 386 "std/os.axec"
 const intptr_t handle = _findfirst ( search_buf , fileinfo );
 free(search_buf);
 if (handle != - 1) {
 while (1) {
+#line 391 "std/os.axec"
 const char* name = std__os__finddata_name( fileinfo );
 if (strcmp ( name , "." ) != 0) {
 if (strcmp ( name , ".." ) != 0) {
+#line 394 "std/os.axec"
 const uintptr_t sub_buf = malloc ( 260 );
 snprintf(sub_buf, 260, "%s\\%s", path.data, name);
 if (std__os__finddata_is_dir ( fileinfo ) != 0) {
+#line 398 "std/os.axec"
 const std__string__string sub_path = std__string__string__create( sub_buf );
 if (! std__os__rm_dir_recursive ( sub_path )) {
 r = - 1;
@@ -3793,6 +6647,7 @@ return ok;
 }
 
 #ifndef _WIN32
+#line 441
 int32_t std__os__stat_is_reg(uintptr_t st) {
 
                 struct stat* s = (struct stat*)st;
@@ -3801,17 +6656,21 @@ int32_t std__os__stat_is_reg(uintptr_t st) {
 }
 
 #endif
+#line 449
 void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena) {
 #ifndef _WIN32
+#line 451 "std/os.axec"
 const uintptr_t d = opendir ( path.data);
 if (d == 0) {
 return ;
 }
 while (1) {
+#line 457 "std/os.axec"
 const uintptr_t p = readdir ( d );
 if (p == 0) {
 break;
 }
+#line 462 "std/os.axec"
 const char* name = std__os__dirent_d_name( p );
 if (strcmp ( name , "." ) == 0) {
 continue;
@@ -3819,19 +6678,24 @@ continue;
 if (strcmp ( name , ".." ) == 0) {
 continue;
 }
+#line 470 "std/os.axec"
 const uintptr_t len = strlen ( path.data) + strlen ( name ) + 2;
+#line 471 "std/os.axec"
 const uintptr_t buf = malloc ( len );
 if (buf == 0) {
 continue;
 }
 snprintf(buf, len, "%s/%s", path.data, name);
+#line 478 "std/os.axec"
 const uintptr_t statbuf = malloc ( 256 );
 if (stat ( buf , statbuf ) == 0) {
 if (std__os__stat_is_dir ( statbuf ) != 0) {
+#line 481 "std/os.axec"
 const std__string__string sub_path = std__string__string__create( ( char * ) buf );
 std__os__collect_files_recursive(sub_path, result, arena);
 }
 else if (std__os__stat_is_reg ( statbuf ) != 0) {
+#line 484 "std/os.axec"
 const std__string__string file_path = std__string__string__create( ( char * ) buf );
 std__lists__StringList__push(result, arena, file_path);
 }
@@ -3842,9 +6706,12 @@ free(buf);
 closedir(d);
 #endif
 #ifdef _WIN32
+#line 497 "std/os.axec"
 const uintptr_t search_buf = malloc ( 260 );
 snprintf(search_buf, 260, "%s\\*", path.data);
+#line 500 "std/os.axec"
 const uintptr_t fileinfo = malloc ( 320 );
+#line 501 "std/os.axec"
 const intptr_t handle = _findfirst ( search_buf , fileinfo );
 free(search_buf);
 if (handle == - 1) {
@@ -3852,16 +6719,20 @@ free(fileinfo);
 return ;
 }
 while (1) {
+#line 510 "std/os.axec"
 const char* name = std__os__finddata_name( fileinfo );
 if (strcmp ( name , "." ) != 0) {
 if (strcmp ( name , ".." ) != 0) {
+#line 513 "std/os.axec"
 const uintptr_t sub_buf = malloc ( 260 );
 snprintf(sub_buf, 260, "%s\\%s", path.data, name);
 if (std__os__finddata_is_dir ( fileinfo ) != 0) {
+#line 517 "std/os.axec"
 const std__string__string sub_path = std__string__string__create( sub_buf );
 std__os__collect_files_recursive(sub_path, result, arena);
 }
 else {
+#line 520 "std/os.axec"
 const std__string__string file_path = std__string__string__create( sub_buf );
 std__lists__StringList__push(result, arena, file_path);
 }
@@ -3877,15 +6748,20 @@ free(fileinfo);
 #endif
 }
 
+#line 539
 std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena) {
+#line 540 "std/os.axec"
 std__lists__StringList* result = {0};
 result = std__lists__StringList__create( arena , 16 );
 std__os__collect_files_recursive(path, result, arena);
 return result;
 }
 
+#line 547
 std__string__string std__os__get_user_home_dir() {
+#line 548 "std/os.axec"
 std__string__string out = std__string__str( "" );
+#line 550 "std/os.axec"
 char* value = getenv ( "USERPROFILE" );
 if (! value) {
 value = getenv ( "HOME" );
@@ -3896,8 +6772,11 @@ out.data = value;
 return out;
 }
 
+#line 562
 std__string__string std__os__get_env(std__string__string name) {
+#line 563 "std/os.axec"
 std__string__string out = std__string__str( "" );
+#line 565 "std/os.axec"
 char* value = getenv ( name.data);
 if (value) {
 out.data = value;
@@ -3905,10 +6784,14 @@ out.data = value;
 return out;
 }
 
+#line 574
 std__lists__StringList* std__os__get_cmdline_args(std__arena__Arena* arena) {
+#line 575 "std/os.axec"
 std__lists__StringList* result = {0};
 result = std__lists__StringList__create( arena , 10 );
+#line 579 "std/os.axec"
 int32_t argc = 0;
+#line 580 "std/os.axec"
 char** argv = __axe_argv;
 while (1) {
 if (argv [ argc ] == nil) {
@@ -3917,14 +6800,18 @@ break;
 argc++;
 }
 for (int32_t i = 0; i < argc; i ++) {
+#line 588 "std/os.axec"
 const std__string__string arg_str = std__string__string__create( argv [ i ] );
 std__lists__StringList__push(result, arena, arg_str);
 }
 return result;
 }
 
+#line 596
 std__string__string std__os__get_cwd() {
+#line 597 "std/os.axec"
 std__string__string out = {0};
+#line 598 "std/os.axec"
 char buffer[2048] = {0};
 #ifndef _WIN32
 if (getcwd ( buffer , sizeof(buffer) ) != nil) {
@@ -3947,23 +6834,30 @@ return out;
 
 #ifdef __APPLE__
 #endif
+#line 623
 std__string__string std__os__get_executable_path() {
+#line 624 "std/os.axec"
 std__string__string out = std__string__str( "" );
+#line 625 "std/os.axec"
 char buffer[2048] = {0};
 #ifdef _WIN32
+#line 630 "std/os.axec"
 const uint32_t len = GetModuleFileNameA ( nil , buffer , 2048 );
 if (len > 0) {
 out = std__string__str ( buffer );
 }
 #endif
 #ifdef __APPLE__
+#line 639 "std/os.axec"
 const uint32_t size = 2048;
+#line 640 "std/os.axec"
 const int32_t result = _NSGetExecutablePath ( buffer , & size );
 if (result == 0) {
 out = std__string__str ( buffer );
 }
 #endif
 #ifdef __linux__
+#line 650 "std/os.axec"
 const intptr_t len = readlink ( "/proc/self/exe" , buffer , 2047 );
 if (len > 0) {
 buffer[len] = 0;
@@ -3973,18 +6867,24 @@ out = std__string__str ( buffer );
 return out;
 }
 
+#line 662
 std__string__string std__os__get_executable_dir() {
+#line 663 "std/os.axec"
 const std__string__string exe_path = std__os__get_executable_path( );
 if (std__string__str_len ( exe_path ) == 0) {
 return std__string__str( "" );
 }
+#line 668 "std/os.axec"
 int32_t last_sep = - 1;
+#line 669 "std/os.axec"
 int32_t i = 0;
+#line 670 "std/os.axec"
 const int32_t n = std__string__str_len( exe_path );
 while (1) {
 if (i >= n) {
 break;
 }
+#line 675 "std/os.axec"
 const char ch = std__string__get_char( exe_path , i );
 if (ch == '/' || ch == '\\') {
 last_sep = i;
@@ -3997,9 +6897,13 @@ return std__string__str( "." );
 return std__string__substring_se( exe_path , 0 , last_sep );
 }
 
+#line 692
 std__string__string std__os__get_short_filename(std__string__string path) {
+#line 693 "std/os.axec"
 const int32_t last_slash = std__string__find_last_char( path , '\\' );
+#line 694 "std/os.axec"
 const int32_t last_slash_fwd = std__string__find_last_char( path , '/' );
+#line 695 "std/os.axec"
 int32_t idx = last_slash;
 if (last_slash_fwd > idx) {
 idx = last_slash_fwd;
@@ -4010,7 +6914,9 @@ return path;
 return std__string__substring_se( path , idx + 1 , (int32_t)( path.len) );
 }
 
+#line 46
 bool builds__command_exists(std__string__string cmd) {
+#line 47 "builds.axe"
 std__string__string check_cmd = {0};
 #ifdef _WIN32
 check_cmd = std__string__concat ( std__string__str ( "where " ) , cmd );
@@ -4020,10 +6926,12 @@ check_cmd = std__string__concat_c ( check_cmd , " >nul 2>&1" );
 check_cmd = std__string__concat ( std__string__str ( "command -v " ) , cmd );
 check_cmd = std__string__concat_c ( check_cmd , " >/dev/null 2>&1" );
 #endif
+#line 57 "builds.axe"
 const std__os__ExecResult result = std__os__exec_capture( check_cmd );
 return result.exit_code== 0;
 }
 
+#line 62
 void builds__filter_and_print_errors(std__string__string output) {
 if (std__string__str_len ( output ) == 0) {
 return ;
@@ -4031,14 +6939,19 @@ return ;
 std__io__println(output);
 }
 
+#line 70
 bool builds__has_double_underscore(std__string__string name) {
+#line 71 "builds.axe"
 const int32_t nlen = std__string__str_len( name );
+#line 72 "builds.axe"
 int32_t k = 0;
 while (1) {
 if (k + 1 >= nlen) {
 break;
 }
+#line 77 "builds.axe"
 const char c1 = std__string__get_char( name , k );
+#line 78 "builds.axe"
 const char c2 = std__string__get_char( name , k + 1 );
 if (c1 == '_' && c2 == '_') {
 return true;
@@ -4048,14 +6961,18 @@ k++;
 return false;
 }
 
+#line 91
 void builds__prefix_root_enums(structs__ASTNode* node, std__string__string mprefix) {
 if (node == nil) {
 return ;
 }
+#line 96 "builds.axe"
 const std__string__string nt = node->node_type;
 if (std__string__equals_c ( nt , "Enum" )) {
+#line 98 "builds.axe"
 const std__string__string ename = node->data.enum_node.name;
 if (std__string__str_len ( mprefix ) > 0 && ! builds__has_double_underscore ( ename )) {
+#line 100 "builds.axe"
 std__string__string new_name = mprefix;
 new_name = std__string__concat_c ( new_name , "__" );
 new_name = std__string__concat ( new_name , ename );
@@ -4063,7 +6980,9 @@ node->data.enum_node.name = new_name;
 }
 }
 if (node->children!= nil) {
+#line 108 "builds.axe"
 const __list_structs__ASTNode_t* chs = node->children;
+#line 109 "builds.axe"
 int32_t ci = 0;
 while (1) {
 if (ci >= len_v((*chs))) {
@@ -4075,10 +6994,12 @@ ci = ci + 1;
 }
 }
 
+#line 121
 void builds__print_ast_node(structs__ASTNode* node, int32_t indent) {
 if (node == nil) {
 return ;
 }
+#line 126 "builds.axe"
 int32_t ii = 0;
 while (1) {
 if (ii >= indent) {
@@ -4089,7 +7010,9 @@ ii = ii + 1;
 }
 std__io__println(node->node_type);
 if (node->children!= nil) {
+#line 138 "builds.axe"
 const __list_structs__ASTNode_t* chs = node->children;
+#line 139 "builds.axe"
 int32_t ci = 0;
 while (1) {
 if (ci >= len_v((*chs))) {
@@ -4101,11 +7024,13 @@ ci++;
 }
 }
 
+#line 151
 bool builds__compile_file(std__string__string filename, bool is_axec, std__string__string output_filename) {
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Compiling: "), filename));
 std__io__println("\n1 | IO");
 }
+#line 157 "builds.axe"
 const std__string__string source = std__os__read_file( filename );
 if (std__string__str_len ( source ) == 0) {
 std__io__println("Error: Could not read source file");
@@ -4114,20 +7039,26 @@ return false;
 if (! quiet_mode) {
 std__io__println("2 | Lex");
 }
+#line 166 "builds.axe"
 const __list_lexer__Token_t tokens = lexer__lex( source );
 if (len_v(tokens) == 0) {
 std__io__println("Error: No tokens generated");
 return false;
 }
+#line 172 "builds.axe"
 const bool do_print_tokens = print_tokens;
 if (do_print_tokens) {
+#line 175 "builds.axe"
 int32_t ti = 0;
 while (1) {
 if (ti >= len_v(tokens)) {
 break;
 }
+#line 180 "builds.axe"
 const lexer__Token* cur_tok = &(tokens.data[ ti ]);
+#line 181 "builds.axe"
 const std__string__string tok_type_str = std__string__i32_to_string( cur_tok->token_type);
+#line 182 "builds.axe"
 const std__string__string tok_val = cur_tok->value;
 std__io__print(std__string__concat(std__string__str("["), tok_type_str));
 std__io__print("] ");
@@ -4139,6 +7070,7 @@ if (! quiet_mode) {
 std__io__println("3 | Parse");
 }
 parser__initialize_all();
+#line 194 "builds.axe"
 structs__ASTNode ast = parser__parse( &tokens , is_axec , true , std__string__str ( "" ) , filename );
 if (len_ptr(ast.children) == 0) {
 std__io__println("Error: Failed to parse");
@@ -4148,13 +7080,17 @@ if (! quiet_mode) {
 std__io__println("4 | Imports");
 }
 imports__reset_processed_modules();
+#line 205 "builds.axe"
 std__string__string base_dir = std__string__str( "." );
+#line 206 "builds.axe"
 const int32_t lenf = std__string__str_len( filename );
+#line 207 "builds.axe"
 int32_t idx = lenf - 1;
 while (1) {
 if (idx < 0) {
 break;
 }
+#line 213 "builds.axe"
 const char ch = std__string__get_char( filename , idx );
 if (ch == '/' || ch == '\\') {
 base_dir = std__string__substring_se ( filename , 0 , idx );
@@ -4162,12 +7098,15 @@ break;
 }
 idx = idx - 1;
 }
+#line 221 "builds.axe"
 const std__string__string module_name = std__string__str( "" );
 ast = imports__process_imports ( &ast , base_dir , is_axec , filename , true , module_name );
+#line 224 "builds.axe"
 const bool syntax_only = syntax_check_only;
 if (syntax_only) {
 return true;
 }
+#line 229 "builds.axe"
 const bool do_print_ast = print_ast;
 if (do_print_ast) {
 builds__print_ast_node(&ast, 0);
@@ -4175,10 +7114,15 @@ builds__print_ast_node(&ast, 0);
 if (! quiet_mode) {
 std__io__println("5 | Lowering");
 }
+#line 238 "builds.axe"
 std__string__string dir_name = std__string__str( "" );
+#line 239 "builds.axe"
 std__string__string file_stem = std__string__str( "" );
+#line 240 "builds.axe"
 const int32_t flen = std__string__str_len( filename );
+#line 241 "builds.axe"
 int32_t last_dot = - 1;
+#line 242 "builds.axe"
 int32_t i_ext = flen - 1;
 if (! quiet_mode) {
 std__io__println("6 | PFCCG I");
@@ -4187,6 +7131,7 @@ while (1) {
 if (i_ext < 0) {
 break;
 }
+#line 252 "builds.axe"
 const char ch_ext = std__string__get_char( filename , i_ext );
 if (ch_ext == '.') {
 last_dot = i_ext;
@@ -4200,12 +7145,15 @@ last_dot = flen;
 if (! quiet_mode) {
 std__io__println("7 | PFCCG II");
 }
+#line 267 "builds.axe"
 int32_t last_sep = - 1;
+#line 268 "builds.axe"
 int32_t i_sep = flen - 1;
 while (1) {
 if (i_sep < 0) {
 break;
 }
+#line 273 "builds.axe"
 const char ch_sep = std__string__get_char( filename , i_sep );
 if (ch_sep == '/' || ch_sep == '\\') {
 last_sep = i_sep;
@@ -4223,12 +7171,15 @@ if (! quiet_mode) {
 std__io__println("8 | PFCCG III");
 }
 if (last_sep > 0) {
+#line 291 "builds.axe"
 int32_t dir_sep2 = - 1;
+#line 292 "builds.axe"
 int32_t j = last_sep - 1;
 while (1) {
 if (j < 0) {
 break;
 }
+#line 297 "builds.axe"
 const char ch2 = std__string__get_char( filename , j );
 if (ch2 == '/' || ch2 == '\\') {
 dir_sep2 = j;
@@ -4246,6 +7197,7 @@ dir_name = std__string__substring_se ( filename , 0 , last_sep );
 if (! quiet_mode) {
 std__io__println("9 | PFCCG IV");
 }
+#line 314 "builds.axe"
 std__string__string module_prefix = std__string__str( "" );
 if (std__string__str_len ( dir_name ) > 0) {
 module_prefix = dir_name;
@@ -4267,18 +7219,23 @@ renderer__set_emit_line_directives(false);
 if (! quiet_mode) {
 std__io__println("11| GEN");
 }
+#line 338 "builds.axe"
 const std__string__string c_code = renderer__generate_c( &ast );
 if (std__string__str_len ( c_code ) == 0) {
 std__io__println("Error: Failed to generate C code");
 return false;
 }
+#line 345 "builds.axe"
 const std__string__string c_filename = builds__replace_extension( filename , std__string__str ( ".c" ) );
 std__os__write_file(c_filename, c_code);
 if (! quiet_mode) {
 std__io__println("12| Last compilation pass");
 }
+#line 352 "builds.axe"
 const std__string__string exe_filename = builds__get_output_filename( output_filename , filename );
+#line 353 "builds.axe"
 const bool needs_omp = builds__should_link_openmp( &ast , filename );
+#line 355 "builds.axe"
 std__string__string compiler = std__string__str( "" );
 if (builds__command_exists ( std__string__str ( "clang" ) )) {
 compiler = std__string__str ( "clang" );
@@ -4297,11 +7254,14 @@ std__io__println("Alternatively, ensure 'cc' is available in your PATH.");
 return false;
 }
 }
+#line 374 "builds.axe"
 std__string__string compile_cmd = std__string__concat( compiler , std__string__str ( " " ) );
+#line 376 "builds.axe"
 const std__string__string target_triple = gstate__get_target_triple( );
 if (std__string__str_len ( target_triple ) > 0) {
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Cross-compiling for target: "), target_triple));
+#line 380 "builds.axe"
 const std__string__string sysroot = gstate__get_sysroot_path( );
 if (std__string__str_len ( sysroot ) == 0) {
 std__io__println("\nWarning: No --sysroot specified. Cross-compilation may fail without target SDK.");
@@ -4311,6 +7271,7 @@ compile_cmd = std__string__concat_c ( compile_cmd , "--target=" );
 compile_cmd = std__string__concat ( compile_cmd , target_triple );
 compile_cmd = std__string__concat_c ( compile_cmd , " " );
 }
+#line 390 "builds.axe"
 const std__string__string sysroot_path = gstate__get_sysroot_path( );
 if (std__string__str_len ( sysroot_path ) > 0) {
 compile_cmd = std__string__concat_c ( compile_cmd , "--sysroot=" );
@@ -4318,6 +7279,7 @@ compile_cmd = std__string__concat ( compile_cmd , sysroot_path );
 compile_cmd = std__string__concat_c ( compile_cmd , " " );
 }
 compile_cmd = std__string__concat ( compile_cmd , c_filename );
+#line 399 "builds.axe"
 const bool is_shared = build_shared_lib;
 if (is_shared) {
 #ifdef _WIN32
@@ -4330,8 +7292,10 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -shared -fPIC" );
 if (needs_omp) {
 compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -fopenmp" ) );
 }
+#line 413 "builds.axe"
 const std__lists__StringList* inc_paths = gstate__get_include_paths( );
 if (inc_paths != nil) {
+#line 415 "builds.axe"
 int32_t ip_idx = 0;
 while (1) {
 if (ip_idx >= len_v((*inc_paths))) {
@@ -4342,8 +7306,10 @@ compile_cmd = std__string__concat ( compile_cmd , inc_paths->data[ ip_idx ]);
 ip_idx++;
 }
 }
+#line 426 "builds.axe"
 const std__lists__StringList* lib_paths = gstate__get_library_paths( );
 if (lib_paths != nil) {
+#line 428 "builds.axe"
 int32_t lp_idx = 0;
 while (1) {
 if (lp_idx >= len_v((*lib_paths))) {
@@ -4354,6 +7320,7 @@ compile_cmd = std__string__concat ( compile_cmd , lib_paths->data[ lp_idx ]);
 lp_idx++;
 }
 }
+#line 439 "builds.axe"
 const std__string__string toolchain_root = std__os__get_executable_dir( );
 if (renderer__has_external_header ( std__string__str ( "pcre.h" ) )) {
 compile_cmd = std__string__concat_c ( compile_cmd , " -DPCRE_STATIC" );
@@ -4416,8 +7383,10 @@ compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
 compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libyyjson.a" );
 #endif
 }
+#line 505 "builds.axe"
 const std__lists__StringList* link_libs = gstate__get_link_libraries( );
 if (link_libs != nil) {
+#line 507 "builds.axe"
 int32_t ll_idx = 0;
 while (1) {
 if (ll_idx >= len_v((*link_libs))) {
@@ -4436,6 +7405,7 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -gcodeview -fuse-ld=lld -X
 compile_cmd = std__string__concat_c ( compile_cmd , " -g" );
 #endif
 }
+#line 527 "builds.axe"
 const bool compile_only = gstate__get_compile_only( );
 if (compile_only) {
 compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything -O0 -c -o " ) );
@@ -4444,12 +7414,15 @@ else {
 compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything -O0 -o " ) );
 }
 compile_cmd = std__string__concat ( compile_cmd , exe_filename );
+#line 535 "builds.axe"
 const std__os__ExecResult result = std__os__exec_capture( compile_cmd );
+#line 536 "builds.axe"
 const int32_t exit_code = result.exit_code;
 if (exit_code != 0) {
 builds__filter_and_print_errors(result.output);
 return false;
 }
+#line 543 "builds.axe"
 const bool keep_file = keep_emitted_file;
 if (keep_file) {
 if (! quiet_mode) {
@@ -4462,11 +7435,13 @@ std__os__delete_file(c_filename);
 if (! quiet_mode) {
 std__io__println("Compiled.");
 }
+#line 557 "builds.axe"
 const bool do_run = run_after_compile;
 if (do_run) {
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Running: "), exe_filename));
 }
+#line 562 "builds.axe"
 const int32_t run_code = std__os__exec( exe_filename.data);
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Exit code: "), std__string__i32_to_string(run_code)));
@@ -4475,15 +7450,20 @@ std__io__println(std__string__concat(std__string__str("Exit code: "), std__strin
 return true;
 }
 
+#line 572
 std__string__string builds__replace_extension(std__string__string filename, std__string__string new_ext) {
+#line 573 "builds.axe"
 const int32_t len = std__string__str_len( filename );
+#line 574 "builds.axe"
 int32_t i = len - 1;
 while (1) {
 if (i < 0) {
 break;
 }
+#line 581 "builds.axe"
 const char ch = std__string__get_char( filename , i );
 if (ch == '.') {
+#line 583 "builds.axe"
 const std__string__string base = std__string__substring_se( filename , 0 , i );
 return std__string__concat( base , new_ext );
 }
@@ -4492,9 +7472,13 @@ i--;
 return std__string__concat( filename , new_ext );
 }
 
+#line 594
 std__string__string builds__get_output_filename(std__string__string specified_output, std__string__string input_filename) {
+#line 595 "builds.axe"
 std__string__string result = std__string__str( "" );
+#line 596 "builds.axe"
 const bool is_shared = build_shared_lib;
+#line 597 "builds.axe"
 const bool compile_only = gstate__get_compile_only( );
 if (std__string__str_len ( specified_output ) > 0) {
 result = specified_output;
@@ -4551,6 +7535,7 @@ result = std__string__concat ( result , std__string__str ( ".so" ) );
 return result;
 }
 
+#line 661
 bool builds__should_link_openmp(structs__ASTNode* ast, std__string__string filename) {
 if (std__string__has_suffix ( filename , std__string__str ( "parallelism.axec" ) )) {
 return true;
@@ -4561,15 +7546,19 @@ return true;
 if (ast == nil) {
 return false;
 }
+#line 674 "builds.axe"
 const std__string__string node_type = ast->node_type;
 if (std__string__equals_c ( node_type , "Use" )) {
+#line 676 "builds.axe"
 const std__string__string mod_name = ast->data.use_node.module_name;
 if (std__string__equals_c ( mod_name , "std.parallelism" )) {
 return true;
 }
 }
 if (ast->children!= nil) {
+#line 683 "builds.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 684 "builds.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -4584,10 +7573,12 @@ i++;
 return false;
 }
 
+#line 700
 bool builds__has_parallel_blocks(structs__ASTNode* ast) {
 if (ast == nil) {
 return false;
 }
+#line 705 "builds.axe"
 const std__string__string node_type = ast->node_type;
 if (std__string__equals_c ( node_type , "ParallelFor" )) {
 return true;
@@ -4599,7 +7590,9 @@ if (std__string__equals_c ( node_type , "ParallelLocal" )) {
 return true;
 }
 if (ast->children!= nil) {
+#line 720 "builds.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 721 "builds.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -4614,13 +7607,17 @@ i++;
 return false;
 }
 
+#line 737
 void builds__collect_model_names(structs__ASTNode* ast) {
 if (ast == nil) {
 return ;
 }
+#line 742 "builds.axe"
 const std__string__string node_type = ast->node_type;
 if (ast->children!= nil) {
+#line 745 "builds.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 746 "builds.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -4632,13 +7629,17 @@ i++;
 }
 }
 
+#line 759
 void builds__collect_declared_functions(structs__ASTNode* ast) {
 if (ast == nil) {
 return ;
 }
+#line 764 "builds.axe"
 const std__string__string node_type = ast->node_type;
 if (ast->children!= nil) {
+#line 767 "builds.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 768 "builds.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -4650,113 +7651,140 @@ i++;
 }
 }
 
+#line 34
 void gstate__set_loud_logger(bool v) {
 loud_logger = v;
 }
 
+#line 39
 void gstate__set_release_build(bool v) {
 is_release_build = v;
 }
 
+#line 44
 void gstate__set_keep_emitted_file(bool v) {
 keep_emitted_file = v;
 }
 
+#line 49
 void gstate__set_run_after_compile(bool v) {
 run_after_compile = v;
 }
 
+#line 54
 void gstate__set_print_tokens(bool v) {
 print_tokens = v;
 }
 
+#line 59
 void gstate__set_print_ast(bool v) {
 print_ast = v;
 }
 
+#line 64
 void gstate__set_build_shared_lib(bool v) {
 build_shared_lib = v;
 }
 
+#line 69
 void gstate__set_bootstrap_mode(bool v) {
 bootstrap_mode = v;
 }
 
+#line 74
 void gstate__set_include_paths(std__lists__StringList* paths) {
 include_paths = paths;
 }
 
+#line 79
 std__lists__StringList* gstate__get_include_paths() {
 return include_paths;
 }
 
+#line 84
 void gstate__set_quiet_mode(bool v) {
 quiet_mode = v;
 }
 
+#line 89
 void gstate__set_syntax_check_only(bool v) {
 syntax_check_only = v;
 }
 
+#line 94
 void gstate__set_target_triple(std__string__string triple) {
 target_triple = triple;
 }
 
+#line 99
 std__string__string gstate__get_target_triple() {
 return target_triple;
 }
 
+#line 104
 void gstate__set_sysroot_path(std__string__string path) {
 sysroot_path = path;
 }
 
+#line 109
 std__string__string gstate__get_sysroot_path() {
 return sysroot_path;
 }
 
+#line 114
 void gstate__set_compile_only(bool v) {
 compile_only = v;
 }
 
+#line 119
 bool gstate__get_compile_only() {
 return compile_only;
 }
 
+#line 124
 void gstate__set_library_paths(std__lists__StringList* paths) {
 library_paths = paths;
 }
 
+#line 129
 std__lists__StringList* gstate__get_library_paths() {
 return library_paths;
 }
 
+#line 134
 void gstate__set_link_libraries(std__lists__StringList* libs) {
 link_libraries = libs;
 }
 
+#line 139
 std__lists__StringList* gstate__get_link_libraries() {
 return link_libraries;
 }
 
+#line 144
 void gstate__debug_print_i32(int32_t msg) {
 if (loud_logger) {
 std__io__println(msg);
 }
 }
 
+#line 151
 void gstate__debug_print_str(std__string__string msg) {
 if (loud_logger) {
 std__io__println(msg);
 }
 }
 
+#line 158
 void gstate__debug_print_raw(char* msg) {
 if (loud_logger) {
 std__io__println(msg);
 }
 }
 
+#line 144
 std__maps__StringIntMap* std__maps__StringIntMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 145 "std/maps.axec"
 std__maps__StringIntMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__StringIntMap) );
 map->keys = std__lists__StringList__create( arena , capacity );
@@ -4764,24 +7792,31 @@ map->values = std__lists__IntList__create( arena , capacity );
 return map;
 }
 
+#line 154
 void std__maps__StringIntMap__clear(std__maps__StringIntMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 159
 void std__maps__StringIntMap__add(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value) {
 std__lists__StringList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 164
 void std__maps__StringIntMap__set(std__maps__StringIntMap* map, std__arena__Arena* arena, std__string__string key, int32_t value) {
+#line 165 "std/maps.axec"
 int32_t i = 0;
+#line 166 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 167 "std/maps.axec"
 std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 172 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4795,14 +7830,19 @@ std__lists__StringList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 187
 int32_t std__maps__StringIntMap__get(std__maps__StringIntMap* map, std__string__string key) {
+#line 188 "std/maps.axec"
 int32_t i = 0;
+#line 189 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 190 "std/maps.axec"
 const std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 195 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4811,18 +7851,23 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 205 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 212
 bool std__maps__StringIntMap__contains(std__maps__StringIntMap* map, std__string__string key) {
+#line 213 "std/maps.axec"
 int32_t i = 0;
+#line 214 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 219 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4834,21 +7879,30 @@ i = i + 1;
 return false;
 }
 
+#line 232
 int32_t std__maps__StringIntMap__size(std__maps__StringIntMap* map) {
+#line 233 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 return keys->len;
 }
 
+#line 237
 int32_t std__maps__StringIntMap__pop(std__maps__StringIntMap* map, std__string__string key) {
+#line 238 "std/maps.axec"
 int32_t i = 0;
+#line 239 "std/maps.axec"
 std__lists__StringList* keys = map->keys;
+#line 240 "std/maps.axec"
 std__lists__IntList* values = map->values;
+#line 241 "std/maps.axec"
 int32_t result = {0};
+#line 242 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 247 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4867,12 +7921,15 @@ return result;
 }
 i = i + 1;
 }
+#line 269 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 144
 std__maps__StringFloatMap* std__maps__StringFloatMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 145 "std/maps.axec"
 std__maps__StringFloatMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__StringFloatMap) );
 map->keys = std__lists__StringList__create( arena , capacity );
@@ -4880,24 +7937,31 @@ map->values = std__lists__FloatList__create( arena , capacity );
 return map;
 }
 
+#line 154
 void std__maps__StringFloatMap__clear(std__maps__StringFloatMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 159
 void std__maps__StringFloatMap__add(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value) {
 std__lists__StringList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 164
 void std__maps__StringFloatMap__set(std__maps__StringFloatMap* map, std__arena__Arena* arena, std__string__string key, float value) {
+#line 165 "std/maps.axec"
 int32_t i = 0;
+#line 166 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 167 "std/maps.axec"
 std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 172 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4911,14 +7975,19 @@ std__lists__StringList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 187
 float std__maps__StringFloatMap__get(std__maps__StringFloatMap* map, std__string__string key) {
+#line 188 "std/maps.axec"
 int32_t i = 0;
+#line 189 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 190 "std/maps.axec"
 const std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 195 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4927,18 +7996,23 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 205 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 212
 bool std__maps__StringFloatMap__contains(std__maps__StringFloatMap* map, std__string__string key) {
+#line 213 "std/maps.axec"
 int32_t i = 0;
+#line 214 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 219 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4950,21 +8024,30 @@ i = i + 1;
 return false;
 }
 
+#line 232
 int32_t std__maps__StringFloatMap__size(std__maps__StringFloatMap* map) {
+#line 233 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 return keys->len;
 }
 
+#line 237
 float std__maps__StringFloatMap__pop(std__maps__StringFloatMap* map, std__string__string key) {
+#line 238 "std/maps.axec"
 int32_t i = 0;
+#line 239 "std/maps.axec"
 std__lists__StringList* keys = map->keys;
+#line 240 "std/maps.axec"
 std__lists__FloatList* values = map->values;
+#line 241 "std/maps.axec"
 float result = {0};
+#line 242 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 247 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -4983,12 +8066,15 @@ return result;
 }
 i = i + 1;
 }
+#line 269 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 144
 std__maps__StringBoolMap* std__maps__StringBoolMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 145 "std/maps.axec"
 std__maps__StringBoolMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__StringBoolMap) );
 map->keys = std__lists__StringList__create( arena , capacity );
@@ -4996,24 +8082,31 @@ map->values = std__lists__BoolList__create( arena , capacity );
 return map;
 }
 
+#line 154
 void std__maps__StringBoolMap__clear(std__maps__StringBoolMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 159
 void std__maps__StringBoolMap__add(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value) {
 std__lists__StringList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 164
 void std__maps__StringBoolMap__set(std__maps__StringBoolMap* map, std__arena__Arena* arena, std__string__string key, bool value) {
+#line 165 "std/maps.axec"
 int32_t i = 0;
+#line 166 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 167 "std/maps.axec"
 std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 172 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5027,14 +8120,19 @@ std__lists__StringList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 187
 bool std__maps__StringBoolMap__get(std__maps__StringBoolMap* map, std__string__string key) {
+#line 188 "std/maps.axec"
 int32_t i = 0;
+#line 189 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 190 "std/maps.axec"
 const std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 195 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5043,18 +8141,23 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 205 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 212
 bool std__maps__StringBoolMap__contains(std__maps__StringBoolMap* map, std__string__string key) {
+#line 213 "std/maps.axec"
 int32_t i = 0;
+#line 214 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 219 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5066,21 +8169,30 @@ i = i + 1;
 return false;
 }
 
+#line 232
 int32_t std__maps__StringBoolMap__size(std__maps__StringBoolMap* map) {
+#line 233 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 return keys->len;
 }
 
+#line 237
 bool std__maps__StringBoolMap__pop(std__maps__StringBoolMap* map, std__string__string key) {
+#line 238 "std/maps.axec"
 int32_t i = 0;
+#line 239 "std/maps.axec"
 std__lists__StringList* keys = map->keys;
+#line 240 "std/maps.axec"
 std__lists__BoolList* values = map->values;
+#line 241 "std/maps.axec"
 bool result = {0};
+#line 242 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 247 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5099,12 +8211,15 @@ return result;
 }
 i = i + 1;
 }
+#line 269 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 144
 std__maps__StringStringMap* std__maps__StringStringMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 145 "std/maps.axec"
 std__maps__StringStringMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__StringStringMap) );
 map->keys = std__lists__StringList__create( arena , capacity );
@@ -5112,24 +8227,31 @@ map->values = std__lists__StringList__create( arena , capacity );
 return map;
 }
 
+#line 154
 void std__maps__StringStringMap__clear(std__maps__StringStringMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 159
 void std__maps__StringStringMap__add(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value) {
 std__lists__StringList__push(map->keys, arena, key);
 std__lists__StringList__push(map->values, arena, value);
 }
 
+#line 164
 void std__maps__StringStringMap__set(std__maps__StringStringMap* map, std__arena__Arena* arena, std__string__string key, std__string__string value) {
+#line 165 "std/maps.axec"
 int32_t i = 0;
+#line 166 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 167 "std/maps.axec"
 std__lists__StringList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 172 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5143,14 +8265,19 @@ std__lists__StringList__push(map->keys, arena, key);
 std__lists__StringList__push(map->values, arena, value);
 }
 
+#line 187
 std__string__string std__maps__StringStringMap__get(std__maps__StringStringMap* map, std__string__string key) {
+#line 188 "std/maps.axec"
 int32_t i = 0;
+#line 189 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
+#line 190 "std/maps.axec"
 const std__lists__StringList* values = map->values;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 195 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5159,18 +8286,23 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 205 "std/maps.axec"
 std__string__string default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 212
 bool std__maps__StringStringMap__contains(std__maps__StringStringMap* map, std__string__string key) {
+#line 213 "std/maps.axec"
 int32_t i = 0;
+#line 214 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 219 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5182,21 +8314,30 @@ i = i + 1;
 return false;
 }
 
+#line 232
 int32_t std__maps__StringStringMap__size(std__maps__StringStringMap* map) {
+#line 233 "std/maps.axec"
 const std__lists__StringList* keys = map->keys;
 return keys->len;
 }
 
+#line 237
 std__string__string std__maps__StringStringMap__pop(std__maps__StringStringMap* map, std__string__string key) {
+#line 238 "std/maps.axec"
 int32_t i = 0;
+#line 239 "std/maps.axec"
 std__lists__StringList* keys = map->keys;
+#line 240 "std/maps.axec"
 std__lists__StringList* values = map->values;
+#line 241 "std/maps.axec"
 std__string__string result = {0};
+#line 242 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
 break;
 }
+#line 247 "std/maps.axec"
 const std__string__string current_key = keys->data[ i ];
 if (current_key.len== key.len) {
 if (strncmp ( current_key.data, key.data, key.len) == 0) {
@@ -5215,12 +8356,15 @@ return result;
 }
 i = i + 1;
 }
+#line 269 "std/maps.axec"
 std__string__string default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__IntIntMap* std__maps__IntIntMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__IntIntMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__IntIntMap) );
 map->keys = std__lists__IntList__create( arena , capacity );
@@ -5228,24 +8372,31 @@ map->values = std__lists__IntList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__IntIntMap__clear(std__maps__IntIntMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__IntIntMap__append(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__IntIntMap__add(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__IntIntMap__set(std__maps__IntIntMap* map, std__arena__Arena* arena, int32_t key, int32_t value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5261,9 +8412,13 @@ std__lists__IntList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 56
 int32_t std__maps__IntIntMap__get(std__maps__IntIntMap* map, int32_t key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5274,13 +8429,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__IntIntMap__contains(std__maps__IntIntMap* map, int32_t key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5294,16 +8453,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__IntIntMap__size(std__maps__IntIntMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 int32_t std__maps__IntIntMap__pop(std__maps__IntIntMap* map, int32_t key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__IntList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__IntList* values = map->values;
+#line 104 "std/maps.axec"
 int32_t result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5324,12 +8491,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__FloatIntMap* std__maps__FloatIntMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__FloatIntMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__FloatIntMap) );
 map->keys = std__lists__FloatList__create( arena , capacity );
@@ -5337,24 +8507,31 @@ map->values = std__lists__IntList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__FloatIntMap__clear(std__maps__FloatIntMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__FloatIntMap__append(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__FloatIntMap__add(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__FloatIntMap__set(std__maps__FloatIntMap* map, std__arena__Arena* arena, float key, int32_t value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5370,9 +8547,13 @@ std__lists__FloatList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 56
 int32_t std__maps__FloatIntMap__get(std__maps__FloatIntMap* map, float key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5383,13 +8564,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__FloatIntMap__contains(std__maps__FloatIntMap* map, float key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5403,16 +8588,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__FloatIntMap__size(std__maps__FloatIntMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 int32_t std__maps__FloatIntMap__pop(std__maps__FloatIntMap* map, float key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__FloatList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__IntList* values = map->values;
+#line 104 "std/maps.axec"
 int32_t result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5433,12 +8626,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__IntFloatMap* std__maps__IntFloatMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__IntFloatMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__IntFloatMap) );
 map->keys = std__lists__IntList__create( arena , capacity );
@@ -5446,24 +8642,31 @@ map->values = std__lists__FloatList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__IntFloatMap__clear(std__maps__IntFloatMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__IntFloatMap__append(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__IntFloatMap__add(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__IntFloatMap__set(std__maps__IntFloatMap* map, std__arena__Arena* arena, int32_t key, float value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5479,9 +8682,13 @@ std__lists__IntList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 56
 float std__maps__IntFloatMap__get(std__maps__IntFloatMap* map, int32_t key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5492,13 +8699,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__IntFloatMap__contains(std__maps__IntFloatMap* map, int32_t key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5512,16 +8723,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__IntFloatMap__size(std__maps__IntFloatMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 float std__maps__IntFloatMap__pop(std__maps__IntFloatMap* map, int32_t key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__IntList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__FloatList* values = map->values;
+#line 104 "std/maps.axec"
 float result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5542,12 +8761,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__FloatFloatMap* std__maps__FloatFloatMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__FloatFloatMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__FloatFloatMap) );
 map->keys = std__lists__FloatList__create( arena , capacity );
@@ -5555,24 +8777,31 @@ map->values = std__lists__FloatList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__FloatFloatMap__clear(std__maps__FloatFloatMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__FloatFloatMap__append(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__FloatFloatMap__add(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__FloatFloatMap__set(std__maps__FloatFloatMap* map, std__arena__Arena* arena, float key, float value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5588,9 +8817,13 @@ std__lists__FloatList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 56
 float std__maps__FloatFloatMap__get(std__maps__FloatFloatMap* map, float key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5601,13 +8834,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__FloatFloatMap__contains(std__maps__FloatFloatMap* map, float key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5621,16 +8858,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__FloatFloatMap__size(std__maps__FloatFloatMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 float std__maps__FloatFloatMap__pop(std__maps__FloatFloatMap* map, float key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__FloatList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__FloatList* values = map->values;
+#line 104 "std/maps.axec"
 float result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5651,12 +8896,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__IntBoolMap* std__maps__IntBoolMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__IntBoolMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__IntBoolMap) );
 map->keys = std__lists__IntList__create( arena , capacity );
@@ -5664,24 +8912,31 @@ map->values = std__lists__BoolList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__IntBoolMap__clear(std__maps__IntBoolMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__IntBoolMap__append(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__IntBoolMap__add(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value) {
 std__lists__IntList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__IntBoolMap__set(std__maps__IntBoolMap* map, std__arena__Arena* arena, int32_t key, bool value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5697,9 +8952,13 @@ std__lists__IntList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 56
 bool std__maps__IntBoolMap__get(std__maps__IntBoolMap* map, int32_t key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5710,13 +8969,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__IntBoolMap__contains(std__maps__IntBoolMap* map, int32_t key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5730,16 +8993,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__IntBoolMap__size(std__maps__IntBoolMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__IntList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 bool std__maps__IntBoolMap__pop(std__maps__IntBoolMap* map, int32_t key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__IntList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__BoolList* values = map->values;
+#line 104 "std/maps.axec"
 bool result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5760,12 +9031,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__BoolIntMap* std__maps__BoolIntMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__BoolIntMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__BoolIntMap) );
 map->keys = std__lists__BoolList__create( arena , capacity );
@@ -5773,24 +9047,31 @@ map->values = std__lists__IntList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__BoolIntMap__clear(std__maps__BoolIntMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__BoolIntMap__append(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__BoolIntMap__add(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__BoolIntMap__set(std__maps__BoolIntMap* map, std__arena__Arena* arena, bool key, int32_t value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5806,9 +9087,13 @@ std__lists__BoolList__push(map->keys, arena, key);
 std__lists__IntList__push(map->values, arena, value);
 }
 
+#line 56
 int32_t std__maps__BoolIntMap__get(std__maps__BoolIntMap* map, bool key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__IntList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5819,13 +9104,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__BoolIntMap__contains(std__maps__BoolIntMap* map, bool key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5839,16 +9128,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__BoolIntMap__size(std__maps__BoolIntMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 int32_t std__maps__BoolIntMap__pop(std__maps__BoolIntMap* map, bool key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__BoolList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__IntList* values = map->values;
+#line 104 "std/maps.axec"
 int32_t result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5869,12 +9166,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 int32_t default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__FloatBoolMap* std__maps__FloatBoolMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__FloatBoolMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__FloatBoolMap) );
 map->keys = std__lists__FloatList__create( arena , capacity );
@@ -5882,24 +9182,31 @@ map->values = std__lists__BoolList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__FloatBoolMap__clear(std__maps__FloatBoolMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__FloatBoolMap__append(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__FloatBoolMap__add(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value) {
 std__lists__FloatList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__FloatBoolMap__set(std__maps__FloatBoolMap* map, std__arena__Arena* arena, float key, bool value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5915,9 +9222,13 @@ std__lists__FloatList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 56
 bool std__maps__FloatBoolMap__get(std__maps__FloatBoolMap* map, float key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -5928,13 +9239,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__FloatBoolMap__contains(std__maps__FloatBoolMap* map, float key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -5948,16 +9263,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__FloatBoolMap__size(std__maps__FloatBoolMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__FloatList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 bool std__maps__FloatBoolMap__pop(std__maps__FloatBoolMap* map, float key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__FloatList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__BoolList* values = map->values;
+#line 104 "std/maps.axec"
 bool result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -5978,12 +9301,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__BoolFloatMap* std__maps__BoolFloatMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__BoolFloatMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__BoolFloatMap) );
 map->keys = std__lists__BoolList__create( arena , capacity );
@@ -5991,24 +9317,31 @@ map->values = std__lists__FloatList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__BoolFloatMap__clear(std__maps__BoolFloatMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__BoolFloatMap__append(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__BoolFloatMap__add(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__BoolFloatMap__set(std__maps__BoolFloatMap* map, std__arena__Arena* arena, bool key, float value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -6024,9 +9357,13 @@ std__lists__BoolList__push(map->keys, arena, key);
 std__lists__FloatList__push(map->values, arena, value);
 }
 
+#line 56
 float std__maps__BoolFloatMap__get(std__maps__BoolFloatMap* map, bool key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__FloatList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -6037,13 +9374,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__BoolFloatMap__contains(std__maps__BoolFloatMap* map, bool key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -6057,16 +9398,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__BoolFloatMap__size(std__maps__BoolFloatMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 float std__maps__BoolFloatMap__pop(std__maps__BoolFloatMap* map, bool key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__BoolList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__FloatList* values = map->values;
+#line 104 "std/maps.axec"
 float result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -6087,12 +9436,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 float default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 11
 std__maps__BoolBoolMap* std__maps__BoolBoolMap__create(std__arena__Arena* arena, int32_t capacity) {
+#line 12 "std/maps.axec"
 std__maps__BoolBoolMap* map = {0};
 map = std__arena__Arena__alloc( arena , sizeof(std__maps__BoolBoolMap) );
 map->keys = std__lists__BoolList__create( arena , capacity );
@@ -6100,24 +9452,31 @@ map->values = std__lists__BoolList__create( arena , capacity );
 return map;
 }
 
+#line 21
 void std__maps__BoolBoolMap__clear(std__maps__BoolBoolMap* map) {
 map->keys->len = 0;
 map->values->len = 0;
 }
 
+#line 26
 void std__maps__BoolBoolMap__append(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 31
 void std__maps__BoolBoolMap__add(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value) {
 std__lists__BoolList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 36
 void std__maps__BoolBoolMap__set(std__maps__BoolBoolMap* map, std__arena__Arena* arena, bool key, bool value) {
+#line 37 "std/maps.axec"
 int32_t i = 0;
+#line 38 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 39 "std/maps.axec"
 std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -6133,9 +9492,13 @@ std__lists__BoolList__push(map->keys, arena, key);
 std__lists__BoolList__push(map->values, arena, value);
 }
 
+#line 56
 bool std__maps__BoolBoolMap__get(std__maps__BoolBoolMap* map, bool key) {
+#line 57 "std/maps.axec"
 int32_t i = 0;
+#line 58 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
+#line 59 "std/maps.axec"
 const std__lists__BoolList* values = map->values;
 while (1) {
 if (i >= keys->len) {
@@ -6146,13 +9509,17 @@ return values->data[ i ];
 }
 i = i + 1;
 }
+#line 71 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 78
 bool std__maps__BoolBoolMap__contains(std__maps__BoolBoolMap* map, bool key) {
+#line 79 "std/maps.axec"
 int32_t i = 0;
+#line 80 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 while (1) {
 if (i >= keys->len) {
@@ -6166,16 +9533,24 @@ i = i + 1;
 return false;
 }
 
+#line 95
 int32_t std__maps__BoolBoolMap__size(std__maps__BoolBoolMap* map) {
+#line 96 "std/maps.axec"
 const std__lists__BoolList* keys = map->keys;
 return keys->len;
 }
 
+#line 100
 bool std__maps__BoolBoolMap__pop(std__maps__BoolBoolMap* map, bool key) {
+#line 101 "std/maps.axec"
 int32_t i = 0;
+#line 102 "std/maps.axec"
 std__lists__BoolList* keys = map->keys;
+#line 103 "std/maps.axec"
 std__lists__BoolList* values = map->values;
+#line 104 "std/maps.axec"
 bool result = {0};
+#line 105 "std/maps.axec"
 bool found = false;
 while (1) {
 if (i >= keys->len) {
@@ -6196,12 +9571,15 @@ return result;
 }
 i = i + 1;
 }
+#line 129 "std/maps.axec"
 bool default_val = {0};
 memset(&default_val, 0, sizeof(default_val));
 return default_val;
 }
 
+#line 104
 lexer__Token lexer__create_token(int32_t token_type, char* value) {
+#line 105 "lexer.axe"
 lexer__Token t = {0};
 t.token_type = token_type;
 t.value = std__string__str ( value );
@@ -6210,7 +9588,9 @@ t.column = 0;
 return t;
 }
 
+#line 114
 lexer__Token lexer__create_token_with_line(int32_t token_type, char* value, int32_t line) {
+#line 115 "lexer.axe"
 lexer__Token t = {0};
 t.token_type = token_type;
 t.value = std__string__str ( value );
@@ -6219,14 +9599,17 @@ t.column = 0;
 return t;
 }
 
+#line 124
 bool lexer__is_hex_digit(char ch) {
 return ( ch >= '0' && ch <= '9' ) || ( ch >= 'a' && ch <= 'f' ) || ( ch >= 'A' && ch <= 'F' );
 }
 
+#line 129
 bool lexer__is_whitespace(char ch) {
 return ch == ' ' || ch == '\t' || ch == '\r';
 }
 
+#line 134
 bool lexer__is_ident_char(char ch) {
 if (std__string__is_alphanum ( ch ) != 0) {
 return true;
@@ -6237,18 +9620,22 @@ return true;
 return false;
 }
 
+#line 145
 bool lexer__check_boundary(std__string__string source, int32_t pos, int32_t source_len) {
 if (pos >= source_len) {
 return true;
 }
+#line 149 "lexer.axe"
 const char ch = source.data[ pos ];
 return ! lexer__is_ident_char ( ch );
 }
 
+#line 154
 bool lexer__str_equals(std__string__string s1, char* s2, int32_t start, int32_t len, int32_t source_len) {
 if (start + len > source_len) {
 return false;
 }
+#line 158 "lexer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len) {
@@ -6262,15 +9649,20 @@ i++;
 return true;
 }
 
+#line 172
 __list_lexer__Token_t lexer__lex(std__string__string source) {
+#line 173 "lexer.axe"
 __list_lexer__Token_t tokens = {0};
+#line 174 "lexer.axe"
 int32_t pos = 0;
+#line 175 "lexer.axe"
 const int32_t source_len = source.len;
 g_lexer_current_line = 1;
 while (1) {
 if (pos >= source_len) {
 break;
 }
+#line 182 "lexer.axe"
 const char ch = std__string__get_char( source , pos );
 if (ch == '*') {
 if (pos + 1 < source_len && std__string__get_char ( source , pos + 1 ) == '.') {
@@ -6389,6 +9781,7 @@ pos = pos + 1;
 }
 else if (ch == '/') {
 if (pos + 1 < source_len && std__string__get_char ( source , pos + 1 ) == '/') {
+#line 276 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || std__string__get_char ( source , pos ) == '\n') {
@@ -6426,7 +9819,9 @@ pos = pos + 1;
 else if (ch == '$') {
 if (pos + 1 < source_len && std__string__get_char ( source , pos + 1 ) == '"') {
 pos = pos + 2;
+#line 306 "lexer.axe"
 const int32_t str_start = pos;
+#line 307 "lexer.axe"
 int32_t ending = pos;
 while (1) {
 if (ending >= source_len) {
@@ -6442,7 +9837,9 @@ else {
 ending = ending + 1;
 }
 }
+#line 320 "lexer.axe"
 const std__string__string raw_inter = std__string__str( std__string__substring_scse ( source , str_start , ending ) );
+#line 321 "lexer.axe"
 std__string__string wrapped = std__string__str( "__INTERPOLATED__" );
 wrapped = std__string__concat ( wrapped , raw_inter );
 wrapped = std__string__concat ( wrapped , std__string__str ( "__INTERPOLATED__" ) );
@@ -6451,6 +9848,7 @@ pos = ending + 1;
 }
 }
 else if (ch == '"') {
+#line 328 "lexer.axe"
 int32_t ending = pos + 1;
 while (1) {
 if (ending >= source_len) {
@@ -6470,6 +9868,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_STR, std_
 pos = ending + 1;
 }
 else if ((int32_t)( ch ) == 96) {
+#line 345 "lexer.axe"
 int32_t bt_end = pos + 1;
 while (1) {
 if (bt_end >= source_len) {
@@ -6480,13 +9879,17 @@ break;
 }
 bt_end = bt_end + 1;
 }
+#line 355 "lexer.axe"
 const std__string__string raw_content = std__string__str( std__string__substring_scse ( source , pos + 1 , bt_end ) );
+#line 356 "lexer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( (uintptr_t)( ( bt_end - pos ) * 2 ) );
+#line 357 "lexer.axe"
 int32_t ri = 0;
 while (1) {
 if (ri >= std__string__str_len ( raw_content )) {
 break;
 }
+#line 362 "lexer.axe"
 const char rc = std__string__get_char( raw_content , ri );
 if (rc == '\n') {
 std__string__StringBuilder__append_c(&sb, "\\n");
@@ -6508,12 +9911,14 @@ std__string__StringBuilder__append_char(&sb, rc);
 }
 ri = ri + 1;
 }
+#line 378 "lexer.axe"
 const std__string__string escaped_content = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_STR, escaped_content.data));
 pos = bt_end + 1;
 }
 else if ((int32_t)( ch ) == 39) {
+#line 383 "lexer.axe"
 int32_t cend = pos + 1;
 while (1) {
 if (cend >= source_len || (int32_t)( std__string__get_char ( source , cend ) ) == 39) {
@@ -6563,6 +9968,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_AND, "and
 pos = pos + 3;
 }
 else {
+#line 422 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6579,6 +9985,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_BREAK, "b
 pos = pos + 5;
 }
 else {
+#line 436 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6599,6 +10006,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_CASE, "ca
 pos = pos + 4;
 }
 else {
+#line 453 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6615,11 +10023,13 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_DEFAULT, 
 pos = pos + 7;
 }
 else if (lexer__str_equals ( source , "def" , pos , 3 , source_len ) && lexer__check_boundary ( source , pos + 3 , source_len )) {
+#line 467 "lexer.axe"
 int32_t lookAhead = pos + 3;
 while (1) {
 if (lookAhead >= source_len) {
 break;
 }
+#line 472 "lexer.axe"
 const char ch_look = std__string__get_char( source , lookAhead );
 if (ch_look != ' ' && ch_look != '\t') {
 break;
@@ -6632,6 +10042,7 @@ while (1) {
 if (lookAhead >= source_len) {
 break;
 }
+#line 485 "lexer.axe"
 const char ch_look = std__string__get_char( source , lookAhead );
 if (ch_look != ' ' && ch_look != '\t') {
 break;
@@ -6657,6 +10068,7 @@ pos = pos + 3;
 }
 }
 else {
+#line 507 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6689,6 +10101,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_ELSE, "el
 pos = pos + 4;
 }
 else {
+#line 533 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6709,6 +10122,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_FOR, "for
 pos = pos + 3;
 }
 else {
+#line 550 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6729,6 +10143,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IF, "if")
 pos = pos + 2;
 }
 else {
+#line 567 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6749,6 +10164,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_LOCAL, "l
 pos = pos + 5;
 }
 else {
+#line 584 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6781,6 +10197,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_MOD, "mod
 pos = pos + 3;
 }
 else {
+#line 610 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6797,6 +10214,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_NEW, "new
 pos = pos + 3;
 }
 else {
+#line 624 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6821,6 +10239,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_OR, "or")
 pos = pos + 2;
 }
 else {
+#line 644 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6849,6 +10268,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_PRINT, "p
 pos = pos + 3;
 }
 else {
+#line 667 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6890,7 +10310,9 @@ pos = pos + 1;
 if (pos < source_len && std__string__get_char ( source , pos ) == '{') {
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_LBRACE, "{"));
 pos = pos + 1;
+#line 703 "lexer.axe"
 int32_t brace_depth = 1;
+#line 704 "lexer.axe"
 const int32_t content_start = pos;
 while (1) {
 if (pos >= source_len || brace_depth <= 0) {
@@ -6917,6 +10339,7 @@ pos = pos + 1;
 }
 }
 else {
+#line 728 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6937,6 +10360,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_SINGLE, "
 pos = pos + 6;
 }
 else {
+#line 745 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6957,6 +10381,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_TO, "to")
 pos = pos + 2;
 }
 else {
+#line 762 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6977,6 +10402,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_USE, "use
 pos = pos + 3;
 }
 else {
+#line 779 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -6988,11 +10414,13 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IDENTIFIE
 }
 }
 else if (ch == 'v') {
+#line 796 "lexer.axe"
 bool at_word_start = false;
 if (pos == 0) {
 at_word_start = true;
 }
 else {
+#line 800 "lexer.axe"
 const char prev_ch = std__string__get_char( source , pos - 1 );
 if (! lexer__is_ident_char ( prev_ch )) {
 at_word_start = true;
@@ -7003,6 +10431,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_VAL, "val
 pos = pos + 3;
 }
 else {
+#line 810 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -7019,6 +10448,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_WHILE, "w
 pos = pos + 5;
 }
 else {
+#line 824 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -7035,6 +10465,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_XOR, "xor
 pos = pos + 3;
 }
 else {
+#line 838 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -7046,6 +10477,7 @@ __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IDENTIFIE
 }
 }
 else if (ch == '0' && pos + 1 < source_len && ( std__string__get_char ( source , pos + 1 ) == 'x' || std__string__get_char ( source , pos + 1 ) == 'X' )) {
+#line 848 "lexer.axe"
 const int32_t start = pos;
 pos = pos + 2;
 while (1) {
@@ -7057,6 +10489,7 @@ pos = pos + 1;
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_IDENTIFIER, std__string__substring_scse(source, start, pos)));
 }
 else if (lexer__is_ident_char ( ch )) {
+#line 858 "lexer.axe"
 const int32_t start = pos;
 while (1) {
 if (pos >= source_len || ! lexer__is_ident_char ( std__string__get_char ( source , pos ) )) {
@@ -7073,7 +10506,9 @@ pos = pos + 1;
 return tokens;
 }
 
+#line 44
 void parser__initialize_all() {
+#line 45 "parser.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 * 1024 );
 g_type_aliases = (*std__maps__StringStringMap__create( &arena , 128 ));
 g_imported_modules = (*std__maps__StringBoolMap__create( &arena , 128 ));
@@ -7092,7 +10527,9 @@ g_macro_names.len = 0;
 g_macro_defs.len = 0;
 }
 
+#line 64
 void parser__macros_add(std__string__string name, structs__MacroDef defn) {
+#line 65 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v(g_macro_names)) {
@@ -7108,7 +10545,9 @@ __list_std__string_push(&g_macro_names, name);
 __list_structs__MacroDef_push(&g_macro_defs, defn);
 }
 
+#line 82
 bool parser__macros_contains(std__string__string name) {
+#line 83 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v(g_macro_names)) {
@@ -7122,7 +10561,9 @@ i++;
 return false;
 }
 
+#line 97
 structs__MacroDef parser__macros_get(std__string__string name) {
+#line 98 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v(g_macro_names)) {
@@ -7133,19 +10574,23 @@ return g_macro_defs.data[ i ];
 }
 i++;
 }
+#line 109 "parser.axe"
 structs__MacroDef empty = {0};
 return empty;
 }
 
+#line 114
 bool parser__is_all_digits(std__string__string s) {
 if (std__string__str_len ( s ) == 0) {
 return false;
 }
+#line 118 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= std__string__str_len ( s )) {
 break;
 }
+#line 123 "parser.axe"
 const char ch = std__string__get_char( s , i );
 if (ch < '0' || ch > '9') {
 return false;
@@ -7155,9 +10600,13 @@ i++;
 return true;
 }
 
+#line 135
 std__string__string parser__expand_macros_in_expression(std__string__string expr) {
+#line 136 "parser.axe"
 std__string__StringBuilder result = std__string__StringBuilder__init( 512 );
+#line 137 "parser.axe"
 int32_t i = 0;
+#line 138 "parser.axe"
 const int32_t expr_len = std__string__str_len( expr );
 while (1) {
 if (i >= expr_len) {
@@ -7167,6 +10616,7 @@ while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 149 "parser.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch != ' ' && ch != '\t') {
 break;
@@ -7177,41 +10627,52 @@ i++;
 if (i >= expr_len) {
 break;
 }
+#line 161 "parser.axe"
 const char ch = std__string__get_char( expr , i );
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+#line 163 "parser.axe"
 const int32_t ident_start = i;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 168 "parser.axe"
 const char c = std__string__get_char( expr , i );
 if (! ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) || c == '_' )) {
 break;
 }
 i++;
 }
+#line 174 "parser.axe"
 const std__string__string ident = std__string__substring_se( expr , ident_start , i );
+#line 176 "parser.axe"
 const int32_t ws_start = i;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 181 "parser.axe"
 const char ws = std__string__get_char( expr , i );
 if (ws != ' ' && ws != '\t') {
 break;
 }
 i++;
 }
+#line 187 "parser.axe"
 const std__string__string ws_after = std__string__substring_se( expr , ws_start , i );
 if (i < expr_len && std__string__get_char ( expr , i ) == '(' && parser__macros_contains ( ident )) {
 i++;
+#line 192 "parser.axe"
 __list_std__string_t args = {0};
+#line 193 "parser.axe"
 std__string__StringBuilder current_arg = std__string__StringBuilder__init( 128 );
+#line 194 "parser.axe"
 int32_t paren_depth = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 201 "parser.axe"
 const char c = std__string__get_char( expr , i );
 if (c == '(') {
 paren_depth++;
@@ -7219,6 +10680,7 @@ std__string__StringBuilder__append_char(&current_arg, c);
 }
 else if (c == ')') {
 if (paren_depth == 0) {
+#line 208 "parser.axe"
 const std__string__string arg_str = std__string__strip( std__string__StringBuilder__to_string( &current_arg ) );
 if (std__string__str_len ( arg_str ) > 0) {
 __list_std__string_push(&args, arg_str);
@@ -7233,6 +10695,7 @@ std__string__StringBuilder__append_char(&current_arg, c);
 }
 }
 else if (c == ',' && paren_depth == 0) {
+#line 220 "parser.axe"
 const std__string__string arg_str = std__string__strip( std__string__StringBuilder__to_string( &current_arg ) );
 if (std__string__str_len ( arg_str ) > 0) {
 __list_std__string_push(&args, arg_str);
@@ -7245,22 +10708,29 @@ std__string__StringBuilder__append_char(&current_arg, c);
 }
 i++;
 }
+#line 233 "parser.axe"
 const structs__MacroDef defn = parser__macros_get( ident );
+#line 234 "parser.axe"
 std__string__StringBuilder expanded = std__string__StringBuilder__init( 256 );
+#line 235 "parser.axe"
 int32_t tok_idx = 0;
 while (1) {
 if (tok_idx >= len_ptr(defn.body)) {
 break;
 }
+#line 242 "parser.axe"
 const lexer__Token tok = defn.body->data[ tok_idx ];
 if (tok.token_type== lexer__TokenType_IDENTIFIER) {
+#line 245 "parser.axe"
 bool found_param = false;
+#line 246 "parser.axe"
 int32_t param_idx = 0;
 while (1) {
 if (param_idx >= len_ptr(defn.params) || param_idx >= len_v(args)) {
 break;
 }
 if (std__string__compare ( tok.value, defn.params->data[ param_idx ]) == 0) {
+#line 252 "parser.axe"
 const std__string__string arg_expanded = parser__expand_macros_in_expression( args.data[ param_idx ]);
 std__string__StringBuilder__append(&expanded, arg_expanded);
 found_param = true;
@@ -7290,8 +10760,10 @@ std__string__StringBuilder__append_char(&expanded, ' ');
 }
 tok_idx++;
 }
+#line 280 "parser.axe"
 const std__string__string expanded_text = std__string__StringBuilder__to_string( &expanded );
 std__string__StringBuilder__destroy(&expanded);
+#line 283 "parser.axe"
 const std__string__string fully_expanded = parser__expand_macros_in_expression( expanded_text );
 std__string__StringBuilder__append(&result, fully_expanded);
 }
@@ -7305,12 +10777,15 @@ std__string__StringBuilder__append_char(&result, ch);
 i++;
 }
 }
+#line 295 "parser.axe"
 const std__string__string final_result = std__string__StringBuilder__to_string( &result );
 std__string__StringBuilder__destroy(&result);
 return final_result;
 }
 
+#line 301
 void parser__register_variable(std__string__string var_name, bool is_mutable, int32_t line_num, std__string__string source_file) {
+#line 302 "parser.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 );
 gstate__debug_print_raw("\n[DEBUG] register_variable:");
 gstate__debug_print_raw("\n[DEBUG]   name:");
@@ -7324,9 +10799,12 @@ gstate__debug_print_raw("false");
 }
 if (std__maps__StringBoolMap__contains( &g_var_mutability , var_name )) {
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 315 "parser.axe"
 const int32_t prev_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (prev_depth < g_current_scope_depth) {
+#line 318 "parser.axe"
 const int32_t prev_line = std__maps__StringIntMap__get( &g_var_declaration_lines , var_name );
+#line 319 "parser.axe"
 const std__string__string prev_file = std__maps__StringStringMap__get( &g_var_declaration_files , var_name );
 std__io__print(source_file);
 std__io__print(":");
@@ -7360,29 +10838,36 @@ std__maps__StringIntMap__set(&g_var_scope_depth, &arena, var_name, g_current_sco
 parser__register_for_usage_tracking(var_name);
 }
 
+#line 356
 void parser__register_for_mutation_tracking(std__string__string var_name) {
 __list_std__string_push(&g_mutable_vars_in_scope, var_name);
 }
 
+#line 361
 void parser__register_for_usage_tracking(std__string__string var_name) {
 __list_std__string_push(&g_all_vars_in_scope, var_name);
 }
 
+#line 366
 void parser__push_scope() {
 g_current_scope_depth = g_current_scope_depth + 1;
 }
 
+#line 371
 void parser__pop_scope() {
 if (g_current_scope_depth <= 0) {
 return ;
 }
+#line 376 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v(g_all_vars_in_scope)) {
 break;
 }
+#line 381 "parser.axe"
 const std__string__string var_name = g_all_vars_in_scope.data[ i ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 383 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == g_current_scope_depth) {
 std__maps__StringBoolMap__pop(&g_var_mutability, var_name);
@@ -7396,16 +10881,22 @@ i++;
 g_current_scope_depth = g_current_scope_depth - 1;
 }
 
+#line 398
 void parser__clear_local_variables() {
+#line 399 "parser.axe"
 __list_std__string_t new_all_vars = {0};
+#line 400 "parser.axe"
 __list_std__string_t new_mut_vars = {0};
+#line 401 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v(g_all_vars_in_scope)) {
 break;
 }
+#line 407 "parser.axe"
 const std__string__string var_name = g_all_vars_in_scope.data[ i ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 409 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == 0) {
 __list_std__string_push(&new_all_vars, var_name);
@@ -7421,11 +10912,13 @@ std__maps__StringIntMap__pop(&g_var_scope_depth, var_name);
 }
 i++;
 }
+#line 424 "parser.axe"
 int32_t j = 0;
 while (1) {
 if (j >= len_v(new_all_vars)) {
 break;
 }
+#line 429 "parser.axe"
 const std__string__string var_name = new_all_vars.data[ j ];
 if (std__maps__StringBoolMap__contains( &g_var_mutability , var_name )) {
 if (std__maps__StringBoolMap__get( &g_var_mutability , var_name )) {
@@ -7438,7 +10931,9 @@ g_all_vars_in_scope = new_all_vars;
 g_mutable_vars_in_scope = new_mut_vars;
 }
 
+#line 443
 bool parser__is_variable_declared(std__string__string var_name) {
+#line 444 "parser.axe"
 const bool declared = std__maps__StringBoolMap__contains( &g_var_mutability , var_name );
 gstate__debug_print_raw("\n[DEBUG] is_variable_declared:");
 gstate__debug_print_str(var_name);
@@ -7451,12 +10946,14 @@ gstate__debug_print_raw("\n[DEBUG]   declared: false");
 return declared;
 }
 
+#line 456
 bool parser__is_variable_mutable(std__string__string var_name) {
 if (! parser__is_variable_declared ( var_name )) {
 gstate__debug_print_raw("\n[DEBUG] is_variable_mutable: not declared, treating as mutable:");
 gstate__debug_print_str(var_name);
 return true;
 }
+#line 462 "parser.axe"
 const bool mut_val = std__maps__StringBoolMap__get( &g_var_mutability , var_name );
 gstate__debug_print_raw("\n[DEBUG] is_variable_mutable:");
 gstate__debug_print_str(var_name);
@@ -7469,30 +10966,40 @@ gstate__debug_print_raw("\n[DEBUG]   mutable: false");
 return mut_val;
 }
 
+#line 474
 void parser__mark_variable_mutated(std__string__string var_name) {
+#line 475 "parser.axe"
 std__arena__Arena arena = std__arena__Arena__create( 512 );
 std__maps__StringBoolMap__set(&g_var_actually_mutated, &arena, var_name, true);
 }
 
+#line 480
 void parser__mark_variable_used(std__string__string var_name) {
+#line 481 "parser.axe"
 std__arena__Arena arena = std__arena__Arena__create( 512 );
 std__maps__StringBoolMap__set(&g_var_actually_used, &arena, var_name, true);
 }
 
+#line 486
 void parser__scan_expression_for_usage(std__string__string expr) {
+#line 487 "parser.axe"
 int32_t pos = 0;
 while (1) {
 if (pos >= std__string__str_len ( expr )) {
 break;
 }
+#line 493 "parser.axe"
 const char ch = std__string__get_char( expr , pos );
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+#line 496 "parser.axe"
 const int32_t id_start = pos;
+#line 497 "parser.axe"
 int32_t id_end = pos;
 while (1) {
 if (id_end >= std__string__str_len ( expr )) {
 break;
 }
+#line 502 "parser.axe"
 const char ich = std__string__get_char( expr , id_end );
 if (( ich >= 'a' && ich <= 'z' ) || ( ich >= 'A' && ich <= 'Z' ) || ( ich >= '0' && ich <= '9' ) || ich == '_') {
 id_end = id_end + 1;
@@ -7501,6 +11008,7 @@ else {
 break;
 }
 }
+#line 510 "parser.axe"
 const std__string__string var_name = std__string__substring_se( expr , id_start , id_end );
 if (std__string__str_len ( var_name ) > 0 && parser__is_variable_declared ( var_name )) {
 parser__mark_variable_used(var_name);
@@ -7513,21 +11021,25 @@ pos++;
 }
 }
 
+#line 525
 bool parser__contains_c_call(std__string__string s) {
 if (s.len< 2) {
 return false;
 }
+#line 529 "parser.axe"
 uintptr_t i = 0;
 while (1) {
 if (i >= s.len) {
 break;
 }
 if (s . data [ i ] == 'C') {
+#line 536 "parser.axe"
 uintptr_t j = i + 1;
 while (1) {
 if (j >= s.len) {
 break;
 }
+#line 541 "parser.axe"
 const char ch = s.data[ j ];
 if (ch == ' ' || ch == '\t') {
 j++;
@@ -7544,20 +11056,25 @@ i++;
 return false;
 }
 
+#line 558
 void parser__scan_expression_for_addr(std__string__string expr) {
+#line 559 "parser.axe"
 int32_t pos = 0;
 while (1) {
 if (pos >= std__string__str_len ( expr )) {
 break;
 }
 if (pos + 4 <= std__string__str_len ( expr )) {
+#line 567 "parser.axe"
 const std__string__string substr = std__string__substring_se( expr , pos , pos + 4 );
 if (std__string__equals_c ( substr , "addr" )) {
+#line 570 "parser.axe"
 int32_t scan_pos = pos + 4;
 while (1) {
 if (scan_pos >= std__string__str_len ( expr )) {
 break;
 }
+#line 575 "parser.axe"
 const char ch = std__string__get_char( expr , scan_pos );
 if (ch != ' ' && ch != '\t') {
 break;
@@ -7566,13 +11083,17 @@ scan_pos++;
 }
 if (scan_pos < std__string__str_len ( expr ) && std__string__get_char ( expr , scan_pos ) == '(') {
 scan_pos++;
+#line 585 "parser.axe"
 const int32_t arg_start = scan_pos;
+#line 586 "parser.axe"
 int32_t arg_end = scan_pos;
+#line 587 "parser.axe"
 int32_t paren_depth = 1;
 while (1) {
 if (arg_end >= std__string__str_len ( expr )) {
 break;
 }
+#line 593 "parser.axe"
 const char ach = std__string__get_char( expr , arg_end );
 if (ach == '(') {
 paren_depth = paren_depth + 1;
@@ -7586,9 +11107,13 @@ break;
 arg_end++;
 }
 if (arg_end > arg_start) {
+#line 606 "parser.axe"
 const std__string__string arg = std__string__strip( std__string__substring_se ( expr , arg_start , arg_end ) );
+#line 609 "parser.axe"
 std__string__string var_name = arg;
+#line 610 "parser.axe"
 const int32_t dot_pos = std__string__find_char_from( var_name , '.' , 0 );
+#line 611 "parser.axe"
 const int32_t star_pos = std__string__find_char_from( var_name , '*' , 0 );
 if (dot_pos > 0) {
 var_name = std__string__strip ( std__string__substring_se ( var_name , 0 , dot_pos ) );
@@ -7607,23 +11132,29 @@ pos++;
 }
 }
 
+#line 634
 void parser__scan_expression_for_c_calls(std__string__string expr) {
 if (! parser__contains_c_call ( expr )) {
 return ;
 }
+#line 641 "parser.axe"
 int32_t pos = 0;
 while (1) {
 if (pos >= std__string__str_len ( expr )) {
 break;
 }
+#line 647 "parser.axe"
 const char ch = std__string__get_char( expr , pos );
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+#line 651 "parser.axe"
 const int32_t id_start = pos;
+#line 652 "parser.axe"
 int32_t id_end = pos;
 while (1) {
 if (id_end >= std__string__str_len ( expr )) {
 break;
 }
+#line 657 "parser.axe"
 const char ich = std__string__get_char( expr , id_end );
 if (( ich >= 'a' && ich <= 'z' ) || ( ich >= 'A' && ich <= 'Z' ) || ( ich >= '0' && ich <= '9' ) || ich == '_') {
 id_end = id_end + 1;
@@ -7632,6 +11163,7 @@ else {
 break;
 }
 }
+#line 665 "parser.axe"
 const std__string__string var_name = std__string__substring_se( expr , id_start , id_end );
 if (std__string__str_len ( var_name ) > 0 && parser__is_variable_declared ( var_name )) {
 parser__mark_variable_used(var_name);
@@ -7647,15 +11179,21 @@ pos = pos + 1;
 }
 }
 
+#line 685
 void parser__scan_function_args_for_ref_params(std__string__string args_str) {
+#line 687 "parser.axe"
 __list_std__string_t args = {0};
+#line 688 "parser.axe"
 std__string__StringBuilder current_arg = std__string__StringBuilder__init( 128 );
+#line 689 "parser.axe"
 int32_t depth = 0;
+#line 690 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= std__string__str_len ( args_str )) {
 break;
 }
+#line 697 "parser.axe"
 const char ch = std__string__get_char( args_str , i );
 if (ch == '(' || ch == '[') {
 depth = depth + 1;
@@ -7666,6 +11204,7 @@ depth = depth - 1;
 std__string__StringBuilder__append_char(&current_arg, ch);
 }
 else if (ch == ',' && depth == 0) {
+#line 706 "parser.axe"
 const std__string__string arg = std__string__strip( std__string__StringBuilder__to_string( &current_arg ) );
 if (std__string__str_len ( arg ) > 0) {
 __list_std__string_push(&args, arg);
@@ -7678,23 +11217,29 @@ std__string__StringBuilder__append_char(&current_arg, ch);
 }
 i = i + 1;
 }
+#line 720 "parser.axe"
 const std__string__string last_arg = std__string__strip( std__string__StringBuilder__to_string( &current_arg ) );
 if (std__string__str_len ( last_arg ) > 0) {
 __list_std__string_push(&args, last_arg);
 }
 std__string__StringBuilder__destroy(&current_arg);
+#line 727 "parser.axe"
 int32_t arg_idx = 0;
 while (1) {
 if (arg_idx >= len_v(args)) {
 break;
 }
+#line 733 "parser.axe"
 const std__string__string arg = args.data[ arg_idx ];
+#line 737 "parser.axe"
 bool is_simple_var = true;
+#line 738 "parser.axe"
 int32_t j = 0;
 while (1) {
 if (j >= std__string__str_len ( arg )) {
 break;
 }
+#line 743 "parser.axe"
 const char c = std__string__get_char( arg , j );
 if (c == '(' || c == ')' || c == '.' || c == '+' || c == '-' || c == '*' || c == '/' || c == '[' || c == ']') {
 is_simple_var = false;
@@ -7703,6 +11248,7 @@ break;
 j = j + 1;
 }
 if (is_simple_var && std__string__str_len ( arg ) > 0) {
+#line 753 "parser.axe"
 const char first_ch = std__string__get_char( arg , 0 );
 if (( first_ch >= 'a' && first_ch <= 'z' ) || ( first_ch >= 'A' && first_ch <= 'Z' ) || first_ch == '_') {
 parser__mark_variable_used(arg);
@@ -7713,6 +11259,7 @@ arg_idx = arg_idx + 1;
 }
 }
 
+#line 765
 void parser__check_null_usage(structs__ParserContext* ctx, std__string__string ident) {
 if (std__string__equals_c ( ident , "NULL" )) {
 std__io__print(ctx->filename);
@@ -7723,21 +11270,28 @@ exit(1);
 }
 }
 
+#line 778
 bool parser__has_function_call_in_expression(std__string__string expr) {
+#line 779 "parser.axe"
 int32_t i = 0;
+#line 780 "parser.axe"
 const int32_t expr_len = std__string__str_len( expr );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 787 "parser.axe"
 const char ch = std__string__get_char( expr , i );
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+#line 790 "parser.axe"
 const int32_t id_start = i;
+#line 791 "parser.axe"
 int32_t id_end = i;
 while (1) {
 if (id_end >= expr_len) {
 break;
 }
+#line 796 "parser.axe"
 const char ich = std__string__get_char( expr , id_end );
 if (( ich >= 'a' && ich <= 'z' ) || ( ich >= 'A' && ich <= 'Z' ) || ( ich >= '0' && ich <= '9' ) || ich == '_') {
 id_end++;
@@ -7746,12 +11300,15 @@ else {
 break;
 }
 }
+#line 804 "parser.axe"
 const std__string__string ident = std__string__substring_se( expr , id_start , id_end );
+#line 806 "parser.axe"
 int32_t j = id_end;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 811 "parser.axe"
 const char wch = std__string__get_char( expr , j );
 if (wch == ' ' || wch == '\t' || wch == '\n') {
 j++;
@@ -7774,21 +11331,28 @@ i++;
 return false;
 }
 
+#line 835
 std__string__string parser__extract_function_name(std__string__string expr) {
+#line 836 "parser.axe"
 int32_t i = 0;
+#line 837 "parser.axe"
 const int32_t expr_len = std__string__str_len( expr );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 844 "parser.axe"
 const char ch = std__string__get_char( expr , i );
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+#line 847 "parser.axe"
 const int32_t id_start = i;
+#line 848 "parser.axe"
 int32_t id_end = i;
 while (1) {
 if (id_end >= expr_len) {
 break;
 }
+#line 853 "parser.axe"
 const char ich = std__string__get_char( expr , id_end );
 if (( ich >= 'a' && ich <= 'z' ) || ( ich >= 'A' && ich <= 'Z' ) || ( ich >= '0' && ich <= '9' ) || ich == '_') {
 id_end = id_end + 1;
@@ -7797,12 +11361,15 @@ else {
 break;
 }
 }
+#line 861 "parser.axe"
 const std__string__string ident = std__string__substring_se( expr , id_start , id_end );
+#line 863 "parser.axe"
 int32_t j = id_end;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 868 "parser.axe"
 const char wch = std__string__get_char( expr , j );
 if (wch == ' ' || wch == '\t' || wch == '\n') {
 j = j + 1;
@@ -7825,19 +11392,24 @@ i++;
 return std__string__str( "<unknown function>" );
 }
 
+#line 892
 bool parser__has_pointer_syntax(std__string__string type_str) {
+#line 893 "parser.axe"
 const int32_t len = std__string__str_len( type_str );
 if (len == 0) {
 return false;
 }
+#line 898 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len) {
 break;
 }
+#line 903 "parser.axe"
 const char ch = std__string__get_char( type_str , i );
 if (ch == '*') {
 if (i > 0) {
+#line 906 "parser.axe"
 const char prev_ch = std__string__get_char( type_str , i - 1 );
 if (( prev_ch >= 'a' && prev_ch <= 'z' ) || ( prev_ch >= 'A' && prev_ch <= 'Z' ) || ( prev_ch >= '0' && prev_ch <= '9' ) || prev_ch == '_') {
 return true;
@@ -7849,10 +11421,14 @@ i++;
 return false;
 }
 
+#line 919
 void parser__add_child_to_ast(structs__ASTNode* ast, structs__ASTNode child) {
 if (ast->children== nil) {
+#line 922 "parser.axe"
 __list_structs__ASTNode_t new_list = {0};
+#line 923 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 924 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &new_list, list_size);
@@ -7860,7 +11436,9 @@ ast->children = heap_list;
 }
 }
 if (ast->children!= nil) {
+#line 934 "parser.axe"
 __list_structs__ASTNode_t temp_list = {0};
+#line 935 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
 memcpy(&temp_list, ast->children, list_size);
 __list_structs__ASTNode_push(&temp_list, child);
@@ -7868,7 +11446,9 @@ memcpy(ast->children, &temp_list, list_size);
 }
 }
 
+#line 944
 structs__ASTNode parser__parse(__list_lexer__Token_t* tokens, bool is_axec, bool check_entry_point, std__string__string current_module, std__string__string filename) {
+#line 945 "parser.axe"
 structs__ParserContext ctx = {0};
 ctx.tokens = tokens;
 ctx.pos = 0;
@@ -7878,11 +11458,13 @@ ctx.current_module = current_module;
 ctx.filename = filename;
 g_check_shadowing = check_entry_point;
 gstate__debug_print_raw("=== DEBUG TOKENS ===");
+#line 956 "parser.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_ptr(ctx.tokens)) {
 break;
 }
+#line 961 "parser.axe"
 const lexer__Token t = ctx.tokens->data[ i ];
 gstate__debug_print_i32(i);
 gstate__debug_print_i32(t.token_type);
@@ -7890,6 +11472,7 @@ gstate__debug_print_str(t.value);
 i = i + 1;
 }
 gstate__debug_print_raw("=== END TOKENS ===");
+#line 969 "parser.axe"
 structs__ASTNode ast = {0};
 ast.node_type = std__string__str ( "Program" );
 ast.line = 1;
@@ -7914,16 +11497,19 @@ parser__parse_top_level(&ctx, &ast);
 return ast;
 }
 
+#line 999
 void parser__parse_top_level(structs__ParserContext* ctx, structs__ASTNode* ast) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 return ;
 }
+#line 1004 "parser.axe"
 const  token_type = ctx->tokens->data[ ctx->pos].token_type;
 if (token_type == lexer__TokenType_COMMENT) {
 ctx->pos++;
 return ;
 }
 if (token_type == lexer__TokenType_USE) {
+#line 1012 "parser.axe"
 structs__ASTNode node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( node.node_type) > 0) {
 parser__add_child_to_ast(ast, node);
@@ -7931,13 +11517,16 @@ parser__add_child_to_ast(ast, node);
 return ;
 }
 if (token_type == lexer__TokenType_IDENTIFIER) {
+#line 1020 "parser.axe"
 const lexer__Token ident_tok = ctx->tokens->data[ ctx->pos];
+#line 1021 "parser.axe"
 const std__string__string ident_name = ident_tok.value;
 parser__check_null_usage(ctx, ident_name);
 if (parser__macros_contains ( ident_name )) {
 ctx->pos = ctx->pos+ 1;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 1029 "parser.axe"
 std__string__string err = std__string__str( "Expected '(' after macro name" );
 err = std__string__concat ( err , std__string__str ( " instead got " ) );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
@@ -7945,15 +11534,20 @@ std__errors__enforce(false, std__errors__error__create(err.data));
 return ;
 }
 parser__consume(ctx);
+#line 1037 "parser.axe"
 __list_std__string_t args = {0};
+#line 1038 "parser.axe"
 std__string__string current_arg = std__string__str( "" );
+#line 1039 "parser.axe"
 int32_t paren_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1046 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RPAREN&& paren_depth == 0) {
+#line 1049 "parser.axe"
 const std__string__string trimmed = std__string__strip( current_arg );
 if (std__string__str_len ( trimmed ) > 0) {
 __list_std__string_push(&args, trimmed);
@@ -7974,6 +11568,7 @@ parser__consume(ctx);
 continue;
 }
 if (t.token_type== lexer__TokenType_COMMA&& paren_depth == 0) {
+#line 1072 "parser.axe"
 const std__string__string trimmed_arg = std__string__strip( current_arg );
 if (std__string__str_len ( trimmed_arg ) > 0) {
 __list_std__string_push(&args, trimmed_arg);
@@ -8002,13 +11597,17 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 1100 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after macro invocation" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__consume(ctx);
+#line 1106 "parser.axe"
 const structs__MacroDef defn = parser__macros_get( ident_name );
+#line 1107 "parser.axe"
 __list_lexer__Token_t expanded_tokens = {0};
+#line 1108 "parser.axe"
 int32_t i_tok = 0;
 while (1) {
 if (i_tok >= len_ptr(defn.body)) {
@@ -8017,19 +11616,24 @@ break;
 __list_lexer__Token_push(&expanded_tokens, defn.body->data[i_tok]);
 i_tok = i_tok + 1;
 }
+#line 1118 "parser.axe"
 int32_t i_param = 0;
 while (1) {
 if (i_param >= len_ptr(defn.params) || i_param >= len_v(args)) {
 break;
 }
+#line 1124 "parser.axe"
 const std__string__string param_name = defn.params->data[ i_param ];
+#line 1125 "parser.axe"
 const std__string__string arg_expr = args.data[ i_param ];
+#line 1127 "parser.axe"
 int32_t j_tok = 0;
 while (1) {
 if (j_tok >= len_v(expanded_tokens)) {
 break;
 }
 if (expanded_tokens.data[ j_tok ].token_type== lexer__TokenType_IDENTIFIER) {
+#line 1134 "parser.axe"
 lexer__Token* exp_token = &(expanded_tokens.data[ j_tok ]);
 if (std__string__compare ( exp_token->value, param_name ) == 0) {
 exp_token->value = arg_expr;
@@ -8042,9 +11646,12 @@ j_tok = j_tok + 1;
 }
 i_param = i_param + 1;
 }
+#line 1149 "parser.axe"
 const __list_lexer__Token_t* expanded_ref = &expanded_tokens;
+#line 1150 "parser.axe"
 const structs__ASTNode expanded_ast = parser__parse( expanded_ref , ctx->is_axec, false , ctx->current_module, ctx->filename);
 if (expanded_ast.children!= nil) {
+#line 1153 "parser.axe"
 int32_t k = 0;
 while (1) {
 if (k >= (*expanded_ast.children) . len) {
@@ -8061,6 +11668,7 @@ if (token_type == lexer__TokenType_MAIN) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
+#line 1172 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'def main()'" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8069,18 +11677,23 @@ ctx->pos++;
 parser__clear_local_variables();
 g_function_has_raw_block = false;
 g_current_scope_depth = 1;
+#line 1182 "parser.axe"
 structs__ASTNode main_node = {0};
 main_node.node_type = std__string__str ( "Function" );
 main_node.data.function.name = std__string__str ( "main" );
 main_node.data.function.return_type = std__string__str ( "" );
 main_node.data.function.is_public = false;
+#line 1189 "parser.axe"
 __list_std__string_t empty_params = {0};
+#line 1190 "parser.axe"
 const uintptr_t params_size = sizeof(__list_std__string_t);
+#line 1191 "parser.axe"
 const __list_std__string_t* heap_params = (__list_std__string_t*)( malloc( params_size ) );
 if (heap_params != nil) {
 memcpy(heap_params, &empty_params, params_size);
 main_node.data.function.params = heap_params;
 }
+#line 1198 "parser.axe"
 __list_structs__ASTNode_t children = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -8094,25 +11707,31 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 ctx->pos++;
 break;
 }
+#line 1215 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&children, stmt);
 }
 }
+#line 1222 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 1223 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &children, list_size);
 main_node.children = heap_list;
 }
 if (! g_function_has_raw_block) {
+#line 1231 "parser.axe"
 int32_t i_mut = 0;
 while (1) {
 if (i_mut >= len_v(g_mutable_vars_in_scope)) {
 break;
 }
+#line 1236 "parser.axe"
 const std__string__string var_name = g_mutable_vars_in_scope.data[ i_mut ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 1239 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == 0) {
 i_mut++;
@@ -8132,13 +11751,16 @@ i_mut++;
 }
 }
 if (! g_function_has_raw_block) {
+#line 1260 "parser.axe"
 int32_t i_unused = 0;
 while (1) {
 if (i_unused >= len_v(g_all_vars_in_scope)) {
 break;
 }
+#line 1265 "parser.axe"
 const std__string__string var_name = g_all_vars_in_scope.data[ i_unused ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 1268 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == 0) {
 i_unused++;
@@ -8146,7 +11768,9 @@ continue;
 }
 }
 if (! std__maps__StringBoolMap__contains( &g_var_actually_used , var_name )) {
+#line 1276 "parser.axe"
 int32_t decl_line = 1;
+#line 1277 "parser.axe"
 std__string__string decl_file = ctx->filename;
 if (std__maps__StringIntMap__contains( &g_var_declaration_lines , var_name )) {
 decl_line = std__maps__StringIntMap__get( &g_var_declaration_lines , var_name );
@@ -8171,10 +11795,12 @@ parser__add_child_to_ast(ast, main_node);
 return ;
 }
 if (token_type == lexer__TokenType_LBRACKET) {
+#line 1305 "parser.axe"
 __list_std__string_t tags = {0};
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_IDENTIFIER) {
+#line 1310 "parser.axe"
 const std__string__string tag_name = ctx->tokens->data[ ctx->pos].value;
 if (! std__string__equals_c ( tag_name , "inline" ) && ! std__string__equals_c ( tag_name , "noinline" ) && ! std__string__equals_c ( tag_name , "cold" ) && ! std__string__equals_c ( tag_name , "hot" )) {
 std__io__print(ctx->filename);
@@ -8195,9 +11821,12 @@ parser__skip_whitespace(ctx);
 }
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_DEF) {
 ctx->pos++;
+#line 1334 "parser.axe"
 structs__ASTNode func_node = parser__parse_function( ctx );
 if (std__string__str_len ( func_node.node_type) > 0) {
+#line 1337 "parser.axe"
 const uintptr_t tags_size = sizeof(__list_std__string_t);
+#line 1338 "parser.axe"
 const __list_std__string_t* heap_tags = (__list_std__string_t*)( malloc( tags_size ) );
 if (heap_tags != nil) {
 memcpy(heap_tags, &tags, tags_size);
@@ -8210,6 +11839,7 @@ return ;
 }
 if (token_type == lexer__TokenType_DEF) {
 ctx->pos++;
+#line 1352 "parser.axe"
 structs__ASTNode func_node = parser__parse_function( ctx );
 if (std__string__str_len ( func_node.node_type) > 0) {
 parser__add_child_to_ast(ast, func_node);
@@ -8217,6 +11847,7 @@ parser__add_child_to_ast(ast, func_node);
 return ;
 }
 if (token_type == lexer__TokenType_EXTERN) {
+#line 1360 "parser.axe"
 const structs__ASTNode extern_node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( extern_node.node_type) > 0) {
 parser__add_child_to_ast(ast, extern_node);
@@ -8227,17 +11858,20 @@ if (token_type == lexer__TokenType_MODEL) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
+#line 1372 "parser.axe"
 std__string__string err = std__string__str( "Expected model name after 'model'" );
 std__errors__enforce(false, std__errors__error__create(err.data));
 return ;
 }
 if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACE) {
 ctx->pos++;
+#line 1381 "parser.axe"
 int32_t depth_model = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1386 "parser.axe"
 const lexer__Token t_br = ctx->tokens->data[ ctx->pos];
 if (t_br.token_type== lexer__TokenType_LBRACE) {
 depth_model = depth_model + 1;
@@ -8254,28 +11888,37 @@ ctx->pos++;
 return ;
 }
 if (ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+#line 1402 "parser.axe"
 std__string__string err = std__string__str( "Expected model name after 'model', instead got: " );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
 std__errors__enforce(false, std__errors__error__create(err.data));
 return ;
 }
+#line 1408 "parser.axe"
 structs__ASTNode model_node = {0};
 model_node.node_type = std__string__str ( "Model" );
+#line 1410 "parser.axe"
 const std__string__string model_name = ctx->tokens->data[ ctx->pos].value;
 model_node.data.model_node.name = model_name;
 model_node.data.model_node.is_public = false;
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
+#line 1417 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after model name" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 ctx->pos++;
+#line 1423 "parser.axe"
 __list_std__string_t field_names = {0};
+#line 1424 "parser.axe"
 __list_std__string_t field_types = {0};
+#line 1426 "parser.axe"
 __list_std__string_t union_member_parents = {0};
+#line 1427 "parser.axe"
 __list_std__string_t union_member_names = {0};
+#line 1428 "parser.axe"
 __list_std__string_t union_member_types = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -8294,10 +11937,13 @@ ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_DEF) {
 ctx->pos++;
+#line 1451 "parser.axe"
 structs__ASTNode method_node = parser__parse_function( ctx );
 if (std__string__str_len ( method_node.node_type) > 0) {
 method_node.data.function.is_public = true;
+#line 1455 "parser.axe"
 const std__string__string orig_name = method_node.data.function.name;
+#line 1456 "parser.axe"
 std__string__string full_name = model_name;
 full_name = std__string__concat ( full_name , std__string__str ( "__" ) );
 full_name = std__string__concat ( full_name , orig_name );
@@ -8309,9 +11955,12 @@ continue;
 }
 if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_DEF) {
 ctx->pos++;
+#line 1470 "parser.axe"
 structs__ASTNode method_node2 = parser__parse_function( ctx );
 if (std__string__str_len ( method_node2.node_type) > 0) {
+#line 1472 "parser.axe"
 const std__string__string orig_name2 = method_node2.data.function.name;
+#line 1473 "parser.axe"
 std__string__string full_name2 = model_name;
 full_name2 = std__string__concat ( full_name2 , std__string__str ( "__" ) );
 full_name2 = std__string__concat ( full_name2 , orig_name2 );
@@ -8321,12 +11970,14 @@ parser__add_child_to_ast(ast, method_node2);
 continue;
 }
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_IDENTIFIER) {
+#line 1483 "parser.axe"
 const std__string__string field_name = ctx->tokens->data[ ctx->pos].value;
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_COLON) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
+#line 1493 "parser.axe"
 std__string__string field_type = parser__parse_type( ctx );
 if (std__string__str_len ( field_type ) == 5 && std__string__compare ( field_type , std__string__str ( "union" ) ) == 0 && ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACE) {
 __list_std__string_push(&field_names, field_name);
@@ -8340,6 +11991,7 @@ parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1513 "parser.axe"
 const lexer__Token t_inner = ctx->tokens->data[ ctx->pos];
 if (t_inner.token_type== lexer__TokenType_RBRACE) {
 ctx->pos++;
@@ -8353,6 +12005,7 @@ if (t_inner.token_type!= lexer__TokenType_IDENTIFIER) {
 ctx->pos++;
 continue;
 }
+#line 1530 "parser.axe"
 const std__string__string member_name = t_inner.value;
 ctx->pos++;
 parser__skip_whitespace(ctx);
@@ -8361,6 +12014,7 @@ continue;
 }
 ctx->pos++;
 parser__skip_whitespace(ctx);
+#line 1541 "parser.axe"
 const std__string__string member_base_type = parser__parse_type( ctx );
 parser__skip_whitespace(ctx);
 if (std__string__str_len ( member_base_type ) == 5 && std__string__compare ( member_base_type , std__string__str ( "model" ) ) == 0 && ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACE) {
@@ -8368,11 +12022,13 @@ __list_std__string_push(&union_member_parents, field_name);
 __list_std__string_push(&union_member_names, member_name);
 __list_std__string_push(&union_member_types, member_base_type);
 ctx->pos++;
+#line 1553 "parser.axe"
 int32_t brace_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1559 "parser.axe"
 const lexer__Token t_nested = ctx->tokens->data[ ctx->pos];
 if (t_nested.token_type== lexer__TokenType_WHITESPACE|| t_nested.token_type== lexer__TokenType_NEWLINE|| t_nested.token_type== lexer__TokenType_SEMICOLON|| t_nested.token_type== lexer__TokenType_COMMENT) {
 ctx->pos++;
@@ -8396,6 +12052,7 @@ if (t_nested.token_type!= lexer__TokenType_IDENTIFIER) {
 ctx->pos++;
 continue;
 }
+#line 1588 "parser.axe"
 const std__string__string nested_name = t_nested.value;
 ctx->pos++;
 parser__skip_whitespace(ctx);
@@ -8404,6 +12061,7 @@ continue;
 }
 ctx->pos++;
 parser__skip_whitespace(ctx);
+#line 1598 "parser.axe"
 const std__string__string nested_type = parser__parse_type( ctx );
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_SEMICOLON) {
@@ -8419,6 +12077,7 @@ ctx->pos++;
 }
 }
 else {
+#line 1619 "parser.axe"
 const std__string__string member_type = member_base_type;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_SEMICOLON) {
@@ -8481,6 +12140,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1689 "parser.axe"
 const lexer__Token t = ctx->tokens->data[ ctx->pos];
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 ctx->pos++;
@@ -8494,29 +12154,36 @@ else {
 ctx->pos++;
 }
 }
+#line 1703 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 1704 "parser.axe"
 const __list_std__string_t* heap_names = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_names != nil) {
 memcpy(heap_names, &field_names, list_size);
 model_node.data.model_node.field_names = heap_names;
 }
+#line 1710 "parser.axe"
 const __list_std__string_t* heap_types = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_types != nil) {
 memcpy(heap_types, &field_types, list_size);
 model_node.data.model_node.field_types = heap_types;
 }
+#line 1716 "parser.axe"
 const uintptr_t union_list_size = sizeof(__list_std__string_t);
 if (len_v(union_member_parents) > 0) {
+#line 1718 "parser.axe"
 const __list_std__string_t* heap_union_parents = (__list_std__string_t*)( malloc( union_list_size ) );
 if (heap_union_parents != nil) {
 memcpy(heap_union_parents, &union_member_parents, union_list_size);
 model_node.data.model_node.union_member_parents = heap_union_parents;
 }
+#line 1724 "parser.axe"
 const __list_std__string_t* heap_union_names = (__list_std__string_t*)( malloc( union_list_size ) );
 if (heap_union_names != nil) {
 memcpy(heap_union_names, &union_member_names, union_list_size);
 model_node.data.model_node.union_member_names = heap_union_names;
 }
+#line 1730 "parser.axe"
 const __list_std__string_t* heap_union_types = (__list_std__string_t*)( malloc( union_list_size ) );
 if (heap_union_types != nil) {
 memcpy(heap_union_types, &union_member_types, union_list_size);
@@ -8530,25 +12197,31 @@ if (token_type == lexer__TokenType_ENUM) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+#line 1747 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected enum name after 'enum'" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1752 "parser.axe"
 const lexer__Token name_tok = ctx->tokens->data[ ctx->pos];
 ctx->pos++;
+#line 1754 "parser.axe"
 const std__string__string enum_name = name_tok.value;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
+#line 1758 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after enum name" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 ctx->pos++;
+#line 1765 "parser.axe"
 __list_std__string_t values = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 1771 "parser.axe"
 const lexer__Token t = ctx->tokens->data[ ctx->pos];
 if (t.token_type== lexer__TokenType_RBRACE) {
 ctx->pos++;
@@ -8565,10 +12238,13 @@ continue;
 }
 ctx->pos++;
 }
+#line 1795 "parser.axe"
 structs__ASTNode enum_node = {0};
 enum_node.node_type = std__string__str ( "Enum" );
 enum_node.data.enum_node.name = enum_name;
+#line 1800 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 1801 "parser.axe"
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &values, list_size);
@@ -8578,11 +12254,14 @@ parser__add_child_to_ast(ast, enum_node);
 return ;
 }
 if (token_type == lexer__TokenType_MUT|| token_type == lexer__TokenType_VAL) {
+#line 1813 "parser.axe"
 const structs__ASTNode decl_node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( decl_node.node_type) > 0) {
 if (std__string__equals_c ( decl_node.node_type, "Declaration" )) {
+#line 1816 "parser.axe"
 const std__string__string init_expr = decl_node.data.declaration.initializer;
 if (parser__has_function_call_in_expression ( init_expr )) {
+#line 1818 "parser.axe"
 const std__string__string func_name = parser__extract_function_name( init_expr );
 std__io__print(ctx->filename);
 std__io__print(":");
@@ -8601,6 +12280,7 @@ if (token_type == lexer__TokenType_TEST) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
+#line 1838 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'test'" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8608,8 +12288,10 @@ return ;
 ctx->pos++;
 parser__clear_local_variables();
 g_current_scope_depth = 1;
+#line 1847 "parser.axe"
 structs__ASTNode test_node = {0};
 test_node.node_type = std__string__str ( "Test" );
+#line 1850 "parser.axe"
 __list_structs__ASTNode_t children = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -8623,12 +12305,15 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 ctx->pos++;
 break;
 }
+#line 1866 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&children, stmt);
 }
 }
+#line 1873 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 1874 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &children, list_size);
@@ -8643,13 +12328,16 @@ if (token_type == lexer__TokenType_OVERLOAD) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 1893 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected overload name after 'overload'" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1897 "parser.axe"
 const lexer__Token overload_name = parser__consume( ctx );
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 1901 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' after overload name" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8657,11 +12345,14 @@ return ;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 1909 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected parameter name in overload" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1913 "parser.axe"
 const lexer__Token param_name_token = parser__consume( ctx );
+#line 1914 "parser.axe"
 const std__string__string param_name = param_name_token.value;
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_COLON)) {
@@ -8673,6 +12364,7 @@ parser__skip_whitespace(ctx);
 }
 }
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 1927 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after overload parameter" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8680,12 +12372,15 @@ return ;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 1935 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after overload header" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__consume(ctx);
+#line 1942 "parser.axe"
 __list_std__string_t type_names = {0};
+#line 1943 "parser.axe"
 __list_std__string_t target_funcs = {0};
 while (1) {
 parser__skip_whitespace(ctx);
@@ -8696,37 +12391,46 @@ if (parser__expect ( ctx , lexer__TokenType_RBRACE)) {
 break;
 }
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 1955 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type name in overload mapping" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1959 "parser.axe"
 const lexer__Token type_token = parser__consume( ctx );
 __list_std__string_push(&type_names, type_token.value);
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_STAR)) {
 parser__consume(ctx);
+#line 1966 "parser.axe"
 const int32_t last_idx = len_v(type_names) - 1;
 type_names.data[last_idx] = std__string__concat ( type_names.data[ last_idx ], std__string__str ( "*" ) );
 parser__skip_whitespace(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 1973 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '=>' in overload mapping" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1977 "parser.axe"
 const lexer__Token op_token = parser__consume( ctx );
 if (! std__string__equals_c ( op_token.value, "=>" )) {
+#line 1979 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '=>' in overload mapping" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 1986 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected target function name in overload mapping" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 1990 "parser.axe"
 const lexer__Token first_target_token = parser__consume( ctx );
+#line 1991 "parser.axe"
 std__string__string target_name = first_target_token.value;
 parser__skip_whitespace(ctx);
 while (1) {
@@ -8736,6 +12440,7 @@ break;
 if (ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
 break;
 }
+#line 2000 "parser.axe"
 const lexer__Token extra_tok = parser__consume( ctx );
 target_name = std__string__concat ( target_name , std__string__str ( "_" ) );
 target_name = std__string__concat ( target_name , extra_tok.value);
@@ -8743,6 +12448,7 @@ parser__skip_whitespace(ctx);
 }
 __list_std__string_push(&target_funcs, target_name);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 2010 "parser.axe"
 std__string__string err = std__string__str( "Expected ';' after overload mapping, instead got " );
 if (ctx->pos< len_ptr(ctx->tokens)) {
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
@@ -8756,6 +12462,7 @@ return ;
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACE)) {
+#line 2023 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '}' after overload mappings" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8763,11 +12470,13 @@ return ;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 2032 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' with call expression after overload block" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__consume(ctx);
+#line 2038 "parser.axe"
 std__string__string call_expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -8776,6 +12485,7 @@ break;
 if (parser__expect ( ctx , lexer__TokenType_RPAREN)) {
 break;
 }
+#line 2047 "parser.axe"
 const lexer__Token t = parser__consume( ctx );
 if (t.token_type== lexer__TokenType_STR) {
 call_expr = std__string__concat ( call_expr , std__string__str ( "\"" ) );
@@ -8792,6 +12502,7 @@ call_expr = std__string__concat ( call_expr , t.value);
 }
 }
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 2062 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after overload call expression" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8799,23 +12510,29 @@ return ;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 2070 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after overload definition" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__consume(ctx);
+#line 2076 "parser.axe"
 structs__ASTNode overload_node = {0};
 overload_node.node_type = std__string__str ( "Overload" );
 overload_node.data.overload_node.name = overload_name.value;
 overload_node.data.overload_node.param_name = param_name;
 overload_node.data.overload_node.call_expr = call_expr;
+#line 2083 "parser.axe"
 const uintptr_t type_list_size = sizeof(__list_std__string_t);
+#line 2084 "parser.axe"
 const __list_std__string_t* heap_type_list = (__list_std__string_t*)( malloc( type_list_size ) );
 if (heap_type_list != nil) {
 memcpy(heap_type_list, &type_names, type_list_size);
 overload_node.data.overload_node.type_names = heap_type_list;
 }
+#line 2090 "parser.axe"
 const uintptr_t func_list_size = sizeof(__list_std__string_t);
+#line 2091 "parser.axe"
 const __list_std__string_t* heap_func_list = (__list_std__string_t*)( malloc( func_list_size ) );
 if (heap_func_list != nil) {
 memcpy(heap_func_list, &target_funcs, func_list_size);
@@ -8834,17 +12551,23 @@ if (token_type == lexer__TokenType_MACRO) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+#line 2114 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected macro name after 'macro'" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 2119 "parser.axe"
 const lexer__Token name_tok = ctx->tokens->data[ ctx->pos];
+#line 2120 "parser.axe"
 const std__string__string macro_name = name_tok.value;
 ctx->pos++;
 parser__skip_whitespace(ctx);
+#line 2125 "parser.axe"
 __list_std__string_t params = {0};
+#line 2126 "parser.axe"
 __list_std__string_t param_types = {0};
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 2129 "parser.axe"
 std__string__string err = std__string__str( "Expected '(' after macro name" );
 err = std__string__concat ( err , std__string__str ( " instead got " ) );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
@@ -8859,14 +12582,18 @@ parser__consume(ctx);
 break;
 }
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 2145 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected parameter name in macro definition" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 2150 "parser.axe"
 const lexer__Token param_tok = parser__consume( ctx );
+#line 2151 "parser.axe"
 const std__string__string param_name = param_tok.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_COLON)) {
+#line 2156 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ':' after macro parameter name" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
@@ -8874,11 +12601,14 @@ return ;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 2165 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type after ':' in macro parameter" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 2170 "parser.axe"
 const lexer__Token type_tok = parser__consume( ctx );
+#line 2171 "parser.axe"
 const std__string__string param_type = type_tok.value;
 __list_std__string_push(&params, param_name);
 __list_std__string_push(&param_types, param_type);
@@ -8890,17 +12620,21 @@ continue;
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 2187 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after macro header" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
 parser__consume(ctx);
+#line 2193 "parser.axe"
 __list_lexer__Token_t body_tokens = {0};
+#line 2194 "parser.axe"
 int32_t brace_depth = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 2201 "parser.axe"
 const lexer__Token t = ctx->tokens->data[ ctx->pos];
 if (t.token_type== lexer__TokenType_LBRACE) {
 brace_depth = brace_depth + 1;
@@ -8922,22 +12656,28 @@ __list_lexer__Token_push(&body_tokens, t);
 ctx->pos++;
 }
 if (brace_depth != 0) {
+#line 2226 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '}' after macro body" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
+#line 2231 "parser.axe"
 __list_std__string_t* heap_params = nil;
+#line 2232 "parser.axe"
 __list_lexer__Token_t* heap_body = nil;
+#line 2235 "parser.axe"
 const uintptr_t params_size = sizeof(__list_std__string_t);
 heap_params = (__list_std__string_t*)( malloc( params_size ) );
 if (heap_params != nil) {
 memcpy(heap_params, &params, params_size);
 }
+#line 2241 "parser.axe"
 const uintptr_t body_size = sizeof(__list_lexer__Token_t);
 heap_body = (__list_lexer__Token_t*)( malloc( body_size ) );
 if (heap_body != nil) {
 memcpy(heap_body, &body_tokens, body_size);
 }
+#line 2248 "parser.axe"
 structs__ASTNode macro_node = {0};
 macro_node.node_type = std__string__str ( "Macro" );
 macro_node.data.macro_node.name = macro_name;
@@ -8945,6 +12685,7 @@ macro_node.data.macro_node.params = heap_params;
 macro_node.data.macro_node.param_types = &param_types;
 macro_node.data.macro_node.body_tokens = heap_body;
 parser__add_child_to_ast(ast, macro_node);
+#line 2257 "parser.axe"
 structs__MacroDef defn = {0};
 defn.params = heap_params;
 defn.body = heap_body;
@@ -8966,6 +12707,7 @@ ctx->pos++;
 return ;
 }
 if (token_type == lexer__TokenType_FOREIGN) {
+#line 2281 "parser.axe"
 structs__ASTNode node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( node.node_type) > 0) {
 parser__add_child_to_ast(ast, node);
@@ -8973,22 +12715,26 @@ parser__add_child_to_ast(ast, node);
 return ;
 }
 if (token_type == lexer__TokenType_PLATFORM) {
+#line 2289 "parser.axe"
 structs__ASTNode node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( node.node_type) > 0) {
 parser__add_child_to_ast(ast, node);
 }
 return ;
 }
+#line 2296 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Unexpected token at top level. Expected def, model, enum, val, mut, use, platform, macro, opaque, foreign, extern, or pub." ) );
 std__io__println(err);
 std__os__quit(1);
 }
 
+#line 2305
 void parser__skip_whitespace(structs__ParserContext* ctx) {
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 2311 "parser.axe"
 const  token_type = ctx->tokens->data[ ctx->pos].token_type;
 if (token_type == lexer__TokenType_WHITESPACE|| token_type == lexer__TokenType_NEWLINE) {
 ctx->pos++;
@@ -8999,10 +12745,12 @@ break;
 }
 }
 
+#line 2322
 lexer__Token parser__peek(structs__ParserContext* ctx) {
 if (ctx->pos< len_ptr(ctx->tokens)) {
 return ctx->tokens->data[ ctx->pos];
 }
+#line 2327 "parser.axe"
 lexer__Token empty = {0};
 empty.token_type = lexer__TokenType_IDENTIFIER;
 empty.value = std__string__str ( "" );
@@ -9011,25 +12759,33 @@ empty.column = 0;
 return empty;
 }
 
+#line 2336
 int32_t parser__current_line(structs__ParserContext* ctx) {
+#line 2337 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
 return token.line;
 }
 
+#line 2342
 std__string__string parser__format_error(structs__ParserContext* ctx, std__string__string message) {
+#line 2343 "parser.axe"
 std__string__string result = std__string__str( "" );
 if (std__string__str_len ( ctx->filename) > 0) {
 result = std__string__concat ( result , ctx->filename);
 result = std__string__concat ( result , std__string__str ( ":" ) );
 }
+#line 2349 "parser.axe"
 int32_t line_num = 1;
+#line 2350 "parser.axe"
 int32_t col_num = 1;
 if (ctx->pos< len_ptr(ctx->tokens)) {
+#line 2353 "parser.axe"
 const lexer__Token token = ctx->tokens->data[ ctx->pos];
 line_num = token.line;
 col_num = token.column;
 }
 else if (ctx->pos> 0 && len_ptr(ctx->tokens) > 0) {
+#line 2357 "parser.axe"
 const lexer__Token last_token = ctx->tokens->data[ len_ptr(ctx->tokens) - 1 ];
 line_num = last_token.line;
 col_num = last_token.column;
@@ -9048,27 +12804,35 @@ result = std__string__concat ( result , message );
 return result;
 }
 
+#line 2378
 lexer__Token parser__consume(structs__ParserContext* ctx) {
+#line 2379 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
 ctx->pos = ctx->pos+ 1;
 return token;
 }
 
+#line 2385
 bool parser__expect(structs__ParserContext* ctx, int32_t expected_type) {
 parser__skip_whitespace(ctx);
+#line 2387 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
 return token.token_type== expected_type;
 }
 
+#line 2392
 std__string__string parser__parse_type(structs__ParserContext* ctx) {
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
+#line 2396 "parser.axe"
 const std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type but reached end of tokens" ) );
 std__errors__enforce_raw(false, err.data);
 return std__string__str( "" );
 }
+#line 2401 "parser.axe"
 std__string__string ref_prefix = std__string__str( "" );
 while (1) {
+#line 2404 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
 if (token.token_type== lexer__TokenType_REF) {
 ref_prefix = std__string__concat_c ( ref_prefix , "ref " );
@@ -9080,7 +12844,9 @@ break;
 }
 }
 parser__skip_whitespace(ctx);
+#line 2415 "parser.axe"
 std__string__string type_name = std__string__str( "" );
+#line 2416 "parser.axe"
 const lexer__Token current_token = parser__peek( ctx );
 if (current_token.token_type== lexer__TokenType_MODEL) {
 parser__consume(ctx);
@@ -9093,16 +12859,20 @@ parser__consume(ctx);
 if (std__string__equals_c ( type_name , "list" )) {
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 2433 "parser.axe"
 const std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' after 'list'" ) );
 std__errors__enforce_raw(false, err.data);
 return std__string__str( "" );
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 2440 "parser.axe"
 const lexer__Token elem_token = parser__consume( ctx );
+#line 2441 "parser.axe"
 const std__string__string element_type = elem_token.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 2445 "parser.axe"
 const std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after list element type" ) );
 std__errors__enforce_raw(false, err.data);
 return std__string__str( "" );
@@ -9115,6 +12885,7 @@ if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
 type_name = std__string__concat ( type_name , std__string__str ( "[" ) );
 while (1) {
+#line 2459 "parser.axe"
 const lexer__Token tok = parser__peek( ctx );
 if (tok.token_type== lexer__TokenType_RBRACKET) {
 break;
@@ -9132,6 +12903,7 @@ break;
 }
 }
 while (1) {
+#line 2477 "parser.axe"
 const lexer__Token tok = parser__peek( ctx );
 if (( tok.token_type== lexer__TokenType_OPERATOR&& std__string__equals_c ( tok.value, "*" ) ) || ( tok.token_type== lexer__TokenType_STAR)) {
 parser__consume(ctx);
@@ -9143,6 +12915,7 @@ break;
 }
 }
 else {
+#line 2487 "parser.axe"
 const std__string__string err = parser__format_error( ctx , std__string__str ( "Invalid type specification" ) );
 std__errors__enforce_raw(false, err.data);
 return std__string__str( "" );
@@ -9153,13 +12926,16 @@ type_name = std__maps__StringStringMap__get( &g_type_aliases , type_name );
 return std__string__concat( ref_prefix , type_name );
 }
 
+#line 2500
 int32_t parser__parse_ref_depth(structs__ParserContext* ctx) {
+#line 2501 "parser.axe"
 int32_t depth = 0;
 while (1) {
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 2510 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
 if (token.token_type== lexer__TokenType_REF) {
 depth = depth + 1;
@@ -9172,7 +12948,9 @@ break;
 return depth;
 }
 
+#line 2523
 structs__ASTNode parser__parse_function(structs__ParserContext* ctx) {
+#line 2524 "parser.axe"
 structs__ASTNode func = {0};
 func.node_type = std__string__str ( "Function" );
 func.line = parser__current_line ( ctx );
@@ -9181,10 +12959,12 @@ g_current_scope_depth = 1;
 g_function_has_raw_block = false;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
+#line 2534 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected function name after 'def'" ) );
 std__errors__enforce_raw(false, err.data);
 return func;
 }
+#line 2539 "parser.axe"
 std__string__string func_name = ctx->tokens->data[ ctx->pos].value;
 if (ctx->check_entry_point&& imports__is_symbol_imported ( func_name )) {
 std__io__print(ctx->filename);
@@ -9204,7 +12984,9 @@ ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos+ 1 < len_ptr(ctx->tokens)) {
 if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_IDENTIFIER&& std__string__equals_c ( ctx->tokens->data[ ctx->pos+ 1 ].value, "(" )) {
+#line 2563 "parser.axe"
 std__string__string merged = func_name;
+#line 2564 "parser.axe"
 const std__string__string next_ident = ctx->tokens->data[ ctx->pos].value;
 if (std__string__str_len ( next_ident ) > 0 && std__string__get_char ( next_ident , 0 ) != '_') {
 merged = std__string__concat ( merged , std__string__str ( "_" ) );
@@ -9218,9 +13000,11 @@ parser__skip_whitespace(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 std__io__println("DEBUG parse_function: missing '(' after function name");
+#line 2581 "parser.axe"
 std__string__string dbg = std__string__str( "  func_name = " );
 dbg = std__string__concat ( dbg , func_name );
 gstate__debug_print_str(dbg);
+#line 2585 "parser.axe"
 const char buffer[64] = { };
 dbg = std__string__str ( "  ctx.pos = " );
 dbg = std__string__concat_c ( dbg , std__string__int_to_str ( ctx->pos, buffer ) );
@@ -9238,22 +13022,28 @@ gstate__debug_print_str(dbg);
 else {
 gstate__debug_print_raw("  current token = <eof>");
 }
+#line 2603 "parser.axe"
 int32_t start_dbg = ctx->pos- 5;
 if (start_dbg < 0) {
 start_dbg = 0;
 }
+#line 2607 "parser.axe"
 int32_t end_dbg = ctx->pos+ 5;
+#line 2608 "parser.axe"
 const int32_t total_tokens = len_ptr(ctx->tokens);
 if (end_dbg > total_tokens) {
 end_dbg = total_tokens;
 }
 std__io__println("  Surrounding tokens:");
+#line 2613 "parser.axe"
 int32_t i_dbg = start_dbg;
 while (1) {
 if (i_dbg >= end_dbg) {
 break;
 }
+#line 2618 "parser.axe"
 const lexer__Token tok_dbg = ctx->tokens->data[ i_dbg ];
+#line 2619 "parser.axe"
 const char buffer2[64] = { };
 dbg = std__string__str ( "    [" );
 dbg = std__string__concat_c ( dbg , std__string__int_to_str ( i_dbg , buffer2 ) );
@@ -9265,6 +13055,7 @@ dbg = std__string__concat ( dbg , std__string__str ( "'" ) );
 gstate__debug_print_str(dbg);
 i_dbg = i_dbg + 1;
 }
+#line 2633 "parser.axe"
 std__string__string err = std__string__str( "Expected '(' after function name" );
 if (ctx->pos< len_ptr(ctx->tokens)) {
 err = std__string__concat ( err , std__string__str ( " instead got " ) );
@@ -9279,15 +13070,20 @@ std__errors__enforce_raw(false, err.data);
 return func;
 }
 parser__consume(ctx);
+#line 2647 "parser.axe"
 __list_std__string_t params = {0};
+#line 2648 "parser.axe"
 std__string__string current_param = std__string__str( "" );
+#line 2649 "parser.axe"
 int32_t paren_depth_params = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 2656 "parser.axe"
 const lexer__Token t = ctx->tokens->data[ ctx->pos];
 if (t.token_type== lexer__TokenType_RPAREN&& paren_depth_params == 0) {
+#line 2659 "parser.axe"
 const std__string__string trimmed = std__string__strip( current_param );
 if (std__string__str_len ( trimmed ) > 0) {
 __list_std__string_push(&params, trimmed);
@@ -9308,6 +13104,7 @@ parser__consume(ctx);
 continue;
 }
 if (t.token_type== lexer__TokenType_COMMA&& paren_depth_params == 0) {
+#line 2682 "parser.axe"
 const std__string__string trimmed_param = std__string__strip( current_param );
 if (std__string__str_len ( trimmed_param ) > 0) {
 __list_std__string_push(&params, trimmed_param);
@@ -9332,11 +13129,13 @@ current_param = std__string__concat ( current_param , t.value);
 parser__consume(ctx);
 }
 if (! ctx->is_axec&& len_v(params) > 0) {
+#line 2711 "parser.axe"
 int32_t param_idx = 0;
 while (1) {
 if (param_idx >= len_v(params)) {
 break;
 }
+#line 2716 "parser.axe"
 const std__string__string param = params.data[ param_idx ];
 if (parser__has_pointer_syntax ( param )) {
 std__io__print(ctx->filename);
@@ -9353,7 +13152,9 @@ param_idx++;
 }
 }
 if (len_v(params) > 0) {
+#line 2735 "parser.axe"
 const uintptr_t params_size = sizeof(__list_std__string_t);
+#line 2736 "parser.axe"
 const __list_std__string_t* heap_params = (__list_std__string_t*)( malloc( params_size ) );
 if (heap_params != nil) {
 memcpy(heap_params, &params, params_size);
@@ -9363,6 +13164,7 @@ func.data.function.params = heap_params;
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_COLON)) {
 parser__consume(ctx);
+#line 2747 "parser.axe"
 const std__string__string return_type = parser__parse_type( ctx );
 func.data.function.return_type = return_type;
 if (! ctx->is_axec&& parser__has_pointer_syntax ( return_type )) {
@@ -9379,6 +13181,7 @@ std__os__quit(1);
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 2765 "parser.axe"
 std__string__string msg = std__string__str( "Expected '{' after function declaration, instead got: " );
 msg = std__string__concat ( msg , ctx->tokens->data[ ctx->pos].value);
 msg = std__string__concat ( msg , std__string__str ( " in function " ) );
@@ -9387,6 +13190,7 @@ std__errors__enforce_raw(false, msg.data);
 return func;
 }
 parser__consume(ctx);
+#line 2774 "parser.axe"
 __list_structs__ASTNode_t children = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -9400,25 +13204,31 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 ctx->pos++;
 break;
 }
+#line 2791 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&children, stmt);
 }
 }
+#line 2798 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 2799 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &children, list_size);
 func.children = heap_list;
 }
 if (! g_function_has_raw_block) {
+#line 2808 "parser.axe"
 int32_t i_mut = 0;
 while (1) {
 if (i_mut >= len_v(g_mutable_vars_in_scope)) {
 break;
 }
+#line 2813 "parser.axe"
 const std__string__string var_name = g_mutable_vars_in_scope.data[ i_mut ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 2816 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == 0) {
 i_mut++;
@@ -9438,13 +13248,16 @@ i_mut++;
 }
 }
 if (! g_function_has_raw_block) {
+#line 2837 "parser.axe"
 int32_t i_unused = 0;
 while (1) {
 if (i_unused >= len_v(g_all_vars_in_scope)) {
 break;
 }
+#line 2842 "parser.axe"
 const std__string__string var_name = g_all_vars_in_scope.data[ i_unused ];
 if (std__maps__StringIntMap__contains( &g_var_scope_depth , var_name )) {
+#line 2845 "parser.axe"
 const int32_t var_depth = std__maps__StringIntMap__get( &g_var_scope_depth , var_name );
 if (var_depth == 0) {
 i_unused++;
@@ -9452,7 +13265,9 @@ continue;
 }
 }
 if (! std__maps__StringBoolMap__contains( &g_var_actually_used , var_name )) {
+#line 2853 "parser.axe"
 int32_t decl_line = func.line;
+#line 2854 "parser.axe"
 std__string__string decl_file = ctx->filename;
 if (std__maps__StringIntMap__contains( &g_var_declaration_lines , var_name )) {
 decl_line = std__maps__StringIntMap__get( &g_var_declaration_lines , var_name );
@@ -9476,7 +13291,9 @@ g_current_scope_depth = 0;
 return func;
 }
 
+#line 2883
 structs__ASTNode parser__parse_statement_helper(structs__ParserContext* ctx, structs__Scope* scope) {
+#line 2884 "parser.axe"
 structs__ASTNode node = {0};
 node.node_type = std__string__str ( "Empty" );
 node.line = parser__current_line ( ctx );
@@ -9484,7 +13301,9 @@ node.source_file = ctx->filename;
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 return node;
 }
+#line 2893 "parser.axe"
 const lexer__Token token = parser__peek( ctx );
+#line 2894 "parser.axe"
 const int32_t token_type = token.token_type;
 if (token_type == lexer__TokenType_WHITESPACE|| token_type == lexer__TokenType_NEWLINE) {
 parser__consume(ctx);
@@ -9494,6 +13313,7 @@ if (token_type == lexer__TokenType_BREAK) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 2907 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after break" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9508,6 +13328,7 @@ if (token_type == lexer__TokenType_CONTINUE) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 2925 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after continue" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9519,20 +13340,25 @@ node.source_file = ctx->filename;
 return node;
 }
 if (token_type == lexer__TokenType_ASSERT) {
+#line 2939 "parser.axe"
 const int32_t assert_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 2943 "parser.axe"
 bool has_parens = false;
 if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 has_parens = true;
 parser__consume(ctx);
 }
+#line 2949 "parser.axe"
 std__string__string condition = std__string__str( "" );
+#line 2950 "parser.axe"
 int32_t paren_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 2956 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LPAREN) {
 paren_depth = paren_depth + 1;
@@ -9570,6 +13396,7 @@ parser__consume(ctx);
 }
 condition = parser__expand_macros_in_expression ( condition );
 if (! parser__expect ( ctx , lexer__TokenType_COMMA)) {
+#line 2991 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ',' after assert condition" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9577,15 +13404,19 @@ return node;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_STR)) {
+#line 2999 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected string message after comma in assert" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 3003 "parser.axe"
 const lexer__Token message_token = parser__consume( ctx );
+#line 3004 "parser.axe"
 const std__string__string message = message_token.value;
 parser__skip_whitespace(ctx);
 if (has_parens) {
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 3009 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after assert message" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9594,6 +13425,7 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 3018 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after assert statement" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9611,14 +13443,17 @@ gstate__debug_print_str(message);
 return node;
 }
 if (token_type == lexer__TokenType_RETURN) {
+#line 3038 "parser.axe"
 const int32_t return_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3042 "parser.axe"
 std__string__string expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3047 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 break;
@@ -9650,6 +13485,7 @@ expr = std__string__concat ( expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 3078 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after return" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9666,20 +13502,24 @@ parser__scan_expression_for_usage(expr);
 return node;
 }
 if (token_type == lexer__TokenType_LOOP) {
+#line 3098 "parser.axe"
 const int32_t loop_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3103 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after loop" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__push_scope();
+#line 3111 "parser.axe"
 structs__ASTNode lnode = {0};
 lnode.node_type = std__string__str ( "Loop" );
 lnode.line = loop_line;
 lnode.source_file = ctx->filename;
+#line 3116 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -9693,13 +13533,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3132 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 parser__pop_scope();
+#line 3141 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 3142 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
@@ -9710,11 +13553,13 @@ return lnode;
 if (token_type == lexer__TokenType_SWITCH) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3157 "parser.axe"
 std__string__string switch_expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3162 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -9726,16 +13571,19 @@ switch_expr = std__string__concat ( switch_expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3174 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after switch expression" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 3180 "parser.axe"
 int32_t depth = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3185 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 depth = depth + 1;
@@ -9753,22 +13601,27 @@ node.node_type = std__string__str ( "Switch" );
 return node;
 }
 if (token_type == lexer__TokenType_IF) {
+#line 3204 "parser.axe"
 const int32_t if_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3209 "parser.axe"
 std__string__string condition = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3214 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 break;
 }
 if (t.token_type!= lexer__TokenType_WHITESPACE&& t.token_type!= lexer__TokenType_NEWLINE) {
 if (t.token_type== lexer__TokenType_VAL&& ctx->pos+ 1 < len_ptr(ctx->tokens)) {
+#line 3227 "parser.axe"
 const lexer__Token next_tok = ctx->tokens->data[ ctx->pos+ 1 ];
 if (next_tok.token_type== lexer__TokenType_IDENTIFIER) {
+#line 3229 "parser.axe"
 std__string__string merged = t.value;
 merged = std__string__concat ( merged , next_tok.value);
 condition = std__string__concat ( condition , merged );
@@ -9804,12 +13657,14 @@ condition = std__string__concat ( condition , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3264 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after if condition" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__push_scope();
+#line 3273 "parser.axe"
 __list_structs__ASTNode_t if_children = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -9819,18 +13674,22 @@ parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3284 "parser.axe"
 const lexer__Token t_body = parser__peek( ctx );
 if (t_body.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3290 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&if_children, stmt);
 }
 }
 parser__pop_scope();
+#line 3306 "parser.axe"
 __list_structs__ASTNode_t elif_nodes = {0};
+#line 3307 "parser.axe"
 __list_structs__ASTNode_t final_else_children = {0};
 parser__skip_whitespace(ctx);
 while (1) {
@@ -9842,19 +13701,23 @@ break;
 }
 ctx->pos = ctx->pos+ 1;
 parser__skip_whitespace(ctx);
+#line 3323 "parser.axe"
 std__string__string elif_condition = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3328 "parser.axe"
 const lexer__Token t_el = parser__peek( ctx );
 if (t_el.token_type== lexer__TokenType_LBRACE) {
 break;
 }
 if (t_el.token_type!= lexer__TokenType_WHITESPACE&& t_el.token_type!= lexer__TokenType_NEWLINE) {
 if (t_el.token_type== lexer__TokenType_VAL&& ctx->pos+ 1 < len_ptr(ctx->tokens)) {
+#line 3334 "parser.axe"
 const lexer__Token next_tok_el = ctx->tokens->data[ ctx->pos+ 1 ];
 if (next_tok_el.token_type== lexer__TokenType_IDENTIFIER) {
+#line 3336 "parser.axe"
 std__string__string merged_el = t_el.value;
 merged_el = std__string__concat ( merged_el , next_tok_el.value);
 elif_condition = std__string__concat ( elif_condition , merged_el );
@@ -9895,6 +13758,7 @@ return node;
 }
 parser__consume(ctx);
 parser__push_scope();
+#line 3378 "parser.axe"
 __list_structs__ASTNode_t elif_children = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -9904,22 +13768,27 @@ parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3389 "parser.axe"
 const lexer__Token t_eb = parser__peek( ctx );
 if (t_eb.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3395 "parser.axe"
 const structs__ASTNode stmt_eb = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt_eb.node_type) > 0) {
 __list_structs__ASTNode_push(&elif_children, stmt_eb);
 }
 }
 parser__pop_scope();
+#line 3403 "parser.axe"
 structs__ASTNode elif_node = {0};
 elif_node.node_type = std__string__str ( "If" );
 elif_node.data.if_node.condition = elif_condition;
 parser__scan_expression_for_usage(elif_condition);
+#line 3409 "parser.axe"
 __list_structs__ASTNode_t body_list_el = {0};
+#line 3410 "parser.axe"
 int32_t i_el = 0;
 while (1) {
 if (i_el >= len_v(elif_children)) {
@@ -9928,7 +13797,9 @@ break;
 __list_structs__ASTNode_push(&body_list_el, elif_children.data[i_el]);
 i_el = i_el + 1;
 }
+#line 3419 "parser.axe"
 const uintptr_t sz_el = sizeof(__list_structs__ASTNode_t);
+#line 3420 "parser.axe"
 const __list_structs__ASTNode_t* heap_el = (__list_structs__ASTNode_t*)( malloc( sz_el ) );
 if (heap_el != nil) {
 memcpy(heap_el, &body_list_el, sz_el);
@@ -9942,6 +13813,7 @@ if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== 
 ctx->pos = ctx->pos+ 1;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3437 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after else" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -9956,11 +13828,13 @@ parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3455 "parser.axe"
 const lexer__Token t_else2 = parser__peek( ctx );
 if (t_else2.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3461 "parser.axe"
 const structs__ASTNode stmt2 = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt2.node_type) > 0) {
 __list_structs__ASTNode_push(&final_else_children, stmt2);
@@ -9968,14 +13842,17 @@ __list_structs__ASTNode_push(&final_else_children, stmt2);
 }
 parser__pop_scope();
 }
+#line 3470 "parser.axe"
 int32_t i_chain = len_v(elif_nodes) - 1;
 while (1) {
 if (i_chain < 0) {
 break;
 }
+#line 3476 "parser.axe"
 __list_structs__ASTNode_t else_body_for_this = {0};
 if (i_chain == len_v(elif_nodes) - 1) {
 if (len_v(final_else_children) > 0) {
+#line 3480 "parser.axe"
 int32_t k_final = 0;
 while (1) {
 if (k_final >= len_v(final_else_children)) {
@@ -9990,10 +13867,14 @@ else {
 __list_structs__ASTNode_push(&else_body_for_this, elif_nodes.data[i_chain + 1]);
 }
 if (len_v(else_body_for_this) > 0) {
+#line 3495 "parser.axe"
 __list_structs__ASTNode_t new_children = {0};
+#line 3496 "parser.axe"
 structs__ASTNode* curr_elif_ptr = &(elif_nodes.data[ i_chain ]);
 if (curr_elif_ptr->children!= nil) {
+#line 3499 "parser.axe"
 int32_t j_copy = 0;
+#line 3500 "parser.axe"
 const __list_structs__ASTNode_t* curr_children = curr_elif_ptr->children;
 while (1) {
 if (j_copy >= len_v((*curr_children))) {
@@ -10003,9 +13884,11 @@ __list_structs__ASTNode_push(&new_children, curr_children->data[j_copy]);
 j_copy = j_copy + 1;
 }
 }
+#line 3510 "parser.axe"
 structs__ASTNode marker = {0};
 marker.node_type = std__string__str ( "ElseMarker" );
 __list_structs__ASTNode_push(&new_children, marker);
+#line 3514 "parser.axe"
 int32_t k_else = 0;
 while (1) {
 if (k_else >= len_v(else_body_for_this)) {
@@ -10014,7 +13897,9 @@ break;
 __list_structs__ASTNode_push(&new_children, else_body_for_this.data[k_else]);
 k_else = k_else + 1;
 }
+#line 3523 "parser.axe"
 const uintptr_t sz_new = sizeof(__list_structs__ASTNode_t);
+#line 3524 "parser.axe"
 const __list_structs__ASTNode_t* heap_new = (__list_structs__ASTNode_t*)( malloc( sz_new ) );
 if (heap_new != nil) {
 memcpy(heap_new, &new_children, sz_new);
@@ -10023,11 +13908,13 @@ curr_elif_ptr->children = heap_new;
 }
 i_chain = i_chain - 1;
 }
+#line 3535 "parser.axe"
 __list_structs__ASTNode_t else_children = {0};
 if (len_v(elif_nodes) > 0) {
 __list_structs__ASTNode_push(&else_children, elif_nodes.data[0]);
 }
 else {
+#line 3539 "parser.axe"
 int32_t k_else_final = 0;
 while (1) {
 if (k_else_final >= len_v(final_else_children)) {
@@ -10042,7 +13929,9 @@ node.line = if_line;
 node.source_file = ctx->filename;
 node.data.if_node.condition = condition;
 parser__scan_expression_for_usage(condition);
+#line 3558 "parser.axe"
 __list_structs__ASTNode_t body_list = {0};
+#line 3561 "parser.axe"
 int32_t i_body = 0;
 while (1) {
 if (i_body >= len_v(if_children)) {
@@ -10052,9 +13941,11 @@ __list_structs__ASTNode_push(&body_list, if_children.data[i_body]);
 i_body = i_body + 1;
 }
 if (len_v(else_children) > 0) {
+#line 3572 "parser.axe"
 structs__ASTNode marker = {0};
 marker.node_type = std__string__str ( "ElseMarker" );
 __list_structs__ASTNode_push(&body_list, marker);
+#line 3576 "parser.axe"
 int32_t i_else = 0;
 while (1) {
 if (i_else >= len_v(else_children)) {
@@ -10064,7 +13955,9 @@ __list_structs__ASTNode_push(&body_list, else_children.data[i_else]);
 i_else = i_else + 1;
 }
 }
+#line 3586 "parser.axe"
 const uintptr_t list_size_if = sizeof(__list_structs__ASTNode_t);
+#line 3587 "parser.axe"
 const __list_structs__ASTNode_t* heap_list_if = (__list_structs__ASTNode_t*)( malloc( list_size_if ) );
 if (heap_list_if != nil) {
 memcpy(heap_list_if, &body_list, list_size_if);
@@ -10075,7 +13968,9 @@ return node;
 if (token_type == lexer__TokenType_FOR) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3601 "parser.axe"
 bool is_for_in = false;
+#line 3602 "parser.axe"
 int32_t temp_pos = ctx->pos;
 while (1) {
 if (temp_pos >= len_ptr(ctx->tokens)) {
@@ -10103,25 +13998,31 @@ is_for_in = true;
 }
 if (is_for_in) {
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 3632 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected variable name in for-in loop" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 3636 "parser.axe"
 const lexer__Token item_var_token = parser__consume( ctx );
+#line 3637 "parser.axe"
 const std__string__string item_var = item_var_token.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IN)) {
+#line 3641 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected 'in' in for-in loop" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3648 "parser.axe"
 std__string__string collection = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3653 "parser.axe"
 const lexer__Token ct = parser__peek( ctx );
 if (ct.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -10135,16 +14036,19 @@ parser__consume(ctx);
 }
 collection = std__string__strip ( collection );
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3667 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after for-in header" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__push_scope();
+#line 3675 "parser.axe"
 structs__ASTNode for_in_node = {0};
 for_in_node.node_type = std__string__str ( "ForIn" );
 for_in_node.data.for_in.var_name = item_var;
 for_in_node.data.for_in.array_name = collection;
+#line 3680 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -10158,13 +14062,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3693 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 parser__pop_scope();
+#line 3702 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 3703 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
@@ -10172,11 +14079,13 @@ for_in_node.children = heap_list;
 }
 return for_in_node;
 }
+#line 3713 "parser.axe"
 std__string__string header = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3718 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -10188,23 +14097,32 @@ header = std__string__concat ( header , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 3730 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after for header" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 3736 "parser.axe"
 std__string__string init = std__string__str( "" );
+#line 3737 "parser.axe"
 std__string__string cond = std__string__str( "" );
+#line 3738 "parser.axe"
 std__string__string incr = std__string__str( "" );
+#line 3739 "parser.axe"
 int32_t part_idx = 0;
+#line 3740 "parser.axe"
 std__string__string current = std__string__str( "" );
+#line 3741 "parser.axe"
 int32_t i_hdr = 0;
 while (1) {
 if (i_hdr >= std__string__str_len ( header )) {
 break;
 }
+#line 3747 "parser.axe"
 const char ch_hdr = std__string__get_char( header , i_hdr );
 if (ch_hdr == ';') {
+#line 3749 "parser.axe"
 const std__string__string trimmed = std__string__strip( current );
 if (std__string__str_len ( trimmed ) > 0) {
 if (part_idx == 0) {
@@ -10225,6 +14143,7 @@ current = std__string__concat_chr ( current , ch_hdr );
 }
 i_hdr = i_hdr + 1;
 }
+#line 3767 "parser.axe"
 const std__string__string last_trimmed = std__string__strip( current );
 if (std__string__str_len ( last_trimmed ) > 0) {
 if (part_idx == 0) {
@@ -10238,14 +14157,21 @@ incr = last_trimmed;
 }
 }
 if (part_idx == 0 && std__string__str_len ( init ) > 0 && std__string__str_len ( cond ) == 0) {
+#line 3780 "parser.axe"
 const int32_t to_pos = std__string__find_substr( init , std__string__str ( " to " ) );
 if (to_pos >= 0) {
+#line 3782 "parser.axe"
 const std__string__string var_part = std__string__strip( std__string__substring_se ( init , 0 , to_pos ) );
+#line 3783 "parser.axe"
 const std__string__string end_part = std__string__strip( std__string__substring_se ( init , to_pos + 4 , std__string__str_len ( init ) ) );
+#line 3784 "parser.axe"
 std__string__string var_name = std__string__str( "i" );
+#line 3785 "parser.axe"
 const int32_t eq_pos = std__string__find_char_from( var_part , '=' , 0 );
 if (eq_pos > 0) {
+#line 3787 "parser.axe"
 const std__string__string before_eq = std__string__strip( std__string__substring_se ( var_part , 0 , eq_pos ) );
+#line 3788 "parser.axe"
 std__string__string name_part = before_eq;
 if (std__string__has_prefix ( name_part , std__string__str ( "mut " ) )) {
 name_part = std__string__strip ( std__string__substring_se ( name_part , 4 , std__string__str_len ( name_part ) ) );
@@ -10259,6 +14185,7 @@ cond = std__string__concat ( std__string__concat ( var_name , std__string__str (
 incr = std__string__concat ( var_name , std__string__str ( "++" ) );
 }
 }
+#line 3802 "parser.axe"
 structs__ASTNode fnode = {0};
 fnode.node_type = std__string__str ( "For" );
 fnode.data.for_loop.initialization = init;
@@ -10268,6 +14195,7 @@ parser__scan_expression_for_usage(init);
 parser__scan_expression_for_usage(cond);
 parser__scan_expression_for_usage(incr);
 parser__push_scope();
+#line 3813 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -10281,13 +14209,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 3829 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 parser__pop_scope();
+#line 3838 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 3839 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
@@ -10303,6 +14234,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3859 "parser.axe"
 const lexer__Token t_skip = parser__peek( ctx );
 if (t_skip.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10312,23 +14244,30 @@ parser__consume(ctx);
 }
 return node;
 }
+#line 3869 "parser.axe"
 const lexer__Token str_token = parser__consume( ctx );
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
 parser__consume(ctx);
 }
+#line 3876 "parser.axe"
 __list_std__string_t messages = {0};
+#line 3877 "parser.axe"
 __list_bool_t flags = {0};
 __list_std__string_push(&messages, str_token.value);
 __list_bool_push(&flags, false);
 node.node_type = std__string__str ( "Print" );
+#line 3884 "parser.axe"
 const uintptr_t list_size_str = sizeof(__list_std__string_t);
+#line 3885 "parser.axe"
 __list_std__string_t* heap_messages = (__list_std__string_t*)( malloc( list_size_str ) );
 if (heap_messages != nil) {
 memcpy(heap_messages, &messages, list_size_str);
 node.data.print.messages = heap_messages;
 }
+#line 3891 "parser.axe"
 const uintptr_t list_size_bool = sizeof(__list_bool_t);
+#line 3892 "parser.axe"
 __list_bool_t* heap_flags = (__list_bool_t*)( malloc( list_size_bool ) );
 if (heap_flags != nil) {
 memcpy(heap_flags, &flags, list_size_bool);
@@ -10337,18 +14276,24 @@ node.data.print.is_expressions = heap_flags;
 return node;
 }
 if (token_type == lexer__TokenType_VAL) {
+#line 3904 "parser.axe"
 const int32_t decl_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 3909 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected identifier after 'val'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 3914 "parser.axe"
 const lexer__Token var_name = parser__consume( ctx );
 parser__skip_whitespace(ctx);
+#line 3917 "parser.axe"
 std__string__string type_name = std__string__str( "" );
+#line 3918 "parser.axe"
 std__string__string initializer = std__string__str( "" );
+#line 3919 "parser.axe"
 bool has_explicit_type = false;
 if (parser__expect ( ctx , lexer__TokenType_COLON)) {
 parser__consume(ctx);
@@ -10357,17 +14302,22 @@ has_explicit_type = true;
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 3929 "parser.axe"
 const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 3936 "parser.axe"
 lexer__Token first_non_ws_token = {0};
+#line 3937 "parser.axe"
 int32_t non_ws_count = 0;
+#line 3939 "parser.axe"
 bool found_semicolon = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 3944 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10405,6 +14355,7 @@ initializer = std__string__concat ( initializer , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! found_semicolon) {
+#line 3993 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after val declaration" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -10422,10 +14373,13 @@ else if (first_non_ws_token.token_type== lexer__TokenType_STR) {
 type_name = std__string__str ( "char*" );
 }
 }
+#line 4011 "parser.axe"
 const std__string__string trimmed_init_val = std__string__strip( initializer );
 if (std__string__str_len ( type_name ) == 0) {
+#line 4014 "parser.axe"
 const int32_t brace_pos_val = std__string__find_char_from( trimmed_init_val , '{' , 0 );
 if (brace_pos_val > 0) {
+#line 4016 "parser.axe"
 const std__string__string inferred_name_brace = std__string__strip( std__string__substring_se ( trimmed_init_val , 0 , brace_pos_val ) );
 if (std__string__str_len ( inferred_name_brace ) > 0) {
 type_name = inferred_name_brace;
@@ -10439,6 +14393,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4028 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10453,6 +14408,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4041 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10485,6 +14441,7 @@ gstate__debug_print_str(var_name.value);
 return node;
 }
 if (token_type == lexer__TokenType_MUT) {
+#line 4075 "parser.axe"
 const int32_t mut_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
@@ -10493,14 +14450,19 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 4085 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected identifier after 'mut'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 4089 "parser.axe"
 const lexer__Token var_name = parser__consume( ctx );
 parser__skip_whitespace(ctx);
+#line 4092 "parser.axe"
 std__string__string type_name = std__string__str( "" );
+#line 4093 "parser.axe"
 std__string__string initializer = std__string__str( "" );
+#line 4094 "parser.axe"
 bool has_explicit_type_mut = false;
 if (parser__expect ( ctx , lexer__TokenType_COLON)) {
 parser__consume(ctx);
@@ -10509,17 +14471,22 @@ has_explicit_type_mut = true;
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 4104 "parser.axe"
 const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4111 "parser.axe"
 lexer__Token first_non_ws_token_mut = {0};
+#line 4112 "parser.axe"
 int32_t non_ws_count_mut = 0;
+#line 4113 "parser.axe"
 bool found_semicolon_mut = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4119 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10557,6 +14524,7 @@ initializer = std__string__concat ( initializer , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! found_semicolon_mut) {
+#line 4168 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after mut declaration" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -10574,16 +14542,20 @@ else if (first_non_ws_token_mut.token_type== lexer__TokenType_STR) {
 type_name = std__string__str ( "char*" );
 }
 }
+#line 4186 "parser.axe"
 std__string__string trimmed_init_mut = std__string__strip( initializer );
 if (std__string__str_len ( type_name ) == 0 && std__string__has_prefix ( trimmed_init_mut , std__string__str ( "new " ) )) {
 trimmed_init_mut = std__string__substring_se ( trimmed_init_mut , 4 , std__string__str_len ( trimmed_init_mut ) );
 trimmed_init_mut = std__string__strip ( trimmed_init_mut );
+#line 4191 "parser.axe"
 int32_t end_pos_mut = - 1;
+#line 4192 "parser.axe"
 int32_t i_mut = 0;
 while (1) {
 if (i_mut >= std__string__str_len ( trimmed_init_mut )) {
 break;
 }
+#line 4197 "parser.axe"
 const char ch_mut = std__string__get_char( trimmed_init_mut , i_mut );
 if (ch_mut == '(' || ch_mut == ' ' || ch_mut == '\t') {
 end_pos_mut = i_mut;
@@ -10594,6 +14566,7 @@ i_mut = i_mut + 1;
 if (end_pos_mut < 0) {
 end_pos_mut = std__string__str_len ( trimmed_init_mut );
 }
+#line 4207 "parser.axe"
 const std__string__string inferred_name_mut = std__string__strip( std__string__substring_se ( trimmed_init_mut , 0 , end_pos_mut ) );
 if (std__string__str_len ( inferred_name_mut ) > 0) {
 type_name = inferred_name_mut;
@@ -10606,6 +14579,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4218 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10620,6 +14594,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4231 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -10638,8 +14613,11 @@ node.data.declaration.type_name = type_name;
 node.data.declaration.ref_depth = 0;
 parser__register_variable(var_name.value, true, mut_line, ctx->filename);
 if (std__string__str_len ( initializer ) > 0) {
+#line 4253 "parser.axe"
 const bool has_dot = std__string__find_char_from( initializer , '.' , 0 ) >= 0;
+#line 4254 "parser.axe"
 const bool has_paren = std__string__find_char_from( initializer , '(' , 0 ) >= 0;
+#line 4255 "parser.axe"
 const bool is_constructor = has_dot && has_paren;
 if (! is_constructor) {
 parser__register_for_mutation_tracking(var_name.value);
@@ -10656,20 +14634,27 @@ gstate__debug_print_str(var_name.value);
 return node;
 }
 if (token_type == lexer__TokenType_IDENTIFIER) {
+#line 4276 "parser.axe"
 const lexer__Token ident_token = parser__consume( ctx );
+#line 4277 "parser.axe"
 std__string__string ident_name = ident_token.value;
 parser__skip_whitespace(ctx);
 if (parser__macros_contains ( ident_name ) && ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LPAREN) {
 parser__consume(ctx);
+#line 4283 "parser.axe"
 __list_std__string_t args = {0};
+#line 4284 "parser.axe"
 std__string__string current_arg = std__string__str( "" );
+#line 4285 "parser.axe"
 int32_t paren_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4292 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RPAREN&& paren_depth == 0) {
+#line 4295 "parser.axe"
 const std__string__string trimmed = std__string__strip( current_arg );
 if (std__string__str_len ( trimmed ) > 0) {
 __list_std__string_push(&args, trimmed);
@@ -10690,6 +14675,7 @@ parser__consume(ctx);
 continue;
 }
 if (t.token_type== lexer__TokenType_COMMA&& paren_depth == 0) {
+#line 4318 "parser.axe"
 const std__string__string trimmed_arg = std__string__strip( current_arg );
 if (std__string__str_len ( trimmed_arg ) > 0) {
 __list_std__string_push(&args, trimmed_arg);
@@ -10718,13 +14704,17 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 4346 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after macro invocation" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 4352 "parser.axe"
 const structs__MacroDef defn = parser__macros_get( ident_name );
+#line 4354 "parser.axe"
 __list_lexer__Token_t expanded_tokens = {0};
+#line 4355 "parser.axe"
 int32_t i_tok = 0;
 while (1) {
 if (i_tok >= len_ptr(defn.body)) {
@@ -10733,19 +14723,24 @@ break;
 __list_lexer__Token_push(&expanded_tokens, defn.body->data[i_tok]);
 i_tok = i_tok + 1;
 }
+#line 4364 "parser.axe"
 int32_t i_param = 0;
 while (1) {
 if (i_param >= len_ptr(defn.params) || i_param >= len_v(args)) {
 break;
 }
+#line 4370 "parser.axe"
 const std__string__string param_name = defn.params->data[ i_param ];
+#line 4371 "parser.axe"
 const std__string__string arg_expr = args.data[ i_param ];
+#line 4372 "parser.axe"
 int32_t j_tok = 0;
 while (1) {
 if (j_tok >= len_v(expanded_tokens)) {
 break;
 }
 if (expanded_tokens.data[ j_tok ].token_type== lexer__TokenType_IDENTIFIER) {
+#line 4380 "parser.axe"
 lexer__Token* exp_token = &(expanded_tokens.data[ j_tok ]);
 if (std__string__compare ( exp_token->value, param_name ) == 0) {
 exp_token->value = arg_expr;
@@ -10758,6 +14753,7 @@ j_tok++;
 }
 i_param++;
 }
+#line 4395 "parser.axe"
 structs__ParserContext temp_ctx = {0};
 temp_ctx.tokens = &expanded_tokens;
 temp_ctx.pos = 0;
@@ -10766,6 +14762,7 @@ temp_ctx.check_entry_point = false;
 temp_ctx.current_module = ctx->current_module;
 temp_ctx.filename = ctx->filename;
 temp_ctx.current_scope = ctx->current_scope;
+#line 4404 "parser.axe"
 __list_structs__ASTNode_t expanded_nodes = {0};
 while (1) {
 if (temp_ctx.pos>= len_v((*temp_ctx.tokens))) {
@@ -10775,6 +14772,7 @@ while (1) {
 if (temp_ctx.pos>= len_v((*temp_ctx.tokens))) {
 break;
 }
+#line 4415 "parser.axe"
 const lexer__Token t = temp_ctx.tokens->data[ temp_ctx.pos];
 if (t.token_type!= lexer__TokenType_WHITESPACE&& t.token_type!= lexer__TokenType_NEWLINE) {
 break;
@@ -10784,6 +14782,7 @@ temp_ctx.pos++;
 if (temp_ctx.pos>= len_v((*temp_ctx.tokens))) {
 break;
 }
+#line 4426 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( &temp_ctx , &(temp_ctx.current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&expanded_nodes, stmt);
@@ -10796,11 +14795,14 @@ else if (len_v(expanded_nodes) == 1) {
 return expanded_nodes.data[ 0 ];
 }
 else {
+#line 4437 "parser.axe"
 structs__ASTNode compound = {0};
 compound.node_type = std__string__str ( "MacroExpansion" );
 compound.line = node.line;
 compound.source_file = ctx->filename;
+#line 4443 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 4444 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &expanded_nodes, list_size);
@@ -10810,10 +14812,14 @@ return compound;
 }
 }
 if (ctx->pos+ 1 < len_ptr(ctx->tokens)) {
+#line 4456 "parser.axe"
 const lexer__Token look1 = ctx->tokens->data[ ctx->pos];
+#line 4457 "parser.axe"
 const lexer__Token look2 = ctx->tokens->data[ ctx->pos+ 1 ];
 if (look1.token_type== lexer__TokenType_IDENTIFIER&& std__string__equals_c ( look2.value, "(" )) {
+#line 4460 "parser.axe"
 std__string__string merged_call = ident_name;
+#line 4461 "parser.axe"
 const std__string__string next_ident_call = look1.value;
 if (std__string__str_len ( next_ident_call ) > 0 && std__string__get_char ( next_ident_call , 0 ) != '_') {
 merged_call = std__string__concat ( merged_call , std__string__str ( "_" ) );
@@ -10827,15 +14833,19 @@ parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 return node;
 }
+#line 4478 "parser.axe"
 const lexer__Token next_token = parser__peek( ctx );
 if (next_token.token_type== lexer__TokenType_LPAREN) {
 parser__consume(ctx);
+#line 4482 "parser.axe"
 int32_t paren_depth = 1;
+#line 4483 "parser.axe"
 std__string__string args_str = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4488 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LPAREN) {
 paren_depth = paren_depth + 1;
@@ -10875,8 +14885,10 @@ parser__scan_expression_for_addr(args_str);
 parser__scan_expression_for_c_calls(args_str);
 parser__scan_expression_for_usage(args_str);
 parser__scan_function_args_for_ref_params(args_str);
+#line 4528 "parser.axe"
 bool is_assignment = false;
 if (ctx->pos< len_ptr(ctx->tokens)) {
+#line 4530 "parser.axe"
 const lexer__Token look_tok = parser__peek( ctx );
 if (look_tok.token_type== lexer__TokenType_OPERATOR&& std__string__equals_c ( look_tok.value, "=" )) {
 is_assignment = true;
@@ -10885,11 +14897,13 @@ is_assignment = true;
 if (is_assignment) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4540 "parser.axe"
 std__string__string value_str = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4545 "parser.axe"
 const lexer__Token vt = parser__peek( ctx );
 if (vt.token_type== lexer__TokenType_SEMICOLON) {
 break;
@@ -10916,12 +14930,14 @@ value_str = std__string__concat ( value_str , vt.value);
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 4569 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after function call assignment" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 value_str = parser__expand_macros_in_expression ( value_str );
+#line 4577 "parser.axe"
 std__string__string left_side = std__string__concat( ident_name , std__string__str ( "(" ) );
 left_side = std__string__concat ( left_side , std__string__strip ( args_str ) );
 left_side = std__string__concat ( left_side , std__string__str ( ")" ) );
@@ -10932,6 +14948,7 @@ node.data.assignment.operator = std__string__str ( "=" );
 return node;
 }
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 4589 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after function call" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -10939,12 +14956,16 @@ return node;
 parser__consume(ctx);
 node.node_type = std__string__str ( "FunctionCall" );
 node.data.func_call.function_name = ident_name;
+#line 4598 "parser.axe"
 __list_std__string_t args_list = {0};
+#line 4599 "parser.axe"
 const std__string__string trimmed_args = std__string__strip( args_str );
 if (std__string__str_len ( trimmed_args ) > 0) {
 __list_std__string_push(&args_list, trimmed_args);
 }
+#line 4605 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 4606 "parser.axe"
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &args_list, list_size);
@@ -10955,12 +14976,15 @@ return node;
 if (next_token.token_type== lexer__TokenType_LBRACKET) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4619 "parser.axe"
 std__string__string index_expr = std__string__str( "" );
+#line 4620 "parser.axe"
 int32_t bracket_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4625 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 bracket_depth = bracket_depth + 1;
@@ -10982,12 +15006,14 @@ index_expr = std__string__concat ( index_expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 4645 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4652 "parser.axe"
 std__string__string index2_expr = std__string__str( "" );
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
@@ -10997,6 +15023,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4662 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 bracket_depth = bracket_depth + 1;
@@ -11018,6 +15045,7 @@ index2_expr = std__string__concat ( index2_expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 4682 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after second array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11026,15 +15054,18 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 4692 "parser.axe"
 const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4697 "parser.axe"
 std__string__string value_expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4702 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11074,6 +15105,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4741 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11091,11 +15123,14 @@ if (next_token.token_type== lexer__TokenType_DOT) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 4761 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected member name after '.'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 4766 "parser.axe"
 const lexer__Token member_token = parser__consume( ctx );
+#line 4767 "parser.axe"
 std__string__string member_name = member_token.value;
 parser__skip_whitespace(ctx);
 while (1) {
@@ -11107,16 +15142,21 @@ parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
 break;
 }
+#line 4782 "parser.axe"
 const lexer__Token next_member_token = parser__consume( ctx );
 member_name = std__string__concat ( member_name , std__string__str ( "." ) );
 member_name = std__string__concat ( member_name , next_member_token.value);
 parser__skip_whitespace(ctx);
 }
 if (ctx->pos+ 1 < len_ptr(ctx->tokens)) {
+#line 4789 "parser.axe"
 const lexer__Token look_member = ctx->tokens->data[ ctx->pos];
+#line 4790 "parser.axe"
 const lexer__Token look_after = ctx->tokens->data[ ctx->pos+ 1 ];
 if (look_member.token_type== lexer__TokenType_IDENTIFIER&& look_after.token_type== lexer__TokenType_LPAREN) {
+#line 4792 "parser.axe"
 std__string__string merged_member = member_name;
+#line 4793 "parser.axe"
 const std__string__string next_ident_member = look_member.value;
 if (std__string__str_len ( next_ident_member ) > 0 && std__string__get_char ( next_ident_member , 0 ) != '_') {
 merged_member = std__string__concat ( merged_member , std__string__str ( "_" ) );
@@ -11129,12 +15169,15 @@ parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 parser__consume(ctx);
+#line 4808 "parser.axe"
 int32_t paren_depth2 = 1;
+#line 4809 "parser.axe"
 std__string__string args_str2 = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4814 "parser.axe"
 const lexer__Token t2 = parser__peek( ctx );
 if (t2.token_type== lexer__TokenType_LPAREN) {
 paren_depth2 = paren_depth2 + 1;
@@ -11175,6 +15218,7 @@ parser__scan_expression_for_c_calls(args_str2);
 parser__scan_expression_for_usage(args_str2);
 parser__scan_function_args_for_ref_params(args_str2);
 node.node_type = std__string__str ( "FunctionCall" );
+#line 4852 "parser.axe"
 std__string__string full_name = ident_name;
 if (std__string__equals_c ( ident_name , "C" )) {
 full_name = std__string__concat ( std__string__str ( "" ) , member_name );
@@ -11184,12 +15228,16 @@ full_name = std__string__concat ( full_name , std__string__str ( "__" ) );
 full_name = std__string__concat ( full_name , member_name );
 }
 node.data.func_call.function_name = full_name;
+#line 4863 "parser.axe"
 __list_std__string_t args_list2 = {0};
+#line 4864 "parser.axe"
 const std__string__string trimmed2 = std__string__strip( args_str2 );
 if (std__string__str_len ( trimmed2 ) > 0) {
 __list_std__string_push(&args_list2, trimmed2);
 }
+#line 4870 "parser.axe"
 const uintptr_t list_size2 = sizeof(__list_std__string_t);
+#line 4871 "parser.axe"
 __list_std__string_t* heap_list2 = (__list_std__string_t*)( malloc( list_size2 ) );
 if (heap_list2 != nil) {
 memcpy(heap_list2, &args_list2, list_size2);
@@ -11200,12 +15248,15 @@ return node;
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4884 "parser.axe"
 std__string__string member_index_expr = std__string__str( "" );
+#line 4885 "parser.axe"
 int32_t member_bracket_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4890 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 member_bracket_depth = member_bracket_depth + 1;
@@ -11227,12 +15278,14 @@ member_index_expr = std__string__concat ( member_index_expr , std__string__str (
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 4910 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after member array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4917 "parser.axe"
 std__string__string member_index2_expr = std__string__str( "" );
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
@@ -11242,6 +15295,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4927 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 member_bracket_depth = member_bracket_depth + 1;
@@ -11263,6 +15317,7 @@ member_index2_expr = std__string__concat ( member_index2_expr , std__string__str
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 4947 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after second member array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11271,15 +15326,18 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 4956 "parser.axe"
 const lexer__Token member_op_token = parser__peek( ctx );
 if (std__string__equals_c ( member_op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 4961 "parser.axe"
 std__string__string member_array_value_expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 4966 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11303,6 +15361,7 @@ member_array_value_expr = std__string__concat ( member_array_value_expr , std__s
 }
 parser__consume(ctx);
 }
+#line 4987 "parser.axe"
 std__string__string full_array_name = ident_name;
 full_array_name = std__string__concat ( full_array_name , std__string__str ( "." ) );
 full_array_name = std__string__concat ( full_array_name , member_name );
@@ -11322,6 +15381,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5009 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11329,6 +15389,7 @@ break;
 }
 parser__consume(ctx);
 }
+#line 5017 "parser.axe"
 std__string__string access_array_name = ident_name;
 access_array_name = std__string__concat ( access_array_name , std__string__str ( "." ) );
 access_array_name = std__string__concat ( access_array_name , member_name );
@@ -11339,6 +15400,7 @@ node.data.array_access.index2 = member_index2_expr;
 return node;
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 5029 "parser.axe"
 const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 gstate__debug_print_raw("\n[DEBUG] MemberAccess assignment check:");
@@ -11347,6 +15409,7 @@ gstate__debug_print_str(ident_name);
 gstate__debug_print_raw("\n[DEBUG]   member_name:");
 gstate__debug_print_str(member_name);
 if (! parser__is_variable_mutable ( ident_name )) {
+#line 5038 "parser.axe"
 std__string__string err = std__string__str( "Cannot assign to member '" );
 err = std__string__concat ( err , member_name );
 err = std__string__concat ( err , std__string__str ( "' of immutable variable '" ) );
@@ -11357,12 +15420,15 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5050 "parser.axe"
 std__string__string value_expr = std__string__str( "" );
+#line 5051 "parser.axe"
 bool found_semicolon_member = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5056 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11391,6 +15457,7 @@ value_expr = std__string__concat ( value_expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! found_semicolon_member) {
+#line 5083 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after member assignment" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11405,11 +15472,14 @@ return node;
 }
 }
 if (parser__expect ( ctx , lexer__TokenType_INCREMENT) || parser__expect ( ctx , lexer__TokenType_DECREMENT)) {
+#line 5100 "parser.axe"
 const lexer__Token inc_dec_token = parser__peek( ctx );
+#line 5101 "parser.axe"
 const bool is_inc = inc_dec_token.token_type== lexer__TokenType_INCREMENT;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 5106 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after member increment/decrement" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11425,6 +15495,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5123 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11442,22 +15513,28 @@ if (next_token.token_type== lexer__TokenType_STAR_DOT) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5143 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected member name after '*.' " ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 5148 "parser.axe"
 const lexer__Token ptr_member_token = parser__consume( ctx );
+#line 5149 "parser.axe"
 const std__string__string ptr_member_name = ptr_member_token.value;
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5157 "parser.axe"
 std__string__string ptr_member_index_expr = std__string__str( "" );
+#line 5158 "parser.axe"
 int32_t ptr_member_bracket_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5163 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 ptr_member_bracket_depth = ptr_member_bracket_depth + 1;
@@ -11479,12 +15556,14 @@ ptr_member_index_expr = std__string__concat ( ptr_member_index_expr , std__strin
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 5183 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after pointer member array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5190 "parser.axe"
 std__string__string ptr_member_index2_expr = std__string__str( "" );
 if (parser__expect ( ctx , lexer__TokenType_LBRACKET)) {
 parser__consume(ctx);
@@ -11494,6 +15573,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5200 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACKET) {
 ptr_member_bracket_depth = ptr_member_bracket_depth + 1;
@@ -11515,6 +15595,7 @@ ptr_member_index2_expr = std__string__concat ( ptr_member_index2_expr , std__str
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACKET)) {
+#line 5220 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ']' after second pointer member array index" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11523,15 +15604,18 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 5229 "parser.axe"
 const lexer__Token ptr_member_op_token = parser__peek( ctx );
 if (std__string__equals_c ( ptr_member_op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5234 "parser.axe"
 std__string__string ptr_member_array_value_expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5239 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11555,6 +15639,7 @@ ptr_member_array_value_expr = std__string__concat ( ptr_member_array_value_expr 
 }
 parser__consume(ctx);
 }
+#line 5260 "parser.axe"
 std__string__string full_ptr_array_name = ident_name;
 full_ptr_array_name = std__string__concat ( full_ptr_array_name , std__string__str ( "*." ) );
 full_ptr_array_name = std__string__concat ( full_ptr_array_name , ptr_member_name );
@@ -11574,6 +15659,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5282 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11581,6 +15667,7 @@ break;
 }
 parser__consume(ctx);
 }
+#line 5290 "parser.axe"
 std__string__string access_ptr_array_name = ident_name;
 access_ptr_array_name = std__string__concat ( access_ptr_array_name , std__string__str ( "*." ) );
 access_ptr_array_name = std__string__concat ( access_ptr_array_name , ptr_member_name );
@@ -11591,16 +15678,20 @@ node.data.array_access.index2 = ptr_member_index2_expr;
 return node;
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 5302 "parser.axe"
 const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5307 "parser.axe"
 std__string__string ptr_value_expr = std__string__str( "" );
+#line 5308 "parser.axe"
 bool found_semicolon_ptr = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5314 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11629,6 +15720,7 @@ ptr_value_expr = std__string__concat ( ptr_value_expr , std__string__str ( " " )
 parser__consume(ctx);
 }
 if (! found_semicolon_ptr) {
+#line 5340 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after pointer member assignment" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11643,11 +15735,14 @@ return node;
 }
 }
 if (parser__expect ( ctx , lexer__TokenType_INCREMENT) || parser__expect ( ctx , lexer__TokenType_DECREMENT)) {
+#line 5356 "parser.axe"
 const lexer__Token ptr_inc_dec_token = parser__peek( ctx );
+#line 5357 "parser.axe"
 const bool ptr_is_inc = ptr_inc_dec_token.token_type== lexer__TokenType_INCREMENT;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 5362 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after pointer member increment/decrement" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11663,6 +15758,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5379 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11677,6 +15773,7 @@ node.data.member_access.value = std__string__str ( "" );
 return node;
 }
 if (next_token.token_type== lexer__TokenType_PLUS_ASSIGN|| next_token.token_type== lexer__TokenType_MINUS_ASSIGN) {
+#line 5395 "parser.axe"
 const std__string__string compound_op = next_token.value;
 gstate__debug_print_raw("\n[DEBUG] parse_statement_helper: entering compound Assignment branch");
 gstate__debug_print_raw("\n[DEBUG]   ident_name:");
@@ -11685,6 +15782,7 @@ gstate__debug_print_raw("\n[DEBUG]   operator:");
 gstate__debug_print_str(compound_op);
 if (! parser__is_variable_declared ( ident_name )) {
 if (! ctx->is_axec) {
+#line 5404 "parser.axe"
 std__string__string err = std__string__str( "Undeclared variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, err.data);
@@ -11692,6 +15790,7 @@ return node;
 }
 }
 if (! parser__is_variable_mutable ( ident_name )) {
+#line 5411 "parser.axe"
 std__string__string err = std__string__str( "Cannot assign to immutable variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, parser__format_error(ctx, err).data);
@@ -11699,12 +15798,15 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5420 "parser.axe"
 std__string__string expr = std__string__str( "" );
+#line 5421 "parser.axe"
 bool found_semicolon_compound = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5426 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11733,6 +15835,7 @@ expr = std__string__concat ( expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! found_semicolon_compound) {
+#line 5455 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after compound assignment" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11754,6 +15857,7 @@ gstate__debug_print_raw("\n[DEBUG]   ident_name:");
 gstate__debug_print_str(ident_name);
 if (! parser__is_variable_declared ( ident_name )) {
 if (! ctx->is_axec) {
+#line 5480 "parser.axe"
 std__string__string err = std__string__str( "Undeclared variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, parser__format_error(ctx, err).data);
@@ -11761,6 +15865,7 @@ return node;
 }
 }
 if (! parser__is_variable_mutable ( ident_name )) {
+#line 5487 "parser.axe"
 std__string__string err = std__string__str( "Cannot assign to immutable variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, parser__format_error(ctx, err).data);
@@ -11768,13 +15873,16 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5496 "parser.axe"
 std__string__string expr = std__string__str( "" );
+#line 5497 "parser.axe"
 bool found_semicolon_assign = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 gstate__debug_print_raw("\n[DEBUG]   reached end of tokens while collecting RHS");
 break;
 }
+#line 5503 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 gstate__debug_print_raw("\n[DEBUG]   encountered ';' terminating RHS");
@@ -11817,6 +15925,7 @@ expr = std__string__concat ( expr , std__string__str ( " " ) );
 parser__consume(ctx);
 }
 if (! found_semicolon_assign) {
+#line 5550 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after assignment" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11824,7 +15933,9 @@ return node;
 gstate__debug_print_raw("\n[DEBUG]   final RHS expr:");
 gstate__debug_print_str(expr);
 expr = parser__expand_macros_in_expression ( expr );
+#line 5560 "parser.axe"
 std__string__string trimmed_assign = std__string__strip( expr );
+#line 5561 "parser.axe"
 const std__string__string prefix_fix = std__string__str( "_state = " );
 if (std__string__compare ( ident_name , std__string__str ( "fixed" ) ) == 0 && std__string__has_prefix ( trimmed_assign , prefix_fix )) {
 ident_name = std__string__str ( "fixed_state" );
@@ -11843,11 +15954,13 @@ return node;
 }
 if (next_token.token_type== lexer__TokenType_INCREMENT|| next_token.token_type== lexer__TokenType_DECREMENT) {
 parser__mark_variable_mutated(ident_name);
+#line 5583 "parser.axe"
 const bool is_inc = next_token.token_type== lexer__TokenType_INCREMENT;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__is_variable_declared ( ident_name )) {
 if (! ctx->is_axec) {
+#line 5589 "parser.axe"
 std__string__string err = std__string__str( "Undeclared variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, parser__format_error(ctx, err).data);
@@ -11857,12 +15970,14 @@ return node;
 if (! parser__is_variable_mutable ( ident_name )) {
 gstate__debug_print_raw("\n[DEBUG] Variable is not mutable:");
 gstate__debug_print_str(ident_name);
+#line 5598 "parser.axe"
 std__string__string err = std__string__str( "Cannot increment/decrement immutable variable: " );
 err = std__string__concat ( err , ident_name );
 std__errors__enforce_raw(false, parser__format_error(ctx, err).data);
 return node;
 }
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 5605 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after increment/decrement" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11873,12 +15988,15 @@ node.data.inc_dec.variable = ident_name;
 node.data.inc_dec.is_increment = is_inc;
 return node;
 }
+#line 5618 "parser.axe"
 std__string__string args_str_sugar = std__string__str( "" );
+#line 5619 "parser.axe"
 bool found_semicolon_sugar = false;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5624 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 parser__consume(ctx);
@@ -11907,19 +16025,24 @@ args_str_sugar = std__string__concat ( args_str_sugar , t.value);
 parser__consume(ctx);
 }
 if (! found_semicolon_sugar) {
+#line 5652 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after function call" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 node.node_type = std__string__str ( "FunctionCall" );
 node.data.func_call.function_name = ident_name;
+#line 5660 "parser.axe"
 __list_std__string_t sugar_args_list = {0};
+#line 5661 "parser.axe"
 const std__string__string trimmed_sugar = std__string__strip( args_str_sugar );
 if (std__string__str_len ( trimmed_sugar ) > 0) {
 __list_std__string_push(&sugar_args_list, trimmed_sugar);
 }
 parser__scan_expression_for_usage(trimmed_sugar);
+#line 5669 "parser.axe"
 const uintptr_t list_size_s = sizeof(__list_std__string_t);
+#line 5670 "parser.axe"
 __list_std__string_t* heap_list_s = (__list_std__string_t*)( malloc( list_size_s ) );
 if (heap_list_s != nil) {
 memcpy(heap_list_s, &sugar_args_list, list_size_s);
@@ -11931,14 +16054,18 @@ if (token_type == lexer__TokenType_PLATFORM) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5686 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected platform name after 'platform'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 5690 "parser.axe"
 const lexer__Token platform_token = parser__consume( ctx );
+#line 5691 "parser.axe"
 const std__string__string platform_name = platform_token.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 5695 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after platform name" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -11952,11 +16079,13 @@ if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
 parser__skip_whitespace(ctx);
+#line 5711 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 5716 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 parser__add_child_to_ast(&node, stmt);
@@ -11971,13 +16100,21 @@ parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_FOR)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5736 "parser.axe"
 std__string__string var_name = std__string__str( "" );
+#line 5737 "parser.axe"
 std__string__string var_type = std__string__str( "int" );
+#line 5738 "parser.axe"
 bool is_mutable = false;
+#line 5739 "parser.axe"
 std__string__string init_value = std__string__str( "" );
+#line 5740 "parser.axe"
 std__string__string to_value = std__string__str( "" );
+#line 5741 "parser.axe"
 std__string__string condition = std__string__str( "" );
+#line 5742 "parser.axe"
 std__string__string increment = std__string__str( "" );
+#line 5743 "parser.axe"
 __list_std__string_t reduction_clauses = {0};
 if (parser__expect ( ctx , lexer__TokenType_MUT)) {
 is_mutable = true;
@@ -11989,6 +16126,7 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5755 "parser.axe"
 const lexer__Token var_tok = parser__consume( ctx );
 var_name = var_tok.value;
 parser__skip_whitespace(ctx);
@@ -11997,12 +16135,14 @@ if (parser__expect ( ctx , lexer__TokenType_COLON)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5764 "parser.axe"
 const lexer__Token type_tok = parser__consume( ctx );
 var_type = type_tok.value;
 parser__skip_whitespace(ctx);
 }
 }
 if (parser__expect ( ctx , lexer__TokenType_OPERATOR)) {
+#line 5771 "parser.axe"
 const lexer__Token op_tok = parser__peek( ctx );
 if (std__string__equals_c ( op_tok.value, "=" )) {
 parser__consume(ctx);
@@ -12011,6 +16151,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5779 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_TO|| t.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -12030,6 +16171,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5801 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE|| t.token_type== lexer__TokenType_REDUCE) {
 break;
@@ -12044,11 +16186,13 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 parser__consume(ctx);
+#line 5818 "parser.axe"
 std__string__string clause = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 5823 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RPAREN) {
 if (std__string__str_len ( std__string__strip ( clause ) ) > 0) {
@@ -12079,12 +16223,14 @@ condition = std__string__concat ( condition , to_value );
 increment = std__string__concat ( var_name , std__string__str ( "++" ) );
 }
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 5855 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after parallel for header" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__push_scope();
+#line 5863 "parser.axe"
 std__string__string init_str = std__string__str( "" );
 if (std__string__str_len ( var_name ) > 0) {
 if (std__string__equals_c ( var_type , "int" ) || std__string__equals_c ( var_type , "i32" )) {
@@ -12099,6 +16245,7 @@ init_str = std__string__concat_c ( init_str , " = " );
 init_str = std__string__concat ( init_str , init_value );
 }
 }
+#line 5877 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -12112,6 +16259,7 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 5890 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
@@ -12122,13 +16270,17 @@ node.node_type = std__string__str ( "ParallelFor" );
 node.data.parallel_for.initialization = init_str;
 node.data.parallel_for.condition = condition;
 node.data.parallel_for.increment = increment;
+#line 5904 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 5905 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
 node.children = heap_list;
 }
+#line 5911 "parser.axe"
 const uintptr_t list_size_str = sizeof(__list_std__string_t);
+#line 5912 "parser.axe"
 const __list_std__string_t* heap_clauses = (__list_std__string_t*)( malloc( list_size_str ) );
 if (heap_clauses != nil) {
 memcpy(heap_clauses, &reduction_clauses, list_size_str);
@@ -12140,13 +16292,17 @@ if (parser__expect ( ctx , lexer__TokenType_LOCAL)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 5928 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' after 'parallel local'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 5934 "parser.axe"
 __list_std__string_t private_vars = {0};
+#line 5935 "parser.axe"
 __list_std__string_t private_types = {0};
+#line 5936 "parser.axe"
 __list_bool_t is_mutable = {0};
 while (1) {
 parser__skip_whitespace(ctx);
@@ -12157,6 +16313,7 @@ if (parser__expect ( ctx , lexer__TokenType_RPAREN)) {
 parser__consume(ctx);
 break;
 }
+#line 5950 "parser.axe"
 bool is_mut = false;
 if (parser__expect ( ctx , lexer__TokenType_MUT)) {
 is_mut = true;
@@ -12168,21 +16325,27 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5961 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected variable name in parallel local" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 5966 "parser.axe"
 const lexer__Token var_tok = parser__consume( ctx );
+#line 5967 "parser.axe"
 const std__string__string var_name = var_tok.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_COLON)) {
+#line 5971 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ':' after variable name in parallel local" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 5979 "parser.axe"
 std__string__string type_name = std__string__str( "" );
+#line 5980 "parser.axe"
 int32_t ref_depth = 0;
 while (1) {
 if (! parser__expect ( ctx , lexer__TokenType_REF)) {
@@ -12193,6 +16356,7 @@ parser__consume(ctx);
 parser__skip_whitespace(ctx);
 }
 if (parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 5992 "parser.axe"
 const lexer__Token type_tok = parser__consume( ctx );
 type_name = type_tok.value;
 parser__skip_whitespace(ctx);
@@ -12211,11 +16375,13 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6016 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after parallel local declaration" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6022 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -12229,30 +16395,38 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 6035 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 node.node_type = std__string__str ( "ParallelLocal" );
+#line 6044 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 6045 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
 node.children = heap_list;
 }
+#line 6051 "parser.axe"
 const uintptr_t list_size_str = sizeof(__list_std__string_t);
+#line 6052 "parser.axe"
 const __list_std__string_t* heap_vars = (__list_std__string_t*)( malloc( list_size_str ) );
 if (heap_vars != nil) {
 memcpy(heap_vars, &private_vars, list_size_str);
 node.data.parallel_local.private_vars = heap_vars;
 }
+#line 6058 "parser.axe"
 const __list_std__string_t* heap_types = (__list_std__string_t*)( malloc( list_size_str ) );
 if (heap_types != nil) {
 memcpy(heap_types, &private_types, list_size_str);
 node.data.parallel_local.private_types = heap_types;
 }
+#line 6064 "parser.axe"
 const uintptr_t list_size_bool = sizeof(__list_bool_t);
+#line 6065 "parser.axe"
 const __list_bool_t* heap_mutable = (__list_bool_t*)( malloc( list_size_bool ) );
 if (heap_mutable != nil) {
 memcpy(heap_mutable, &is_mutable, list_size_bool);
@@ -12261,11 +16435,13 @@ node.data.parallel_local.is_mutable = heap_mutable;
 return node;
 }
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6076 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'parallel'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6082 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -12279,13 +16455,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 6095 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 node.node_type = std__string__str ( "Parallel" );
+#line 6104 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 6105 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
@@ -12297,11 +16476,13 @@ if (token_type == lexer__TokenType_SINGLE) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6120 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'single'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6126 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -12315,13 +16496,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 6139 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 node.node_type = std__string__str ( "Single" );
+#line 6148 "parser.axe"
 const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+#line 6149 "parser.axe"
 const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &body, list_size);
@@ -12333,11 +16517,13 @@ if (token_type == lexer__TokenType_UNSAFE) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6164 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'unsafe'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6170 "parser.axe"
 __list_structs__ASTNode_t body = {0};
 while (1) {
 parser__skip_whitespace(ctx);
@@ -12348,13 +16534,16 @@ if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+#line 6182 "parser.axe"
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
 node.node_type = std__string__str ( "Unsafe" );
+#line 6191 "parser.axe"
 const uintptr_t list_size_ast = sizeof(__list_structs__ASTNode_t);
+#line 6192 "parser.axe"
 __list_structs__ASTNode_t* heap_body = (__list_structs__ASTNode_t*)( malloc( list_size_ast ) );
 if (heap_body != nil) {
 memcpy(heap_body, &body, list_size_ast);
@@ -12364,6 +16553,7 @@ return node;
 }
 if (token_type == lexer__TokenType_RAW) {
 if (! ctx->is_axec) {
+#line 6204 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Raw C blocks are only allowed in .axec files" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12372,19 +16562,24 @@ g_function_has_raw_block = true;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6216 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'raw'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6222 "parser.axe"
 std__string__string raw_code = std__string__str( "" );
+#line 6223 "parser.axe"
 int32_t depth = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
+#line 6227 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Unexpected end of tokens in raw block" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6232 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 raw_code = std__string__concat ( raw_code , std__string__str ( "{" ) );
@@ -12422,6 +16617,7 @@ raw_code = std__string__concat ( raw_code , t.value);
 parser__consume(ctx);
 }
 if (! parser__expect ( ctx , lexer__TokenType_RBRACE)) {
+#line 6268 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '}' after raw block body" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12435,17 +16631,20 @@ if (token_type == lexer__TokenType_OPAQUE) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6285 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'opaque'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6292 "parser.axe"
 __list_std__string_t type_names = {0};
 while (1) {
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6298 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
@@ -12464,7 +16663,9 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 node.node_type = std__string__str ( "Opaque" );
+#line 6318 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 6319 "parser.axe"
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &type_names, list_size);
@@ -12476,17 +16677,20 @@ if (token_type == lexer__TokenType_FOREIGN) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
+#line 6334 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'foreign'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6340 "parser.axe"
 __list_std__string_t type_names = {0};
 while (1) {
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6346 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
@@ -12505,7 +16709,9 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 node.node_type = std__string__str ( "Foreign" );
+#line 6366 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 6367 "parser.axe"
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &type_names, list_size);
@@ -12515,6 +16721,7 @@ return node;
 }
 if (token_type == lexer__TokenType_DEF) {
 parser__consume(ctx);
+#line 6380 "parser.axe"
 const structs__ASTNode func_node = parser__parse_function( ctx );
 return func_node;
 }
@@ -12522,6 +16729,7 @@ if (token_type == lexer__TokenType_EXTERN) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_DEF)) {
+#line 6390 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected 'def' after 'extern'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12529,34 +16737,42 @@ return node;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6399 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected function name after 'extern def'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6403 "parser.axe"
 const lexer__Token func_name_token = parser__consume( ctx );
+#line 6404 "parser.axe"
 const std__string__string func_name = func_name_token.value;
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 6408 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' after extern function name" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6414 "parser.axe"
 __list_std__string_t extern_params = {0};
 while (1) {
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6420 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_RPAREN) {
 break;
 }
+#line 6425 "parser.axe"
 std__string__string param_str = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6430 "parser.axe"
 const lexer__Token pt = parser__peek( ctx );
 if (pt.token_type== lexer__TokenType_COMMA|| pt.token_type== lexer__TokenType_RPAREN) {
 break;
@@ -12569,6 +16785,7 @@ param_str = std__string__concat ( param_str , std__string__str ( " " ) );
 }
 parser__consume(ctx);
 }
+#line 6442 "parser.axe"
 const std__string__string trimmed_param = std__string__strip( param_str );
 if (std__string__str_len ( trimmed_param ) > 0) {
 __list_std__string_push(&extern_params, trimmed_param);
@@ -12578,12 +16795,14 @@ parser__consume(ctx);
 }
 }
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 6453 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after extern parameters" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+#line 6461 "parser.axe"
 std__string__string extern_return_type = std__string__str( "" );
 if (ctx->pos< len_ptr(ctx->tokens) && parser__peek ( ctx ) . token_type == lexer__TokenType_COLON) {
 parser__consume(ctx);
@@ -12592,6 +16811,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6471 "parser.axe"
 const lexer__Token rt = parser__peek( ctx );
 if (rt.token_type== lexer__TokenType_SEMICOLON) {
 break;
@@ -12608,6 +16828,7 @@ extern_return_type = std__string__strip ( extern_return_type );
 }
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 6487 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after extern declaration" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12616,7 +16837,9 @@ parser__consume(ctx);
 node.node_type = std__string__str ( "Extern" );
 node.data.extern_node.function_name = func_name;
 if (len_v(extern_params) > 0) {
+#line 6498 "parser.axe"
 const uintptr_t params_size = sizeof(__list_std__string_t);
+#line 6499 "parser.axe"
 const __list_std__string_t* heap_params = (__list_std__string_t*)( malloc( params_size ) );
 if (heap_params != nil) {
 memcpy(heap_params, &extern_params, params_size);
@@ -12633,19 +16856,24 @@ if (parser__expect ( ctx , lexer__TokenType_EXTERNAL)) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 6520 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' after 'use external'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_STR)) {
+#line 6527 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected string literal for header file" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6531 "parser.axe"
 const lexer__Token header_token = parser__consume( ctx );
+#line 6532 "parser.axe"
 const std__string__string header_file = header_token.value;
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 6535 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after header file" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12653,6 +16881,7 @@ return node;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 if (! parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
+#line 6543 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ';' after external import" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12662,6 +16891,7 @@ node.node_type = std__string__str ( "ExternalImport" );
 node.data.external_import.header_file = header_file;
 return node;
 }
+#line 6554 "parser.axe"
 std__string__string module_name = std__string__str( "" );
 while (1) {
 if (parser__expect ( ctx , lexer__TokenType_DOT)) {
@@ -12683,10 +16913,12 @@ continue;
 break;
 }
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6578 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected module name after 'use'" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6582 "parser.axe"
 const lexer__Token first_ident = parser__consume( ctx );
 module_name = std__string__concat ( module_name , first_ident.value);
 while (1) {
@@ -12695,10 +16927,12 @@ if (parser__expect ( ctx , lexer__TokenType_DOT)) {
 parser__consume(ctx);
 module_name = std__string__concat ( module_name , std__string__str ( "." ) );
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6592 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected identifier after '.' in module path" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6596 "parser.axe"
 const lexer__Token ident = parser__consume( ctx );
 module_name = std__string__concat ( module_name , ident.value);
 }
@@ -12706,14 +16940,17 @@ else if (parser__expect ( ctx , lexer__TokenType_SLASH)) {
 parser__consume(ctx);
 module_name = std__string__concat ( module_name , std__string__str ( "/" ) );
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6603 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected identifier after '/' in module path" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+#line 6607 "parser.axe"
 const lexer__Token ident = parser__consume( ctx );
 module_name = std__string__concat ( module_name , ident.value);
 }
 else if (parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6610 "parser.axe"
 const lexer__Token ident2 = parser__peek( ctx );
 if (std__string__str_len ( ident2 . value ) > 0 && std__string__get_char ( ident2 . value , 0 ) == '_') {
 parser__consume(ctx);
@@ -12736,11 +16973,13 @@ node.data.use_node.import_all = true;
 return node;
 }
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+#line 6635 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '(' or ';' after module name" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+#line 6641 "parser.axe"
 __list_std__string_t imports = {0};
 while (1) {
 parser__skip_whitespace(ctx);
@@ -12748,6 +16987,7 @@ if (parser__expect ( ctx , lexer__TokenType_RPAREN)) {
 break;
 }
 if (parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
+#line 6649 "parser.axe"
 const lexer__Token import_token = parser__consume( ctx );
 __list_std__string_push(&imports, import_token.value);
 }
@@ -12755,12 +16995,14 @@ else if (parser__expect ( ctx , lexer__TokenType_COMMA)) {
 parser__consume(ctx);
 }
 else {
+#line 6654 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected identifier or ',' in use statement" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
 }
 }
 if (! parser__expect ( ctx , lexer__TokenType_RPAREN)) {
+#line 6661 "parser.axe"
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ')' after imports" ) );
 std__errors__enforce_raw(false, err.data);
 return node;
@@ -12774,7 +17016,9 @@ return node;
 parser__consume(ctx);
 node.node_type = std__string__str ( "Use" );
 node.data.use_node.module_name = module_name;
+#line 6680 "parser.axe"
 const uintptr_t list_size = sizeof(__list_std__string_t);
+#line 6681 "parser.axe"
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
 if (heap_list != nil) {
 memcpy(heap_list, &imports, list_size);
@@ -12789,12 +17033,14 @@ parser__consume(ctx);
 gstate__debug_print_raw("\n[DEBUG] Consumed 'case' token");
 parser__skip_whitespace(ctx);
 gstate__debug_print_raw("\n[DEBUG] Skipped whitespace after 'case'");
+#line 6701 "parser.axe"
 std__string__string case_value = std__string__str( "" );
 gstate__debug_print_raw("\n[DEBUG] Starting to collect case value");
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6707 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -12810,11 +17056,13 @@ std__errors__enforce_raw(false, "Expected '{' after case value");
 return node;
 }
 parser__consume(ctx);
+#line 6725 "parser.axe"
 int32_t depth = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6730 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 depth = depth + 1;
@@ -12841,11 +17089,13 @@ std__errors__enforce_raw(false, "Expected '{' after default");
 return node;
 }
 parser__consume(ctx);
+#line 6761 "parser.axe"
 int32_t depth = 1;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+#line 6766 "parser.axe"
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 depth = depth + 1;
@@ -12868,7 +17118,9 @@ parser__consume(ctx);
 return node;
 }
 
+#line 44
 void imports__reset_processed_modules() {
+#line 45 "imports.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 * 16 );
 g_processed_modules = (*std__maps__StringBoolMap__create( &arena , 128 ));
 g_model_names_arena = std__arena__Arena__create( 1024 * 16 );
@@ -12877,10 +17129,12 @@ g_imported_symbols_arena = std__arena__Arena__create( 1024 * 16 );
 g_imported_symbols = (*std__maps__StringBoolMap__create( &g_imported_symbols_arena , 128 ));
 }
 
+#line 54
 void imports__register_model_name(std__string__string short_name, std__string__string prefixed_name) {
 std__maps__StringStringMap__set(&g_import_model_names, &g_model_names_arena, short_name, prefixed_name);
 }
 
+#line 59
 std__string__string imports__lookup_model_name(std__string__string short_name) {
 if (std__maps__StringStringMap__contains( &g_import_model_names , short_name )) {
 return std__maps__StringStringMap__get( &g_import_model_names , short_name );
@@ -12888,10 +17142,12 @@ return std__maps__StringStringMap__get( &g_import_model_names , short_name );
 return std__string__str( "" );
 }
 
+#line 67
 void imports__register_imported_symbol(std__string__string symbol_name) {
 std__maps__StringBoolMap__set(&g_imported_symbols, &g_imported_symbols_arena, symbol_name, true);
 }
 
+#line 72
 bool imports__is_symbol_imported(std__string__string symbol_name) {
 if (g_imported_symbols.keys== nil) {
 return false;
@@ -12899,6 +17155,7 @@ return false;
 return std__maps__StringBoolMap__contains( &g_imported_symbols , symbol_name );
 }
 
+#line 80
 bool imports__has_imported_module(std__string__string name) {
 if (std__maps__StringBoolMap__contains( &g_processed_modules , name )) {
 return true;
@@ -12906,23 +17163,31 @@ return true;
 return false;
 }
 
+#line 88
 void imports__add_processed_module(std__string__string path) {
+#line 89 "imports.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 );
 std__maps__StringBoolMap__set(&g_processed_modules, &arena, path, true);
 }
 
+#line 94
 bool imports__is_module_processed(std__string__string path) {
 return std__maps__StringBoolMap__contains( &g_processed_modules , path );
 }
 
+#line 99
 std__string__string imports__get_module_prefix(std__string__string module_name) {
+#line 100 "imports.axe"
 std__string__string result = std__string__str( "" );
+#line 101 "imports.axe"
 int32_t i = 0;
+#line 102 "imports.axe"
 const int32_t n = std__string__str_len( module_name );
 while (1) {
 if (i >= n) {
 break;
 }
+#line 107 "imports.axe"
 const char ch = std__string__get_char( module_name , i );
 if (ch == '.') {
 result = std__string__concat ( result , std__string__str ( "__" ) );
@@ -12931,6 +17196,7 @@ else if (ch == '-') {
 result = std__string__concat ( result , std__string__str ( "_" ) );
 }
 else {
+#line 113 "imports.axe"
 const std__string__string tmp = std__string__substring_se( module_name , i , i + 1 );
 result = std__string__concat ( result , tmp );
 }
@@ -12939,13 +17205,17 @@ i = i + 1;
 return result;
 }
 
+#line 121
 std__string__string imports__get_dir_from_path(std__string__string path) {
+#line 122 "imports.axe"
 const int32_t lenp = std__string__str_len( path );
+#line 123 "imports.axe"
 int32_t i = lenp - 1;
 while (1) {
 if (i < 0) {
 return std__string__str( "." );
 }
+#line 128 "imports.axe"
 const char ch = std__string__get_char( path , i );
 if (ch == '/' || ch == '\\') {
 return std__string__substring_se( path , 0 , i );
@@ -12954,10 +17224,12 @@ i = i - 1;
 }
 }
 
+#line 136
 std__string__string imports__join_path(std__string__string base_dir, std__string__string rel) {
 if (std__string__str_len ( base_dir ) == 0 || std__string__equals_c ( base_dir , "." )) {
 return rel;
 }
+#line 141 "imports.axe"
 const char last = std__string__get_char( base_dir , std__string__str_len ( base_dir ) - 1 );
 if (last == '/' || last == '\\') {
 return std__string__concat( base_dir , rel );
@@ -12965,59 +17237,83 @@ return std__string__concat( base_dir , rel );
 return std__string__concat( std__string__concat ( base_dir , std__string__str ( "/" ) ) , rel );
 }
 
+#line 149
 std__string__string imports__make_module_path(std__string__string base_dir, std__string__string use_module) {
 if (std__string__has_prefix ( use_module , std__string__str ( "std." ) )) {
+#line 151 "imports.axe"
 const std__string__string rest = std__string__substring_se( use_module , 4 , std__string__str_len ( use_module ) );
+#line 152 "imports.axe"
 std__string__string path_rest = std__string__str( "" );
+#line 153 "imports.axe"
 int32_t i = 0;
+#line 154 "imports.axe"
 const int32_t n = std__string__str_len( rest );
 while (1) {
 if (i >= n) {
 break;
 }
+#line 159 "imports.axe"
 const char ch = std__string__get_char( rest , i );
 if (ch == '.') {
 path_rest = std__string__concat ( path_rest , std__string__str ( "/" ) );
 }
 else {
+#line 163 "imports.axe"
 const std__string__string tmp = std__string__substring_se( rest , i , i + 1 );
 path_rest = std__string__concat ( path_rest , tmp );
 }
 i++;
 }
+#line 169 "imports.axe"
 const std__string__string rel = std__string__concat( path_rest , std__string__str ( ".axec" ) );
+#line 170 "imports.axe"
 const std__string__string axe_home = std__os__get_env( std__string__str ( "AXE_HOME" ) );
 if (std__string__str_len ( axe_home ) > 0) {
+#line 173 "imports.axe"
 const std__string__string axe_home_std = imports__join_path( axe_home , std__string__str ( "std" ) );
+#line 174 "imports.axe"
 const std__string__string axe_home_path = imports__join_path( axe_home_std , rel );
 if (std__os__file_exists ( axe_home_path )) {
 return axe_home_path;
 }
 }
+#line 180 "imports.axe"
 const std__string__string std_base = imports__join_path( base_dir , std__string__str ( "std" ) );
+#line 181 "imports.axe"
 const std__string__string local_path = imports__join_path( std_base , rel );
 if (std__os__file_exists ( local_path )) {
 return local_path;
 }
+#line 186 "imports.axe"
 const std__string__string cwd = std__os__get_cwd( );
+#line 187 "imports.axe"
 const std__string__string cwd_parent = imports__get_dir_from_path( cwd );
+#line 188 "imports.axe"
 const std__string__string proj_std = imports__join_path( cwd_parent , std__string__str ( "std" ) );
+#line 189 "imports.axe"
 const std__string__string proj_path = imports__join_path( proj_std , rel );
 if (std__os__file_exists ( proj_path )) {
 return proj_path;
 }
+#line 194 "imports.axe"
 const std__string__string exe_dir = std__os__get_executable_dir( );
 if (std__string__str_len ( exe_dir ) > 0) {
+#line 196 "imports.axe"
 const std__string__string exe_std = imports__join_path( exe_dir , std__string__str ( "std" ) );
+#line 197 "imports.axe"
 const std__string__string exe_path = imports__join_path( exe_std , rel );
 if (std__os__file_exists ( exe_path )) {
 return exe_path;
 }
 }
+#line 203 "imports.axe"
 const std__string__string home = std__os__get_user_home_dir( );
 if (std__string__str_len ( home ) > 0) {
+#line 205 "imports.axe"
 const std__string__string home_axe = imports__join_path( home , std__string__str ( ".axe" ) );
+#line 206 "imports.axe"
 const std__string__string home_std = imports__join_path( home_axe , std__string__str ( "std" ) );
+#line 207 "imports.axe"
 const std__string__string home_path = imports__join_path( home_std , rel );
 if (std__os__file_exists ( home_path )) {
 return home_path;
@@ -13026,34 +17322,45 @@ return home_path;
 return local_path;
 }
 if (std__string__has_prefix ( use_module , std__string__str ( "./" ) ) || std__string__has_prefix ( use_module , std__string__str ( "../" ) )) {
+#line 217 "imports.axe"
 const std__string__string rel2 = std__string__concat( use_module , std__string__str ( ".axe" ) );
 return imports__join_path( base_dir , rel2 );
 }
+#line 221 "imports.axe"
 std__string__string path_mod = std__string__str( "" );
+#line 222 "imports.axe"
 int32_t j = 0;
+#line 223 "imports.axe"
 const int32_t mlen = std__string__str_len( use_module );
 while (1) {
 if (j >= mlen) {
 break;
 }
+#line 228 "imports.axe"
 const char ch2 = std__string__get_char( use_module , j );
 if (ch2 == '.') {
 path_mod = std__string__concat ( path_mod , std__string__str ( "/" ) );
 }
 else {
+#line 232 "imports.axe"
 const std__string__string tmp2 = std__string__substring_se( use_module , j , j + 1 );
 path_mod = std__string__concat ( path_mod , tmp2 );
 }
 j++;
 }
+#line 238 "imports.axe"
 const std__string__string rel3 = std__string__concat( path_mod , std__string__str ( ".axe" ) );
 return imports__join_path( base_dir , rel3 );
 }
 
+#line 242
 void imports__append_child(structs__ASTNode* program, structs__ASTNode child) {
 if (program->children== nil) {
+#line 245 "imports.axe"
 __list_structs__ASTNode_t lst = {0};
+#line 246 "imports.axe"
 const uintptr_t sz = sizeof(__list_structs__ASTNode_t);
+#line 247 "imports.axe"
 const __list_structs__ASTNode_t* heap_lst = (__list_structs__ASTNode_t*)( malloc( sz ) );
 if (heap_lst != nil) {
 memcpy(heap_lst, &lst, sz);
@@ -13061,7 +17368,9 @@ program->children = heap_lst;
 }
 }
 if (program->children!= nil) {
+#line 257 "imports.axe"
 __list_structs__ASTNode_t tmp = {0};
+#line 258 "imports.axe"
 const uintptr_t sz2 = sizeof(__list_structs__ASTNode_t);
 memcpy(&tmp, program->children, sz2);
 __list_structs__ASTNode_push(&tmp, child);
@@ -13069,18 +17378,26 @@ memcpy(program->children, &tmp, sz2);
 }
 }
 
+#line 266
 void imports__prefix_function_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported) {
+#line 267 "imports.axe"
 const std__string__string name = node->data.function.name;
 if (std__string__find_char_from ( name , '_' , 0 ) >= 0) {
+#line 270 "imports.axe"
 const int32_t len_name = std__string__str_len( name );
+#line 271 "imports.axe"
 bool has_double_underscore = false;
+#line 272 "imports.axe"
 int32_t first_underscore_idx = - 1;
+#line 273 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i + 1 >= len_name) {
 break;
 }
+#line 278 "imports.axe"
 const char c1 = std__string__get_char( name , i );
+#line 279 "imports.axe"
 const char c2 = std__string__get_char( name , i + 1 );
 if (c1 == '_' && c2 == '_') {
 has_double_underscore = true;
@@ -13090,27 +17407,36 @@ break;
 i++;
 }
 if (has_double_underscore) {
+#line 289 "imports.axe"
 const std__string__string potential_model = std__string__substring_se( name , 0 , first_underscore_idx );
 if (! std__maps__StringBoolMap__contains( exported , potential_model )) {
 return ;
 }
 }
 }
+#line 296 "imports.axe"
 const std__string__string pref = std__string__concat( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , name );
 node->data.function.name = pref;
 }
 
+#line 300
 void imports__prefix_model_node(structs__ASTNode* node, std__string__string module_prefix) {
+#line 301 "imports.axe"
 const std__string__string name = node->data.model_node.name;
 if (std__string__find_char_from ( name , '_' , 0 ) >= 0) {
+#line 304 "imports.axe"
 const int32_t len_name = std__string__str_len( name );
+#line 305 "imports.axe"
 bool has_double_underscore = false;
+#line 306 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i + 1 >= len_name) {
 break;
 }
+#line 311 "imports.axe"
 const char c1 = std__string__get_char( name , i );
+#line 312 "imports.axe"
 const char c2 = std__string__get_char( name , i + 1 );
 if (c1 == '_' && c2 == '_') {
 has_double_underscore = true;
@@ -13122,21 +17448,29 @@ if (has_double_underscore) {
 return ;
 }
 }
+#line 325 "imports.axe"
 const std__string__string pref = std__string__concat( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , name );
 node->data.model_node.name = pref;
 }
 
+#line 329
 void imports__prefix_enum_node(structs__ASTNode* node, std__string__string module_prefix) {
+#line 330 "imports.axe"
 const std__string__string name = node->data.enum_node.name;
 if (std__string__find_char_from ( name , '_' , 0 ) >= 0) {
+#line 333 "imports.axe"
 const int32_t len_name = std__string__str_len( name );
+#line 334 "imports.axe"
 bool has_double_underscore = false;
+#line 335 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i + 1 >= len_name) {
 break;
 }
+#line 340 "imports.axe"
 const char c1 = std__string__get_char( name , i );
+#line 341 "imports.axe"
 const char c2 = std__string__get_char( name , i + 1 );
 if (c1 == '_' && c2 == '_') {
 has_double_underscore = true;
@@ -13148,22 +17482,29 @@ if (has_double_underscore) {
 return ;
 }
 }
+#line 354 "imports.axe"
 const std__string__string pref = std__string__concat( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , name );
 node->data.enum_node.name = pref;
 }
 
+#line 358
 std__maps__StringBoolMap imports__build_exported_name_map(structs__ASTNode* imported) {
+#line 359 "imports.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 );
+#line 360 "imports.axe"
 std__maps__StringBoolMap m = (*std__maps__StringBoolMap__create( &arena , 128 ));
 if (imported->children== nil) {
 return m;
 }
+#line 365 "imports.axe"
 const __list_structs__ASTNode_t* children = imported->children;
+#line 366 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 371 "imports.axe"
 const structs__ASTNode child = children->data[ i ];
 if (std__string__equals_c ( child.node_type, "Function" )) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.function.name, true);
@@ -13179,36 +17520,47 @@ i++;
 return m;
 }
 
+#line 385
 std__string__string imports__prefix_type_name(std__string__string type_name, std__string__string module_prefix, std__maps__StringBoolMap* exported) {
 if (std__string__str_len ( type_name ) == 0) {
 return type_name;
 }
+#line 390 "imports.axe"
 const std__string__string t = type_name;
 if (std__string__has_prefix ( t , std__string__str ( "ref " ) )) {
+#line 393 "imports.axe"
 const std__string__string rest = std__string__strip( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
 return std__string__concat( std__string__str ( "ref " ) , imports__prefix_type_name ( rest , module_prefix , exported ) );
 }
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
+#line 398 "imports.axe"
 const std__string__string rest = std__string__strip( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
 return std__string__concat( std__string__str ( "mut " ) , imports__prefix_type_name ( rest , module_prefix , exported ) );
 }
 if (std__string__has_suffix ( t , std__string__str ( "*" ) )) {
+#line 403 "imports.axe"
 const std__string__string base = std__string__strip( std__string__substring_se ( t , 0 , std__string__str_len ( t ) - 1 ) );
 return std__string__concat( imports__prefix_type_name ( base , module_prefix , exported ) , std__string__str ( "*" ) );
 }
 if (std__string__has_suffix ( t , std__string__str ( "[999]" ) )) {
+#line 408 "imports.axe"
 const std__string__string base = std__string__strip( std__string__substring_se ( t , 0 , std__string__str_len ( t ) - 5 ) );
 return std__string__concat( imports__prefix_type_name ( base , module_prefix , exported ) , std__string__str ( "[999]" ) );
 }
 if (std__string__find_char_from ( t , '_' , 0 ) >= 0) {
+#line 413 "imports.axe"
 const int32_t len_t = std__string__str_len( t );
+#line 414 "imports.axe"
 bool has_double_underscore = false;
+#line 415 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i + 1 >= len_t) {
 break;
 }
+#line 420 "imports.axe"
 const char c1 = std__string__get_char( t , i );
+#line 421 "imports.axe"
 const char c2 = std__string__get_char( t , i + 1 );
 if (c1 == '_' && c2 == '_') {
 has_double_underscore = true;
@@ -13225,6 +17577,7 @@ if (! std__string__has_prefix ( t , std__string__concat ( module_prefix , std__s
 return std__string__concat( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , t );
 }
 }
+#line 440 "imports.axe"
 const std__string__string known_prefixed = imports__lookup_model_name( t );
 if (std__string__str_len ( known_prefixed ) > 0) {
 return known_prefixed;
@@ -13232,26 +17585,36 @@ return known_prefixed;
 return type_name;
 }
 
+#line 448
 void imports__prefix_types_in_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported) {
 if (node == nil) {
 return ;
 }
+#line 453 "imports.axe"
 const std__string__string nt = node->node_type;
 if (std__string__equals_c ( nt , "Function" )) {
 node->data.function.return_type = imports__prefix_type_name ( node->data.function.return_type, module_prefix , exported );
+#line 458 "imports.axe"
 __list_std__string_t* params = node->data.function.params;
 if (params != nil) {
+#line 460 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*params))) {
 break;
 }
+#line 465 "imports.axe"
 const std__string__string p = params->data[ i ];
+#line 466 "imports.axe"
 const int32_t colon_pos = std__string__find_char_from( p , ':' , 0 );
 if (colon_pos >= 0) {
+#line 468 "imports.axe"
 const std__string__string pname = std__string__strip( std__string__substring_se ( p , 0 , colon_pos ) );
+#line 469 "imports.axe"
 const std__string__string ptype = std__string__strip( std__string__substr ( p , colon_pos + 1 , std__string__str_len ( p ) - colon_pos - 1 ) );
+#line 470 "imports.axe"
 const std__string__string new_ptype = imports__prefix_type_name( ptype , module_prefix , exported );
+#line 471 "imports.axe"
 std__string__string newp = std__string__concat( pname , std__string__str ( ":" ) );
 if (std__string__str_len ( new_ptype ) > 0) {
 newp = std__string__concat ( std__string__concat ( newp , std__string__str ( " " ) ) , new_ptype );
@@ -13272,8 +17635,10 @@ else if (std__string__equals_c ( nt , "ArrayLiteral" )) {
 node->data.array_literal.element_type = imports__prefix_type_name ( node->data.array_literal.element_type, module_prefix , exported );
 }
 else if (std__string__equals_c ( nt , "Macro" )) {
+#line 487 "imports.axe"
 __list_std__string_t* ptypes = node->data.macro_node.param_types;
 if (ptypes != nil) {
+#line 489 "imports.axe"
 int32_t j = 0;
 while (1) {
 if (j >= len_v((*ptypes))) {
@@ -13288,8 +17653,10 @@ else if (std__string__equals_c ( nt , "For" )) {
 node->data.for_loop.var_type = imports__prefix_type_name ( node->data.for_loop.var_type, module_prefix , exported );
 }
 else if (std__string__equals_c ( nt , "Model" )) {
+#line 501 "imports.axe"
 __list_std__string_t* ftypes = node->data.model_node.field_types;
 if (ftypes != nil) {
+#line 503 "imports.axe"
 int32_t k = 0;
 while (1) {
 if (k >= len_v((*ftypes))) {
@@ -13299,8 +17666,10 @@ ftypes->data[k] = imports__prefix_type_name ( ftypes->data[ k ], module_prefix ,
 k = k + 1;
 }
 }
+#line 513 "imports.axe"
 __list_std__string_t* umtypes = node->data.model_node.union_member_types;
 if (umtypes != nil) {
+#line 515 "imports.axe"
 int32_t x = 0;
 while (1) {
 if (x >= len_v((*umtypes))) {
@@ -13312,13 +17681,17 @@ x = x + 1;
 }
 }
 else if (std__string__equals_c ( nt , "Overload" )) {
+#line 525 "imports.axe"
 const std__string__string ovl_name = node->data.overload_node.name;
+#line 526 "imports.axe"
 const bool ovl_already_prefixed = std__string__str_contains_c( ovl_name , "__" );
 if (! ovl_already_prefixed) {
 node->data.overload_node.name = std__string__concat ( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , ovl_name );
 }
+#line 531 "imports.axe"
 __list_std__string_t* type_names_ref = node->data.overload_node.type_names;
 if (type_names_ref != nil) {
+#line 533 "imports.axe"
 int32_t iov = 0;
 while (1) {
 if (iov >= len_v((*type_names_ref))) {
@@ -13328,14 +17701,18 @@ type_names_ref->data[iov] = imports__prefix_type_name ( type_names_ref->data[ io
 iov = iov + 1;
 }
 }
+#line 543 "imports.axe"
 __list_std__string_t* target_funcs_ref = node->data.overload_node.target_functions;
 if (target_funcs_ref != nil) {
+#line 545 "imports.axe"
 int32_t itf = 0;
 while (1) {
 if (itf >= len_v((*target_funcs_ref))) {
 break;
 }
+#line 551 "imports.axe"
 const std__string__string target_name = target_funcs_ref->data[ itf ];
+#line 552 "imports.axe"
 const bool already_prefixed = std__string__str_contains_c( target_name , "__" );
 if (! already_prefixed) {
 target_funcs_ref->data[itf] = std__string__concat ( std__string__concat ( module_prefix , std__string__str ( "__" ) ) , target_name );
@@ -13345,8 +17722,10 @@ itf++;
 }
 }
 else if (std__string__equals_c ( nt , "Opaque" )) {
+#line 562 "imports.axe"
 __list_std__string_t* tnames = node->data.opaque_node.type_names;
 if (tnames != nil) {
+#line 564 "imports.axe"
 int32_t iy = 0;
 while (1) {
 if (iy >= len_v((*tnames))) {
@@ -13358,8 +17737,10 @@ iy = iy + 1;
 }
 }
 else if (std__string__equals_c ( nt , "Extern" )) {
+#line 574 "imports.axe"
 __list_std__string_t* eparams = node->data.extern_node.params;
 if (eparams != nil) {
+#line 576 "imports.axe"
 int32_t ep = 0;
 while (1) {
 if (ep >= len_v((*eparams))) {
@@ -13372,7 +17753,9 @@ ep = ep + 1;
 node->data.extern_node.return_type = imports__prefix_type_name ( node->data.extern_node.return_type, module_prefix , exported );
 }
 if (node->children!= nil) {
+#line 590 "imports.axe"
 __list_structs__ASTNode_t* children = node->children;
+#line 591 "imports.axe"
 int32_t ii = 0;
 while (1) {
 if (ii >= len_v((*children))) {
@@ -13384,18 +17767,23 @@ ii = ii + 1;
 }
 }
 
+#line 605
 bool imports__check_symbol_exists_in_program(structs__ASTNode* program, std__string__string symbol_name) {
 if (program->children== nil) {
 return false;
 }
+#line 610 "imports.axe"
 const __list_structs__ASTNode_t* children = program->children;
+#line 611 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 616 "imports.axe"
 const structs__ASTNode child = children->data[ i ];
 if (std__string__equals_c ( child.node_type, "Function" )) {
+#line 619 "imports.axe"
 const std__string__string func_name = child.data.function.name;
 if (std__string__find_char_from ( func_name , '_' , 0 ) >= 0) {
 if (std__string__str_contains_c ( func_name , "__" )) {
@@ -13413,6 +17801,7 @@ return true;
 }
 }
 else if (std__string__equals_c ( child.node_type, "Model" )) {
+#line 634 "imports.axe"
 const std__string__string model_name = child.data.model_node.name;
 if (std__string__str_contains_c ( model_name , "__" )) {
 i++;
@@ -13423,6 +17812,7 @@ return true;
 }
 }
 else if (std__string__equals_c ( child.node_type, "Enum" )) {
+#line 643 "imports.axe"
 const std__string__string enum_name = child.data.enum_node.name;
 if (std__string__str_contains_c ( enum_name , "__" )) {
 i++;
@@ -13437,18 +17827,24 @@ i++;
 return false;
 }
 
+#line 658
 void imports__merge_imported_module(structs__ASTNode* program, structs__ASTNode* imported, std__string__string use_module) {
+#line 659 "imports.axe"
 const std__string__string module_prefix = imports__get_module_prefix( use_module );
 if (imported->children== nil) {
 return ;
 }
+#line 665 "imports.axe"
 const __list_structs__ASTNode_t* children = imported->children;
+#line 666 "imports.axe"
 std__maps__StringBoolMap exported = imports__build_exported_name_map( imported );
+#line 667 "imports.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 673 "imports.axe"
 const structs__ASTNode child = children->data[ i ];
 if (std__string__equals_c ( child.node_type, "Use" )) {
 i++;
@@ -13463,6 +17859,7 @@ if (std__string__equals_c ( child.data.function.name, "main" )) {
 i++;
 continue;
 }
+#line 690 "imports.axe"
 const std__string__string func_name = child.data.function.name;
 if (imports__check_symbol_exists_in_program ( program , func_name )) {
 std__io__print("error: imported symbol '");
@@ -13477,6 +17874,7 @@ imports__prefix_function_node(&child, module_prefix, &exported);
 imports__prefix_types_in_node(&child, module_prefix, &exported);
 }
 else if (std__string__equals_c ( child.node_type, "Model" )) {
+#line 707 "imports.axe"
 const std__string__string original_name = child.data.model_node.name;
 if (imports__check_symbol_exists_in_program ( program , original_name )) {
 std__io__print("error: imported symbol '");
@@ -13488,11 +17886,13 @@ exit(1);
 }
 imports__register_imported_symbol(original_name);
 imports__prefix_model_node(&child, module_prefix);
+#line 722 "imports.axe"
 const std__string__string prefixed_name = child.data.model_node.name;
 imports__register_model_name(original_name, prefixed_name);
 imports__prefix_types_in_node(&child, module_prefix, &exported);
 }
 else if (std__string__equals_c ( child.node_type, "Enum" )) {
+#line 726 "imports.axe"
 const std__string__string enum_name = child.data.enum_node.name;
 if (imports__check_symbol_exists_in_program ( program , enum_name )) {
 std__io__print("error: imported symbol '");
@@ -13506,23 +17906,29 @@ imports__register_imported_symbol(enum_name);
 imports__prefix_enum_node(&child, module_prefix);
 }
 else if (std__string__equals_c ( child.node_type, "Declaration" )) {
+#line 742 "imports.axe"
 const std__string__string var_name = child.data.declaration.name;
 imports__register_imported_symbol(var_name);
 }
 else if (std__string__equals_c ( child.node_type, "Extern" )) {
+#line 745 "imports.axe"
 const std__string__string func_name = child.data.extern_node.function_name;
 imports__register_imported_symbol(func_name);
 }
 else if (std__string__equals_c ( child.node_type, "Platform" )) {
 if (child.children!= nil) {
+#line 749 "imports.axe"
 const __list_structs__ASTNode_t* plat_children = child.children;
+#line 750 "imports.axe"
 int32_t j = 0;
 while (1) {
 if (j >= len_v((*plat_children))) {
 break;
 }
+#line 753 "imports.axe"
 structs__ASTNode pchild = plat_children->data[ j ];
 if (std__string__equals_c ( pchild.node_type, "Function" )) {
+#line 756 "imports.axe"
 const std__string__string func_name = pchild.data.function.name;
 imports__register_imported_symbol(func_name);
 imports__prefix_function_node(&pchild, module_prefix, &exported);
@@ -13530,10 +17936,12 @@ imports__prefix_types_in_node(&pchild, module_prefix, &exported);
 plat_children->data[j] = pchild;
 }
 else if (std__string__equals_c ( pchild.node_type, "Extern" )) {
+#line 762 "imports.axe"
 const std__string__string func_name = pchild.data.extern_node.function_name;
 imports__register_imported_symbol(func_name);
 }
 else if (std__string__equals_c ( pchild.node_type, "Declaration" )) {
+#line 765 "imports.axe"
 const std__string__string var_name = pchild.data.declaration.name;
 imports__register_imported_symbol(var_name);
 }
@@ -13549,6 +17957,7 @@ i++;
 }
 }
 
+#line 780
 structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name) {
 if (! std__string__equals_c ( ast->node_type, "Program" )) {
 return * ast;
@@ -13559,6 +17968,7 @@ return * ast;
 }
 imports__add_processed_module(current_file);
 }
+#line 792 "imports.axe"
 std__string__string effective_base = base_dir;
 if (std__string__str_len ( effective_base ) == 0) {
 if (std__string__str_len ( current_file ) > 0) {
@@ -13571,30 +17981,41 @@ effective_base = std__string__str ( "." );
 if (ast->children== nil) {
 return * ast;
 }
+#line 805 "imports.axe"
 const __list_structs__ASTNode_t* program_children = ast->children;
+#line 806 "imports.axe"
 int32_t idx = 0;
 while (1) {
 if (idx >= len_v((*program_children))) {
 break;
 }
+#line 812 "imports.axe"
 structs__ASTNode child = program_children->data[ idx ];
 if (std__string__equals_c ( child.node_type, "Use" )) {
+#line 815 "imports.axe"
 const std__string__string use_mod = child.data.use_node.module_name;
+#line 816 "imports.axe"
 const std__string__string module_path = imports__make_module_path( effective_base , use_mod );
+#line 817 "imports.axe"
 const std__string__string src = std__os__read_file( module_path );
 if (std__string__str_len ( src ) == 0) {
 idx = idx + 1;
 continue;
 }
+#line 823 "imports.axe"
 const __list_lexer__Token_t toks = lexer__lex( src );
+#line 824 "imports.axe"
 bool import_is_axec = false;
 if (std__string__str_len ( module_path ) >= 5) {
+#line 826 "imports.axe"
 const std__string__string ext = std__string__substring_se( module_path , std__string__str_len ( module_path ) - 5 , std__string__str_len ( module_path ) );
 if (std__string__equals_c ( ext , ".axec" )) {
 import_is_axec = true;
 }
 }
+#line 832 "imports.axe"
 structs__ASTNode import_ast = parser__parse( &toks , import_is_axec , false , use_mod , module_path );
+#line 833 "imports.axe"
 const std__string__string import_base = imports__get_dir_from_path( module_path );
 import_ast = imports__process_imports ( &import_ast , import_base , import_is_axec , module_path , false , use_mod );
 imports__merge_imported_module(ast, &import_ast, use_mod);
@@ -13636,14 +18057,17 @@ return * ast;
 #endif
 #ifdef __APPLE__
 #endif
+#line 121
 void renderer__set_source_file(std__string__string filename) {
 g_current_source_file = filename;
 }
 
+#line 126
 void renderer__set_emit_line_directives(bool v) {
 g_emit_line_directives = v;
 }
 
+#line 131
 bool renderer__has_external_header(std__string__string header_name) {
 if (std__lists__StringList__contains( g_global_external_headers , header_name )) {
 return true;
@@ -13675,6 +18099,7 @@ return true;
 return false;
 }
 
+#line 164
 std__string__string renderer__platform_macro_start(std__string__string platform_name) {
 if (std__string__equals_c ( platform_name , "windows" )) {
 return std__string__str( "#ifdef _WIN32\n" );
@@ -13703,14 +18128,17 @@ return std__string__str( "#ifdef __DragonFly__\n" );
 return std__string__str( "" );
 }
 
+#line 187
 inline std__string__string renderer__emit_line_directive(int32_t line) {
 if (! g_emit_line_directives || line <= 0) {
 return std__string__str( "" );
 }
+#line 191 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( 64 );
 std__string__StringBuilder__append_c(&sb, "#line ");
 std__string__StringBuilder__append(&sb, std__string__i32_to_string(line));
 if (g_current_source_file.data!= nil && std__string__str_len ( g_current_source_file ) > 0) {
+#line 195 "renderer.axe"
 std__string__string path_to_emit = g_current_source_file;
 path_to_emit = std__string__replace_all ( path_to_emit , std__string__str ( "\\" ) , std__string__str ( "/" ) );
 std__string__StringBuilder__append_c(&sb, " \"");
@@ -13718,12 +18146,15 @@ std__string__StringBuilder__append(&sb, path_to_emit);
 std__string__StringBuilder__append_c(&sb, "\"");
 }
 std__string__StringBuilder__append_c(&sb, "\n");
+#line 202 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 210
 void renderer__initialize_renderer() {
+#line 211 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 * 1024 * 100 );
 g_type_mappings = (*std__maps__StringStringMap__create( &arena , 128 ));
 g_function_return_types = (*std__maps__StringStringMap__create( &arena , 1024 ));
@@ -13741,7 +18172,7 @@ g_pointer_fields = (*std__maps__StringBoolMap__create( &arena , 128 ));
 g_var_types = (*std__maps__StringStringMap__create( &arena , 128 ));
 g_list_of_types = (*std__maps__StringStringMap__create( &arena , 128 ));
 g_list_element_types = (*std__maps__StringBoolMap__create( &arena , 128 ));
-g_list_elements = std__lists__StringList__create( &arena , 64 );
+g_list_elements = std__lists__StringList__create( &arena , 32 );
 g_global_external_headers = std__lists__StringList__create( &arena , 32 );
 g_windows_external_headers = std__lists__StringList__create( &arena , 32 );
 g_posix_external_headers = std__lists__StringList__create( &arena , 32 );
@@ -13778,13 +18209,17 @@ std__maps__StringStringMap__set(&g_type_mappings, &arena, std__string__str("byte
 std__maps__StringStringMap__set(&g_type_mappings, &arena, std__string__str("ptrdiff"), std__string__str("isize"));
 }
 
+#line 269
 inline bool renderer__is_builtin_type(std__string__string type_name) {
 return std__string__equals_c( type_name , "i8" ) || std__string__equals_c ( type_name , "u8" ) || std__string__equals_c ( type_name , "i16" ) || std__string__equals_c ( type_name , "u16" ) || std__string__equals_c ( type_name , "i32" ) || std__string__equals_c ( type_name , "u32" ) || std__string__equals_c ( type_name , "i64" ) || std__string__equals_c ( type_name , "u64" ) || std__string__equals_c ( type_name , "isize" ) || std__string__equals_c ( type_name , "usize" ) || std__string__equals_c ( type_name , "f32" ) || std__string__equals_c ( type_name , "f64" ) || std__string__equals_c ( type_name , "bool" ) || std__string__equals_c ( type_name , "char" ) || std__string__equals_c ( type_name , "void" ) || std__string__equals_c ( type_name , "byte" ) || std__string__equals_c ( type_name , "rchar" ) || std__string__equals_c ( type_name , "ptrdiff" );
 }
 
+#line 282
 std__string__string renderer__extract_base_type(std__string__string type_name) {
+#line 283 "renderer.axe"
 std__string__string result = std__string__strip( type_name );
 while (1) {
+#line 286 "renderer.axe"
 bool changed = false;
 if (std__string__has_prefix ( result , std__string__str ( "mut " ) )) {
 result = std__string__strip ( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
@@ -13799,12 +18234,14 @@ break;
 }
 }
 if (std__string__has_prefix ( result , std__string__str ( "list(" ) )) {
+#line 304 "renderer.axe"
 const int32_t close_paren = std__string__find_char_from( result , (char)( 41 ) , 0 );
 if (close_paren > 5) {
 result = std__string__strip ( std__string__substring_se ( result , 5 , close_paren ) );
 return renderer__extract_base_type( result );
 }
 }
+#line 311 "renderer.axe"
 const int32_t br_idx = std__string__find_char_from( result , '[' , 0 );
 if (br_idx > 0) {
 result = std__string__strip ( std__string__substring_se ( result , 0 , br_idx ) );
@@ -13820,6 +18257,7 @@ break;
 return result;
 }
 
+#line 329
 inline bool renderer__is_language_keyword(std__string__string name) {
 if (std__string__equals_c ( name , "union" ) || std__string__equals_c ( name , "generic" )) {
 return true;
@@ -13830,16 +18268,20 @@ return true;
 return false;
 }
 
+#line 340
 bool renderer__is_all_upper_or_underscore(std__string__string name) {
 if (std__string__str_len ( name ) == 0) {
 return false;
 }
+#line 345 "renderer.axe"
 int32_t i = 0;
+#line 346 "renderer.axe"
 const int32_t n = std__string__str_len( name );
 while (1) {
 if (i >= n) {
 break;
 }
+#line 351 "renderer.axe"
 const char ch = std__string__get_char( name , i );
 if (! ( ( ch >= 'A' && ch <= 'Z' ) || ( ch >= '0' && ch <= '9' ) || ch == '_' )) {
 return false;
@@ -13849,14 +18291,17 @@ i++;
 return true;
 }
 
+#line 362
 inline bool renderer__is_c_constant(std__string__string name) {
 return std__string__equals_c( name , "NULL" ) || std__string__equals_c ( name , "TRUE" ) || std__string__equals_c ( name , "FALSE" ) || std__string__equals_c ( name , "EOF" ) || std__string__equals_c ( name , "SEEK_SET" ) || std__string__equals_c ( name , "SEEK_CUR" ) || std__string__equals_c ( name , "SEEK_END" ) || std__string__has_prefix ( name , std__string__str ( "STDIN" ) ) || std__string__has_prefix ( name , std__string__str ( "STDOUT" ) ) || std__string__has_prefix ( name , std__string__str ( "STDERR" ) ) || std__string__has_prefix ( name , std__string__str ( "INT_" ) ) || std__string__has_prefix ( name , std__string__str ( "UINT_" ) ) || std__string__has_prefix ( name , std__string__str ( "SIZE_" ) ) || std__string__has_prefix ( name , std__string__str ( "PATH_" ) ) || std__string__has_prefix ( name , std__string__str ( "NAME_" ) ) || std__string__has_prefix ( name , std__string__str ( "S_IS" ) ) || std__string__has_prefix ( name , std__string__str ( "_S_IF" ) ) || std__string__has_prefix ( name , std__string__str ( "_A_" ) ) || std__string__has_prefix ( name , std__string__str ( "WEXITSTATUS" ) ) || std__string__equals_c ( name , "RAND_MAX" );
 }
 
+#line 374
 inline bool renderer__is_builtin_function(std__string__string name) {
 return std__string__equals_c( name , "append" ) || std__string__equals_c ( name , "len" ) || std__string__equals_c ( name , "assert" ) || std__string__equals_c ( name , "cast" ) || std__string__equals_c ( name , "deref" ) || std__string__equals_c ( name , "addr" ) || std__string__equals_c ( name , "sizeof" ) || std__string__equals_c ( name , "malloc" ) || std__string__equals_c ( name , "free" ) || std__string__equals_c ( name , "memcpy" ) || std__string__equals_c ( name , "memset" ) || std__string__equals_c ( name , "memmove" ) || std__string__equals_c ( name , "strlen" ) || std__string__equals_c ( name , "strcmp" ) || std__string__equals_c ( name , "strcpy" ) || std__string__equals_c ( name , "printf" ) || std__string__equals_c ( name , "sprintf" ) || std__string__equals_c ( name , "fprintf" ) || std__string__equals_c ( name , "fopen" ) || std__string__equals_c ( name , "fclose" ) || std__string__equals_c ( name , "fread" ) || std__string__equals_c ( name , "fwrite" ) || std__string__equals_c ( name , "exit" ) || std__string__equals_c ( name , "abort" ) || std__string__equals_c ( name , "atexit" ) || ( name . len >= 2 && name . data [ 0 ] == 'C' && name . data [ 1 ] == '.' );
 }
 
+#line 388
 bool renderer__is_valid_symbol(std__string__string symbol_name) {
 if (std__string__str_len ( symbol_name ) == 0) {
 return true;
@@ -13885,10 +18330,12 @@ return true;
 return false;
 }
 
+#line 425
 void renderer__validate_type_imported(std__string__string type_name) {
 if (std__string__str_len ( type_name ) == 0) {
 return ;
 }
+#line 430 "renderer.axe"
 const std__string__string base_type = renderer__extract_base_type( type_name );
 if (std__string__str_len ( base_type ) == 0) {
 return ;
@@ -13909,6 +18356,7 @@ exit(1);
 }
 }
 
+#line 454
 void renderer__register_function_signature(std__string__string func_name, __list_std__string_t* params, std__string__string ret_type, std__arena__Arena* arena) {
 if (std__string__str_len ( ret_type ) > 0) {
 std__maps__StringStringMap__set(&g_function_return_types, arena, func_name, ret_type);
@@ -13920,12 +18368,15 @@ if (params == nil) {
 std__maps__StringStringMap__set(&g_function_param_types, arena, func_name, std__string__str(""));
 return ;
 }
+#line 466 "renderer.axe"
 std__string__StringBuilder sb_types = std__string__StringBuilder__init( 256 );
+#line 467 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*params))) {
 break;
 }
+#line 472 "renderer.axe"
 const std__string__string param = params->data[ i ];
 if (std__string__equals_c ( param , "..." )) {
 if (i > 0) {
@@ -13934,8 +18385,10 @@ std__string__StringBuilder__append_c(&sb_types, ",");
 std__string__StringBuilder__append_c(&sb_types, "...");
 }
 else {
+#line 480 "renderer.axe"
 const int32_t colon_pos = std__string__find_char_from( param , ':' , 0 );
 if (colon_pos >= 0) {
+#line 482 "renderer.axe"
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
 if (i > 0) {
 std__string__StringBuilder__append_c(&sb_types, ",");
@@ -13945,12 +18398,15 @@ std__string__StringBuilder__append(&sb_types, param_type);
 }
 i++;
 }
+#line 491 "renderer.axe"
 const std__string__string types_str = std__string__StringBuilder__to_string( &sb_types );
 std__string__StringBuilder__destroy(&sb_types);
 std__maps__StringStringMap__set(&g_function_param_types, arena, func_name, types_str);
 }
 
+#line 497
 std__string__string renderer__infer_expression_type(std__string__string expr) {
+#line 498 "renderer.axe"
 const std__string__string trimmed = std__string__strip( expr );
 if (std__string__str_len ( trimmed ) == 0) {
 return std__string__str( "void" );
@@ -13961,6 +18417,7 @@ return std__string__str( "ref char" );
 if (std__string__has_prefix ( trimmed , std__string__str ( "'" ) ) && std__string__has_suffix ( trimmed , std__string__str ( "'" ) )) {
 return std__string__str( "char" );
 }
+#line 515 "renderer.axe"
 const char first_char = std__string__get_char( trimmed , 0 );
 if (( first_char >= '0' && first_char <= '9' ) || first_char == '-') {
 if (std__string__find_char_from ( trimmed , '.' , 0 ) >= 0) {
@@ -13977,18 +18434,24 @@ return std__string__str( "ref void" );
 if (std__maps__StringStringMap__contains( &g_var_types , trimmed )) {
 return std__maps__StringStringMap__get( &g_var_types , trimmed );
 }
+#line 539 "renderer.axe"
 const int32_t paren_idx = std__string__find_char_from( trimmed , '(' , 0 );
 if (paren_idx > 0 && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
+#line 541 "renderer.axe"
 const std__string__string func_name = std__string__strip( std__string__substring_se ( trimmed , 0 , paren_idx ) );
+#line 542 "renderer.axe"
 const int32_t args_start = paren_idx + 1;
+#line 543 "renderer.axe"
 const int32_t args_end = std__string__str_len( trimmed ) - 1;
 if (args_end > args_start) {
+#line 545 "renderer.axe"
 const std__string__string args_str = std__string__strip( std__string__substring_se ( trimmed , args_start , args_end ) );
 renderer__validate_function_call(func_name, args_str, 0);
 }
 else {
 renderer__validate_function_call(func_name, std__string__str(""), 0);
 }
+#line 551 "renderer.axe"
 std__string__string lookup_name = func_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
@@ -14006,6 +18469,7 @@ return std__string__str( "usize" );
 return std__string__str( "" );
 }
 
+#line 568
 void renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth) {
 if (depth > 10) {
 return ;
@@ -14013,17 +18477,25 @@ return ;
 if (renderer__is_builtin_function ( func_name )) {
 return ;
 }
+#line 579 "renderer.axe"
 __list_std__string_t arg_list = {0};
+#line 580 "renderer.axe"
 std__string__StringBuilder sb_arg = std__string__StringBuilder__init( 256 );
+#line 581 "renderer.axe"
 int32_t paren_depth = 0;
+#line 582 "renderer.axe"
 bool in_string = false;
+#line 583 "renderer.axe"
 bool in_char_literal = false;
+#line 584 "renderer.axe"
 int32_t i = 0;
+#line 585 "renderer.axe"
 const int32_t args_len = (int32_t)( std__string__str_len ( args_str ) );
 while (1) {
 if (i >= args_len) {
 break;
 }
+#line 591 "renderer.axe"
 const char ch = std__string__get_char( args_str , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( args_str , i )) {
 in_char_literal = ! in_char_literal;
@@ -14043,6 +18515,7 @@ paren_depth = paren_depth - 1;
 std__string__StringBuilder__append_char(&sb_arg, ch);
 }
 else if (ch == ',' && paren_depth == 0) {
+#line 607 "renderer.axe"
 const std__string__string built_arg = std__string__StringBuilder__to_string( &sb_arg );
 __list_std__string_push(&arg_list, std__string__strip(built_arg));
 sb_arg = std__string__StringBuilder__init( 256 );
@@ -14056,28 +18529,37 @@ std__string__StringBuilder__append_char(&sb_arg, ch);
 }
 i++;
 }
+#line 619 "renderer.axe"
 const std__string__string final_arg = std__string__StringBuilder__to_string( &sb_arg );
 if (std__string__str_len ( std__string__strip ( final_arg ) ) > 0) {
 __list_std__string_push(&arg_list, std__string__strip(final_arg));
 }
+#line 624 "renderer.axe"
 int32_t arg_idx_nested = 0;
 while (1) {
 if (arg_idx_nested >= len_v(arg_list)) {
 break;
 }
+#line 629 "renderer.axe"
 const std__string__string arg_expr = arg_list.data[ arg_idx_nested ];
+#line 632 "renderer.axe"
 const int32_t arg_paren = std__string__find_char_from( arg_expr , '(' , 0 );
 if (arg_paren > 0) {
+#line 634 "renderer.axe"
 const std__string__string nested_func = std__string__strip( std__string__substring_se ( arg_expr , 0 , arg_paren ) );
+#line 635 "renderer.axe"
 const int32_t nested_args_start = arg_paren + 1;
+#line 636 "renderer.axe"
 const int32_t nested_args_end = std__string__str_len( arg_expr ) - 1;
 if (nested_args_end > nested_args_start) {
+#line 638 "renderer.axe"
 const std__string__string nested_args = std__string__strip( std__string__substring_se ( arg_expr , nested_args_start , nested_args_end ) );
 renderer__validate_function_call(nested_func, nested_args, depth + 1);
 }
 }
 arg_idx_nested++;
 }
+#line 645 "renderer.axe"
 std__string__string lookup_name = func_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
@@ -14085,6 +18567,7 @@ lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name 
 if (! std__maps__StringStringMap__contains( &g_function_param_types , lookup_name )) {
 return ;
 }
+#line 654 "renderer.axe"
 const std__string__string expected_types_str = std__maps__StringStringMap__get( &g_function_param_types , lookup_name );
 if (std__string__str_len ( expected_types_str ) == 0) {
 if (len_v(arg_list) > 0) {
@@ -14100,15 +18583,20 @@ exit(1);
 }
 return ;
 }
+#line 672 "renderer.axe"
 __list_std__string_t expected_types = {0};
+#line 673 "renderer.axe"
 std__string__StringBuilder sb_type = std__string__StringBuilder__init( 128 );
+#line 674 "renderer.axe"
 uintptr_t j = 0;
 while (1) {
 if (j >= std__string__str_len ( expected_types_str )) {
 break;
 }
+#line 679 "renderer.axe"
 const char ch2 = std__string__get_char( expected_types_str , j );
 if (ch2 == ',') {
+#line 681 "renderer.axe"
 const std__string__string built_type = std__string__StringBuilder__to_string( &sb_type );
 if (std__string__str_len ( std__string__strip ( built_type ) ) > 0) {
 __list_std__string_push(&expected_types, std__string__strip(built_type));
@@ -14120,17 +18608,21 @@ std__string__StringBuilder__append_char(&sb_type, ch2);
 }
 j++;
 }
+#line 692 "renderer.axe"
 const std__string__string final_type = std__string__StringBuilder__to_string( &sb_type );
 if (std__string__str_len ( std__string__strip ( final_type ) ) > 0) {
 __list_std__string_push(&expected_types, std__string__strip(final_type));
 }
+#line 697 "renderer.axe"
 bool is_variadic = false;
 if (len_v(expected_types) > 0) {
+#line 699 "renderer.axe"
 const std__string__string last_type = expected_types.data[ len_v(expected_types) - 1 ];
 if (std__string__equals_c ( last_type , "..." )) {
 is_variadic = true;
 }
 }
+#line 705 "renderer.axe"
 bool arg_count_ok = false;
 if (is_variadic) {
 if (len_v(arg_list) >= len_v(expected_types) - 1) {
@@ -14159,6 +18651,7 @@ std__io__print(std__string__i32_to_string(len_v(arg_list)));
 std__io__println(" were provided");
 exit(1);
 }
+#line 737 "renderer.axe"
 int32_t arg_idx = 0;
 while (1) {
 if (arg_idx >= len_v(arg_list)) {
@@ -14168,14 +18661,19 @@ if (is_variadic && arg_idx >= len_v(expected_types) - 1) {
 arg_idx = arg_idx + 1;
 continue;
 }
+#line 749 "renderer.axe"
 const std__string__string arg_expr = arg_list.data[ arg_idx ];
+#line 750 "renderer.axe"
 const std__string__string inferred_type = renderer__infer_expression_type( arg_expr );
+#line 751 "renderer.axe"
 const std__string__string expected_type = expected_types.data[ arg_idx ];
 if (std__string__equals_c ( expected_type , "..." )) {
 arg_idx = arg_idx + 1;
 continue;
 }
+#line 758 "renderer.axe"
 const std__string__string mapped_inferred = renderer__map_axe_type_to_c( inferred_type );
+#line 759 "renderer.axe"
 const std__string__string mapped_expected = renderer__map_axe_type_to_c( expected_type );
 if (! std__maps__StringBoolMap__contains( &g_extern_functions , func_name )) {
 if (std__string__str_len ( inferred_type ) > 0 && ! std__string__equals_c ( inferred_type , "auto" ) && std__string__compare ( mapped_inferred , mapped_expected ) != 0) {
@@ -14198,25 +18696,34 @@ arg_idx = arg_idx + 1;
 }
 }
 
+#line 785
 void renderer__collect_function_signatures(structs__ASTNode* node, std__arena__Arena* arena) {
 if (node == nil) {
 return ;
 }
 if (std__string__equals_c ( node->node_type, "Function" )) {
+#line 791 "renderer.axe"
 const std__string__string func_name = node->data.function.name;
+#line 792 "renderer.axe"
 const __list_std__string_t* params = node->data.function.params;
+#line 793 "renderer.axe"
 const std__string__string ret_type = node->data.function.return_type;
 renderer__register_function_signature(func_name, params, ret_type, arena);
 }
 if (std__string__equals_c ( node->node_type, "Extern" )) {
+#line 798 "renderer.axe"
 const std__string__string func_name = node->data.extern_node.function_name;
+#line 799 "renderer.axe"
 const __list_std__string_t* params = node->data.extern_node.params;
+#line 800 "renderer.axe"
 const std__string__string ret_type = node->data.extern_node.return_type;
 renderer__register_function_signature(func_name, params, ret_type, arena);
 std__maps__StringBoolMap__set(&g_extern_functions, arena, func_name, true);
 }
 if (node->children!= nil) {
+#line 806 "renderer.axe"
 const __list_structs__ASTNode_t* children = node->children;
+#line 807 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -14228,19 +18735,24 @@ i++;
 }
 }
 
+#line 819
 void renderer__collect_foreign_types(structs__ASTNode* node) {
 if (node == nil) {
 return ;
 }
 if (std__string__equals_c ( node->node_type, "Foreign" )) {
+#line 825 "renderer.axe"
 const __list_std__string_t* fnames = node->data.foreign_node.type_names;
 if (fnames != nil) {
+#line 827 "renderer.axe"
 std__arena__Arena arena_foreign = std__arena__Arena__create( 2560 );
+#line 828 "renderer.axe"
 int32_t fi = 0;
 while (1) {
 if (fi >= len_v((*fnames))) {
 break;
 }
+#line 833 "renderer.axe"
 const std__string__string type_name = fnames->data[ fi ];
 std__maps__StringBoolMap__set(&g_foreign_types, &arena_foreign, type_name, true);
 fi++;
@@ -14248,7 +18760,9 @@ fi++;
 }
 }
 if (node->children!= nil) {
+#line 841 "renderer.axe"
 const __list_structs__ASTNode_t* children = node->children;
+#line 842 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -14260,16 +18774,20 @@ i++;
 }
 }
 
+#line 854
 void renderer__build_function_signatures(structs__ASTNode* ast) {
+#line 855 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 * 1024 );
 renderer__collect_function_signatures(ast, &arena);
 }
 
+#line 863
 void renderer__collect_external_imports(structs__ASTNode* node, std__string__string current_platform, std__arena__Arena* arena) {
 if (node == nil) {
 return ;
 }
 if (std__string__equals_c ( node->node_type, "ExternalImport" )) {
+#line 869 "renderer.axe"
 const std__string__string header = node->data.external_import.header_file;
 if (std__string__equals_c ( current_platform , "" )) {
 if (! std__lists__StringList__contains( g_global_external_headers , header )) {
@@ -14319,9 +18837,12 @@ std__lists__StringList__push(g_dragonflybsd_external_headers, arena, header);
 return ;
 }
 if (std__string__equals_c ( node->node_type, "Platform" )) {
+#line 912 "renderer.axe"
 const std__string__string platform_name = node->data.platform_node.platform_name;
 if (node->children!= nil) {
+#line 915 "renderer.axe"
 const __list_structs__ASTNode_t* children = node->children;
+#line 916 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -14334,7 +18855,9 @@ i++;
 return ;
 }
 if (node->children!= nil) {
+#line 930 "renderer.axe"
 const __list_structs__ASTNode_t* children = node->children;
+#line 931 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -14346,7 +18869,9 @@ i++;
 }
 }
 
+#line 944
 std__string__string renderer__get_base_type_from_field(std__string__string field_type) {
+#line 945 "renderer.axe"
 std__string__string t = std__string__strip( field_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -14364,12 +18889,15 @@ break;
 t = std__string__strip ( std__string__substr ( t , 2 , std__string__str_len ( t ) - 2 ) );
 }
 if (std__string__has_prefix ( t , std__string__str ( "list(" ) )) {
+#line 966 "renderer.axe"
 int32_t paren_pos = 5;
+#line 967 "renderer.axe"
 int32_t depth = 1;
 while (1) {
 if (paren_pos >= std__string__str_len ( t )) {
 break;
 }
+#line 972 "renderer.axe"
 const char ch = std__string__get_char( t , paren_pos );
 if (ch == '(') {
 depth = depth + 1;
@@ -14384,6 +18912,7 @@ paren_pos = paren_pos + 1;
 }
 t = std__string__strip ( std__string__substr ( t , 5 , paren_pos - 5 ) );
 }
+#line 986 "renderer.axe"
 const int32_t bracket_pos = std__string__find_substr( t , std__string__str ( "[" ) );
 if (bracket_pos >= 0) {
 t = std__string__strip ( std__string__substr ( t , 0 , bracket_pos ) );
@@ -14400,23 +18929,30 @@ t = std__string__strip ( std__string__substr ( t , 0 , std__string__str_len ( t 
 return t;
 }
 
+#line 1006
 std__string__string renderer__normalize_numeric_dots(std__string__string s) {
+#line 1007 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
+#line 1008 "renderer.axe"
 const int32_t n = (int32_t)( std__string__str_len ( s ) );
+#line 1009 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= n) {
 break;
 }
+#line 1016 "renderer.axe"
 const char ch = std__string__get_char( s , i );
 if (ch >= '0' && ch <= '9' && i + 1 < n && std__string__get_char ( s , i + 1 ) == '.') {
 std__string__StringBuilder__append_char(&sb, ch);
 std__string__StringBuilder__append_char(&sb, '.');
+#line 1022 "renderer.axe"
 int32_t j = i + 2;
 while (1) {
 if (j >= n) {
 break;
 }
+#line 1027 "renderer.axe"
 const char cj = std__string__get_char( s , j );
 if (cj != ' ' && cj != '\t' && cj != '\n') {
 break;
@@ -14436,13 +18972,17 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 1048 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 1056
 bool renderer__is_escaped_quote(std__string__string expr, int32_t pos) {
+#line 1057 "renderer.axe"
 int32_t backslash_count = 0;
+#line 1058 "renderer.axe"
 int32_t j = pos - 1;
 while (1) {
 if (j < 0) {
@@ -14457,20 +18997,28 @@ j = j - 1;
 return ( backslash_count % 2 ) == 1;
 }
 
+#line 1075
 std__string__string renderer__replace_keyword_outside_strings(std__string__string expr, std__string__string keyword, std__string__string replacement) {
+#line 1076 "renderer.axe"
 const int32_t expr_len = std__string__str_len( expr );
+#line 1077 "renderer.axe"
 const int32_t kw_len = std__string__str_len( keyword );
 if (expr_len == 0 || kw_len == 0) {
 return expr;
 }
+#line 1082 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( (uintptr_t)( expr_len + 32 ) );
+#line 1083 "renderer.axe"
 bool in_string = false;
+#line 1084 "renderer.axe"
 bool in_char_literal = false;
+#line 1085 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 1092 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -14489,11 +19037,13 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
+#line 1114 "renderer.axe"
 bool matches = true;
 if (i + kw_len > expr_len) {
 matches = false;
 }
 else {
+#line 1118 "renderer.axe"
 int32_t ki = 0;
 while (1) {
 if (ki >= kw_len) {
@@ -14507,22 +19057,33 @@ ki = ki + 1;
 }
 }
 if (matches) {
+#line 1132 "renderer.axe"
 bool is_word = true;
 if (i > 0) {
+#line 1135 "renderer.axe"
 const char prev = std__string__get_char( expr , i - 1 );
+#line 1136 "renderer.axe"
 const bool prev_is_alpha_lower = prev >= 'a' && prev <= 'z';
+#line 1137 "renderer.axe"
 const bool prev_is_alpha_upper = prev >= 'A' && prev <= 'Z';
+#line 1138 "renderer.axe"
 const bool prev_is_digit = prev >= '0' && prev <= '9';
+#line 1139 "renderer.axe"
 const bool prev_is_underscore = prev == '_';
 if (prev_is_alpha_lower || prev_is_alpha_upper || prev_is_digit || prev_is_underscore) {
 is_word = false;
 }
 }
 if (is_word && i + kw_len < expr_len) {
+#line 1146 "renderer.axe"
 const char next = std__string__get_char( expr , i + kw_len );
+#line 1147 "renderer.axe"
 const bool next_is_alpha_lower = next >= 'a' && next <= 'z';
+#line 1148 "renderer.axe"
 const bool next_is_alpha_upper = next >= 'A' && next <= 'Z';
+#line 1149 "renderer.axe"
 const bool next_is_digit = next >= '0' && next <= '9';
+#line 1150 "renderer.axe"
 const bool next_is_underscore = next == '_';
 if (next_is_alpha_lower || next_is_alpha_upper || next_is_digit || next_is_underscore) {
 is_word = false;
@@ -14530,6 +19091,7 @@ is_word = false;
 }
 if (is_word) {
 if (i > 0) {
+#line 1158 "renderer.axe"
 const char prev_ch = std__string__get_char( expr , i - 1 );
 if (prev_ch != ' ') {
 std__string__StringBuilder__append_char(&sb, ' ');
@@ -14537,6 +19099,7 @@ std__string__StringBuilder__append_char(&sb, ' ');
 }
 std__string__StringBuilder__append(&sb, replacement);
 if (i + kw_len < expr_len) {
+#line 1165 "renderer.axe"
 const char next_ch = std__string__get_char( expr , i + kw_len );
 if (next_ch != ' ') {
 std__string__StringBuilder__append_char(&sb, ' ');
@@ -14549,21 +19112,29 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 1179 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 1185
 std__string__string renderer__rewrite_pointer_member_accesses(std__string__string expr) {
+#line 1186 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
+#line 1187 "renderer.axe"
 int32_t i = 0;
+#line 1188 "renderer.axe"
 bool in_string = false;
+#line 1189 "renderer.axe"
 bool in_char_literal = false;
+#line 1190 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 1197 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -14578,24 +19149,30 @@ i++;
 continue;
 }
 if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+#line 1214 "renderer.axe"
 const int32_t base_start = i;
+#line 1215 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 1220 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j++;
 }
+#line 1227 "renderer.axe"
 const std__string__string base = std__string__substring_se( expr , base_start , j );
+#line 1228 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 1234 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -14603,25 +19180,31 @@ break;
 k++;
 }
 if (k < expr_len && std__string__get_char ( expr , k ) == '.') {
+#line 1242 "renderer.axe"
 const int32_t start_slice = i;
+#line 1244 "renderer.axe"
 int32_t p = k + 1;
 while (1) {
 if (p >= expr_len) {
 break;
 }
+#line 1249 "renderer.axe"
 const char ws2 = std__string__get_char( expr , p );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
 }
 p++;
 }
+#line 1256 "renderer.axe"
 const int32_t member_start = p;
+#line 1257 "renderer.axe"
 int32_t m = p;
 if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
 while (1) {
 if (m >= expr_len) {
 break;
 }
+#line 1263 "renderer.axe"
 const char cm = std__string__get_char( expr , m );
 if (! renderer__is_token_char ( cm )) {
 break;
@@ -14629,12 +19212,17 @@ break;
 m++;
 }
 }
+#line 1270 "renderer.axe"
 const std__string__string member = std__string__substring_se( expr , member_start , m );
 if (std__string__str_len ( member ) > 0) {
+#line 1273 "renderer.axe"
 const std__string__string trimmed_base = std__string__strip( base );
+#line 1274 "renderer.axe"
 bool is_pointer = false;
 if (std__maps__StringStringMap__contains( &g_var_types , trimmed_base )) {
+#line 1277 "renderer.axe"
 const std__string__string raw_type = std__maps__StringStringMap__get( &g_var_types , trimmed_base );
+#line 1278 "renderer.axe"
 std__string__string t = std__string__strip( raw_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -14650,6 +19238,7 @@ std__string__StringBuilder__append(&sb, member);
 i = m;
 continue;
 }
+#line 1298 "renderer.axe"
 const std__string__string original = std__string__substring_se( expr , start_slice , m );
 std__string__StringBuilder__append(&sb, original);
 i = m;
@@ -14663,20 +19252,27 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 1315 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 1321
 void renderer__register_function_prefix(std__string__string full_name) {
+#line 1322 "renderer.axe"
 int32_t last_sep = - 1;
+#line 1323 "renderer.axe"
 int32_t j = 0;
+#line 1324 "renderer.axe"
 const int32_t n = std__string__str_len( full_name );
 while (1) {
 if (j + 1 >= n) {
 break;
 }
+#line 1329 "renderer.axe"
 const char c1 = std__string__get_char( full_name , j );
+#line 1330 "renderer.axe"
 const char c2 = std__string__get_char( full_name , j + 1 );
 if (c1 == '_' && c2 == '_') {
 last_sep = j;
@@ -14684,20 +19280,26 @@ last_sep = j;
 j++;
 }
 if (last_sep >= 0 && last_sep + 2 < n) {
+#line 1338 "renderer.axe"
 const std__string__string short_name = std__string__substring_se( full_name , last_sep + 2 , n );
 if (std__string__str_len ( short_name ) > 0) {
 if (! std__maps__StringStringMap__contains( &g_function_prefixes , short_name )) {
+#line 1342 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1256 );
 std__maps__StringStringMap__set(&g_function_prefixes, &arena, short_name, full_name);
 }
 }
+#line 1347 "renderer.axe"
 int32_t second_last_sep = - 1;
+#line 1348 "renderer.axe"
 int32_t k = 0;
 while (1) {
 if (k >= last_sep) {
 break;
 }
+#line 1353 "renderer.axe"
 const char c1b = std__string__get_char( full_name , k );
+#line 1354 "renderer.axe"
 const char c2b = std__string__get_char( full_name , k + 1 );
 if (c1b == '_' && c2b == '_') {
 second_last_sep = k;
@@ -14705,9 +19307,11 @@ second_last_sep = k;
 k++;
 }
 if (second_last_sep >= 0 && second_last_sep + 2 < n) {
+#line 1362 "renderer.axe"
 const std__string__string partial_name = std__string__substring_se( full_name , second_last_sep + 2 , n );
 if (std__string__str_len ( partial_name ) > 0) {
 if (! std__maps__StringStringMap__contains( &g_function_prefixes , partial_name )) {
+#line 1365 "renderer.axe"
 std__arena__Arena arena2 = std__arena__Arena__create( 1256 );
 std__maps__StringStringMap__set(&g_function_prefixes, &arena2, partial_name, full_name);
 }
@@ -14716,6 +19320,7 @@ std__maps__StringStringMap__set(&g_function_prefixes, &arena2, partial_name, ful
 }
 }
 
+#line 1374
 void renderer__collect_function_prefixes(structs__ASTNode* node) {
 if (node == nil) {
 return ;
@@ -14727,7 +19332,9 @@ if (std__string__equals_c ( node->node_type, "Overload" )) {
 renderer__register_function_prefix(node->data.overload_node.name);
 }
 if (node->children!= nil) {
+#line 1388 "renderer.axe"
 const __list_structs__ASTNode_t* children = node->children;
+#line 1389 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
@@ -14739,11 +19346,13 @@ i++;
 }
 }
 
+#line 1401
 void renderer__build_function_prefixes(structs__ASTNode* ast) {
 std__maps__StringStringMap__clear(&g_function_prefixes);
 renderer__collect_function_prefixes(ast);
 }
 
+#line 1407
 std__string__string renderer__map_type(std__string__string axe_type) {
 if (std__maps__StringStringMap__contains( &g_type_mappings , axe_type )) {
 return std__maps__StringStringMap__get( &g_type_mappings , axe_type );
@@ -14751,6 +19360,7 @@ return std__maps__StringStringMap__get( &g_type_mappings , axe_type );
 return axe_type;
 }
 
+#line 1416
 inline std__string__string renderer__canonical_model_c_name(std__string__string name) {
 if (std__maps__StringStringMap__contains( &g_model_names , name )) {
 return std__maps__StringStringMap__get( &g_model_names , name );
@@ -14758,61 +19368,82 @@ return std__maps__StringStringMap__get( &g_model_names , name );
 return std__string__str( "" );
 }
 
+#line 1424
 std__string__string renderer__map_axe_type_to_c(std__string__string axe_type) {
+#line 1425 "renderer.axe"
 std__string__string result = axe_type;
 if (std__string__has_prefix ( result , std__string__str ( "mut " ) )) {
 result = std__string__strip ( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
 return renderer__map_axe_type_to_c( result );
 }
 if (std__string__has_prefix ( result , std__string__str ( "list(" ) )) {
+#line 1433 "renderer.axe"
 const int32_t close_paren = std__string__find_char_from( result , (char)( 41 ) , 0 );
 if (close_paren > 5) {
+#line 1435 "renderer.axe"
 const std__string__string inner_type = std__string__strip( std__string__substring_se ( result , 5 , close_paren ) );
+#line 1436 "renderer.axe"
 const std__string__string converted = std__string__concat( inner_type , std__string__str ( "[999]" ) );
 return renderer__map_axe_type_to_c( converted );
 }
 }
 if (std__string__has_suffix ( result , std__string__str ( "[999]" ) )) {
+#line 1442 "renderer.axe"
 const std__string__string element_type = std__string__strip( std__string__substring_se ( result , 0 , std__string__str_len ( result ) - 5 ) );
 if (std__string__has_prefix ( element_type , std__string__str ( "ref " ) )) {
+#line 1444 "renderer.axe"
 const std__string__string base_elem = std__string__strip( std__string__substr ( element_type , 4 , std__string__str_len ( element_type ) - 4 ) );
+#line 1445 "renderer.axe"
 const std__string__string mapped_elem = renderer__map_axe_type_to_c( base_elem );
 renderer__add_list_element(mapped_elem);
+#line 1447 "renderer.axe"
 std__string__StringBuilder sb_struct = std__string__StringBuilder__init( std__string__str_len ( mapped_elem ) + 10 );
 std__string__StringBuilder__append_c(&sb_struct, "__list_");
 std__string__StringBuilder__append(&sb_struct, mapped_elem);
 std__string__StringBuilder__append_c(&sb_struct, "_t*");
+#line 1451 "renderer.axe"
 const std__string__string struct_name = std__string__StringBuilder__to_string( &sb_struct );
 std__string__StringBuilder__destroy(&sb_struct);
 return struct_name;
 }
 else {
+#line 1455 "renderer.axe"
 const std__string__string mapped_elem = renderer__map_axe_type_to_c( element_type );
 renderer__add_list_element(mapped_elem);
+#line 1457 "renderer.axe"
 std__string__StringBuilder sb_struct = std__string__StringBuilder__init( std__string__str_len ( mapped_elem ) + 10 );
 std__string__StringBuilder__append_c(&sb_struct, "__list_");
 std__string__StringBuilder__append(&sb_struct, mapped_elem);
 std__string__StringBuilder__append_c(&sb_struct, "_t");
+#line 1461 "renderer.axe"
 const std__string__string struct_name = std__string__StringBuilder__to_string( &sb_struct );
 std__string__StringBuilder__destroy(&sb_struct);
 return struct_name;
 }
 }
 if (std__string__has_prefix ( result , std__string__str ( "ref " ) )) {
+#line 1468 "renderer.axe"
 const std__string__string base_type = std__string__strip( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
+#line 1469 "renderer.axe"
 const std__string__string mapped_base = renderer__map_axe_type_to_c( base_type );
 return std__string__concat( mapped_base , std__string__str ( "*" ) );
 }
 if (std__string__has_suffix ( result , std__string__str ( "*" ) )) {
+#line 1474 "renderer.axe"
 const std__string__string base_type = std__string__strip( std__string__substring_se ( result , 0 , std__string__str_len ( result ) - 1 ) );
+#line 1475 "renderer.axe"
 const std__string__string mapped_base = renderer__map_axe_type_to_c( base_type );
 return std__string__concat( mapped_base , std__string__str ( "*" ) );
 }
+#line 1479 "renderer.axe"
 const int32_t br_idx = std__string__find_char_from( result , '[' , 0 );
 if (br_idx >= 0 && std__string__find_char_from ( result , ']' , br_idx ) >= 0) {
+#line 1481 "renderer.axe"
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( result , 0 , br_idx ) );
+#line 1482 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( result , br_idx , std__string__str_len ( result ) );
 if (std__string__str_len ( base_raw ) > 0) {
+#line 1484 "renderer.axe"
 const std__string__string mapped_base2 = renderer__map_axe_type_to_c( base_raw );
 return std__string__concat( mapped_base2 , suffix );
 }
@@ -14826,14 +19457,19 @@ return std__maps__StringStringMap__get( &g_model_names , result );
 return result;
 }
 
+#line 1501
 std__string__string renderer__sanitize_list_element_name(std__string__string c_elem) {
+#line 1502 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( c_elem ) + 32 );
+#line 1503 "renderer.axe"
 int32_t i = 0;
+#line 1504 "renderer.axe"
 const int32_t n_len = (int32_t)( std__string__str_len ( c_elem ) );
 while (1) {
 if (i >= n_len) {
 break;
 }
+#line 1509 "renderer.axe"
 const char ch = std__string__get_char( c_elem , i );
 if (ch == '*') {
 std__string__StringBuilder__append_c(&sb, "_ptr");
@@ -14846,14 +19482,18 @@ std__string__StringBuilder__append_char(&sb, ch);
 }
 i++;
 }
+#line 1519 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 1525
 std__string__string renderer__collapse_duplicate_segments(std__string__string s) {
+#line 1526 "renderer.axe"
 std__string__string current = s;
 while (1) {
+#line 1528 "renderer.axe"
 const std__string__string next = renderer__collapse_duplicate_segments_once( current );
 if (std__string__compare ( next , current ) == 0) {
 return current;
@@ -14862,7 +19502,9 @@ current = next;
 }
 }
 
+#line 1537
 bool renderer__is_pointer_type(std__string__string type_str) {
+#line 1538 "renderer.axe"
 std__string__string t = std__string__strip( type_str );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -14873,7 +19515,9 @@ return true;
 return false;
 }
 
+#line 1550
 std__string__string renderer__extract_base_model_name(std__string__string type_str) {
+#line 1551 "renderer.axe"
 std__string__string t = std__string__strip( type_str );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -14893,22 +19537,28 @@ t = std__string__strip ( std__string__substr ( t , 0 , std__string__str_len ( t 
 return t;
 }
 
+#line 1572
 std__string__string renderer__lookup_field_type(std__string__string model_name, std__string__string field_name) {
+#line 1573 "renderer.axe"
 std__string__StringBuilder sb_key = std__string__StringBuilder__init( std__string__str_len ( model_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_key, model_name);
 std__string__StringBuilder__append_c(&sb_key, ".");
 std__string__StringBuilder__append(&sb_key, field_name);
+#line 1577 "renderer.axe"
 const std__string__string field_key = std__string__StringBuilder__to_string( &sb_key );
 std__string__StringBuilder__destroy(&sb_key);
 if (std__maps__StringStringMap__contains( &g_field_types , field_key )) {
 return std__maps__StringStringMap__get( &g_field_types , field_key );
 }
 if (std__maps__StringStringMap__contains( &g_model_names , model_name )) {
+#line 1585 "renderer.axe"
 const std__string__string canonical_name = std__maps__StringStringMap__get( &g_model_names , model_name );
+#line 1586 "renderer.axe"
 std__string__StringBuilder sb_canon = std__string__StringBuilder__init( std__string__str_len ( canonical_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_canon, canonical_name);
 std__string__StringBuilder__append_c(&sb_canon, ".");
 std__string__StringBuilder__append(&sb_canon, field_name);
+#line 1590 "renderer.axe"
 const std__string__string canon_key = std__string__StringBuilder__to_string( &sb_canon );
 std__string__StringBuilder__destroy(&sb_canon);
 if (std__maps__StringStringMap__contains( &g_field_types , canon_key )) {
@@ -14923,22 +19573,28 @@ return std__string__str( "ref void" );
 return std__string__str( "" );
 }
 
+#line 1607
 bool renderer__is_pointer_field(std__string__string model_name, std__string__string field_name) {
+#line 1608 "renderer.axe"
 std__string__StringBuilder sb_fkey = std__string__StringBuilder__init( std__string__str_len ( model_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_fkey, model_name);
 std__string__StringBuilder__append_c(&sb_fkey, ".");
 std__string__StringBuilder__append(&sb_fkey, field_name);
+#line 1612 "renderer.axe"
 const std__string__string field_key = std__string__StringBuilder__to_string( &sb_fkey );
 std__string__StringBuilder__destroy(&sb_fkey);
 if (std__maps__StringBoolMap__contains( &g_pointer_fields , field_key )) {
 return true;
 }
 if (std__maps__StringStringMap__contains( &g_model_names , model_name )) {
+#line 1619 "renderer.axe"
 const std__string__string canonical_name = std__maps__StringStringMap__get( &g_model_names , model_name );
+#line 1620 "renderer.axe"
 std__string__StringBuilder sb_ckey = std__string__StringBuilder__init( std__string__str_len ( canonical_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_ckey, canonical_name);
 std__string__StringBuilder__append_c(&sb_ckey, ".");
 std__string__StringBuilder__append(&sb_ckey, field_name);
+#line 1624 "renderer.axe"
 const std__string__string canon_key = std__string__StringBuilder__to_string( &sb_ckey );
 std__string__StringBuilder__destroy(&sb_ckey);
 if (std__maps__StringBoolMap__contains( &g_pointer_fields , canon_key )) {
@@ -14953,20 +19609,25 @@ return true;
 return false;
 }
 
+#line 1641
 std__string__string renderer__parse_ident_at(std__string__string expr, int32_t* pos) {
+#line 1642 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if ((*pos) >= expr_len) {
 return std__string__str( "" );
 }
+#line 1646 "renderer.axe"
 const char ch = std__string__get_char( expr , (*pos) );
 if (! renderer__is_ident_start ( ch )) {
 return std__string__str( "" );
 }
+#line 1650 "renderer.axe"
 const int32_t start = (*pos);
 while (1) {
 if ((*pos) >= expr_len) {
 break;
 }
+#line 1655 "renderer.axe"
 const char c = std__string__get_char( expr , (*pos) );
 if (! renderer__is_token_char ( c )) {
 break;
@@ -14976,12 +19637,15 @@ break;
 return std__string__substring_se( expr , start , (*pos) );
 }
 
+#line 1665
 void renderer__skip_ws_at(std__string__string expr, int32_t* pos) {
+#line 1666 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if ((*pos) >= expr_len) {
 break;
 }
+#line 1671 "renderer.axe"
 const char c = std__string__get_char( expr , (*pos) );
 if (c != ' ' && c != '\t' && c != '\n') {
 break;
@@ -14990,16 +19654,23 @@ break;
 }
 }
 
+#line 1684
 std__string__string renderer__rewrite_ref_member_access(std__string__string expr) {
+#line 1685 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
+#line 1686 "renderer.axe"
 int32_t pos = 0;
+#line 1687 "renderer.axe"
 bool in_string = false;
+#line 1688 "renderer.axe"
 bool in_char_literal = false;
+#line 1689 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (pos >= expr_len) {
 break;
 }
+#line 1696 "renderer.axe"
 const char ch = std__string__get_char( expr , pos );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , pos )) {
 in_char_literal = ! in_char_literal;
@@ -15019,9 +19690,12 @@ pos = pos + 1;
 continue;
 }
 if (renderer__is_ident_start ( ch )) {
+#line 1719 "renderer.axe"
 const std__string__string ident = renderer__parse_ident_at( expr , &pos );
+#line 1721 "renderer.axe"
 int32_t lookahead = pos;
 renderer__skip_ws_at(expr, &lookahead);
+#line 1724 "renderer.axe"
 bool is_member_chain = false;
 if (lookahead < expr_len && std__string__get_char ( expr , lookahead ) == '.') {
 if (lookahead + 1 < expr_len && std__string__get_char ( expr , lookahead + 1 ) != '>') {
@@ -15032,8 +19706,11 @@ else if (lookahead + 1 < expr_len && std__string__get_char ( expr , lookahead ) 
 is_member_chain = true;
 }
 if (is_member_chain) {
+#line 1734 "renderer.axe"
 std__string__string chain = ident;
+#line 1735 "renderer.axe"
 bool is_pointer = false;
+#line 1736 "renderer.axe"
 std__string__string current_type = std__string__str( "" );
 if (std__maps__StringStringMap__contains( &g_var_types , ident )) {
 current_type = std__maps__StringStringMap__get( &g_var_types , ident );
@@ -15041,6 +19718,7 @@ if (renderer__is_pointer_type ( current_type )) {
 is_pointer = true;
 }
 }
+#line 1745 "renderer.axe"
 std__string__string base_model_name = renderer__extract_base_model_name( current_type );
 pos = lookahead;
 while (1) {
@@ -15051,7 +19729,9 @@ renderer__skip_ws_at(expr, &pos);
 if (pos >= expr_len) {
 break;
 }
+#line 1759 "renderer.axe"
 bool has_dot = false;
+#line 1760 "renderer.axe"
 bool has_arrow = false;
 if (std__string__get_char ( expr , pos ) == '.') {
 if (pos + 1 < expr_len && std__string__get_char ( expr , pos + 1 ) == '>') {
@@ -15072,6 +19752,7 @@ else {
 pos = pos + 1;
 }
 renderer__skip_ws_at(expr, &pos);
+#line 1782 "renderer.axe"
 const std__string__string field_name = renderer__parse_ident_at( expr , &pos );
 if (std__string__str_len ( field_name ) == 0) {
 if (has_arrow) {
@@ -15085,16 +19766,20 @@ chain = std__string__concat ( chain , std__string__str ( "." ) );
 }
 break;
 }
+#line 1796 "renderer.axe"
 std__string__string array_suffix = std__string__str( "" );
 renderer__skip_ws_at(expr, &pos);
 if (pos < expr_len && std__string__get_char ( expr , pos ) == '[') {
+#line 1799 "renderer.axe"
 const int32_t bracket_start = pos;
 pos = pos + 1;
+#line 1801 "renderer.axe"
 int32_t depth = 1;
 while (1) {
 if (pos >= expr_len || depth == 0) {
 break;
 }
+#line 1806 "renderer.axe"
 const char bc = std__string__get_char( expr , pos );
 if (bc == '[') {
 depth = depth + 1;
@@ -15104,11 +19789,14 @@ depth = depth - 1;
 }
 pos = pos + 1;
 }
+#line 1814 "renderer.axe"
 const std__string__string bracket_content = std__string__substring_se( expr , bracket_start + 1 , pos - 1 );
+#line 1815 "renderer.axe"
 const std__string__string processed_bracket = renderer__rewrite_ref_member_access( bracket_content );
 array_suffix = std__string__concat ( std__string__str ( "[" ) , processed_bracket );
 array_suffix = std__string__concat ( array_suffix , std__string__str ( "]" ) );
 }
+#line 1820 "renderer.axe"
 std__string__string op = std__string__str( "." );
 if (has_arrow) {
 op = std__string__str ( "->" );
@@ -15119,11 +19807,13 @@ op = std__string__str ( "->" );
 chain = std__string__concat ( chain , op );
 chain = std__string__concat ( chain , field_name );
 chain = std__string__concat ( chain , array_suffix );
+#line 1831 "renderer.axe"
 const bool had_array_access = std__string__str_len( array_suffix ) > 0;
 if (had_array_access) {
 is_pointer = false;
 }
 if (std__string__str_len ( base_model_name ) > 0) {
+#line 1837 "renderer.axe"
 const std__string__string field_type = renderer__lookup_field_type( base_model_name , field_name );
 if (std__string__str_len ( field_type ) > 0) {
 if (renderer__is_pointer_type ( field_type )) {
@@ -15172,21 +19862,29 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 pos = pos + 1;
 }
+#line 1892 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 1907
 std__string__string renderer__rewrite_method_calls(std__string__string expr) {
+#line 1908 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
+#line 1909 "renderer.axe"
 int32_t i = 0;
+#line 1910 "renderer.axe"
 bool in_string = false;
+#line 1911 "renderer.axe"
 bool in_char_literal = false;
+#line 1912 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 1919 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -15201,24 +19899,30 @@ i++;
 continue;
 }
 if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+#line 1936 "renderer.axe"
 const int32_t base_start = i;
+#line 1937 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 1942 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
 }
+#line 1948 "renderer.axe"
 const std__string__string base = std__string__substring_se( expr , base_start , j );
+#line 1950 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 1955 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -15231,19 +19935,23 @@ while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 1969 "renderer.axe"
 const char ws2 = std__string__get_char( expr , k );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
 }
 k = k + 1;
 }
+#line 1976 "renderer.axe"
 const int32_t method_start = k;
+#line 1977 "renderer.axe"
 int32_t m = k;
 if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
 while (1) {
 if (m >= expr_len) {
 break;
 }
+#line 1983 "renderer.axe"
 const char cm = std__string__get_char( expr , m );
 if (! renderer__is_token_char ( cm )) {
 break;
@@ -15251,12 +19959,15 @@ break;
 m = m + 1;
 }
 }
+#line 1990 "renderer.axe"
 const std__string__string method = std__string__substring_se( expr , method_start , m );
+#line 1992 "renderer.axe"
 int32_t p = m;
 while (1) {
 if (p >= expr_len) {
 break;
 }
+#line 1997 "renderer.axe"
 const char ws3 = std__string__get_char( expr , p );
 if (ws3 != ' ' && ws3 != '\t' && ws3 != '\n') {
 break;
@@ -15264,15 +19975,21 @@ break;
 p = p + 1;
 }
 if (std__string__str_len ( method ) > 0 && p < expr_len && std__string__get_char ( expr , p ) == '(') {
+#line 2005 "renderer.axe"
 std__string__string fixed_method = method;
+#line 2006 "renderer.axe"
 int32_t inner_sep = - 1;
+#line 2007 "renderer.axe"
 int32_t mi = 0;
+#line 2008 "renderer.axe"
 const int32_t mlen = (int32_t)( std__string__str_len ( method ) );
 while (1) {
 if (mi + 1 >= mlen) {
 break;
 }
+#line 2013 "renderer.axe"
 const char mc1 = std__string__get_char( method , mi );
+#line 2014 "renderer.axe"
 const char mc2 = std__string__get_char( method , mi + 1 );
 if (mc1 == '_' && mc2 == '_') {
 inner_sep = mi;
@@ -15281,16 +19998,23 @@ break;
 mi++;
 }
 if (inner_sep > 0) {
+#line 2023 "renderer.axe"
 const std__string__string inner_model = std__string__substring_se( method , 0 , inner_sep );
+#line 2024 "renderer.axe"
 std__string__string base_tail = base;
+#line 2025 "renderer.axe"
 int32_t bsep = - 1;
+#line 2026 "renderer.axe"
 int32_t bi = 0;
+#line 2027 "renderer.axe"
 const int32_t blen = (int32_t)( std__string__str_len ( base ) );
 while (1) {
 if (bi + 1 >= blen) {
 break;
 }
+#line 2033 "renderer.axe"
 const char bc1 = std__string__get_char( base , bi );
+#line 2034 "renderer.axe"
 const char bc2 = std__string__get_char( base , bi + 1 );
 if (bc1 == '_' && bc2 == '_') {
 bsep = bi;
@@ -15304,7 +20028,9 @@ if (std__string__compare ( inner_model , base ) == 0 || std__string__compare ( i
 fixed_method = std__string__substring_se ( method , inner_sep + 2 , mlen );
 }
 }
+#line 2049 "renderer.axe"
 const std__string__string canon = renderer__canonical_model_c_name( base );
+#line 2050 "renderer.axe"
 std__string__string full_name = std__string__str( "" );
 if (std__string__str_len ( canon ) > 0) {
 full_name = canon;
@@ -15326,21 +20052,29 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 2073 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 2081
 std__string__string renderer__rewrite_function_prefixes(std__string__string expr) {
+#line 2082 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
+#line 2083 "renderer.axe"
 int32_t i = 0;
+#line 2084 "renderer.axe"
 bool in_string = false;
+#line 2085 "renderer.axe"
 bool in_char_literal = false;
+#line 2086 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 2093 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -15354,26 +20088,33 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
+#line 2109 "renderer.axe"
 const bool is_start = renderer__is_ident_start( ch );
 if (! in_string && ! in_char_literal && is_start) {
+#line 2112 "renderer.axe"
 const int32_t func_start = i;
+#line 2113 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 2118 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j++;
 }
+#line 2124 "renderer.axe"
 const std__string__string func_name = std__string__substring_se( expr , func_start , j );
+#line 2126 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 2131 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -15381,6 +20122,7 @@ break;
 k++;
 }
 if (k < expr_len && std__string__get_char ( expr , k ) == '(') {
+#line 2139 "renderer.axe"
 const bool has_double_underscore = std__string__find_substr( func_name , std__string__str ( "__" ) ) >= 0;
 if (has_double_underscore) {
 std__string__StringBuilder__append(&sb, func_name);
@@ -15388,6 +20130,7 @@ i = j;
 continue;
 }
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
+#line 2147 "renderer.axe"
 const std__string__string full_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
 std__string__StringBuilder__append(&sb, full_name);
 i = j;
@@ -15401,21 +20144,29 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 2163 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 2170
 std__string__string renderer__rewrite_sizeof_types(std__string__string expr) {
+#line 2171 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
+#line 2172 "renderer.axe"
 int32_t i = 0;
+#line 2173 "renderer.axe"
 bool in_string = false;
+#line 2174 "renderer.axe"
 bool in_char_literal = false;
+#line 2175 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 2182 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -15430,19 +20181,24 @@ i++;
 continue;
 }
 if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+#line 2199 "renderer.axe"
 const int32_t ident_start = i;
+#line 2200 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 2205 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j++;
 }
+#line 2211 "renderer.axe"
 const std__string__string ident = std__string__substring_se( expr , ident_start , j );
+#line 2212 "renderer.axe"
 bool is_sizeof = false;
 if (std__string__str_len ( ident ) == 6 && std__string__get_char ( ident , 0 ) == 's' && std__string__get_char ( ident , 1 ) == 'i' && std__string__get_char ( ident , 2 ) == 'z' && std__string__get_char ( ident , 3 ) == 'e' && std__string__get_char ( ident , 4 ) == 'o' && std__string__get_char ( ident , 5 ) == 'f') {
 is_sizeof = true;
@@ -15452,11 +20208,13 @@ is_sizeof = true;
 }
 if (is_sizeof) {
 std__string__StringBuilder__append_c(&sb, "sizeof");
+#line 2228 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 2233 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -15466,23 +20224,28 @@ k++;
 if (k < expr_len && std__string__get_char ( expr , k ) == '(') {
 std__string__StringBuilder__append_char(&sb, '(');
 k++;
+#line 2244 "renderer.axe"
 int32_t start_type = k;
 while (1) {
 if (start_type >= expr_len) {
 break;
 }
+#line 2249 "renderer.axe"
 const char ws2 = std__string__get_char( expr , start_type );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
 }
 start_type = start_type + 1;
 }
+#line 2256 "renderer.axe"
 int32_t end_type = start_type;
+#line 2257 "renderer.axe"
 int32_t paren_depth = 0;
 while (1) {
 if (end_type >= expr_len) {
 break;
 }
+#line 2262 "renderer.axe"
 const char ct = std__string__get_char( expr , end_type );
 if (ct == '(') {
 paren_depth = paren_depth + 1;
@@ -15496,12 +20259,15 @@ paren_depth--;
 end_type++;
 }
 if (end_type <= expr_len) {
+#line 2275 "renderer.axe"
 const std__string__string raw_type = std__string__strip( std__string__substring_se ( expr , start_type , end_type ) );
 if (std__string__str_len ( raw_type ) > 0) {
+#line 2277 "renderer.axe"
 std__string__string normalized_type = std__string__replace_all( raw_type , std__string__str ( "( " ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " )" ) , std__string__str ( ")" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " (" ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( ") " ) , std__string__str ( ")" ) );
+#line 2281 "renderer.axe"
 const std__string__string mapped = renderer__map_axe_type_to_c( normalized_type );
 std__string__StringBuilder__append(&sb, mapped);
 }
@@ -15523,21 +20289,29 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 2308 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 2317
 std__string__string renderer__rewrite_casts(std__string__string expr) {
+#line 2318 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
+#line 2319 "renderer.axe"
 int32_t i = 0;
+#line 2320 "renderer.axe"
 bool in_string = false;
+#line 2321 "renderer.axe"
 bool in_char_literal = false;
+#line 2322 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 2329 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -15552,25 +20326,31 @@ i++;
 continue;
 }
 if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+#line 2346 "renderer.axe"
 const int32_t ident_start = i;
+#line 2347 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 2352 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
 }
+#line 2358 "renderer.axe"
 const std__string__string ident = std__string__substring_se( expr , ident_start , j );
 if (std__string__str_len ( ident ) == 4 && std__string__get_char ( ident , 0 ) == 'c' && std__string__get_char ( ident , 1 ) == 'a' && std__string__get_char ( ident , 2 ) == 's' && std__string__get_char ( ident , 3 ) == 't') {
+#line 2361 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 2366 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -15578,14 +20358,19 @@ break;
 k = k + 1;
 }
 if (k < expr_len && std__string__get_char ( expr , k ) == '[') {
+#line 2374 "renderer.axe"
 const int32_t t_start = k + 1;
+#line 2375 "renderer.axe"
 int32_t t_end = - 1;
+#line 2376 "renderer.axe"
 bool in_str_type = false;
+#line 2377 "renderer.axe"
 int32_t p = t_start;
 while (1) {
 if (p >= expr_len) {
 break;
 }
+#line 2382 "renderer.axe"
 const char ct = std__string__get_char( expr , p );
 if (ct == '"' && ! renderer__is_escaped_quote ( expr , p )) {
 in_str_type = ! in_str_type;
@@ -15597,12 +20382,15 @@ break;
 p = p + 1;
 }
 if (t_end > t_start) {
+#line 2394 "renderer.axe"
 const std__string__string type_raw = std__string__strip( std__string__substring_se ( expr , t_start , t_end ) );
+#line 2396 "renderer.axe"
 int32_t a = t_end + 1;
 while (1) {
 if (a >= expr_len) {
 break;
 }
+#line 2401 "renderer.axe"
 const char wa = std__string__get_char( expr , a );
 if (wa != ' ' && wa != '\t' && wa != '\n') {
 break;
@@ -15610,14 +20398,19 @@ break;
 a = a + 1;
 }
 if (a < expr_len && std__string__get_char ( expr , a ) == '(') {
+#line 2409 "renderer.axe"
 int32_t depth = 0;
+#line 2410 "renderer.axe"
 bool in_str_paren = false;
+#line 2411 "renderer.axe"
 int32_t q = a;
+#line 2412 "renderer.axe"
 int32_t end_paren = - 1;
 while (1) {
 if (q >= expr_len) {
 break;
 }
+#line 2417 "renderer.axe"
 const char cp = std__string__get_char( expr , q );
 if (cp == '"' && ! renderer__is_escaped_quote ( expr , q )) {
 in_str_paren = ! in_str_paren;
@@ -15637,16 +20430,21 @@ break;
 q = q + 1;
 }
 if (end_paren >= 0) {
+#line 2436 "renderer.axe"
 std__string__string normalized_type = std__string__replace_all( type_raw , std__string__str ( "( " ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " )" ) , std__string__str ( ")" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " (" ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( ") " ) , std__string__str ( ")" ) );
+#line 2440 "renderer.axe"
 const std__string__string mapped_type = renderer__map_axe_type_to_c( normalized_type );
 std__string__StringBuilder__append_char(&sb, '(');
 std__string__StringBuilder__append(&sb, mapped_type);
 std__string__StringBuilder__append_char(&sb, (char)(41));
+#line 2445 "renderer.axe"
 const std__string__string inner_expr_str = std__string__substring_se( expr , a + 1 , end_paren );
+#line 2446 "renderer.axe"
 const std__string__string rewritten_inner = renderer__rewrite_casts( inner_expr_str );
+#line 2447 "renderer.axe"
 const std__string__string inner_full = std__string__concat( std__string__str ( "(" ) , std__string__concat ( rewritten_inner , std__string__str ( ")" ) ) );
 std__string__StringBuilder__append(&sb, inner_full);
 i = end_paren + 1;
@@ -15666,11 +20464,13 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 2471 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 2477
 void renderer__add_list_element(std__string__string c_elem) {
 if (std__string__str_len ( c_elem ) == 0) {
 return ;
@@ -15678,15 +20478,19 @@ return ;
 if (std__maps__StringBoolMap__contains( &g_list_element_types , c_elem )) {
 return ;
 }
+#line 2486 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 2560 );
 std__maps__StringBoolMap__set(&g_list_element_types, &arena, c_elem, true);
 if (g_list_elements != nil) {
+#line 2490 "renderer.axe"
 const std__lists__StringList* listref = g_list_elements;
+#line 2491 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= listref->len) {
 break;
 }
+#line 2496 "renderer.axe"
 const std__string__string it = std__lists__StringList__get( listref , i );
 if (std__string__compare ( it , c_elem ) == 0) {
 return ;
@@ -15697,21 +20501,27 @@ std__lists__StringList__push(g_list_elements, &arena, c_elem);
 }
 }
 
+#line 2507
 void renderer__scan_for_list_types(structs__ASTNode* node) {
 if (node == nil) {
 return ;
 }
 if (std__string__equals_c ( node->node_type, "Declaration" )) {
+#line 2513 "renderer.axe"
 const std__string__string tname = node->data.declaration.type_name;
 if (std__string__str_len ( tname ) > 0) {
+#line 2515 "renderer.axe"
 const int32_t br = std__string__find_char_from( tname , '[' , 0 );
 if (br >= 0) {
+#line 2517 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( tname , br , std__string__str_len ( tname ) );
 if (std__string__equals_c ( suffix , "[999]" )) {
+#line 2519 "renderer.axe"
 std__string__string element = std__string__strip( std__string__substring_se ( tname , 0 , br ) );
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
+#line 2523 "renderer.axe"
 const std__string__string mapped = renderer__map_axe_type_to_c( element );
 renderer__add_list_element(mapped);
 }
@@ -15719,7 +20529,9 @@ renderer__add_list_element(mapped);
 }
 }
 if (node->children!= nil) {
+#line 2531 "renderer.axe"
 const __list_structs__ASTNode_t* chs = node->children;
+#line 2532 "renderer.axe"
 int32_t idx = 0;
 while (1) {
 if (idx >= len_v((*chs))) {
@@ -15731,8 +20543,11 @@ idx = idx + 1;
 }
 }
 
+#line 2544
 std__string__string renderer__format_model_field_type(std__string__string field_type) {
+#line 2545 "renderer.axe"
 std__string__string trimmed = std__string__strip( field_type );
+#line 2546 "renderer.axe"
 std__string__string qualifiers = std__string__str( "" );
 while (1) {
 if (! std__string__has_prefix ( trimmed , std__string__str ( "const " ) )) {
@@ -15741,17 +20556,21 @@ break;
 qualifiers = std__string__concat ( qualifiers , std__string__str ( "const " ) );
 trimmed = std__string__strip ( std__string__substr ( trimmed , 6 , std__string__str_len ( trimmed ) - 6 ) );
 }
+#line 2556 "renderer.axe"
 bool had_struct_prefix = false;
 if (std__string__has_prefix ( trimmed , std__string__str ( "struct " ) )) {
 had_struct_prefix = true;
 trimmed = std__string__strip ( std__string__substr ( trimmed , 7 , std__string__str_len ( trimmed ) - 7 ) );
 }
+#line 2562 "renderer.axe"
 std__string__string pointer_suffix = std__string__str( "" );
 while (1) {
+#line 2564 "renderer.axe"
 const int32_t len = std__string__str_len( trimmed );
 if (len == 0) {
 break;
 }
+#line 2568 "renderer.axe"
 const char last_char = std__string__get_char( trimmed , len - 1 );
 if (last_char != '*') {
 break;
@@ -15759,6 +20578,7 @@ break;
 pointer_suffix = std__string__concat ( pointer_suffix , std__string__str ( "*" ) );
 trimmed = std__string__strip ( std__string__substring_se ( trimmed , 0 , len - 1 ) );
 }
+#line 2576 "renderer.axe"
 const std__string__string model_name = renderer__canonical_model_c_name( trimmed );
 if (std__string__str_len ( model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , model_name )) {
@@ -15771,14 +20591,18 @@ trimmed = std__string__concat ( std__string__str ( "struct " ) , model_name );
 else if (had_struct_prefix) {
 trimmed = std__string__concat ( std__string__str ( "struct " ) , trimmed );
 }
+#line 2589 "renderer.axe"
 std__string__string final_result = qualifiers;
 final_result = std__string__concat ( final_result , trimmed );
 final_result = std__string__concat ( final_result , pointer_suffix );
 return final_result;
 }
 
+#line 2597
 inline std__string__string renderer__process_parameter_type(std__string__string param_type) {
+#line 2607 "renderer.axe"
 const std__string__string result = std__string__strip( param_type );
+#line 2608 "renderer.axe"
 const std__string__string mapped = renderer__map_axe_type_to_c( result );
 if (std__string__find_substr ( mapped , std__string__str ( "__list_" ) ) >= 0 && ! std__string__has_suffix ( mapped , std__string__str ( "*" ) )) {
 return std__string__concat( mapped , std__string__str ( "*" ) );
@@ -15786,28 +20610,36 @@ return std__string__concat( mapped , std__string__str ( "*" ) );
 return mapped;
 }
 
+#line 2617
 std__string__string renderer__int_to_ascii(int32_t n) {
 if (n == 0) {
 return std__string__str( "0" );
 }
+#line 2622 "renderer.axe"
 bool neg = false;
+#line 2623 "renderer.axe"
 int32_t v = n;
 if (v < 0) {
 neg = true;
 v = - v;
 }
+#line 2629 "renderer.axe"
 std__string__StringBuilder sb_rev = std__string__StringBuilder__init( 16 );
 while (1) {
 if (v == 0) {
 break;
 }
+#line 2634 "renderer.axe"
 const int32_t digit = v % 10;
 std__string__StringBuilder__append_char(&sb_rev, (char)('0' + digit));
 v = v / 10;
 }
+#line 2639 "renderer.axe"
 const std__string__string rev = std__string__StringBuilder__to_string( &sb_rev );
 std__string__StringBuilder__destroy(&sb_rev);
+#line 2642 "renderer.axe"
 std__string__StringBuilder sb_out = std__string__StringBuilder__init( std__string__str_len ( rev ) + 2 );
+#line 2643 "renderer.axe"
 int32_t i = (int32_t)( std__string__str_len ( rev ) ) - 1;
 while (1) {
 if (i < 0) {
@@ -15816,6 +20648,7 @@ break;
 std__string__StringBuilder__append_char(&sb_out, std__string__get_char(rev, i));
 i = i - 1;
 }
+#line 2652 "renderer.axe"
 std__string__string out = std__string__StringBuilder__to_string( &sb_out );
 std__string__StringBuilder__destroy(&sb_out);
 if (neg) {
@@ -15824,7 +20657,9 @@ out = std__string__concat ( std__string__str ( "-" ) , out );
 return out;
 }
 
+#line 2661
 std__string__string renderer__get_type_format_specifier(std__string__string var_type) {
+#line 2662 "renderer.axe"
 const std__string__string t = std__string__strip( var_type );
 if (std__string__equals_c ( t , "int32_t" ) || std__string__has_suffix ( t , std__string__str ( "int32_t" ) )) {
 return std__string__str( "%d" );
@@ -15853,7 +20688,9 @@ return std__string__str( "%c" );
 return std__string__str( "%d" );
 }
 
+#line 2692
 std__string__string renderer__lookup_expression_type(std__string__string expr) {
+#line 2693 "renderer.axe"
 const std__string__string e = std__string__strip( expr );
 if (std__maps__StringStringMap__contains( &g_var_types , e )) {
 return std__maps__StringStringMap__get( &g_var_types , e );
@@ -15865,6 +20702,7 @@ if (std__string__str_len ( e ) >= 2 && std__string__get_char ( e , 0 ) == '\'' &
 return std__string__str( "char" );
 }
 if (std__string__str_len ( e ) > 0) {
+#line 2708 "renderer.axe"
 const char c0 = std__string__get_char( e , 0 );
 if (c0 >= '0' && c0 <= '9') {
 if (std__string__find_char_from ( e , '.' , 0 ) >= 0) {
@@ -15876,16 +20714,23 @@ return std__string__str( "i32" );
 return std__string__str( "i32" );
 }
 
+#line 2720
 std__string__string renderer__process_interpolated_string(std__string__string interp_content, bool return_struct) {
+#line 2721 "renderer.axe"
 __list_std__string_t parts = {0};
+#line 2722 "renderer.axe"
 __list_std__string_t expressions = {0};
+#line 2724 "renderer.axe"
 int32_t pos = 0;
+#line 2725 "renderer.axe"
 std__string__StringBuilder sb_part = std__string__StringBuilder__init( std__string__str_len ( interp_content ) + 16 );
+#line 2726 "renderer.axe"
 const int32_t content_len = (int32_t)( std__string__str_len ( interp_content ) );
 while (1) {
 if (pos >= content_len) {
 break;
 }
+#line 2733 "renderer.axe"
 const char ch = std__string__get_char( interp_content , pos );
 if (ch == '{' && ! renderer__is_escaped_quote ( interp_content , pos )) {
 if (pos > 0 && std__string__get_char ( interp_content , pos - 1 ) == '$' && sb_part . len > 0) {
@@ -15893,13 +20738,17 @@ sb_part.len = sb_part.len- 1;
 }
 __list_std__string_push(&parts, std__string__StringBuilder__to_string(&sb_part));
 std__string__StringBuilder__clear(&sb_part);
+#line 2743 "renderer.axe"
 const int32_t brace_start = pos + 1;
+#line 2744 "renderer.axe"
 int32_t brace_depth = 1;
+#line 2745 "renderer.axe"
 int32_t brace_end = brace_start;
 while (1) {
 if (brace_end >= content_len || brace_depth == 0) {
 break;
 }
+#line 2751 "renderer.axe"
 const char cc = std__string__get_char( interp_content , brace_end );
 if (cc == '{') {
 brace_depth = brace_depth + 1;
@@ -15912,6 +20761,7 @@ brace_end = brace_end + 1;
 if (brace_depth != 0) {
 std__errors__enforce_raw(false, "Unmatched braces in interpolated string");
 }
+#line 2764 "renderer.axe"
 const std__string__string expr = std__string__strip( std__string__substring_se ( interp_content , brace_start , brace_end - 1 ) );
 __list_std__string_push(&expressions, expr);
 pos = brace_end;
@@ -15926,19 +20776,24 @@ if (len_v(parts) == 0) {
 return std__string__str( "" );
 }
 if (len_v(expressions) == 0) {
+#line 2782 "renderer.axe"
 std__string__string q = std__string__str( "\"" );
 q = std__string__concat ( q , interp_content );
 q = std__string__concat ( q , std__string__str ( "\"" ) );
 return q;
 }
+#line 2788 "renderer.axe"
 std__string__string code = std__string__str( "({ size_t _axe_interp_len = 0" );
+#line 2790 "renderer.axe"
 int32_t i_part_size = 0;
 while (1) {
 if (i_part_size >= len_v(parts)) {
 break;
 }
+#line 2796 "renderer.axe"
 const std__string__string part_sz = parts.data[ i_part_size ];
 if (std__string__str_len ( part_sz ) > 0) {
+#line 2798 "renderer.axe"
 std__string__string escaped_sz = std__string__replace_all( part_sz , std__string__str ( "\\" ) , std__string__str ( "\\\\" ) );
 escaped_sz = std__string__replace_all ( escaped_sz , std__string__str ( "\"" ) , std__string__str ( "\\\"" ) );
 escaped_sz = std__string__replace_all ( escaped_sz , std__string__str ( "\n" ) , std__string__str ( "\\n" ) );
@@ -15953,13 +20808,16 @@ code = std__string__concat ( code , std__string__str ( " + 32" ) );
 i_part_size = i_part_size + 1;
 }
 code = std__string__concat ( code , std__string__str ( "; char* _axe_interp = (char*)malloc(_axe_interp_len + 1); char* _axe_interp_p = _axe_interp; " ) );
+#line 2817 "renderer.axe"
 int32_t i_part = 0;
 while (1) {
 if (i_part >= len_v(parts)) {
 break;
 }
+#line 2823 "renderer.axe"
 const std__string__string part = parts.data[ i_part ];
 if (std__string__str_len ( part ) > 0) {
+#line 2825 "renderer.axe"
 std__string__string escaped = std__string__replace_all( part , std__string__str ( "\\" ) , std__string__str ( "\\\\" ) );
 escaped = std__string__replace_all ( escaped , std__string__str ( "\"" ) , std__string__str ( "\\\"" ) );
 escaped = std__string__replace_all ( escaped , std__string__str ( "\n" ) , std__string__str ( "\\n" ) );
@@ -15973,8 +20831,11 @@ code = std__string__concat ( code , escaped );
 code = std__string__concat ( code , std__string__str ( "\") - 1; " ) );
 }
 if (i_part < len_v(expressions)) {
+#line 2840 "renderer.axe"
 const std__string__string e = expressions.data[ i_part ];
+#line 2841 "renderer.axe"
 const std__string__string etype = renderer__lookup_expression_type( e );
+#line 2842 "renderer.axe"
 const std__string__string processed_e = renderer__process_expression( e );
 if (std__string__str_len ( etype ) > 0 && ( std__string__equals_c ( etype , "string" ) || std__string__has_suffix ( etype , std__string__str ( "_string" ) ) || std__string__equals_c ( etype , "std__string__string" ) )) {
 code = std__string__concat ( code , std__string__str ( "{ struct std__string__string _s = " ) );
@@ -16001,7 +20862,9 @@ code = std__string__concat ( code , std__string__str ( "_axe_interp; })" ) );
 return code;
 }
 
+#line 2872
 bool renderer__is_token_char(char c) {
+#line 2873 "renderer.axe"
 const int32_t c_code = (int32_t)( c );
 if (c_code >= 97 && c_code <= 122) {
 return true;
@@ -16018,7 +20881,9 @@ return true;
 return false;
 }
 
+#line 2891
 bool renderer__is_ident_start(char c) {
+#line 2892 "renderer.axe"
 const int32_t c_code = (int32_t)( c );
 if (c_code >= 97 && c_code <= 122) {
 return true;
@@ -16032,6 +20897,7 @@ return true;
 return false;
 }
 
+#line 2905
 int32_t renderer__c_prefix_end_index(std__string__string s) {
 if (std__string__str_len ( s ) < 2) {
 return - 1;
@@ -16039,11 +20905,13 @@ return - 1;
 if (std__string__get_char ( s , 0 ) != 'C') {
 return - 1;
 }
+#line 2914 "renderer.axe"
 int32_t i = 1;
 while (1) {
 if (i >= std__string__str_len ( s )) {
 return - 1;
 }
+#line 2919 "renderer.axe"
 const char ch = std__string__get_char( s , i );
 if (ch != ' ' && ch != '\t' && ch != '\n') {
 break;
@@ -16058,6 +20926,7 @@ while (1) {
 if (i >= std__string__str_len ( s )) {
 break;
 }
+#line 2935 "renderer.axe"
 const char ch = std__string__get_char( s , i );
 if (ch != ' ' && ch != '\t' && ch != '\n') {
 break;
@@ -16067,42 +20936,54 @@ i++;
 return i;
 }
 
+#line 2948
 std__string__string renderer__collapse_duplicate_segments_once(std__string__string s) {
+#line 2949 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
+#line 2950 "renderer.axe"
 int32_t i = 0;
+#line 2951 "renderer.axe"
 const int32_t n = (int32_t)( std__string__str_len ( s ) );
 while (1) {
 if (i >= n) {
 break;
 }
 if (i + 2 < n && std__string__get_char ( s , i ) == '_' && std__string__get_char ( s , i + 1 ) == '_') {
+#line 2959 "renderer.axe"
 int32_t j = i + 2;
+#line 2960 "renderer.axe"
 const int32_t seg1_start = j;
 while (1) {
 if (j >= n) {
 break;
 }
+#line 2965 "renderer.axe"
 const char ch = std__string__get_char( s , j );
 if (ch == '_') {
 break;
 }
 j = j + 1;
 }
+#line 2971 "renderer.axe"
 const std__string__string seg1 = std__string__substring_se( s , seg1_start , j );
 if (std__string__str_len ( seg1 ) > 0) {
 if (j + 2 < n && std__string__get_char ( s , j ) == '_' && std__string__get_char ( s , j + 1 ) == '_') {
+#line 2975 "renderer.axe"
 int32_t k = j + 2;
+#line 2976 "renderer.axe"
 const int32_t seg2_start = k;
 while (1) {
 if (k >= n) {
 break;
 }
+#line 2981 "renderer.axe"
 const char ch2 = std__string__get_char( s , k );
 if (ch2 == '_') {
 break;
 }
 k = k + 1;
 }
+#line 2987 "renderer.axe"
 const std__string__string seg2 = std__string__substring_se( s , seg2_start , k );
 if (std__string__compare ( seg1 , seg2 ) == 0) {
 if (( k < n && std__string__get_char ( s , k ) == '_' && ( k + 1 >= n || std__string__get_char ( s , k + 1 ) != '_' ) )) {
@@ -16114,18 +20995,22 @@ continue;
 }
 }
 if (j + 3 < n && std__string__get_char ( s , j ) == '_' && std__string__get_char ( s , j + 1 ) != '_') {
+#line 3000 "renderer.axe"
 int32_t k2 = j + 1;
+#line 3001 "renderer.axe"
 const int32_t seg2b_start = k2;
 while (1) {
 if (k2 >= n) {
 break;
 }
+#line 3006 "renderer.axe"
 const char ch3 = std__string__get_char( s , k2 );
 if (ch3 == '_') {
 break;
 }
 k2 = k2 + 1;
 }
+#line 3012 "renderer.axe"
 const std__string__string seg2b = std__string__substring_se( s , seg2b_start , k2 );
 if (k2 + 1 < n && std__string__get_char ( s , k2 ) == '_' && std__string__get_char ( s , k2 + 1 ) == '_') {
 if (std__string__compare ( seg1 , seg2b ) == 0) {
@@ -16142,27 +21027,36 @@ continue;
 std__string__StringBuilder__append_char(&sb, std__string__get_char(s, i));
 i++;
 }
+#line 3031 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 3038
 std__string__string renderer__strip_all_c_prefixes(std__string__string s) {
+#line 3039 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
+#line 3040 "renderer.axe"
 int32_t i = 0;
+#line 3041 "renderer.axe"
 const int32_t s_len = (int32_t)( std__string__str_len ( s ) );
 while (1) {
 if (i >= s_len) {
 break;
 }
+#line 3047 "renderer.axe"
 const char ch = std__string__get_char( s , i );
 if (ch == 'C') {
+#line 3050 "renderer.axe"
 int32_t prev_idx = i - 1;
+#line 3051 "renderer.axe"
 char prev_ch = '\0';
 while (1) {
 if (prev_idx < 0) {
 break;
 }
+#line 3056 "renderer.axe"
 const char pc = std__string__get_char( s , prev_idx );
 if (pc != ' ' && pc != '\t' && pc != '\n') {
 prev_ch = pc;
@@ -16171,11 +21065,13 @@ break;
 prev_idx = prev_idx - 1;
 }
 if (prev_idx < 0 || ! renderer__is_ident_start ( prev_ch )) {
+#line 3065 "renderer.axe"
 int32_t k = i + 1;
 while (1) {
 if (k >= s_len) {
 break;
 }
+#line 3070 "renderer.axe"
 const char ws = std__string__get_char( s , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -16188,6 +21084,7 @@ while (1) {
 if (k >= s_len) {
 break;
 }
+#line 3083 "renderer.axe"
 const char ws2 = std__string__get_char( s , k );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
@@ -16202,16 +21099,23 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 3100 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 3108
 std__string__string renderer__rewrite_enum_member_refs(std__string__string s) {
+#line 3109 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 64 );
+#line 3110 "renderer.axe"
 int32_t i = 0;
+#line 3111 "renderer.axe"
 bool in_string = false;
+#line 3112 "renderer.axe"
 bool in_char_literal = false;
+#line 3113 "renderer.axe"
 const int32_t s_len = (int32_t)( std__string__str_len ( s ) );
 gstate__debug_print_raw("\n[DBG-ENUM] rewrite_enum_member_refs input:");
 gstate__debug_print_str(s);
@@ -16219,6 +21123,7 @@ while (1) {
 if (i >= s_len) {
 break;
 }
+#line 3123 "renderer.axe"
 const char ch = std__string__get_char( s , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( s , i )) {
 in_char_literal = ! in_char_literal;
@@ -16238,24 +21143,30 @@ i++;
 continue;
 }
 if (renderer__is_ident_start ( ch )) {
+#line 3147 "renderer.axe"
 const int32_t ident_start = i;
+#line 3148 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= s_len) {
 break;
 }
+#line 3153 "renderer.axe"
 const char cj = std__string__get_char( s , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
 }
+#line 3159 "renderer.axe"
 const std__string__string ident = std__string__substring_se( s , ident_start , j );
+#line 3162 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= s_len) {
 break;
 }
+#line 3167 "renderer.axe"
 const char ws = std__string__get_char( s , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -16268,6 +21179,7 @@ while (1) {
 if (k >= s_len) {
 break;
 }
+#line 3183 "renderer.axe"
 const char ws2 = std__string__get_char( s , k );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
@@ -16275,20 +21187,25 @@ break;
 k = k + 1;
 }
 if (k < s_len && renderer__is_ident_start ( std__string__get_char ( s , k ) )) {
+#line 3192 "renderer.axe"
 const int32_t member_start = k;
+#line 3193 "renderer.axe"
 int32_t m = k;
 while (1) {
 if (m >= s_len) {
 break;
 }
+#line 3198 "renderer.axe"
 const char cm = std__string__get_char( s , m );
 if (! renderer__is_token_char ( cm )) {
 break;
 }
 m = m + 1;
 }
+#line 3204 "renderer.axe"
 const std__string__string member = std__string__substring_se( s , member_start , m );
 if (std__string__str_len ( member ) > 0) {
+#line 3208 "renderer.axe"
 const std__string__string enum_c_name = renderer__canonical_model_c_name( ident );
 if (std__string__str_len ( enum_c_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_c_name )) {
 std__string__StringBuilder__append(&sb, enum_c_name);
@@ -16307,6 +21224,7 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 3231 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 gstate__debug_print_raw("\n[DBG-ENUM] rewrite_enum_member_refs output:");
@@ -16314,18 +21232,23 @@ gstate__debug_print_str(result);
 return result;
 }
 
+#line 3241
 std__string__string renderer__rewrite_adr(std__string__string expr) {
+#line 3242 "renderer.axe"
 std__string__string result = expr;
 while (1) {
+#line 3245 "renderer.axe"
 const int32_t start_idx = std__string__find_substr( result , std__string__str ( "addr" ) );
 if (start_idx < 0) {
 break;
 }
+#line 3250 "renderer.axe"
 int32_t pos = start_idx + 4;
 while (1) {
 if (pos >= std__string__str_len ( result )) {
 break;
 }
+#line 3255 "renderer.axe"
 const char ws = std__string__get_char( result , pos );
 if (ws != ' ' && ws != '\t') {
 break;
@@ -16335,13 +21258,17 @@ pos = pos + 1;
 if (pos >= std__string__str_len ( result ) || std__string__get_char ( result , pos ) != '(') {
 break;
 }
+#line 3266 "renderer.axe"
 const int32_t paren_start = pos + 1;
+#line 3267 "renderer.axe"
 int32_t depth = 1;
+#line 3268 "renderer.axe"
 int32_t paren_end = paren_start;
 while (1) {
 if (paren_end >= std__string__str_len ( result ) || depth == 0) {
 break;
 }
+#line 3274 "renderer.axe"
 const char ch = std__string__get_char( result , paren_end );
 if (ch == '(') {
 depth = depth + 1;
@@ -16356,9 +21283,13 @@ paren_end = paren_end + 1;
 if (depth != 0) {
 break;
 }
+#line 3289 "renderer.axe"
 const std__string__string var_name = std__string__strip( std__string__substring_se ( result , paren_start , paren_end ) );
+#line 3290 "renderer.axe"
 const bool has_bracket = std__string__find_char_from( var_name , '[' , 0 ) >= 0;
+#line 3291 "renderer.axe"
 const bool has_dot = std__string__find_char_from( var_name , '.' , 0 ) >= 0;
+#line 3292 "renderer.axe"
 std__string__string replacement = std__string__str( "" );
 if (has_bracket || has_dot) {
 replacement = std__string__concat ( std__string__str ( "&(" ) , var_name );
@@ -16367,7 +21298,9 @@ replacement = std__string__concat ( replacement , std__string__str ( ")" ) );
 else {
 replacement = std__string__concat ( std__string__str ( "&" ) , var_name );
 }
+#line 3301 "renderer.axe"
 const std__string__string before = std__string__substring_se( result , 0 , start_idx );
+#line 3302 "renderer.axe"
 const std__string__string after = std__string__substring_se( result , paren_end + 1 , std__string__str_len ( result ) );
 result = std__string__concat ( before , replacement );
 result = std__string__concat ( result , after );
@@ -16375,18 +21308,23 @@ result = std__string__concat ( result , after );
 return result;
 }
 
+#line 3312
 std__string__string renderer__rewrite_dereference(std__string__string expr) {
+#line 3313 "renderer.axe"
 std__string__string result = expr;
 while (1) {
+#line 3316 "renderer.axe"
 const int32_t start_idx = std__string__find_substr( result , std__string__str ( "deref" ) );
 if (start_idx < 0) {
 break;
 }
+#line 3321 "renderer.axe"
 int32_t pos = start_idx + 5;
 while (1) {
 if (pos >= std__string__str_len ( result )) {
 break;
 }
+#line 3326 "renderer.axe"
 const char ws = std__string__get_char( result , pos );
 if (ws != ' ' && ws != '\t') {
 break;
@@ -16396,13 +21334,17 @@ pos++;
 if (pos >= std__string__str_len ( result ) || std__string__get_char ( result , pos ) != '(') {
 break;
 }
+#line 3337 "renderer.axe"
 const int32_t paren_start = pos + 1;
+#line 3338 "renderer.axe"
 int32_t depth = 1;
+#line 3339 "renderer.axe"
 int32_t paren_end = paren_start;
 while (1) {
 if (paren_end >= std__string__str_len ( result ) || depth == 0) {
 break;
 }
+#line 3345 "renderer.axe"
 const char ch = std__string__get_char( result , paren_end );
 if (ch == '(') {
 depth++;
@@ -16417,10 +21359,14 @@ paren_end++;
 if (depth != 0) {
 break;
 }
+#line 3360 "renderer.axe"
 const std__string__string var_name = std__string__strip( std__string__substring_se ( result , paren_start , paren_end ) );
+#line 3361 "renderer.axe"
 std__string__string replacement = std__string__concat( std__string__str ( "(*" ) , var_name );
 replacement = std__string__concat_c ( replacement , ")" );
+#line 3364 "renderer.axe"
 const std__string__string before = std__string__substring_se( result , 0 , start_idx );
+#line 3365 "renderer.axe"
 const std__string__string after = std__string__substring_se( result , paren_end + 1 , std__string__str_len ( result ) );
 result = std__string__concat ( before , replacement );
 result = std__string__concat ( result , after );
@@ -16428,30 +21374,41 @@ result = std__string__concat ( result , after );
 return result;
 }
 
+#line 3377
 std__string__string renderer__rewrite_len_calls(std__string__string expr) {
+#line 3378 "renderer.axe"
 std__string__string result = expr;
 while (1) {
+#line 3381 "renderer.axe"
 int32_t start_idx = - 1;
+#line 3382 "renderer.axe"
 int32_t paren_pos = - 1;
+#line 3383 "renderer.axe"
 const int32_t search_pos = 0;
+#line 3384 "renderer.axe"
 const int32_t result_len = (int32_t)( std__string__str_len ( result ) );
 while (1) {
 if (search_pos >= result_len - 3) {
 break;
 }
+#line 3391 "renderer.axe"
 bool found = false;
+#line 3392 "renderer.axe"
 int32_t i = search_pos;
 while (1) {
 if (i > result_len - 3) {
 break;
 }
 if (std__string__get_char ( result , i ) == 'l' && std__string__get_char ( result , i + 1 ) == 'e' && std__string__get_char ( result , i + 2 ) == 'n') {
+#line 3399 "renderer.axe"
 bool in_string_check = false;
+#line 3400 "renderer.axe"
 int32_t qi = 0;
 while (1) {
 if (qi >= i) {
 break;
 }
+#line 3405 "renderer.axe"
 const char qc = std__string__get_char( result , qi );
 if (qc == '"' && ( qi == 0 || std__string__get_char ( result , qi - 1 ) != '\\' )) {
 in_string_check = ! in_string_check;
@@ -16462,25 +21419,30 @@ if (in_string_check) {
 i++;
 continue;
 }
+#line 3417 "renderer.axe"
 bool is_standalone = true;
 if (i > 0) {
+#line 3419 "renderer.axe"
 const char prev = std__string__get_char( result , i - 1 );
 if (renderer__is_token_char ( prev )) {
 is_standalone = false;
 }
 }
 if (is_standalone && i + 3 < result_len) {
+#line 3425 "renderer.axe"
 const char after = std__string__get_char( result , i + 3 );
 if (renderer__is_token_char ( after )) {
 is_standalone = false;
 }
 }
 if (is_standalone) {
+#line 3432 "renderer.axe"
 int32_t k = i + 3;
 while (1) {
 if (k >= result_len) {
 break;
 }
+#line 3437 "renderer.axe"
 const char ws = std__string__get_char( result , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -16505,13 +21467,17 @@ break;
 if (start_idx < 0) {
 break;
 }
+#line 3466 "renderer.axe"
 const int32_t paren_start = paren_pos + 1;
+#line 3467 "renderer.axe"
 int32_t depth = 1;
+#line 3468 "renderer.axe"
 int32_t paren_end = paren_start;
 while (1) {
 if (paren_end >= std__string__str_len ( result ) || depth == 0) {
 break;
 }
+#line 3474 "renderer.axe"
 const char ch = std__string__get_char( result , paren_end );
 if (ch == '(') {
 depth = depth + 1;
@@ -16526,14 +21492,19 @@ paren_end = paren_end + 1;
 if (depth != 0) {
 break;
 }
+#line 3489 "renderer.axe"
 const std__string__string len_arg = std__string__strip( std__string__substring_se ( result , paren_start , paren_end ) );
+#line 3490 "renderer.axe"
 bool is_pointer = false;
 if (std__string__find_substr ( len_arg , std__string__str ( "->" ) ) >= 0) {
 is_pointer = true;
 }
 else if (std__string__find_char_from ( len_arg , '.' , 0 ) >= 0) {
+#line 3495 "renderer.axe"
 const int32_t len_arg_len = (int32_t)( std__string__str_len ( len_arg ) );
+#line 3496 "renderer.axe"
 int32_t last_dot = - 1;
+#line 3497 "renderer.axe"
 int32_t di = 0;
 while (1) {
 if (di >= len_arg_len) {
@@ -16545,17 +21516,24 @@ last_dot = di;
 di++;
 }
 if (last_dot >= 0) {
+#line 3509 "renderer.axe"
 std__string__string field_name = std__string__strip( std__string__substring_se ( len_arg , last_dot + 1 , len_arg_len ) );
+#line 3510 "renderer.axe"
 const int32_t bracket_pos = std__string__find_char_from( field_name , '[' , 0 );
 if (bracket_pos >= 0) {
 field_name = std__string__strip ( std__string__substring_se ( field_name , 0 , bracket_pos ) );
 }
+#line 3516 "renderer.axe"
 const int32_t first_dot = std__string__find_char_from( len_arg , '.' , 0 );
 if (first_dot >= 0) {
+#line 3519 "renderer.axe"
 const std__string__string base_var = std__string__strip( std__string__substring_se ( len_arg , 0 , first_dot ) );
 if (std__maps__StringStringMap__contains( &g_var_types , base_var )) {
+#line 3522 "renderer.axe"
 const std__string__string base_type = std__maps__StringStringMap__get( &g_var_types , base_var );
+#line 3523 "renderer.axe"
 const std__string__string model_name = renderer__extract_base_model_name( base_type );
+#line 3524 "renderer.axe"
 const std__string__string field_type = renderer__lookup_field_type( model_name , field_name );
 if (std__string__str_len ( field_type ) > 0) {
 if (renderer__is_pointer_type ( field_type )) {
@@ -16570,18 +21548,22 @@ is_pointer = true;
 }
 }
 else {
+#line 3539 "renderer.axe"
 std__string__string base_var = len_arg;
+#line 3540 "renderer.axe"
 const int32_t bracket_pos = std__string__find_char_from( base_var , '[' , 0 );
 if (bracket_pos >= 0) {
 base_var = std__string__strip ( std__string__substring_se ( base_var , 0 , bracket_pos ) );
 }
 if (std__maps__StringStringMap__contains( &g_var_types , base_var )) {
+#line 3547 "renderer.axe"
 const std__string__string var_type = std__maps__StringStringMap__get( &g_var_types , base_var );
 if (renderer__is_pointer_type ( var_type )) {
 is_pointer = true;
 }
 }
 }
+#line 3554 "renderer.axe"
 std__string__string replacement = std__string__str( "" );
 if (is_pointer) {
 replacement = std__string__concat ( std__string__str ( "len_ptr(" ) , len_arg );
@@ -16590,7 +21572,9 @@ else {
 replacement = std__string__concat ( std__string__str ( "len_v(" ) , len_arg );
 }
 replacement = std__string__concat_c ( replacement , ")" );
+#line 3564 "renderer.axe"
 const std__string__string before = std__string__substring_se( result , 0 , start_idx );
+#line 3565 "renderer.axe"
 const std__string__string after = std__string__substring_se( result , paren_end + 1 , std__string__str_len ( result ) );
 result = std__string__concat ( before , replacement );
 result = std__string__concat ( result , after );
@@ -16598,16 +21582,23 @@ result = std__string__concat ( result , after );
 return result;
 }
 
+#line 3574
 std__string__string renderer__rewrite_function_calls(std__string__string expr) {
+#line 3575 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
+#line 3576 "renderer.axe"
 int32_t i = 0;
+#line 3577 "renderer.axe"
 bool in_string = false;
+#line 3578 "renderer.axe"
 bool in_char_literal = false;
+#line 3579 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 3586 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
@@ -16621,37 +21612,46 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
+#line 3602 "renderer.axe"
 const bool is_id_start = renderer__is_ident_start( ch );
 if (! in_string && ! in_char_literal && is_id_start) {
+#line 3604 "renderer.axe"
 const int32_t ident_start = i;
+#line 3605 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 3610 "renderer.axe"
 const char cj = std__string__get_char( expr , j );
 if (! renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
 }
+#line 3616 "renderer.axe"
 const std__string__string ident = std__string__substring_se( expr , ident_start , j );
+#line 3618 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 3623 "renderer.axe"
 const char ws = std__string__get_char( expr , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
 }
 k = k + 1;
 }
+#line 3630 "renderer.axe"
 std__string__string replaced_ident = ident;
 if (std__string__str_len ( ident ) > 3 && std__string__get_char ( ident , 0 ) == 'C' && std__string__get_char ( ident , 1 ) == '_' && std__string__get_char ( ident , 2 ) == '_') {
 replaced_ident = std__string__substring_se ( ident , 3 , std__string__str_len ( ident ) );
 }
 else if (k < expr_len && std__string__get_char ( expr , k ) == '(') {
+#line 3635 "renderer.axe"
 const bool has_double_underscore = std__string__find_substr( ident , std__string__str ( "__" ) ) >= 0;
 if (! has_double_underscore && std__maps__StringStringMap__contains( &g_function_prefixes , ident )) {
 replaced_ident = std__maps__StringStringMap__get( &g_function_prefixes , ident );
@@ -16664,23 +21664,30 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 3650 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 3657
 std__string__string renderer__rewrite_global_scope_refs(std__string__string expr) {
+#line 3658 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if (expr_len < 3) {
 return expr;
 }
+#line 3663 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( (uintptr_t)( expr_len + 32 ) );
+#line 3664 "renderer.axe"
 bool in_string = false;
+#line 3665 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 3672 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '"' && ( i == 0 || std__string__get_char ( expr , i - 1 ) != '\\' )) {
 in_string = ! in_string;
@@ -16694,11 +21701,13 @@ i++;
 continue;
 }
 if (ch == ':') {
+#line 3688 "renderer.axe"
 int32_t j = i + 1;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 3693 "renderer.axe"
 const char ws = std__string__get_char( expr , j );
 if (ws != ' ' && ws != '\t') {
 break;
@@ -16711,6 +21720,7 @@ while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 3706 "renderer.axe"
 const char ws2 = std__string__get_char( expr , j );
 if (ws2 != ' ' && ws2 != '\t') {
 break;
@@ -16718,19 +21728,23 @@ break;
 j = j + 1;
 }
 if (j < expr_len) {
+#line 3714 "renderer.axe"
 const char first_ch = std__string__get_char( expr , j );
 if (( first_ch >= 'a' && first_ch <= 'z' ) || ( first_ch >= 'A' && first_ch <= 'Z' ) || first_ch == '_') {
+#line 3716 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= expr_len) {
 break;
 }
+#line 3721 "renderer.axe"
 const char id_ch = std__string__get_char( expr , k );
 if (! ( ( id_ch >= 'a' && id_ch <= 'z' ) || ( id_ch >= 'A' && id_ch <= 'Z' ) || ( id_ch >= '0' && id_ch <= '9' ) || id_ch == '_' )) {
 break;
 }
 k = k + 1;
 }
+#line 3728 "renderer.axe"
 const std__string__string ident = std__string__substring_se( expr , j , k );
 std__string__StringBuilder__append(&sb, ident);
 i = k;
@@ -16742,23 +21756,30 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 3741 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 3749
 std__string__string renderer__rewrite_global_var_refs(std__string__string expr) {
+#line 3750 "renderer.axe"
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if (expr_len == 0) {
 return expr;
 }
+#line 3755 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( (uintptr_t)( expr_len + 64 ) );
+#line 3756 "renderer.axe"
 bool in_string = false;
+#line 3757 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
+#line 3764 "renderer.axe"
 const char ch = std__string__get_char( expr , i );
 if (ch == '"' && ( i == 0 || std__string__get_char ( expr , i - 1 ) != '\\' )) {
 in_string = ! in_string;
@@ -16773,6 +21794,7 @@ continue;
 }
 if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
 if (i > 0) {
+#line 3781 "renderer.axe"
 const char prev_ch = std__string__get_char( expr , i - 1 );
 if (( prev_ch >= 'a' && prev_ch <= 'z' ) || ( prev_ch >= 'A' && prev_ch <= 'Z' ) || ( prev_ch >= '0' && prev_ch <= '9' ) || prev_ch == '_') {
 std__string__StringBuilder__append_char(&sb, ch);
@@ -16780,17 +21802,20 @@ i++;
 continue;
 }
 }
+#line 3789 "renderer.axe"
 int32_t j = i;
 while (1) {
 if (j >= expr_len) {
 break;
 }
+#line 3794 "renderer.axe"
 const char id_ch = std__string__get_char( expr , j );
 if (! ( ( id_ch >= 'a' && id_ch <= 'z' ) || ( id_ch >= 'A' && id_ch <= 'Z' ) || ( id_ch >= '0' && id_ch <= '9' ) || id_ch == '_' )) {
 break;
 }
 j = j + 1;
 }
+#line 3801 "renderer.axe"
 const std__string__string ident = std__string__substring_se( expr , i , j );
 if (std__string__has_prefix ( ident , std__string__str ( "gvar__" ) )) {
 std__string__StringBuilder__append(&sb, ident);
@@ -16803,14 +21828,17 @@ i = j;
 continue;
 }
 if (std__maps__StringStringMap__contains( &g_global_var_prefixes , ident )) {
+#line 3816 "renderer.axe"
 const std__string__string mapped = std__maps__StringStringMap__get( &g_global_var_prefixes , ident );
 std__string__StringBuilder__append(&sb, mapped);
 i = j;
 continue;
 }
 if (j < expr_len) {
+#line 3823 "renderer.axe"
 const char next_ch = std__string__get_char( expr , j );
 if (next_ch != '(' && next_ch != '.') {
+#line 3825 "renderer.axe"
 const bool is_upper_case_const = renderer__is_all_upper_or_underscore( ident );
 if (is_upper_case_const && ! renderer__is_builtin_type ( ident ) && ! renderer__is_language_keyword ( ident ) && ! renderer__is_c_constant ( ident )) {
 if (! imports__is_symbol_imported ( ident ) && ! std__maps__StringBoolMap__contains( &g_emitted_globals , ident ) && ! std__maps__StringBoolMap__contains( &g_foreign_types , ident )) {
@@ -16832,11 +21860,13 @@ continue;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 }
+#line 3851 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 3857
 void renderer__check_variable_declared(std__string__string name) {
 if (std__string__str_len ( name ) == 0) {
 return ;
@@ -16844,6 +21874,7 @@ return ;
 if (! renderer__is_ident_start ( std__string__get_char ( name , 0 ) )) {
 return ;
 }
+#line 3861 "renderer.axe"
 int32_t i = 1;
 while (1) {
 if (i >= std__string__str_len ( name )) {
@@ -16926,31 +21957,44 @@ std__io__println("");
 exit(1);
 }
 
+#line 3899
 std__string__string renderer__process_expression(std__string__string expr) {
+#line 3900 "renderer.axe"
 std__string__string trimmed = std__string__strip( expr );
 renderer__check_variable_declared(trimmed);
+#line 3904 "renderer.axe"
 bool has_pointer_sugar = false;
+#line 3905 "renderer.axe"
 bool in_string = false;
+#line 3906 "renderer.axe"
 int32_t i = 0;
 trimmed = renderer__rewrite_global_scope_refs ( trimmed );
 if (std__string__has_prefix ( trimmed , std__string__str ( "__INTERPOLATED__" ) ) && std__string__has_suffix ( trimmed , std__string__str ( "__INTERPOLATED__" ) )) {
+#line 3911 "renderer.axe"
 const int32_t inner_len = std__string__str_len( trimmed ) - 32;
 if (inner_len > 0) {
+#line 3913 "renderer.axe"
 const std__string__string inner = std__string__substring_se( trimmed , 16 , 16 + inner_len );
 return renderer__process_interpolated_string( inner , false );
 }
 }
+#line 3918 "renderer.axe"
 const int32_t open_idx = std__string__find_char_from( trimmed , '(' , 0 );
 if (open_idx > 0) {
+#line 3920 "renderer.axe"
 const std__string__string func_name_raw = std__string__strip( std__string__substring_se ( trimmed , 0 , open_idx ) );
 if (std__string__equals_c ( func_name_raw , "str" ) || std__string__has_suffix ( func_name_raw , std__string__str ( "__str" ) )) {
+#line 3922 "renderer.axe"
 int32_t depth = 0;
+#line 3923 "renderer.axe"
 bool in_str_arg = false;
+#line 3924 "renderer.axe"
 int32_t j = open_idx;
 while (1) {
 if (j >= std__string__str_len ( trimmed )) {
 break;
 }
+#line 3929 "renderer.axe"
 const char chj = std__string__get_char( trimmed , j );
 if (chj == '"' && ( j == 0 || std__string__get_char ( trimmed , j - 1 ) != '\\' )) {
 in_str_arg = ! in_str_arg;
@@ -16969,10 +22013,13 @@ break;
 j = j + 1;
 }
 if (depth == 0 && j > open_idx) {
+#line 3946 "renderer.axe"
 const std__string__string inner_raw = std__string__strip( std__string__substring_se ( trimmed , open_idx + 1 , j ) );
 if (std__string__has_prefix ( inner_raw , std__string__str ( "__INTERPOLATED__" ) ) && std__string__has_suffix ( inner_raw , std__string__str ( "__INTERPOLATED__" ) )) {
+#line 3948 "renderer.axe"
 const int32_t inner_len2 = std__string__str_len( inner_raw ) - 32;
 if (inner_len2 > 0) {
+#line 3950 "renderer.axe"
 const std__string__string inner2 = std__string__substring_se( inner_raw , 16 , 16 + inner_len2 );
 return renderer__process_interpolated_string( inner2 , true );
 }
@@ -16985,16 +22032,19 @@ while (1) {
 if (i >= std__string__str_len ( trimmed )) {
 break;
 }
+#line 3964 "renderer.axe"
 const char ch = std__string__get_char( trimmed , i );
 if (ch == '"' && ( i == 0 || std__string__get_char ( trimmed , i - 1 ) != '\\' )) {
 in_string = ! in_string;
 }
 else if (! in_string && ch == '*') {
+#line 3968 "renderer.axe"
 int32_t k = i + 1;
 while (1) {
 if (k >= std__string__str_len ( trimmed )) {
 break;
 }
+#line 3973 "renderer.axe"
 const char ws = std__string__get_char( trimmed , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -17008,7 +22058,9 @@ break;
 }
 i++;
 }
+#line 3987 "renderer.axe"
 bool has_c_prefix = false;
+#line 3988 "renderer.axe"
 const int32_t c_prefix_end = renderer__c_prefix_end_index( trimmed );
 if (c_prefix_end >= 0) {
 has_c_prefix = true;
@@ -17018,28 +22070,44 @@ gstate__debug_print_raw("\n[DBG-EXPR] no-sugar/no-C expr raw:");
 gstate__debug_print_str(expr);
 gstate__debug_print_raw("\n[DBG-EXPR] no-sugar/no-C trimmed:");
 gstate__debug_print_str(trimmed);
+#line 3999 "renderer.axe"
 const int32_t single_quote_pos = std__string__find_char_from( trimmed , '\'' , 0 );
 if (single_quote_pos >= 0) {
+#line 4001 "renderer.axe"
 const std__string__string addr_fixed_chars = renderer__rewrite_adr( trimmed );
+#line 4002 "renderer.axe"
 const std__string__string deref_fixed_chars = renderer__rewrite_dereference( addr_fixed_chars );
+#line 4003 "renderer.axe"
 const std__string__string calls_fixed_chars = renderer__rewrite_function_calls( deref_fixed_chars );
+#line 4004 "renderer.axe"
 const std__string__string len_fixed_chars = renderer__rewrite_len_calls( calls_fixed_chars );
+#line 4005 "renderer.axe"
 const std__string__string enum_fixed_chars = renderer__rewrite_enum_member_refs( len_fixed_chars );
+#line 4006 "renderer.axe"
 const std__string__string prefixes_fixed_chars = renderer__rewrite_function_prefixes( enum_fixed_chars );
+#line 4007 "renderer.axe"
 const std__string__string mod_fixed_chars = renderer__replace_keyword_outside_strings( prefixes_fixed_chars , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+#line 4008 "renderer.axe"
 const std__string__string and_fixed_chars = renderer__replace_keyword_outside_strings( mod_fixed_chars , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+#line 4009 "renderer.axe"
 const std__string__string or_fixed_chars = renderer__replace_keyword_outside_strings( and_fixed_chars , std__string__str ( "or" ) , std__string__str ( "||" ) );
 return std__string__strip( or_fixed_chars );
 }
+#line 4025 "renderer.axe"
 const std__string__string normalized_only = trimmed;
+#line 4026 "renderer.axe"
 std__string__StringBuilder sb_norm = std__string__StringBuilder__init( std__string__str_len ( normalized_only ) + 16 );
+#line 4027 "renderer.axe"
 int32_t jn = 0;
+#line 4028 "renderer.axe"
 const int32_t norm_len = (int32_t)( std__string__str_len ( normalized_only ) );
+#line 4029 "renderer.axe"
 bool in_string_norm = false;
 while (1) {
 if (jn >= norm_len) {
 break;
 }
+#line 4035 "renderer.axe"
 const char chn = std__string__get_char( normalized_only , jn );
 if (chn == '"' && ( jn == 0 || std__string__get_char ( normalized_only , jn - 1 ) != '\\' )) {
 in_string_norm = ! in_string_norm;
@@ -17053,13 +22121,17 @@ jn = jn + 1;
 continue;
 }
 if (chn == ' ' || chn == '\t' || chn == '\n') {
+#line 4051 "renderer.axe"
 char prev = '\0';
+#line 4052 "renderer.axe"
 char next = '\0';
+#line 4054 "renderer.axe"
 int32_t kprev = jn - 1;
 while (1) {
 if (kprev < 0) {
 break;
 }
+#line 4059 "renderer.axe"
 const char cprev = std__string__get_char( normalized_only , kprev );
 if (cprev != ' ' && cprev != '\t' && cprev != '\n') {
 prev = cprev;
@@ -17067,11 +22139,13 @@ break;
 }
 kprev = kprev - 1;
 }
+#line 4067 "renderer.axe"
 int32_t knext = jn + 1;
 while (1) {
 if (knext >= norm_len) {
 break;
 }
+#line 4072 "renderer.axe"
 const char cnext = std__string__get_char( normalized_only , knext );
 if (cnext != ' ' && cnext != '\t' && cnext != '\n') {
 next = cnext;
@@ -17104,51 +22178,74 @@ std__string__StringBuilder__append_char(&sb_norm, chn);
 }
 jn = jn + 1;
 }
+#line 4105 "renderer.axe"
 const std__string__string out_norm = std__string__StringBuilder__to_string( &sb_norm );
 std__string__StringBuilder__destroy(&sb_norm);
+#line 4107 "renderer.axe"
 const std__string__string norm_no_sugar = std__string__strip( out_norm );
 gstate__debug_print_raw("\n[DBG-EXPR] no-sugar final:");
 gstate__debug_print_str(norm_no_sugar);
+#line 4111 "renderer.axe"
 const std__string__string addr_fixed = renderer__rewrite_adr( norm_no_sugar );
+#line 4112 "renderer.axe"
 const std__string__string deref_fixed = renderer__rewrite_dereference( addr_fixed );
+#line 4113 "renderer.axe"
 const std__string__string ptr_fixed = renderer__rewrite_ref_member_access( deref_fixed );
+#line 4114 "renderer.axe"
 const std__string__string methods_fixed = renderer__rewrite_method_calls( ptr_fixed );
+#line 4115 "renderer.axe"
 const std__string__string sizeof_fixed = renderer__rewrite_sizeof_types( methods_fixed );
+#line 4116 "renderer.axe"
 const std__string__string calls_fixed_no_sugar = renderer__rewrite_function_calls( sizeof_fixed );
+#line 4117 "renderer.axe"
 const std__string__string len_fixed_no_sugar = renderer__rewrite_len_calls( calls_fixed_no_sugar );
+#line 4118 "renderer.axe"
 const std__string__string enum_fixed_no_sugar = renderer__rewrite_enum_member_refs( len_fixed_no_sugar );
+#line 4119 "renderer.axe"
 const std__string__string prefixes_fixed_no_sugar = renderer__rewrite_function_prefixes( enum_fixed_no_sugar );
+#line 4120 "renderer.axe"
 const std__string__string global_vars_fixed = renderer__rewrite_global_var_refs( prefixes_fixed_no_sugar );
+#line 4121 "renderer.axe"
 const std__string__string mod_fixed_no_sugar = renderer__replace_keyword_outside_strings( global_vars_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+#line 4122 "renderer.axe"
 const std__string__string and_fixed_no_sugar = renderer__replace_keyword_outside_strings( mod_fixed_no_sugar , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+#line 4123 "renderer.axe"
 const std__string__string or_fixed_no_sugar = renderer__replace_keyword_outside_strings( and_fixed_no_sugar , std__string__str ( "or" ) , std__string__str ( "||" ) );
 return std__string__strip( or_fixed_no_sugar );
 }
+#line 4128 "renderer.axe"
 std__string__string result = trimmed;
 gstate__debug_print_raw("\n[DBG-EXPR] raw expr before sugar/C:");
 gstate__debug_print_str(expr);
 gstate__debug_print_raw("\n[DBG-EXPR] trimmed:");
 gstate__debug_print_str(trimmed);
 if (has_pointer_sugar) {
+#line 4135 "renderer.axe"
 std__string__StringBuilder sb_sugar = std__string__StringBuilder__init( std__string__str_len ( result ) + 32 );
+#line 4136 "renderer.axe"
 bool in_str2 = false;
+#line 4137 "renderer.axe"
 int32_t j = 0;
+#line 4138 "renderer.axe"
 const int32_t result_len = (int32_t)( std__string__str_len ( result ) );
 while (1) {
 if (j >= result_len) {
 break;
 }
+#line 4143 "renderer.axe"
 const char ch2 = std__string__get_char( result , j );
 if (ch2 == '"' && ( j == 0 || std__string__get_char ( result , j - 1 ) != '\\' )) {
 in_str2 = ! in_str2;
 std__string__StringBuilder__append_char(&sb_sugar, ch2);
 }
 else if (! in_str2 && ch2 == '*') {
+#line 4152 "renderer.axe"
 int32_t k = j + 1;
 while (1) {
 if (k >= result_len) {
 break;
 }
+#line 4157 "renderer.axe"
 const char ws = std__string__get_char( result , k );
 if (ws != ' ' && ws != '\t' && ws != '\n') {
 break;
@@ -17175,17 +22272,23 @@ if (has_c_prefix) {
 result = std__string__substring_se ( result , c_prefix_end , std__string__str_len ( result ) );
 }
 result = renderer__strip_all_c_prefixes ( result );
+#line 4189 "renderer.axe"
 const std__string__string normalized = result;
 gstate__debug_print_raw("\n[DBG-EXPR] after sugar/C before normalize:");
 gstate__debug_print_str(normalized);
+#line 4194 "renderer.axe"
 std__string__StringBuilder sb_final = std__string__StringBuilder__init( std__string__str_len ( normalized ) + 32 );
+#line 4195 "renderer.axe"
 int32_t jf = 0;
+#line 4196 "renderer.axe"
 const int32_t normalized_len = (int32_t)( std__string__str_len ( normalized ) );
+#line 4197 "renderer.axe"
 bool in_string_final = false;
 while (1) {
 if (jf >= normalized_len) {
 break;
 }
+#line 4203 "renderer.axe"
 const char chf = std__string__get_char( normalized , jf );
 if (chf == '"' && ( jf == 0 || std__string__get_char ( normalized , jf - 1 ) != '\\' )) {
 in_string_final = ! in_string_final;
@@ -17199,13 +22302,17 @@ jf = jf + 1;
 continue;
 }
 if (chf == ' ' || chf == '\t' || chf == '\n') {
+#line 4219 "renderer.axe"
 char prev2 = '\0';
+#line 4220 "renderer.axe"
 char next2 = '\0';
+#line 4222 "renderer.axe"
 int32_t kp = jf - 1;
 while (1) {
 if (kp < 0) {
 break;
 }
+#line 4227 "renderer.axe"
 const char cp = std__string__get_char( normalized , kp );
 if (cp != ' ' && cp != '\t' && cp != '\n') {
 prev2 = cp;
@@ -17213,11 +22320,13 @@ break;
 }
 kp = kp - 1;
 }
+#line 4235 "renderer.axe"
 int32_t kn = jf + 1;
 while (1) {
 if (kn >= normalized_len) {
 break;
 }
+#line 4240 "renderer.axe"
 const char cn = std__string__get_char( normalized , kn );
 if (cn != ' ' && cn != '\t' && cn != '\n') {
 next2 = cn;
@@ -17247,30 +22356,47 @@ std__string__StringBuilder__append_char(&sb_final, chf);
 }
 jf = jf + 1;
 }
+#line 4271 "renderer.axe"
 const std__string__string out_final = std__string__StringBuilder__to_string( &sb_final );
 std__string__StringBuilder__destroy(&sb_final);
+#line 4273 "renderer.axe"
 const std__string__string first_pass = std__string__strip( out_final );
 gstate__debug_print_raw("\nFIRST PASS:");
 gstate__debug_print_str(first_pass);
+#line 4276 "renderer.axe"
 const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
+#line 4280 "renderer.axe"
 const std__string__string addr_fixed2 = renderer__rewrite_adr( fixed );
+#line 4281 "renderer.axe"
 const std__string__string deref_fixed2 = renderer__rewrite_dereference( addr_fixed2 );
+#line 4282 "renderer.axe"
 const std__string__string ptr_fixed2 = renderer__rewrite_ref_member_access( deref_fixed2 );
+#line 4283 "renderer.axe"
 const std__string__string methods_fixed2 = renderer__rewrite_method_calls( ptr_fixed2 );
+#line 4284 "renderer.axe"
 const std__string__string sizeof_fixed2 = renderer__rewrite_sizeof_types( methods_fixed2 );
+#line 4285 "renderer.axe"
 const std__string__string calls_fixed = renderer__rewrite_function_calls( sizeof_fixed2 );
+#line 4286 "renderer.axe"
 const std__string__string len_fixed = renderer__rewrite_len_calls( calls_fixed );
+#line 4287 "renderer.axe"
 const std__string__string enum_fixed = renderer__rewrite_enum_member_refs( len_fixed );
+#line 4288 "renderer.axe"
 const std__string__string prefixes_fixed = renderer__rewrite_function_prefixes( enum_fixed );
+#line 4289 "renderer.axe"
 const std__string__string mod_fixed = renderer__replace_keyword_outside_strings( prefixes_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+#line 4290 "renderer.axe"
 const std__string__string and_fixed = renderer__replace_keyword_outside_strings( mod_fixed , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+#line 4291 "renderer.axe"
 const std__string__string or_fixed = renderer__replace_keyword_outside_strings( and_fixed , std__string__str ( "or" ) , std__string__str ( "||" ) );
 return std__string__strip( or_fixed );
 }
 
+#line 4297
 std__string__string renderer__generate_stack_trace_headers() {
+#line 4298 "renderer.axe"
 std__string__string code = std__string__str( "" );
 #ifdef _WIN32
 code = std__string__concat_c ( code , "#include <dbghelp.h>\n" );
@@ -17334,7 +22460,9 @@ code = std__string__concat_c ( code , "}\n" );
 return code;
 }
 
+#line 4368
 std__string__string renderer__generate_stack_trace_setup() {
+#line 4369 "renderer.axe"
 std__string__string code = std__string__str( "" );
 #ifdef _WIN32
 code = std__string__concat_c ( code , "    SetUnhandledExceptionFilter(axe_unhandled_exception_filter);\n" );
@@ -17346,23 +22474,31 @@ code = std__string__concat_c ( code , "    signal(SIGABRT, axe_segv_handler);\n"
 return code;
 }
 
+#line 4384
 std__string__string renderer__generate_function_prototype(structs__ASTNode* ast) {
 if (ast == nil) {
 return std__string__str( "" );
 }
+#line 4389 "renderer.axe"
 const std__string__string func_name_raw = ast->data.function.name;
 if (std__string__equals_c ( func_name_raw , "main" )) {
 return std__string__str( "" );
 }
+#line 4396 "renderer.axe"
 std__string__string func_name = func_name_raw;
+#line 4397 "renderer.axe"
 int32_t sep = - 1;
+#line 4398 "renderer.axe"
 int32_t i = 0;
+#line 4399 "renderer.axe"
 const int32_t n = std__string__str_len( func_name );
 while (1) {
 if (i + 1 >= n) {
 break;
 }
+#line 4404 "renderer.axe"
 const char c1 = std__string__get_char( func_name , i );
+#line 4405 "renderer.axe"
 const char c2 = std__string__get_char( func_name , i + 1 );
 if (c1 == '_' && c2 == '_') {
 sep = i;
@@ -17370,16 +22506,23 @@ sep = i;
 i++;
 }
 if (sep >= 0 && sep + 2 < n) {
+#line 4413 "renderer.axe"
 const std__string__string model_part = std__string__substring_se( func_name , 0 , sep );
+#line 4414 "renderer.axe"
 const std__string__string method_part = std__string__substring_se( func_name , sep + 2 , n );
+#line 4415 "renderer.axe"
 bool has_inner_sep = false;
+#line 4416 "renderer.axe"
 int32_t j = 0;
+#line 4417 "renderer.axe"
 const int32_t mlen = std__string__str_len( model_part );
 while (1) {
 if (j + 1 >= mlen) {
 break;
 }
+#line 4422 "renderer.axe"
 const char mc1 = std__string__get_char( model_part , j );
+#line 4423 "renderer.axe"
 const char mc2 = std__string__get_char( model_part , j + 1 );
 if (mc1 == '_' && mc2 == '_') {
 has_inner_sep = true;
@@ -17388,8 +22531,10 @@ break;
 j = j + 1;
 }
 if (! has_inner_sep) {
+#line 4432 "renderer.axe"
 const std__string__string canon_model = renderer__canonical_model_c_name( model_part );
 if (std__string__str_len ( canon_model ) > 0) {
+#line 4434 "renderer.axe"
 std__string__StringBuilder sb_name = std__string__StringBuilder__init( 1256 );
 std__string__StringBuilder__append(&sb_name, canon_model);
 std__string__StringBuilder__append_c(&sb_name, "__");
@@ -17404,18 +22549,23 @@ if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 func_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
 }
 }
+#line 4450 "renderer.axe"
 std__string__string return_type = ast->data.function.return_type;
 if (std__string__str_len ( return_type ) == 0) {
 return_type = std__string__str ( "void" );
 }
+#line 4456 "renderer.axe"
 const std__string__string mapped_return_type = renderer__map_axe_type_to_c( return_type );
+#line 4457 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( 1512 );
 std__string__StringBuilder__append(&sb, mapped_return_type);
 std__string__StringBuilder__append_char(&sb, ' ');
 std__string__StringBuilder__append(&sb, func_name);
 std__string__StringBuilder__append_char(&sb, '(');
+#line 4464 "renderer.axe"
 const __list_std__string_t* params = ast->data.function.params;
 if (params != nil) {
+#line 4466 "renderer.axe"
 int32_t param_idx = 0;
 while (1) {
 if (param_idx >= len_v((*params))) {
@@ -17424,11 +22574,16 @@ break;
 if (param_idx > 0) {
 std__string__StringBuilder__append_c(&sb, ", ");
 }
+#line 4476 "renderer.axe"
 const std__string__string param = params->data[ param_idx ];
+#line 4477 "renderer.axe"
 const int32_t colon_pos = std__string__find_char_from( param , ':' , 0 );
 if (colon_pos >= 0) {
+#line 4480 "renderer.axe"
 const std__string__string param_name = std__string__strip( std__string__substring_se ( param , 0 , colon_pos ) );
+#line 4481 "renderer.axe"
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
+#line 4482 "renderer.axe"
 const std__string__string processed_type = renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb, processed_type);
 std__string__StringBuilder__append_char(&sb, ' ');
@@ -17441,33 +22596,45 @@ param_idx = param_idx + 1;
 }
 }
 std__string__StringBuilder__append_c(&sb, ");\n");
+#line 4496 "renderer.axe"
 const std__string__string result = std__string__StringBuilder__to_string( &sb );
 std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
+#line 4502
 std__string__string renderer__generate_global_decl(structs__ASTNode* ast) {
+#line 4503 "renderer.axe"
 std__string__string result = std__string__str( "" );
 if (ast == nil) {
 return result;
 }
+#line 4508 "renderer.axe"
 const std__string__string var_name = ast->data.declaration.name;
+#line 4509 "renderer.axe"
 std__string__string type_name = ast->data.declaration.type_name;
+#line 4510 "renderer.axe"
 const bool is_mutable = ast->data.declaration.is_mutable;
+#line 4511 "renderer.axe"
 const std__string__string initializer = ast->data.declaration.initializer;
 renderer__validate_type_imported(type_name);
+#line 4515 "renderer.axe"
 std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
 if (std__string__str_len ( type_name ) == 0) {
+#line 4518 "renderer.axe"
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "new " ) )) {
 trimmed_init = std__string__substring_se ( trimmed_init , 4 , std__string__str_len ( trimmed_init ) );
 trimmed_init = std__string__strip ( trimmed_init );
+#line 4522 "renderer.axe"
 int32_t end_pos = - 1;
+#line 4523 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= std__string__str_len ( trimmed_init )) {
 break;
 }
+#line 4528 "renderer.axe"
 const char ch = std__string__get_char( trimmed_init , i );
 if (ch == '(' || ch == ' ' || ch == '\t') {
 end_pos = i;
@@ -17478,6 +22645,7 @@ i++;
 if (end_pos < 0) {
 end_pos = std__string__str_len ( trimmed_init );
 }
+#line 4538 "renderer.axe"
 const std__string__string inferred_name = std__string__strip( std__string__substring_se ( trimmed_init , 0 , end_pos ) );
 if (std__string__str_len ( inferred_name ) > 0) {
 type_name = inferred_name;
@@ -17485,8 +22653,10 @@ mapped_type = renderer__map_axe_type_to_c ( type_name );
 }
 }
 else {
+#line 4544 "renderer.axe"
 const int32_t brace_pos = std__string__find_char_from( trimmed_init , '{' , 0 );
 if (brace_pos > 0) {
+#line 4546 "renderer.axe"
 const std__string__string inferred_name2 = std__string__strip( std__string__substring_se ( trimmed_init , 0 , brace_pos ) );
 if (std__string__str_len ( inferred_name2 ) > 0) {
 type_name = inferred_name2;
@@ -17496,15 +22666,19 @@ mapped_type = renderer__map_axe_type_to_c ( type_name );
 }
 }
 if (std__string__str_len ( var_name ) > 0 && std__string__str_len ( type_name ) > 0) {
+#line 4556 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_var_types, &arena, var_name, type_name);
 if (std__string__has_prefix ( type_name , std__string__str ( "list(" ) )) {
+#line 4560 "renderer.axe"
 int32_t paren_pos = 5;
+#line 4561 "renderer.axe"
 int32_t depth = 1;
 while (1) {
 if (paren_pos >= std__string__str_len ( type_name )) {
 break;
 }
+#line 4566 "renderer.axe"
 const char ch = std__string__get_char( type_name , paren_pos );
 if (ch == '(') {
 depth = depth + 1;
@@ -17517,25 +22691,34 @@ break;
 }
 paren_pos = paren_pos + 1;
 }
+#line 4577 "renderer.axe"
 const std__string__string element_type = std__string__strip( std__string__substr ( type_name , 5 , paren_pos - 5 ) );
+#line 4578 "renderer.axe"
 std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 else if (std__string__has_suffix ( type_name , std__string__str ( "[999]" ) )) {
+#line 4581 "renderer.axe"
 const std__string__string element_type = std__string__strip( std__string__substring_se ( type_name , 0 , std__string__str_len ( type_name ) - 5 ) );
+#line 4582 "renderer.axe"
 std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 }
+#line 4587 "renderer.axe"
 const std__string__string enum_model_name = renderer__canonical_model_c_name( type_name );
 if (std__string__str_len ( enum_model_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_model_name )) {
 mapped_type = enum_model_name;
 }
+#line 4592 "renderer.axe"
 std__string__string array_suffix = std__string__str( "" );
+#line 4593 "renderer.axe"
 const int32_t br = std__string__find_char_from( type_name , '[' , 0 );
 if (br >= 0) {
+#line 4595 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( type_name , br , std__string__str_len ( type_name ) );
 if (! std__string__equals_c ( suffix , "[999]" )) {
+#line 4597 "renderer.axe"
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
 mapped_type = renderer__map_axe_type_to_c ( base_raw );
@@ -17543,6 +22726,7 @@ array_suffix = suffix;
 }
 }
 }
+#line 4605 "renderer.axe"
 const std__string__string emitted_name = var_name;
 if (is_mutable) {
 result = std__string__concat ( result , mapped_type );
@@ -17562,10 +22746,14 @@ result = std__string__concat ( result , array_suffix );
 }
 }
 if (std__string__str_len ( initializer ) > 0) {
+#line 4625 "renderer.axe"
 const std__string__string trimmed = std__string__strip( initializer );
+#line 4626 "renderer.axe"
 const int32_t brace_idx = std__string__find_char_from( trimmed , '{' , 0 );
 if (brace_idx >= 0) {
+#line 4628 "renderer.axe"
 const std__string__string type_part = std__string__strip( std__string__substring_se ( trimmed , 0 , brace_idx ) );
+#line 4629 "renderer.axe"
 const std__string__string brace_part = std__string__substring_se( trimmed , brace_idx , std__string__str_len ( trimmed ) );
 if (std__string__str_len ( type_part ) > 0) {
 result = std__string__concat_c ( result , " = " );
@@ -17577,12 +22765,14 @@ result = std__string__concat ( result , trimmed );
 }
 }
 else {
+#line 4638 "renderer.axe"
 const std__string__string processed_init = renderer__process_expression( trimmed );
 result = std__string__concat_c ( result , " = " );
 result = std__string__concat ( result , processed_init );
 }
 }
 else {
+#line 4643 "renderer.axe"
 const char first_char = std__string__get_char( mapped_type , 0 );
 if (first_char >= 'A' && first_char <= 'Z') {
 result = std__string__concat_c ( result , " = {0}" );
@@ -17598,32 +22788,42 @@ result = std__string__concat_c ( result , ";\n" );
 return result;
 }
 
+#line 4658
 std__string__string renderer__generate_c(structs__ASTNode* ast) {
 if (ast == nil) {
 return std__string__str( "" );
 }
 g_current_line = ast->line;
 g_current_source_file = ast->source_file;
+#line 4666 "renderer.axe"
 const std__string__string node_type = ast->node_type;
+#line 4667 "renderer.axe"
 std__string__string result = std__string__str( "" );
+#line 4668 "renderer.axe"
 std__arena__Arena arena = std__arena__Arena__create( 1024 );
 if (std__string__equals_c ( node_type , "MacroExpansion" )) {
 if (ast->children!= nil) {
+#line 4672 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 4673 "renderer.axe"
 const int32_t child_count = len_v((*children));
 if (child_count == 0) {
 return std__string__str( "" );
 }
+#line 4677 "renderer.axe"
 std__string__StringBuilder sb_macro = std__string__StringBuilder__init( 1024 );
+#line 4678 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= child_count) {
 break;
 }
+#line 4683 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_macro, child_code);
 i++;
 }
+#line 4687 "renderer.axe"
 const std__string__string result_macro = std__string__StringBuilder__to_string( &sb_macro );
 std__string__StringBuilder__destroy(&sb_macro);
 return result_macro;
@@ -17631,8 +22831,11 @@ return result_macro;
 return std__string__str( "" );
 }
 if (std__string__equals_c ( node_type , "Overload" )) {
+#line 4695 "renderer.axe"
 const std__string__string name = ast->data.overload_node.name;
+#line 4696 "renderer.axe"
 std__string__string param_name = ast->data.overload_node.param_name;
+#line 4697 "renderer.axe"
 std__string__string call_expr = ast->data.overload_node.call_expr;
 if (std__string__str_len ( param_name ) == 0) {
 param_name = std__string__str ( "x" );
@@ -17640,15 +22843,19 @@ param_name = std__string__str ( "x" );
 if (std__string__str_len ( call_expr ) == 0) {
 call_expr = param_name;
 }
+#line 4706 "renderer.axe"
 const __list_std__string_t* type_names_ref = ast->data.overload_node.type_names;
+#line 4707 "renderer.axe"
 const __list_std__string_t* targets_ref = ast->data.overload_node.target_functions;
 if (type_names_ref == nil || targets_ref == nil) {
 return std__string__str( "" );
 }
+#line 4713 "renderer.axe"
 const int32_t count = len_v((*type_names_ref));
 if (count == 0 || count != len_v((*targets_ref))) {
 return std__string__str( "" );
 }
+#line 4719 "renderer.axe"
 std__string__StringBuilder sb_top_level = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_top_level, "#define ");
 std__string__StringBuilder__append(&sb_top_level, name);
@@ -17657,15 +22864,20 @@ std__string__StringBuilder__append(&sb_top_level, param_name);
 std__string__StringBuilder__append_c(&sb_top_level, ") _Generic((");
 std__string__StringBuilder__append(&sb_top_level, call_expr);
 std__string__StringBuilder__append_c(&sb_top_level, "), \\\n");
+#line 4728 "renderer.axe"
 int32_t i_ov = 0;
 while (1) {
 if (i_ov >= count) {
 break;
 }
+#line 4734 "renderer.axe"
 const std__string__string axe_type = type_names_ref->data[ i_ov ];
+#line 4735 "renderer.axe"
 std__string__string target_name = targets_ref->data[ i_ov ];
+#line 4736 "renderer.axe"
 const std__string__string mapped_type = renderer__map_axe_type_to_c( axe_type );
 if (std__maps__StringStringMap__contains( &g_function_prefixes , target_name )) {
+#line 4739 "renderer.axe"
 const std__string__string prefixed_target = std__maps__StringStringMap__get( &g_function_prefixes , target_name );
 target_name = prefixed_target;
 }
@@ -17690,6 +22902,7 @@ if (std__string__equals_c ( node_type , "Program" )) {
 if (! bootstrap_mode) {
 g_emit_line_directives = true;
 }
+#line 4771 "renderer.axe"
 std__arena__Arena ext_arena = std__arena__Arena__create( 4096 );
 std__lists__StringList__clear(g_global_external_headers);
 std__lists__StringList__clear(g_windows_external_headers);
@@ -17697,16 +22910,19 @@ std__lists__StringList__clear(g_posix_external_headers);
 renderer__collect_external_imports(ast, std__string__str(""), &ext_arena);
 renderer__collect_foreign_types(ast);
 renderer__build_function_signatures(ast);
+#line 4779 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( 1024 * 256 );
 std__string__StringBuilder__append_c(&sb, "#define nil ((void*)0)\n#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#define len_ptr(x) ((x)->len)\n#define len_v(x) ((&(x))->len)\n#define len(x) len_v(x)\n");
 #ifdef _WIN32
 std__string__StringBuilder__append_c(&sb, "\n#define NOMINMAX\n#define NOGDI\n#define WIN32_LEAN_AND_MEAN\n#include <windows.h>\n");
 #endif
+#line 4787 "renderer.axe"
 int32_t ghi = 0;
 while (1) {
 if (ghi >= g_global_external_headers->len) {
 break;
 }
+#line 4792 "renderer.axe"
 const std__string__string gh = std__lists__StringList__get( g_global_external_headers , ghi );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, gh);
@@ -17715,11 +22931,13 @@ ghi = ghi + 1;
 }
 if (g_windows_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef _WIN32\n");
+#line 4803 "renderer.axe"
 int32_t whi = 0;
 while (1) {
 if (whi >= g_windows_external_headers->len) {
 break;
 }
+#line 4808 "renderer.axe"
 const std__string__string wh = std__lists__StringList__get( g_windows_external_headers , whi );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, wh);
@@ -17730,11 +22948,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_posix_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifndef _WIN32\n");
+#line 4819 "renderer.axe"
 int32_t phi = 0;
 while (1) {
 if (phi >= g_posix_external_headers->len) {
 break;
 }
+#line 4824 "renderer.axe"
 const std__string__string ph = std__lists__StringList__get( g_posix_external_headers , phi );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, ph);
@@ -17745,11 +22965,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_linux_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __linux__\n");
+#line 4835 "renderer.axe"
 int32_t i_l = 0;
 while (1) {
 if (i_l >= g_linux_external_headers->len) {
 break;
 }
+#line 4840 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_linux_external_headers , i_l );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17760,11 +22982,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_macos_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __APPLE__\n");
+#line 4851 "renderer.axe"
 int32_t i_m = 0;
 while (1) {
 if (i_m >= g_macos_external_headers->len) {
 break;
 }
+#line 4856 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_macos_external_headers , i_m );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17775,11 +22999,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_freebsd_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __FreeBSD__\n");
+#line 4867 "renderer.axe"
 int32_t i_fb = 0;
 while (1) {
 if (i_fb >= g_freebsd_external_headers->len) {
 break;
 }
+#line 4872 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_freebsd_external_headers , i_fb );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17790,11 +23016,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_openbsd_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __OpenBSD__\n");
+#line 4883 "renderer.axe"
 int32_t i_ob = 0;
 while (1) {
 if (i_ob >= g_openbsd_external_headers->len) {
 break;
 }
+#line 4888 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_openbsd_external_headers , i_ob );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17805,11 +23033,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_netbsd_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __NetBSD__\n");
+#line 4899 "renderer.axe"
 int32_t i_nb = 0;
 while (1) {
 if (i_nb >= g_netbsd_external_headers->len) {
 break;
 }
+#line 4904 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_netbsd_external_headers , i_nb );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17820,11 +23050,13 @@ std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (g_dragonflybsd_external_headers->len> 0) {
 std__string__StringBuilder__append_c(&sb, "#ifdef __DragonFly__\n");
+#line 4915 "renderer.axe"
 int32_t i_df = 0;
 while (1) {
 if (i_df >= g_dragonflybsd_external_headers->len) {
 break;
 }
+#line 4920 "renderer.axe"
 const std__string__string h = std__lists__StringList__get( g_dragonflybsd_external_headers , i_df );
 std__string__StringBuilder__append_c(&sb, "#include <");
 std__string__StringBuilder__append(&sb, h);
@@ -17834,6 +23066,7 @@ i_df = i_df + 1;
 std__string__StringBuilder__append_c(&sb, "#endif\n");
 }
 if (! is_release_build) {
+#line 4930 "renderer.axe"
 const std__string__string stack_headers = renderer__generate_stack_trace_headers( );
 std__string__StringBuilder__append(&sb, stack_headers);
 }
@@ -17843,38 +23076,54 @@ std__string__StringBuilder__destroy(&sb);
 renderer__build_function_prefixes(ast);
 renderer__build_function_signatures(ast);
 if (ast->children!= nil) {
+#line 4944 "renderer.axe"
 std__arena__Arena use_arena = std__arena__Arena__create( 4096 );
+#line 4945 "renderer.axe"
 const __list_structs__ASTNode_t* use_children = ast->children;
+#line 4946 "renderer.axe"
 const std__string__string dot_str = std__string__str( "." );
+#line 4947 "renderer.axe"
 const std__string__string underscore_str = std__string__str( "_" );
+#line 4948 "renderer.axe"
 const std__string__string double_underscore_str = std__string__str( "__" );
+#line 4949 "renderer.axe"
 const std__string__string dash_str = std__string__str( "-" );
+#line 4950 "renderer.axe"
 int32_t ui = 0;
 while (1) {
 if (ui >= len_v((*use_children))) {
 break;
 }
+#line 4955 "renderer.axe"
 const structs__ASTNode* uchild = &(use_children->data[ ui ]);
 if (std__string__equals_c ( uchild->node_type, "Use" )) {
+#line 4957 "renderer.axe"
 const std__string__string module_name = uchild->data.use_node.module_name;
+#line 4958 "renderer.axe"
 std__string__string module_prefix = std__string__replace_all( module_name , dot_str , double_underscore_str );
 module_prefix = std__string__replace_all ( module_prefix , dash_str , underscore_str );
+#line 4961 "renderer.axe"
 const __list_std__string_t* imports = uchild->data.use_node.imports;
 if (imports != nil) {
+#line 4963 "renderer.axe"
 int32_t ii = 0;
 while (1) {
 if (ii >= imports->len) {
 break;
 }
+#line 4968 "renderer.axe"
 const std__string__string import_name = imports->data[ ii ];
 if (std__string__str_len ( import_name ) > 0) {
+#line 4970 "renderer.axe"
 const char first_char = std__string__get_char( import_name , 0 );
 if (first_char >= 'a' && first_char <= 'z') {
 if (! std__maps__StringStringMap__contains( &g_function_prefixes , import_name )) {
+#line 4973 "renderer.axe"
 std__string__StringBuilder sb_prefix = std__string__StringBuilder__init( std__string__str_len ( module_prefix ) + std__string__str_len ( import_name ) + 2 );
 std__string__StringBuilder__append(&sb_prefix, module_prefix);
 std__string__StringBuilder__append(&sb_prefix, double_underscore_str);
 std__string__StringBuilder__append(&sb_prefix, import_name);
+#line 4977 "renderer.axe"
 const std__string__string prefixed_name = std__string__StringBuilder__to_string( &sb_prefix );
 std__string__StringBuilder__destroy(&sb_prefix);
 std__maps__StringStringMap__set(&g_function_prefixes, &use_arena, import_name, prefixed_name);
@@ -17889,16 +23138,22 @@ ui++;
 }
 }
 if (ast->children!= nil) {
+#line 4992 "renderer.axe"
 const __list_structs__ASTNode_t* children_for_models = ast->children;
+#line 4993 "renderer.axe"
 const int32_t children_count = len_v((*children_for_models));
+#line 4994 "renderer.axe"
 std__arena__Arena model_name_arena = std__arena__Arena__create( 1024 * 64 );
+#line 4995 "renderer.axe"
 int32_t mi = 0;
 while (1) {
 if (mi >= children_count) {
 break;
 }
+#line 5000 "renderer.axe"
 const structs__ASTNode* mchild = &(children_for_models->data[ mi ]);
 if (std__string__equals_c ( mchild->node_type, "Model" ) || std__string__equals_c ( mchild->node_type, "Enum" )) {
+#line 5002 "renderer.axe"
 std__string__string cname = std__string__str( "" );
 if (std__string__equals_c ( mchild->node_type, "Model" )) {
 cname = mchild->data.model_node.name;
@@ -17906,15 +23161,21 @@ cname = mchild->data.model_node.name;
 else {
 cname = mchild->data.enum_node.name;
 }
+#line 5009 "renderer.axe"
 std__string__string base = cname;
+#line 5010 "renderer.axe"
 int32_t last_sep = - 1;
+#line 5011 "renderer.axe"
 int32_t bi = 0;
+#line 5012 "renderer.axe"
 const int32_t nlen = std__string__str_len( cname );
 while (1) {
 if (bi + 1 >= nlen) {
 break;
 }
+#line 5017 "renderer.axe"
 const char c1 = std__string__get_char( cname , bi );
+#line 5018 "renderer.axe"
 const char c2 = std__string__get_char( cname , bi + 1 );
 if (c1 == '_' && c2 == '_') {
 last_sep = bi;
@@ -17937,9 +23198,12 @@ std__maps__StringBoolMap__set(&g_enum_names, &model_name_arena, base, true);
 }
 mi++;
 }
+#line 5043 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 5044 "renderer.axe"
 const int32_t children_len = len_v((*children));
 std__maps__StringBoolMap__clear(&g_list_element_types);
+#line 5048 "renderer.axe"
 int32_t i_scan = 0;
 while (1) {
 if (i_scan >= children_len) {
@@ -17948,60 +23212,79 @@ break;
 renderer__scan_for_list_types(&(children->data[i_scan]));
 i_scan++;
 }
+#line 5057 "renderer.axe"
 int32_t i_more = 0;
 while (1) {
 if (i_more >= children_len) {
 break;
 }
+#line 5062 "renderer.axe"
 const structs__ASTNode* cnode = &(children->data[ i_more ]);
 if (std__string__equals_c ( cnode->node_type, "Function" )) {
+#line 5064 "renderer.axe"
 const std__string__string ret_type = cnode->data.function.return_type;
+#line 5065 "renderer.axe"
 const int32_t br = std__string__find_char_from( ret_type , '[' , 0 );
 if (br >= 0 && std__string__find_char_from ( ret_type , ']' , br ) >= 0) {
+#line 5067 "renderer.axe"
 std__string__string elementType = std__string__strip( std__string__substring_se ( ret_type , 0 , br ) );
 if (std__string__has_prefix ( elementType , std__string__str ( "ref " ) )) {
 elementType = std__string__strip ( std__string__substr ( elementType , 4 , std__string__str_len ( elementType ) - 4 ) );
 }
+#line 5071 "renderer.axe"
 const std__string__string mappedC = renderer__map_axe_type_to_c( elementType );
 renderer__add_list_element(mappedC);
 }
 }
 else if (std__string__equals_c ( cnode->node_type, "Model" )) {
+#line 5075 "renderer.axe"
 const __list_std__string_t* field_names = cnode->data.model_node.field_names;
+#line 5076 "renderer.axe"
 const __list_std__string_t* field_types = cnode->data.model_node.field_types;
 if (field_names != nil && field_types != nil) {
+#line 5078 "renderer.axe"
 int32_t fidx = 0;
 while (1) {
 if (fidx >= len_v((*field_types)) || fidx >= len_v((*field_names))) {
 break;
 }
+#line 5083 "renderer.axe"
 const std__string__string ftype = field_types->data[ fidx ];
+#line 5084 "renderer.axe"
 const int32_t br2 = std__string__find_char_from( ftype , '[' , 0 );
 if (br2 >= 0 && std__string__find_char_from ( ftype , ']' , br2 ) >= 0) {
+#line 5086 "renderer.axe"
 std__string__string elemCandidate = std__string__strip( std__string__substring_se ( ftype , 0 , br2 ) );
 if (std__string__has_prefix ( elemCandidate , std__string__str ( "ref " ) )) {
 elemCandidate = std__string__strip ( std__string__substr ( elemCandidate , 4 , std__string__str_len ( elemCandidate ) - 4 ) );
 }
+#line 5090 "renderer.axe"
 const std__string__string mappedElem = renderer__map_axe_type_to_c( elemCandidate );
 renderer__add_list_element(mappedElem);
 }
 fidx++;
 }
 }
+#line 5096 "renderer.axe"
 const __list_std__string_t* union_member_types = cnode->data.model_node.union_member_types;
 if (union_member_types != nil) {
+#line 5098 "renderer.axe"
 int32_t uidx = 0;
 while (1) {
 if (uidx >= len_v((*union_member_types))) {
 break;
 }
+#line 5103 "renderer.axe"
 const std__string__string utype = union_member_types->data[ uidx ];
+#line 5104 "renderer.axe"
 const int32_t ubr = std__string__find_char_from( utype , '[' , 0 );
 if (ubr >= 0 && std__string__find_char_from ( utype , ']' , ubr ) >= 0) {
+#line 5106 "renderer.axe"
 std__string__string uElemCandidate = std__string__strip( std__string__substring_se ( utype , 0 , ubr ) );
 if (std__string__has_prefix ( uElemCandidate , std__string__str ( "ref " ) )) {
 uElemCandidate = std__string__strip ( std__string__substr ( uElemCandidate , 4 , std__string__str_len ( uElemCandidate ) - 4 ) );
 }
+#line 5110 "renderer.axe"
 const std__string__string mappedUElem = renderer__map_axe_type_to_c( uElemCandidate );
 renderer__add_list_element(mappedUElem);
 }
@@ -18011,14 +23294,18 @@ uidx++;
 }
 i_more++;
 }
+#line 5120 "renderer.axe"
 std__string__StringBuilder sb_fwd = std__string__StringBuilder__init( 4096 );
+#line 5121 "renderer.axe"
 int32_t i_models2 = 0;
 while (1) {
 if (i_models2 >= children_len) {
 break;
 }
+#line 5127 "renderer.axe"
 const structs__ASTNode* m_child = &(children->data[ i_models2 ]);
 if (std__string__equals_c ( m_child->node_type, "Model" )) {
+#line 5129 "renderer.axe"
 std__string__string name = std__string__str( "" );
 name = m_child->data.model_node.name;
 if (! std__maps__StringBoolMap__contains( &g_generated_typedefs , name )) {
@@ -18029,13 +23316,16 @@ std__string__StringBuilder__append_c(&sb_fwd, ";\n");
 }
 i_models2++;
 }
+#line 5140 "renderer.axe"
 int32_t i_models3 = 0;
 while (1) {
 if (i_models3 >= children_len) {
 break;
 }
+#line 5145 "renderer.axe"
 const structs__ASTNode* m_child = &(children->data[ i_models3 ]);
 if (std__string__equals_c ( m_child->node_type, "Model" )) {
+#line 5147 "renderer.axe"
 std__string__string name2 = std__string__str( "" );
 name2 = m_child->data.model_node.name;
 if (! std__maps__StringBoolMap__contains( &g_generated_typedefs , name2 )) {
@@ -18048,18 +23338,23 @@ std__string__StringBuilder__append_c(&sb_fwd, ";\n");
 }
 i_models3++;
 }
+#line 5160 "renderer.axe"
 std__string__StringBuilder sb_prog = std__string__StringBuilder__init( 1024 * 512 );
 std__string__StringBuilder__append(&sb_prog, result);
 std__string__StringBuilder__append(&sb_prog, std__string__StringBuilder__to_string(&sb_fwd));
 std__string__StringBuilder__destroy(&sb_fwd);
 if (g_list_elements != nil) {
+#line 5166 "renderer.axe"
 const std__lists__StringList* lst_ref = g_list_elements;
+#line 5167 "renderer.axe"
 int32_t li = 0;
 while (1) {
 if (li >= lst_ref->len) {
 break;
 }
+#line 5172 "renderer.axe"
 const std__string__string elemTypeStr = std__lists__StringList__get( lst_ref , li );
+#line 5173 "renderer.axe"
 const std__string__string san = renderer__sanitize_list_element_name( elemTypeStr );
 std__string__StringBuilder__append_c(&sb_prog, "typedef struct __list_");
 std__string__StringBuilder__append(&sb_prog, san);
@@ -18069,22 +23364,29 @@ std__string__StringBuilder__append_c(&sb_prog, "_t;\n");
 li = li + 1;
 }
 }
+#line 5183 "renderer.axe"
 int32_t i_opaque_plat = 0;
 while (1) {
 if (i_opaque_plat >= children_len) {
 break;
 }
+#line 5188 "renderer.axe"
 const structs__ASTNode* op_plat = &(children->data[ i_opaque_plat ]);
 if (std__string__equals_c ( op_plat->node_type, "Platform" )) {
+#line 5190 "renderer.axe"
 const std__string__string platform_name = op_plat->data.platform_node.platform_name;
+#line 5191 "renderer.axe"
 bool has_opaque = false;
 if (op_plat->children!= nil) {
+#line 5194 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children = op_plat->children;
+#line 5195 "renderer.axe"
 int32_t oc = 0;
 while (1) {
 if (oc >= len_v((*plat_children))) {
 break;
 }
+#line 5200 "renderer.axe"
 const structs__ASTNode* oc_child = &(plat_children->data[ oc ]);
 if (std__string__equals_c ( oc_child->node_type, "Opaque" ) || std__string__equals_c ( oc_child->node_type, "Foreign" )) {
 has_opaque = true;
@@ -18094,22 +23396,28 @@ oc++;
 }
 }
 if (has_opaque) {
+#line 5210 "renderer.axe"
 const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_prog, plat_dir);
 }
+#line 5214 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children2 = op_plat->children;
+#line 5215 "renderer.axe"
 int32_t oc2 = 0;
 while (1) {
 if (oc2 >= len_v((*plat_children2))) {
 break;
 }
+#line 5220 "renderer.axe"
 const structs__ASTNode* oc_child2 = &(plat_children2->data[ oc2 ]);
 if (std__string__equals_c ( oc_child2->node_type, "Opaque" )) {
+#line 5222 "renderer.axe"
 const std__string__string opaque_code = renderer__generate_c( oc_child2 );
 std__string__StringBuilder__append(&sb_prog, opaque_code);
 }
 else if (std__string__equals_c ( oc_child2->node_type, "Foreign" )) {
+#line 5225 "renderer.axe"
 const std__string__string foreign_code = renderer__generate_c( oc_child2 );
 std__string__StringBuilder__append(&sb_prog, foreign_code);
 }
@@ -18122,29 +23430,39 @@ std__string__StringBuilder__append_c(&sb_prog, "#endif\n");
 }
 i_opaque_plat++;
 }
+#line 5238 "renderer.axe"
 int32_t i_enums = 0;
 while (1) {
 if (i_enums >= children_len) {
 break;
 }
+#line 5243 "renderer.axe"
 const structs__ASTNode* enum_child = &(children->data[ i_enums ]);
 if (std__string__equals_c ( enum_child->node_type, "Enum" )) {
+#line 5245 "renderer.axe"
 const std__string__string e_code = renderer__generate_c( enum_child );
 std__string__StringBuilder__append(&sb_prog, e_code);
 }
 i_enums = i_enums + 1;
 }
+#line 5253 "renderer.axe"
 std__arena__Arena model_arena = std__arena__Arena__create( 1024 * 64 );
+#line 5254 "renderer.axe"
 std__lists__StringList* model_names_list = std__lists__StringList__create( &model_arena , 64 );
+#line 5255 "renderer.axe"
 std__maps__StringIntMap model_indices = (*std__maps__StringIntMap__create( &model_arena , 128 ));
+#line 5257 "renderer.axe"
 int32_t collect_idx = 0;
 while (1) {
 if (collect_idx >= children_len) {
 break;
 }
+#line 5262 "renderer.axe"
 const structs__ASTNode* collect_child = &(children->data[ collect_idx ]);
 if (std__string__equals_c ( collect_child->node_type, "Model" )) {
+#line 5264 "renderer.axe"
 const std__string__string mname = collect_child->data.model_node.name;
+#line 5265 "renderer.axe"
 std__string__string cname = renderer__canonical_model_c_name( mname );
 if (std__string__str_len ( cname ) == 0) {
 cname = mname;
@@ -18156,8 +23474,11 @@ std__maps__StringIntMap__set(&model_indices, &model_arena, cname, model_names_li
 }
 collect_idx = collect_idx + 1;
 }
+#line 5281 "renderer.axe"
 const int32_t num_models = model_names_list->len;
+#line 5283 "renderer.axe"
 std__lists__StringList* deps_lists = std__lists__StringList__create( &model_arena , num_models + 1 );
+#line 5284 "renderer.axe"
 int32_t dep_init = 0;
 while (1) {
 if (dep_init >= num_models) {
@@ -18166,28 +23487,38 @@ break;
 std__lists__StringList__push(deps_lists, &model_arena, std__string__str(""));
 dep_init = dep_init + 1;
 }
+#line 5293 "renderer.axe"
 int32_t build_deps_idx = 0;
 while (1) {
 if (build_deps_idx >= children_len) {
 break;
 }
+#line 5298 "renderer.axe"
 const structs__ASTNode* bdep_child = &(children->data[ build_deps_idx ]);
 if (std__string__equals_c ( bdep_child->node_type, "Model" )) {
+#line 5300 "renderer.axe"
 const std__string__string raw_model_name = bdep_child->data.model_node.name;
+#line 5301 "renderer.axe"
 std__string__string this_model_name = renderer__canonical_model_c_name( raw_model_name );
 if (std__string__str_len ( this_model_name ) == 0) {
 this_model_name = raw_model_name;
 }
+#line 5306 "renderer.axe"
 const int32_t this_model_idx = std__maps__StringIntMap__get( &model_indices , this_model_name );
+#line 5307 "renderer.axe"
 const __list_std__string_t* ftypes = bdep_child->data.model_node.field_types;
 if (ftypes != nil) {
+#line 5310 "renderer.axe"
 int32_t ft_idx = 0;
 while (1) {
 if (ft_idx >= len_v((*ftypes))) {
 break;
 }
+#line 5316 "renderer.axe"
 const std__string__string ftype = ftypes->data[ ft_idx ];
+#line 5317 "renderer.axe"
 const std__string__string base_type = renderer__get_base_type_from_field( ftype );
+#line 5318 "renderer.axe"
 std__string__string mapped_type = renderer__map_axe_type_to_c( base_type );
 if (! std__maps__StringIntMap__contains( &model_indices , mapped_type )) {
 if (std__maps__StringIntMap__contains( &model_indices , base_type )) {
@@ -18196,11 +23527,13 @@ mapped_type = base_type;
 }
 if (std__maps__StringIntMap__contains( &model_indices , mapped_type )) {
 if (std__string__compare ( mapped_type , this_model_name ) != 0) {
+#line 5327 "renderer.axe"
 const std__string__string current_deps = std__lists__StringList__get( deps_lists , this_model_idx );
 if (std__string__str_len ( current_deps ) == 0) {
 deps_lists->data[this_model_idx] = mapped_type;
 }
 else if (std__string__find_substr ( current_deps , mapped_type ) < 0) {
+#line 5332 "renderer.axe"
 std__string__StringBuilder sb_deps = std__string__StringBuilder__init( std__string__str_len ( current_deps ) + std__string__str_len ( mapped_type ) + 1 );
 std__string__StringBuilder__append(&sb_deps, current_deps);
 std__string__StringBuilder__append_c(&sb_deps, ",");
@@ -18213,15 +23546,20 @@ std__string__StringBuilder__destroy(&sb_deps);
 ft_idx = ft_idx + 1;
 }
 }
+#line 5346 "renderer.axe"
 const __list_std__string_t* union_types = bdep_child->data.model_node.union_member_types;
 if (union_types != nil) {
+#line 5348 "renderer.axe"
 int32_t ut_idx = 0;
 while (1) {
 if (ut_idx >= len_v((*union_types))) {
 break;
 }
+#line 5353 "renderer.axe"
 const std__string__string utype = union_types->data[ ut_idx ];
+#line 5354 "renderer.axe"
 const std__string__string ubase_type = renderer__get_base_type_from_field( utype );
+#line 5355 "renderer.axe"
 std__string__string umapped_type = renderer__map_axe_type_to_c( ubase_type );
 if (! std__maps__StringIntMap__contains( &model_indices , umapped_type )) {
 if (std__maps__StringIntMap__contains( &model_indices , ubase_type )) {
@@ -18230,11 +23568,13 @@ umapped_type = ubase_type;
 }
 if (std__maps__StringIntMap__contains( &model_indices , umapped_type )) {
 if (std__string__compare ( umapped_type , this_model_name ) != 0) {
+#line 5365 "renderer.axe"
 const std__string__string current_deps = std__lists__StringList__get( deps_lists , this_model_idx );
 if (std__string__str_len ( current_deps ) == 0) {
 deps_lists->data[this_model_idx] = umapped_type;
 }
 else if (std__string__find_substr ( current_deps , umapped_type ) < 0) {
+#line 5370 "renderer.axe"
 std__string__StringBuilder sb_udeps = std__string__StringBuilder__init( std__string__str_len ( current_deps ) + std__string__str_len ( umapped_type ) + 1 );
 std__string__StringBuilder__append(&sb_udeps, current_deps);
 std__string__StringBuilder__append_c(&sb_udeps, ",");
@@ -18250,7 +23590,9 @@ ut_idx = ut_idx + 1;
 }
 build_deps_idx = build_deps_idx + 1;
 }
+#line 5387 "renderer.axe"
 std__lists__IntList* visit_state = std__lists__IntList__create( &model_arena , num_models + 1 );
+#line 5388 "renderer.axe"
 int32_t vs_init = 0;
 while (1) {
 if (vs_init >= num_models) {
@@ -18259,7 +23601,9 @@ break;
 std__lists__IntList__push(visit_state, &model_arena, 0);
 vs_init = vs_init + 1;
 }
+#line 5397 "renderer.axe"
 std__lists__StringList* sorted_order = std__lists__StringList__create( &model_arena , num_models + 1 );
+#line 5399 "renderer.axe"
 int32_t start_node = 0;
 while (1) {
 if (start_node >= num_models) {
@@ -18269,7 +23613,9 @@ if (std__lists__IntList__get( visit_state , start_node ) == 2) {
 start_node = start_node + 1;
 continue;
 }
+#line 5413 "renderer.axe"
 std__lists__IntList* stack_nodes = std__lists__IntList__create( &model_arena , 256 );
+#line 5414 "renderer.axe"
 std__lists__IntList* stack_phases = std__lists__IntList__create( &model_arena , 256 );
 std__lists__IntList__push(stack_nodes, &model_arena, start_node);
 std__lists__IntList__push(stack_phases, &model_arena, 0);
@@ -18277,10 +23623,13 @@ while (1) {
 if (stack_nodes->len== 0) {
 break;
 }
+#line 5424 "renderer.axe"
 const int32_t curr_node = std__lists__IntList__get( stack_nodes , stack_nodes->len- 1 );
+#line 5425 "renderer.axe"
 const int32_t curr_phase = std__lists__IntList__get( stack_phases , stack_phases->len- 1 );
 stack_nodes->len = stack_nodes->len- 1;
 stack_phases->len = stack_phases->len- 1;
+#line 5430 "renderer.axe"
 const int32_t curr_state = std__lists__IntList__get( visit_state , curr_node );
 if (curr_state == 2) {
 continue;
@@ -18292,22 +23641,28 @@ continue;
 visit_state->data[curr_node] = 1;
 std__lists__IntList__push(stack_nodes, &model_arena, curr_node);
 std__lists__IntList__push(stack_phases, &model_arena, 1);
+#line 5446 "renderer.axe"
 const std__string__string deps_str = std__lists__StringList__get( deps_lists , curr_node );
 if (std__string__str_len ( deps_str ) > 0) {
+#line 5448 "renderer.axe"
 int32_t dep_start = 0;
+#line 5449 "renderer.axe"
 int32_t dep_pos = 0;
 while (1) {
 if (dep_pos > std__string__str_len ( deps_str )) {
 break;
 }
+#line 5455 "renderer.axe"
 bool is_sep = dep_pos == std__string__str_len ( deps_str );
 if (! is_sep) {
 is_sep = std__string__get_char ( deps_str , dep_pos ) == ',';
 }
 if (is_sep) {
 if (dep_pos > dep_start) {
+#line 5462 "renderer.axe"
 const std__string__string dep_name = std__string__substr( deps_str , dep_start , dep_pos - dep_start );
 if (std__maps__StringIntMap__contains( &model_indices , dep_name )) {
+#line 5464 "renderer.axe"
 const int32_t dep_idx = std__maps__StringIntMap__get( &model_indices , dep_name );
 if (std__lists__IntList__get( visit_state , dep_idx ) != 2) {
 std__lists__IntList__push(stack_nodes, &model_arena, dep_idx);
@@ -18323,26 +23678,32 @@ dep_pos++;
 }
 else {
 visit_state->data[curr_node] = 2;
+#line 5479 "renderer.axe"
 const std__string__string model_name = std__lists__StringList__get( model_names_list , curr_node );
 std__lists__StringList__push(sorted_order, &model_arena, model_name);
 }
 }
 start_node = start_node + 1;
 }
+#line 5488 "renderer.axe"
 int32_t sorted_idx = 0;
 while (1) {
 if (sorted_idx >= sorted_order->len) {
 break;
 }
+#line 5493 "renderer.axe"
 const std__string__string sorted_name = std__lists__StringList__get( sorted_order , sorted_idx );
+#line 5495 "renderer.axe"
 int32_t find_idx = 0;
 while (1) {
 if (find_idx >= len_v((*children))) {
 break;
 }
+#line 5500 "renderer.axe"
 const structs__ASTNode* find_child = &(children->data[ find_idx ]);
 if (std__string__equals_c ( find_child->node_type, "Model" )) {
 if (std__string__compare ( find_child->data.model_node.name, sorted_name ) == 0) {
+#line 5503 "renderer.axe"
 const std__string__string m_code = renderer__generate_c( find_child );
 std__string__StringBuilder__append(&sb_prog, m_code);
 break;
@@ -18353,13 +23714,17 @@ find_idx++;
 sorted_idx++;
 }
 if (g_list_elements != nil) {
+#line 5515 "renderer.axe"
 const std__lists__StringList* lst_ref2 = g_list_elements;
+#line 5516 "renderer.axe"
 int32_t ld = 0;
 while (1) {
 if (ld >= lst_ref2->len) {
 break;
 }
+#line 5521 "renderer.axe"
 const std__string__string elemType = std__lists__StringList__get( lst_ref2 , ld );
+#line 5522 "renderer.axe"
 const std__string__string elemSanDef = renderer__sanitize_list_element_name( elemType );
 std__string__StringBuilder__append_c(&sb_prog, "typedef struct __list_");
 std__string__StringBuilder__append(&sb_prog, elemSanDef);
@@ -18391,14 +23756,18 @@ std__string__StringBuilder__append_c(&sb_prog, "));\n        if (new_data == NUL
 ld++;
 }
 }
+#line 5556 "renderer.axe"
 std__arena__Arena global_arena = std__arena__Arena__create( 4096 );
+#line 5557 "renderer.axe"
 int32_t i_globals_collect = 0;
 while (1) {
 if (i_globals_collect >= children_len) {
 break;
 }
+#line 5563 "renderer.axe"
 const structs__ASTNode* g_child_collect = &(children->data[ i_globals_collect ]);
 if (std__string__equals_c ( g_child_collect->node_type, "Declaration" )) {
+#line 5565 "renderer.axe"
 const std__string__string var_name = g_child_collect->data.declaration.name;
 if (! std__maps__StringBoolMap__contains( &g_emitted_globals , var_name )) {
 std__maps__StringBoolMap__set(&g_emitted_globals, &global_arena, var_name, true);
@@ -18406,14 +23775,18 @@ std__maps__StringBoolMap__set(&g_emitted_globals, &global_arena, var_name, true)
 }
 else if (std__string__equals_c ( g_child_collect->node_type, "Platform" )) {
 if (g_child_collect->children!= nil) {
+#line 5571 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children_collect = g_child_collect->children;
+#line 5572 "renderer.axe"
 int32_t plat_idx = 0;
 while (1) {
 if (plat_idx >= len_v((*plat_children_collect))) {
 break;
 }
+#line 5577 "renderer.axe"
 const structs__ASTNode* plat_decl = &(plat_children_collect->data[ plat_idx ]);
 if (std__string__equals_c ( plat_decl->node_type, "Declaration" )) {
+#line 5579 "renderer.axe"
 const std__string__string plat_var_name = plat_decl->data.declaration.name;
 if (! std__maps__StringBoolMap__contains( &g_emitted_globals , plat_var_name )) {
 std__maps__StringBoolMap__set(&g_emitted_globals, &global_arena, plat_var_name, true);
@@ -18425,18 +23798,24 @@ plat_idx++;
 }
 i_globals_collect++;
 }
+#line 5591 "renderer.axe"
 std__arena__Arena generated_arena = std__arena__Arena__create( 4096 );
+#line 5592 "renderer.axe"
 std__maps__StringBoolMap generated_in_this_pass = (*std__maps__StringBoolMap__create( &generated_arena , 128 ));
+#line 5593 "renderer.axe"
 int32_t i_globals = 0;
 while (1) {
 if (i_globals >= children_len) {
 break;
 }
+#line 5599 "renderer.axe"
 const structs__ASTNode* g_child = &(children->data[ i_globals ]);
 if (std__string__equals_c ( g_child->node_type, "Declaration" )) {
+#line 5601 "renderer.axe"
 const std__string__string var_name = g_child->data.declaration.name;
 if (! std__maps__StringBoolMap__contains( &generated_in_this_pass , var_name )) {
 std__maps__StringBoolMap__set(&generated_in_this_pass, &generated_arena, var_name, true);
+#line 5604 "renderer.axe"
 const std__string__string g_code = renderer__generate_global_decl( g_child );
 if (std__string__str_len ( g_code ) > 0) {
 std__string__StringBuilder__append(&sb_prog, g_code);
@@ -18445,17 +23824,22 @@ std__string__StringBuilder__append(&sb_prog, g_code);
 }
 i_globals++;
 }
+#line 5613 "renderer.axe"
 int32_t i_proto = 0;
 while (1) {
 if (i_proto >= children_len) {
 break;
 }
+#line 5618 "renderer.axe"
 const structs__ASTNode* proto_child = &(children->data[ i_proto ]);
 if (std__string__equals_c ( proto_child->node_type, "Function" )) {
+#line 5620 "renderer.axe"
 const std__string__string proto_code = renderer__generate_function_prototype( proto_child );
 if (std__string__str_len ( proto_code ) > 0) {
+#line 5622 "renderer.axe"
 const std__string__string proto_name = proto_child->data.function.name;
 if (! std__string__equals_c ( proto_name , "main" )) {
+#line 5624 "renderer.axe"
 std__string__string canon_name = proto_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , proto_name )) {
 canon_name = std__maps__StringStringMap__get( &g_function_prefixes , proto_name );
@@ -18468,20 +23852,26 @@ std__string__StringBuilder__append(&sb_prog, proto_code);
 }
 }
 if (std__string__equals_c ( proto_child->node_type, "Platform" )) {
+#line 5636 "renderer.axe"
 const std__string__string platform_name = proto_child->data.platform_node.platform_name;
+#line 5637 "renderer.axe"
 const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_prog, plat_dir);
 }
 if (proto_child->children!= nil) {
+#line 5642 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children = proto_child->children;
+#line 5643 "renderer.axe"
 int32_t pi = 0;
 while (1) {
 if (pi >= len_v((*plat_children))) {
 break;
 }
+#line 5648 "renderer.axe"
 const structs__ASTNode* plat_child = &(plat_children->data[ pi ]);
 if (std__string__equals_c ( plat_child->node_type, "Function" )) {
+#line 5650 "renderer.axe"
 const std__string__string plat_proto = renderer__generate_function_prototype( plat_child );
 if (std__string__str_len ( plat_proto ) > 0) {
 std__string__StringBuilder__append(&sb_prog, plat_proto);
@@ -18497,13 +23887,16 @@ std__string__StringBuilder__append_c(&sb_prog, "#endif\n");
 i_proto++;
 }
 std__string__StringBuilder__append_char(&sb_prog, '\n');
+#line 5666 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= children_len) {
 break;
 }
+#line 5671 "renderer.axe"
 const structs__ASTNode* child = &(children->data[ i ]);
 if (std__string__equals_c ( child->node_type, "Overload" )) {
+#line 5673 "renderer.axe"
 const std__string__string ov_code = renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_prog, ov_code);
 std__string__StringBuilder__append_char(&sb_prog, '\n');
@@ -18515,31 +23908,41 @@ while (1) {
 if (i >= children_len) {
 break;
 }
+#line 5685 "renderer.axe"
 const structs__ASTNode* fn_child = &(children->data[ i ]);
 if (std__string__equals_c ( fn_child->node_type, "Function" )) {
+#line 5687 "renderer.axe"
 const std__string__string fn_name = fn_child->data.function.name;
 if (! std__string__equals_c ( fn_name , "main" )) {
+#line 5689 "renderer.axe"
 const std__string__string fn_code = renderer__generate_c( fn_child );
 std__string__StringBuilder__append(&sb_prog, fn_code);
 }
 }
 if (std__string__equals_c ( fn_child->node_type, "Platform" )) {
+#line 5694 "renderer.axe"
 const std__string__string platform_name = fn_child->data.platform_node.platform_name;
+#line 5695 "renderer.axe"
 const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_prog, plat_dir);
 }
 if (fn_child->children!= nil) {
+#line 5700 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children = fn_child->children;
+#line 5701 "renderer.axe"
 int32_t pi = 0;
 while (1) {
 if (pi >= len_v((*plat_children))) {
 break;
 }
+#line 5706 "renderer.axe"
 const structs__ASTNode* plat_child = &(plat_children->data[ pi ]);
 if (std__string__equals_c ( plat_child->node_type, "Function" )) {
+#line 5708 "renderer.axe"
 const std__string__string plat_fn_name = plat_child->data.function.name;
 if (! std__string__equals_c ( plat_fn_name , "main" )) {
+#line 5710 "renderer.axe"
 const std__string__string plat_fn_code = renderer__generate_c( plat_child );
 std__string__StringBuilder__append(&sb_prog, plat_fn_code);
 }
@@ -18553,15 +23956,19 @@ std__string__StringBuilder__append_c(&sb_prog, "#endif\n");
 }
 i++;
 }
+#line 5724 "renderer.axe"
 int32_t i_main_idx = 0;
 while (1) {
 if (i_main_idx >= children_len) {
 break;
 }
+#line 5729 "renderer.axe"
 const structs__ASTNode* fnn = &(children->data[ i_main_idx ]);
 if (std__string__equals_c ( fnn->node_type, "Function" )) {
+#line 5731 "renderer.axe"
 const std__string__string namecheck = fnn->data.function.name;
 if (std__string__equals_c ( namecheck , "main" )) {
+#line 5733 "renderer.axe"
 const std__string__string main_code = renderer__generate_c( fnn );
 std__string__StringBuilder__append(&sb_prog, main_code);
 break;
@@ -18574,8 +23981,10 @@ while (1) {
 if (i >= children_len) {
 break;
 }
+#line 5746 "renderer.axe"
 const structs__ASTNode* child2 = &(children->data[ i ]);
 if (! std__string__equals_c ( child2->node_type, "Overload" ) && ! std__string__equals_c ( child2->node_type, "Function" ) && ! std__string__equals_c ( child2->node_type, "Model" ) && ! std__string__equals_c ( child2->node_type, "Enum" ) && ! std__string__equals_c ( child2->node_type, "Declaration" ) && ! std__string__equals_c ( child2->node_type, "Platform" )) {
+#line 5750 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( child2 );
 std__string__StringBuilder__append(&sb_prog, child_code);
 }
@@ -18586,17 +23995,23 @@ while (1) {
 if (i >= children_len) {
 break;
 }
+#line 5761 "renderer.axe"
 const structs__ASTNode* plat_node = &(children->data[ i ]);
 if (std__string__equals_c ( plat_node->node_type, "Platform" )) {
+#line 5763 "renderer.axe"
 const std__string__string platform_name = plat_node->data.platform_node.platform_name;
+#line 5764 "renderer.axe"
 bool has_non_func_content = false;
 if (plat_node->children!= nil) {
+#line 5767 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children = plat_node->children;
+#line 5768 "renderer.axe"
 int32_t pc = 0;
 while (1) {
 if (pc >= len_v((*plat_children))) {
 break;
 }
+#line 5773 "renderer.axe"
 const structs__ASTNode* pc_child = &(plat_children->data[ pc ]);
 if (! std__string__equals_c ( pc_child->node_type, "Function" )) {
 has_non_func_content = true;
@@ -18606,19 +24021,24 @@ pc++;
 }
 }
 if (has_non_func_content) {
+#line 5783 "renderer.axe"
 const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_prog, plat_dir);
 }
 if (plat_node->children!= nil) {
+#line 5788 "renderer.axe"
 const __list_structs__ASTNode_t* plat_children2 = plat_node->children;
+#line 5789 "renderer.axe"
 int32_t pc2 = 0;
 while (1) {
 if (pc2 >= len_v((*plat_children2))) {
 break;
 }
+#line 5794 "renderer.axe"
 const structs__ASTNode* pc_child2 = &(plat_children2->data[ pc2 ]);
 if (! std__string__equals_c ( pc_child2->node_type, "Function" )) {
+#line 5797 "renderer.axe"
 const std__string__string pc_code = renderer__generate_c( pc_child2 );
 std__string__StringBuilder__append(&sb_prog, pc_code);
 }
@@ -18636,23 +24056,33 @@ result = std__string__StringBuilder__to_string( &sb_prog );
 std__string__StringBuilder__destroy(&sb_prog);
 }
 result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
+#line 5816 "renderer.axe"
 std__string__string fixed_result = std__string__str( "" );
+#line 5817 "renderer.axe"
 int32_t start_idx = 0;
+#line 5818 "renderer.axe"
 int32_t idx_line = 0;
 while (1) {
 if (idx_line >= std__string__str_len ( result )) {
 if (start_idx < idx_line) {
+#line 5822 "renderer.axe"
 const std__string__string last_line = std__string__substring_se( result , start_idx , idx_line );
+#line 5823 "renderer.axe"
 std__string__string line_fixed = last_line;
+#line 5825 "renderer.axe"
 const std__string__string trimmed_last = std__string__strip( last_line );
 if (std__string__has_suffix ( trimmed_last , std__string__str ( ");" ) )) {
+#line 5827 "renderer.axe"
 int32_t eq_pos = - 1;
+#line 5828 "renderer.axe"
 bool in_string_eq = false;
+#line 5829 "renderer.axe"
 int32_t ei = 0;
 while (1) {
 if (ei >= std__string__str_len ( last_line )) {
 break;
 }
+#line 5834 "renderer.axe"
 const char ec = std__string__get_char( last_line , ei );
 if (ec == '"' && ( ei == 0 || std__string__get_char ( last_line , ei - 1 ) != '\\' )) {
 in_string_eq = ! in_string_eq;
@@ -18664,14 +24094,19 @@ break;
 ei = ei + 1;
 }
 if (eq_pos >= 0) {
+#line 5846 "renderer.axe"
 int32_t open_p = 0;
+#line 5847 "renderer.axe"
 int32_t close_p = 0;
+#line 5848 "renderer.axe"
 bool in_string_p = false;
+#line 5849 "renderer.axe"
 int32_t pi = eq_pos + 1;
 while (1) {
 if (pi >= std__string__str_len ( last_line )) {
 break;
 }
+#line 5854 "renderer.axe"
 const char c = std__string__get_char( last_line , pi );
 if (c == '"' && ( pi == 0 || std__string__get_char ( last_line , pi - 1 ) != '\\' )) {
 in_string_p = ! in_string_p;
@@ -18690,7 +24125,9 @@ break;
 pi = pi + 1;
 }
 if (close_p == open_p + 1) {
+#line 5870 "renderer.axe"
 int32_t semi_idx = - 1;
+#line 5871 "renderer.axe"
 int32_t sj = std__string__str_len( last_line ) - 1;
 while (1) {
 if (sj < 0) {
@@ -18703,11 +24140,13 @@ break;
 sj = sj - 1;
 }
 if (semi_idx > 0) {
+#line 5884 "renderer.axe"
 int32_t close_idx = semi_idx - 1;
 while (1) {
 if (close_idx < 0) {
 break;
 }
+#line 5889 "renderer.axe"
 const char cc = std__string__get_char( last_line , close_idx );
 if (cc == ' ' || cc == '\t' || cc == '\n') {
 close_idx = close_idx - 1;
@@ -18716,6 +24155,7 @@ continue;
 break;
 }
 if (close_idx >= 0 && std__string__get_char ( last_line , close_idx ) == ')') {
+#line 5898 "renderer.axe"
 std__string__string tmp = std__string__str( "" );
 tmp = std__string__concat ( tmp , std__string__substring_se ( last_line , 0 , close_idx ) );
 tmp = std__string__concat ( tmp , std__string__substring_se ( last_line , close_idx + 1 , std__string__str_len ( last_line ) ) );
@@ -18729,19 +24169,27 @@ fixed_result = std__string__concat ( fixed_result , line_fixed );
 }
 break;
 }
+#line 5913 "renderer.axe"
 const char ch = std__string__get_char( result , idx_line );
 if (ch == '\n') {
+#line 5915 "renderer.axe"
 const std__string__string line = std__string__substring_se( result , start_idx , idx_line + 1 );
+#line 5916 "renderer.axe"
 std__string__string line_fixed2 = line;
+#line 5918 "renderer.axe"
 const std__string__string trimmed = std__string__strip( line );
 if (std__string__has_suffix ( trimmed , std__string__str ( ");" ) ) && ! std__string__has_prefix ( trimmed , std__string__str ( "return " ) )) {
+#line 5921 "renderer.axe"
 int32_t eq_pos2 = - 1;
+#line 5922 "renderer.axe"
 bool in_string_eq2 = false;
+#line 5923 "renderer.axe"
 int32_t ei2 = 0;
 while (1) {
 if (ei2 >= std__string__str_len ( line )) {
 break;
 }
+#line 5928 "renderer.axe"
 const char ec2 = std__string__get_char( line , ei2 );
 if (ec2 == '"' && ( ei2 == 0 || std__string__get_char ( line , ei2 - 1 ) != '\\' )) {
 in_string_eq2 = ! in_string_eq2;
@@ -18753,14 +24201,19 @@ break;
 ei2 = ei2 + 1;
 }
 if (eq_pos2 >= 0) {
+#line 5940 "renderer.axe"
 int32_t open_p2 = 0;
+#line 5941 "renderer.axe"
 int32_t close_p2 = 0;
+#line 5942 "renderer.axe"
 bool in_string_p2 = false;
+#line 5943 "renderer.axe"
 int32_t pi2 = eq_pos2 + 1;
 while (1) {
 if (pi2 >= std__string__str_len ( line )) {
 break;
 }
+#line 5948 "renderer.axe"
 const char c2 = std__string__get_char( line , pi2 );
 if (c2 == '"' && ( pi2 == 0 || std__string__get_char ( line , pi2 - 1 ) != '\\' )) {
 in_string_p2 = ! in_string_p2;
@@ -18779,7 +24232,9 @@ break;
 pi2 = pi2 + 1;
 }
 if (close_p2 == open_p2 + 1) {
+#line 5964 "renderer.axe"
 int32_t semi_idx2 = - 1;
+#line 5965 "renderer.axe"
 int32_t sj2 = std__string__str_len( line ) - 1;
 while (1) {
 if (sj2 < 0) {
@@ -18792,11 +24247,13 @@ break;
 sj2 = sj2 - 1;
 }
 if (semi_idx2 > 0) {
+#line 5978 "renderer.axe"
 int32_t close_idx2 = semi_idx2 - 1;
 while (1) {
 if (close_idx2 < 0) {
 break;
 }
+#line 5983 "renderer.axe"
 const char cc2 = std__string__get_char( line , close_idx2 );
 if (cc2 == ' ' || cc2 == '\t' || cc2 == '\n') {
 close_idx2 = close_idx2 - 1;
@@ -18805,6 +24262,7 @@ continue;
 break;
 }
 if (close_idx2 >= 0 && std__string__get_char ( line , close_idx2 ) == ')') {
+#line 5992 "renderer.axe"
 std__string__string tmp2 = std__string__str( "" );
 tmp2 = std__string__concat ( tmp2 , std__string__substring_se ( line , 0 , close_idx2 ) );
 tmp2 = std__string__concat ( tmp2 , std__string__substring_se ( line , close_idx2 + 1 , std__string__str_len ( line ) ) );
@@ -18835,6 +24293,7 @@ result = renderer__rewrite_sizeof_types ( result );
 result = renderer__normalize_numeric_dots ( result );
 }
 if (std__string__equals_c ( node_type , "Test" )) {
+#line 6027 "renderer.axe"
 std__string__StringBuilder sb_test = std__string__StringBuilder__init( 4096 );
 std__string__StringBuilder__append_c(&sb_test, "int main(int argc, char** argv) {\n__axe_argc = argc;\n__axe_argv = argv;\n");
 if (! is_release_build) {
@@ -18842,16 +24301,22 @@ std__string__StringBuilder__append(&sb_test, renderer__generate_stack_trace_setu
 }
 std__string__StringBuilder__append_c(&sb_test, "    int passed = 0;\n    int failed = 0;\n\n");
 if (ast->children!= nil) {
+#line 6035 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 6036 "renderer.axe"
 int32_t i_test = 0;
 while (1) {
 if (i_test >= len_v((*children))) {
 break;
 }
+#line 6042 "renderer.axe"
 const structs__ASTNode* child = &(children->data[ i_test ]);
 if (std__string__equals_c ( child->node_type, "Assert" )) {
+#line 6045 "renderer.axe"
 const std__string__string cond_raw = std__string__strip( child->data.assert_node.condition);
+#line 6046 "renderer.axe"
 const std__string__string cond_norm = renderer__process_expression( cond_raw );
+#line 6047 "renderer.axe"
 const std__string__string msg = child->data.assert_node.message;
 std__string__StringBuilder__append_c(&sb_test, "    if (");
 std__string__StringBuilder__append(&sb_test, cond_norm);
@@ -18862,20 +24327,30 @@ std__string__StringBuilder__append(&sb_test, msg);
 std__string__StringBuilder__append_c(&sb_test, "\\n\");\n        failed++;\n    }\n\n");
 }
 else if (std__string__equals_c ( child->node_type, "Declaration" )) {
+#line 6057 "renderer.axe"
 const std__string__string var_name = child->data.declaration.name;
+#line 6058 "renderer.axe"
 const std__string__string type_name = child->data.declaration.type_name;
+#line 6059 "renderer.axe"
 const bool is_mutable = child->data.declaration.is_mutable;
+#line 6060 "renderer.axe"
 const std__string__string initializer = child->data.declaration.initializer;
 if (std__string__str_len ( var_name ) > 0 && std__string__str_len ( type_name ) > 0) {
+#line 6063 "renderer.axe"
 std__arena__Arena arena_decl = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_var_types, &arena_decl, var_name, type_name);
 }
+#line 6067 "renderer.axe"
 std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
+#line 6068 "renderer.axe"
 std__string__string array_suffix = std__string__str( "" );
+#line 6069 "renderer.axe"
 const int32_t br = std__string__find_char_from( type_name , '[' , 0 );
 if (br >= 0) {
+#line 6072 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( type_name , br , std__string__str_len ( type_name ) );
 if (! std__string__equals_c ( suffix , "[999]" )) {
+#line 6074 "renderer.axe"
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
 mapped_type = renderer__map_axe_type_to_c ( base_raw );
@@ -18893,8 +24368,10 @@ std__string__StringBuilder__append(&sb_test, var_name);
 if (std__string__str_len ( array_suffix ) > 0) {
 std__string__StringBuilder__append(&sb_test, array_suffix);
 }
+#line 6093 "renderer.axe"
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__str_len ( trimmed_init ) > 0) {
+#line 6095 "renderer.axe"
 const std__string__string init_norm = renderer__process_expression( trimmed_init );
 std__string__StringBuilder__append_c(&sb_test, " = ");
 std__string__StringBuilder__append(&sb_test, init_norm);
@@ -18902,15 +24379,20 @@ std__string__StringBuilder__append(&sb_test, init_norm);
 std__string__StringBuilder__append_c(&sb_test, ";\n");
 }
 else {
+#line 6102 "renderer.axe"
 const std__string__string stmt_code = renderer__generate_c( child );
 if (std__string__str_len ( stmt_code ) > 0) {
+#line 6104 "renderer.axe"
 const std__string__string buf = stmt_code;
+#line 6105 "renderer.axe"
 int32_t idx = 0;
+#line 6106 "renderer.axe"
 const int32_t buf_len = (int32_t)( std__string__str_len ( buf ) );
 while (1) {
 if (idx >= buf_len) {
 break;
 }
+#line 6112 "renderer.axe"
 const char ch = std__string__get_char( buf , idx );
 if (ch == '\n') {
 std__string__StringBuilder__append_c(&sb_test, "\n    ");
@@ -18932,18 +24414,26 @@ std__string__StringBuilder__destroy(&sb_test);
 return result;
 }
 if (std__string__equals_c ( node_type , "Function" )) {
+#line 6136 "renderer.axe"
 std__string__string func_name = ast->data.function.name;
+#line 6137 "renderer.axe"
 std__string__string return_type = ast->data.function.return_type;
+#line 6138 "renderer.axe"
 const bool is_public = ast->data.function.is_public;
 if (! std__string__equals_c ( func_name , "main" )) {
+#line 6141 "renderer.axe"
 int32_t sep2 = - 1;
+#line 6142 "renderer.axe"
 int32_t i2 = 0;
+#line 6143 "renderer.axe"
 const int32_t n2 = std__string__str_len( func_name );
 while (1) {
 if (i2 + 1 >= n2) {
 break;
 }
+#line 6148 "renderer.axe"
 const char c1b = std__string__get_char( func_name , i2 );
+#line 6149 "renderer.axe"
 const char c2b = std__string__get_char( func_name , i2 + 1 );
 if (c1b == '_' && c2b == '_') {
 sep2 = i2;
@@ -18951,16 +24441,23 @@ sep2 = i2;
 i2 = i2 + 1;
 }
 if (sep2 >= 0 && sep2 + 2 < n2) {
+#line 6157 "renderer.axe"
 const std__string__string model_part2 = std__string__substring_se( func_name , 0 , sep2 );
+#line 6158 "renderer.axe"
 const std__string__string method_part2 = std__string__substring_se( func_name , sep2 + 2 , n2 );
+#line 6160 "renderer.axe"
 bool has_inner_sep2 = false;
+#line 6161 "renderer.axe"
 int32_t j2 = 0;
+#line 6162 "renderer.axe"
 const int32_t mlen2 = std__string__str_len( model_part2 );
 while (1) {
 if (j2 + 1 >= mlen2) {
 break;
 }
+#line 6167 "renderer.axe"
 const char mc1b = std__string__get_char( model_part2 , j2 );
+#line 6168 "renderer.axe"
 const char mc2b = std__string__get_char( model_part2 , j2 + 1 );
 if (mc1b == '_' && mc2b == '_') {
 has_inner_sep2 = true;
@@ -18969,8 +24466,10 @@ break;
 j2 = j2 + 1;
 }
 if (! has_inner_sep2) {
+#line 6177 "renderer.axe"
 const std__string__string canon_model2 = renderer__canonical_model_c_name( model_part2 );
 if (std__string__str_len ( canon_model2 ) > 0) {
+#line 6179 "renderer.axe"
 std__string__StringBuilder sb_fname = std__string__StringBuilder__init( std__string__str_len ( canon_model2 ) + std__string__str_len ( method_part2 ) + 2 );
 std__string__StringBuilder__append(&sb_fname, canon_model2);
 std__string__StringBuilder__append_c(&sb_fname, "__");
@@ -18987,21 +24486,28 @@ func_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
 if (std__maps__StringBoolMap__contains( &g_generated_functions , func_name )) {
 return std__string__str( "" );
 }
+#line 6198 "renderer.axe"
 std__arena__Arena func_arena = std__arena__Arena__create( 1024 );
 std__maps__StringBoolMap__set(&g_generated_functions, &func_arena, func_name, true);
 std__maps__StringStringMap__clear(&g_var_types);
 renderer__validate_type_imported(return_type);
+#line 6204 "renderer.axe"
 const __list_std__string_t* fn_params = ast->data.function.params;
 if (fn_params != nil) {
+#line 6206 "renderer.axe"
 int32_t pi = 0;
 while (1) {
 if (pi >= len_v((*fn_params))) {
 break;
 }
+#line 6211 "renderer.axe"
 const std__string__string p = fn_params->data[ pi ];
+#line 6212 "renderer.axe"
 const int32_t cp = std__string__find_char_from( p , ':' , 0 );
 if (cp >= 0) {
+#line 6214 "renderer.axe"
 const std__string__string pname = std__string__strip( std__string__substring_se ( p , 0 , cp ) );
+#line 6215 "renderer.axe"
 const std__string__string ptype = std__string__strip( std__string__substr ( p , cp + 1 , std__string__str_len ( p ) - cp - 1 ) );
 if (std__string__str_len ( pname ) > 0 && std__string__str_len ( ptype ) > 0) {
 renderer__validate_type_imported(ptype);
@@ -19012,6 +24518,7 @@ pi = pi + 1;
 }
 }
 if (std__string__equals_c ( func_name , "main" )) {
+#line 6226 "renderer.axe"
 std__string__StringBuilder sb_main = std__string__StringBuilder__init( 4096 );
 std__string__StringBuilder__append_c(&sb_main, "int main(int argc, char** argv) {\n__axe_argc = argc;\n__axe_argv = argv;\n");
 #ifdef _WIN32
@@ -19021,12 +24528,15 @@ if (! is_release_build) {
 std__string__StringBuilder__append(&sb_main, renderer__generate_stack_trace_setup());
 }
 if (ast->children!= nil) {
+#line 6238 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 6239 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 6244 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_main, child_code);
 i++;
@@ -19038,16 +24548,21 @@ return std__string__StringBuilder__to_string( &sb_main );
 if (std__string__str_len ( return_type ) == 0) {
 return_type = std__string__str ( "void" );
 }
+#line 6258 "renderer.axe"
 const std__string__string mapped_return_type = renderer__map_axe_type_to_c( return_type );
+#line 6259 "renderer.axe"
 std__string__StringBuilder sb_func = std__string__StringBuilder__init( 4096 );
 std__string__StringBuilder__append(&sb_func, renderer__emit_line_directive(ast->line));
+#line 6263 "renderer.axe"
 const __list_std__string_t* func_tags = ast->data.function.tags;
 if (func_tags != nil) {
+#line 6265 "renderer.axe"
 int32_t tag_idx = 0;
 while (1) {
 if (tag_idx >= len_v((*func_tags))) {
 break;
 }
+#line 6270 "renderer.axe"
 const std__string__string tag = func_tags->data[ tag_idx ];
 if (std__string__equals_c ( tag , "inline" )) {
 std__string__StringBuilder__append_c(&sb_func, "inline ");
@@ -19068,8 +24583,10 @@ std__string__StringBuilder__append(&sb_func, mapped_return_type);
 std__string__StringBuilder__append_char(&sb_func, ' ');
 std__string__StringBuilder__append(&sb_func, func_name);
 std__string__StringBuilder__append_char(&sb_func, '(');
+#line 6289 "renderer.axe"
 const __list_std__string_t* params = ast->data.function.params;
 if (params != nil) {
+#line 6291 "renderer.axe"
 int32_t param_idx = 0;
 while (1) {
 if (param_idx >= len_v((*params))) {
@@ -19078,11 +24595,16 @@ break;
 if (param_idx > 0) {
 std__string__StringBuilder__append_c(&sb_func, ", ");
 }
+#line 6301 "renderer.axe"
 const std__string__string param = params->data[ param_idx ];
+#line 6302 "renderer.axe"
 const int32_t colon_pos = std__string__find_char_from( param , ':' , 0 );
 if (colon_pos >= 0) {
+#line 6305 "renderer.axe"
 const std__string__string param_name = std__string__strip( std__string__substring_se ( param , 0 , colon_pos ) );
+#line 6306 "renderer.axe"
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
+#line 6307 "renderer.axe"
 const std__string__string processed_type = renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb_func, processed_type);
 std__string__StringBuilder__append_char(&sb_func, ' ');
@@ -19098,12 +24620,15 @@ std__string__StringBuilder__append_c(&sb_func, ") {\n");
 result = std__string__StringBuilder__to_string( &sb_func );
 std__string__StringBuilder__destroy(&sb_func);
 if (ast->children!= nil) {
+#line 6325 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 6326 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 6331 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
 result = std__string__concat ( result , child_code );
 i++;
@@ -19113,18 +24638,26 @@ result = std__string__concat_c ( result , "}\n\n" );
 return result;
 }
 if (std__string__equals_c ( node_type , "Return" )) {
+#line 6342 "renderer.axe"
 std__string__StringBuilder sb_ret = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append_c(&sb_ret, "return ");
+#line 6344 "renderer.axe"
 std__string__string expr = ast->data.return_node.expression;
 gstate__debug_print_raw("\n[DEBUG] RENDERER raw return expr:");
 gstate__debug_print_str(expr);
+#line 6348 "renderer.axe"
 std__string__string trimmed_ret = std__string__strip( expr );
+#line 6350 "renderer.axe"
 const int32_t paren_pos_ret = std__string__find_char_from( trimmed_ret , '(' , 0 );
 if (paren_pos_ret > 0) {
+#line 6352 "renderer.axe"
 const std__string__string call_name_ret = std__string__strip( std__string__substring_se ( trimmed_ret , 0 , paren_pos_ret ) );
 if (std__maps__StringStringMap__contains( &g_function_prefixes , call_name_ret )) {
+#line 6354 "renderer.axe"
 const std__string__string full_name_ret = std__maps__StringStringMap__get( &g_function_prefixes , call_name_ret );
+#line 6355 "renderer.axe"
 const std__string__string rest_ret = std__string__substring_se( trimmed_ret , paren_pos_ret , std__string__str_len ( trimmed_ret ) );
+#line 6356 "renderer.axe"
 std__string__StringBuilder sb_tmp = std__string__StringBuilder__init( std__string__str_len ( full_name_ret ) + std__string__str_len ( rest_ret ) );
 std__string__StringBuilder__append(&sb_tmp, full_name_ret);
 std__string__StringBuilder__append(&sb_tmp, rest_ret);
@@ -19133,31 +24666,44 @@ std__string__StringBuilder__destroy(&sb_tmp);
 expr = trimmed_ret;
 }
 }
+#line 6365 "renderer.axe"
 std__string__string processed = std__string__str( "" );
+#line 6367 "renderer.axe"
 const int32_t brace_pos_ret = std__string__find_char_from( trimmed_ret , '{' , 0 );
 if (brace_pos_ret > 0 && std__string__get_char ( trimmed_ret , std__string__str_len ( trimmed_ret ) - 1 ) == '}') {
+#line 6369 "renderer.axe"
 const std__string__string prefix_ret = std__string__strip( std__string__substring_se ( trimmed_ret , 0 , brace_pos_ret ) );
+#line 6370 "renderer.axe"
 const std__string__string inner_ret = std__string__substring_se( trimmed_ret , brace_pos_ret + 1 , std__string__str_len ( trimmed_ret ) - 1 );
 if (std__string__str_len ( prefix_ret ) > 0) {
+#line 6373 "renderer.axe"
 const std__string__string canon_ret = renderer__canonical_model_c_name( prefix_ret );
+#line 6374 "renderer.axe"
 std__string__string c_type_ret = canon_ret;
 if (std__string__str_len ( c_type_ret ) == 0) {
 c_type_ret = renderer__map_axe_type_to_c ( prefix_ret );
 }
 if (std__string__str_len ( c_type_ret ) > 0) {
+#line 6380 "renderer.axe"
 std__string__StringBuilder sb_init_ret = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append_c(&sb_init_ret, "(");
 std__string__StringBuilder__append(&sb_init_ret, c_type_ret);
 std__string__StringBuilder__append_c(&sb_init_ret, "){");
+#line 6385 "renderer.axe"
 std__string__StringBuilder sb_current_ret = std__string__StringBuilder__init( std__string__str_len ( inner_ret ) + 16 );
+#line 6386 "renderer.axe"
 int32_t depth_ret = 0;
+#line 6387 "renderer.axe"
 bool first_field_ret = true;
+#line 6388 "renderer.axe"
 int32_t i_ret = 0;
+#line 6389 "renderer.axe"
 const int32_t inner_ret_len = (int32_t)( std__string__str_len ( inner_ret ) );
 while (1) {
 if (i_ret >= inner_ret_len) {
 break;
 }
+#line 6395 "renderer.axe"
 const char ch_ret = std__string__get_char( inner_ret , i_ret );
 if (ch_ret == '(') {
 depth_ret = depth_ret + 1;
@@ -19170,11 +24716,15 @@ depth_ret = depth_ret - 1;
 std__string__StringBuilder__append_char(&sb_current_ret, ch_ret);
 }
 else if (ch_ret == ',' && depth_ret == 0) {
+#line 6405 "renderer.axe"
 std__string__string part_ret = std__string__strip( std__string__StringBuilder__to_string( &sb_current_ret ) );
 if (std__string__str_len ( part_ret ) > 0) {
+#line 6407 "renderer.axe"
 const int32_t colon_pos_ret2 = std__string__find_char_from( part_ret , ':' , 0 );
 if (colon_pos_ret2 >= 0) {
+#line 6409 "renderer.axe"
 const std__string__string field_name_ret = std__string__strip( std__string__substring_se ( part_ret , 0 , colon_pos_ret2 ) );
+#line 6410 "renderer.axe"
 const std__string__string value_expr_ret = std__string__strip( std__string__substr ( part_ret , colon_pos_ret2 + 1 , std__string__str_len ( part_ret ) - colon_pos_ret2 - 1 ) );
 if (std__string__str_len ( field_name_ret ) > 0 && std__string__str_len ( value_expr_ret ) > 0) {
 if (! first_field_ret) {
@@ -19183,6 +24733,7 @@ std__string__StringBuilder__append_c(&sb_init_ret, ", ");
 std__string__StringBuilder__append_c(&sb_init_ret, ".");
 std__string__StringBuilder__append(&sb_init_ret, field_name_ret);
 std__string__StringBuilder__append_c(&sb_init_ret, " = ");
+#line 6418 "renderer.axe"
 const std__string__string processed_val_ret = renderer__process_expression( value_expr_ret );
 std__string__StringBuilder__append(&sb_init_ret, processed_val_ret);
 first_field_ret = false;
@@ -19196,12 +24747,16 @@ std__string__StringBuilder__append_char(&sb_current_ret, ch_ret);
 }
 i_ret = i_ret + 1;
 }
+#line 6431 "renderer.axe"
 std__string__string part_last_ret = std__string__strip( std__string__StringBuilder__to_string( &sb_current_ret ) );
 std__string__StringBuilder__destroy(&sb_current_ret);
 if (std__string__str_len ( part_last_ret ) > 0) {
+#line 6434 "renderer.axe"
 const int32_t colon_pos_last_ret = std__string__find_char_from( part_last_ret , ':' , 0 );
 if (colon_pos_last_ret >= 0) {
+#line 6436 "renderer.axe"
 const std__string__string field_name_last_ret = std__string__strip( std__string__substring_se ( part_last_ret , 0 , colon_pos_last_ret ) );
+#line 6437 "renderer.axe"
 const std__string__string value_expr_last_ret = std__string__strip( std__string__substr ( part_last_ret , colon_pos_last_ret + 1 , std__string__str_len ( part_last_ret ) - colon_pos_last_ret - 1 ) );
 if (std__string__str_len ( field_name_last_ret ) > 0 && std__string__str_len ( value_expr_last_ret ) > 0) {
 if (! first_field_ret) {
@@ -19210,6 +24765,7 @@ std__string__StringBuilder__append_c(&sb_init_ret, ", ");
 std__string__StringBuilder__append_c(&sb_init_ret, ".");
 std__string__StringBuilder__append(&sb_init_ret, field_name_last_ret);
 std__string__StringBuilder__append_c(&sb_init_ret, " = ");
+#line 6445 "renderer.axe"
 const std__string__string processed_last_ret = renderer__process_expression( value_expr_last_ret );
 std__string__StringBuilder__append(&sb_init_ret, processed_last_ret);
 first_field_ret = false;
@@ -19240,23 +24796,32 @@ if (std__string__equals_c ( node_type , "Continue" )) {
 return std__string__str( "continue;\n" );
 }
 if (std__string__equals_c ( node_type , "Declaration" )) {
+#line 6480 "renderer.axe"
 const std__string__string var_name = ast->data.declaration.name;
+#line 6481 "renderer.axe"
 std__string__string type_name = ast->data.declaration.type_name;
+#line 6482 "renderer.axe"
 const bool is_mutable = ast->data.declaration.is_mutable;
+#line 6483 "renderer.axe"
 const std__string__string initializer = ast->data.declaration.initializer;
 renderer__validate_type_imported(type_name);
+#line 6487 "renderer.axe"
 std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
 if (std__string__str_len ( type_name ) == 0) {
+#line 6490 "renderer.axe"
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "new " ) )) {
 trimmed_init = std__string__substring_se ( trimmed_init , 4 , std__string__str_len ( trimmed_init ) );
 trimmed_init = std__string__strip ( trimmed_init );
+#line 6495 "renderer.axe"
 int32_t end_pos = - 1;
+#line 6496 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= std__string__str_len ( trimmed_init )) {
 break;
 }
+#line 6501 "renderer.axe"
 const char ch = std__string__get_char( trimmed_init , i );
 if (ch == '(' || ch == ' ' || ch == '\t') {
 end_pos = i;
@@ -19267,6 +24832,7 @@ i++;
 if (end_pos < 0) {
 end_pos = std__string__str_len ( trimmed_init );
 }
+#line 6511 "renderer.axe"
 const std__string__string inferred_name = std__string__strip( std__string__substring_se ( trimmed_init , 0 , end_pos ) );
 if (std__string__str_len ( inferred_name ) > 0) {
 type_name = inferred_name;
@@ -19274,8 +24840,10 @@ mapped_type = renderer__map_axe_type_to_c ( type_name );
 }
 }
 else {
+#line 6517 "renderer.axe"
 const int32_t brace_pos = std__string__find_char_from( trimmed_init , '{' , 0 );
 if (brace_pos > 0) {
+#line 6519 "renderer.axe"
 const std__string__string inferred_name2 = std__string__strip( std__string__substring_se ( trimmed_init , 0 , brace_pos ) );
 if (std__string__str_len ( inferred_name2 ) > 0) {
 type_name = inferred_name2;
@@ -19285,6 +24853,7 @@ mapped_type = renderer__map_axe_type_to_c ( type_name );
 }
 }
 if (std__string__str_len ( type_name ) == 0 && std__string__str_len ( initializer ) > 0) {
+#line 6530 "renderer.axe"
 const std__string__string inferred = renderer__infer_expression_type( std__string__strip ( initializer ) );
 if (std__string__str_len ( inferred ) > 0) {
 type_name = inferred;
@@ -19292,15 +24861,19 @@ mapped_type = renderer__map_axe_type_to_c ( type_name );
 }
 }
 if (std__string__str_len ( var_name ) > 0 && std__string__str_len ( type_name ) > 0) {
+#line 6541 "renderer.axe"
 std__arena__Arena decl_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_var_types, &decl_arena, var_name, type_name);
 if (std__string__has_prefix ( type_name , std__string__str ( "list(" ) )) {
+#line 6545 "renderer.axe"
 int32_t paren_pos = 5;
+#line 6546 "renderer.axe"
 int32_t depth = 1;
 while (1) {
 if (paren_pos >= std__string__str_len ( type_name )) {
 break;
 }
+#line 6551 "renderer.axe"
 const char ch = std__string__get_char( type_name , paren_pos );
 if (ch == '(') {
 depth = depth + 1;
@@ -19313,25 +24886,34 @@ break;
 }
 paren_pos = paren_pos + 1;
 }
+#line 6562 "renderer.axe"
 const std__string__string element_type = std__string__strip( std__string__substr ( type_name , 5 , paren_pos - 5 ) );
+#line 6563 "renderer.axe"
 std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 else if (std__string__has_suffix ( type_name , std__string__str ( "[999]" ) )) {
+#line 6566 "renderer.axe"
 const std__string__string element_type = std__string__strip( std__string__substring_se ( type_name , 0 , std__string__str_len ( type_name ) - 5 ) );
+#line 6567 "renderer.axe"
 std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 }
+#line 6572 "renderer.axe"
 const std__string__string enum_model_name = renderer__canonical_model_c_name( type_name );
 if (std__string__str_len ( enum_model_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_model_name )) {
 mapped_type = enum_model_name;
 }
+#line 6577 "renderer.axe"
 std__string__string array_suffix = std__string__str( "" );
+#line 6578 "renderer.axe"
 const int32_t br = std__string__find_char_from( type_name , '[' , 0 );
 if (br >= 0) {
+#line 6580 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( type_name , br , std__string__str_len ( type_name ) );
 if (! std__string__equals_c ( suffix , "[999]" )) {
+#line 6582 "renderer.axe"
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
 mapped_type = renderer__map_axe_type_to_c ( base_raw );
@@ -19339,7 +24921,9 @@ array_suffix = suffix;
 }
 }
 }
+#line 6590 "renderer.axe"
 std__string__StringBuilder sb_decl = std__string__StringBuilder__init( 256 );
+#line 6591 "renderer.axe"
 const std__string__string line_dir = renderer__emit_line_directive( ast->line);
 std__string__StringBuilder__append(&sb_decl, line_dir);
 if (! is_mutable) {
@@ -19352,19 +24936,26 @@ if (std__string__str_len ( array_suffix ) > 0) {
 std__string__StringBuilder__append(&sb_decl, array_suffix);
 }
 if (std__string__str_len ( initializer ) > 0) {
+#line 6605 "renderer.axe"
 std__string__string trimmed = std__string__strip( initializer );
 if (std__string__has_prefix ( trimmed , std__string__str ( "[" ) ) && std__string__has_suffix ( trimmed , std__string__str ( "]" ) )) {
+#line 6608 "renderer.axe"
 const std__string__string elements_str = std__string__substring_se( trimmed , 1 , std__string__str_len ( trimmed ) - 1 );
+#line 6609 "renderer.axe"
 const std__string__string elements_trimmed = std__string__strip( elements_str );
+#line 6610 "renderer.axe"
 int32_t element_count = 0;
 if (std__string__str_len ( elements_trimmed ) > 0) {
 element_count = 1;
+#line 6613 "renderer.axe"
 int32_t depth = 0;
+#line 6614 "renderer.axe"
 int32_t idx_elem = 0;
 while (1) {
 if (idx_elem >= std__string__str_len ( elements_trimmed )) {
 break;
 }
+#line 6619 "renderer.axe"
 const char ch_elem = std__string__get_char( elements_trimmed , idx_elem );
 if (ch_elem == '(' || ch_elem == '[' || ch_elem == '{') {
 depth++;
@@ -19378,14 +24969,18 @@ element_count++;
 idx_elem++;
 }
 }
+#line 6631 "renderer.axe"
 std__string__string elem_type_c = std__string__str( "int32_t" );
 if (std__string__has_prefix ( type_name , std__string__str ( "list(" ) )) {
+#line 6633 "renderer.axe"
 int32_t paren_end = 5;
+#line 6634 "renderer.axe"
 int32_t depth_type = 1;
 while (1) {
 if (paren_end >= std__string__str_len ( type_name )) {
 break;
 }
+#line 6639 "renderer.axe"
 const char ch_t = std__string__get_char( type_name , paren_end );
 if (ch_t == '(') {
 depth_type++;
@@ -19398,9 +24993,11 @@ break;
 }
 paren_end = paren_end + 1;
 }
+#line 6650 "renderer.axe"
 const std__string__string elem_type_axe = std__string__strip( std__string__substr ( type_name , 5 , paren_end - 5 ) );
 elem_type_c = renderer__map_axe_type_to_c ( elem_type_axe );
 }
+#line 6654 "renderer.axe"
 const std__string__string processed_elements = renderer__process_expression( elements_trimmed );
 std__string__StringBuilder__append_c(&sb_decl, " = {.data = (");
 std__string__StringBuilder__append(&sb_decl, elem_type_c);
@@ -19415,17 +25012,21 @@ std__string__StringBuilder__append_c(&sb_decl, "}");
 else if (std__string__has_prefix ( trimmed , std__string__str ( "new " ) )) {
 trimmed = std__string__substring_se ( trimmed , 4 , std__string__str_len ( trimmed ) );
 trimmed = std__string__strip ( trimmed );
+#line 6669 "renderer.axe"
 const int32_t first_paren = std__string__find_char_from( trimmed , '(' , 0 );
 if (first_paren < 0) {
 std__string__StringBuilder__append_c(&sb_decl, " = {0}");
 }
 else {
+#line 6673 "renderer.axe"
 int32_t last_paren = - 1;
+#line 6674 "renderer.axe"
 int32_t idx = std__string__str_len( trimmed ) - 1;
 while (1) {
 if (idx < 0) {
 break;
 }
+#line 6679 "renderer.axe"
 const char ch_end = std__string__get_char( trimmed , idx );
 if (ch_end == ')') {
 last_paren = idx;
@@ -19437,17 +25038,24 @@ if (last_paren <= first_paren + 1) {
 std__string__StringBuilder__append_c(&sb_decl, " = {0}");
 }
 else {
+#line 6691 "renderer.axe"
 const std__string__string args_str = std__string__substring_se( trimmed , first_paren + 1 , last_paren );
 std__string__StringBuilder__append_c(&sb_decl, " = {");
+#line 6694 "renderer.axe"
 std__string__StringBuilder sb_current = std__string__StringBuilder__init( std__string__str_len ( args_str ) + 16 );
+#line 6695 "renderer.axe"
 int32_t depth = 0;
+#line 6696 "renderer.axe"
 bool first_field = true;
+#line 6697 "renderer.axe"
 int32_t i2 = 0;
+#line 6698 "renderer.axe"
 const int32_t args_str_len = (int32_t)( std__string__str_len ( args_str ) );
 while (1) {
 if (i2 >= args_str_len) {
 break;
 }
+#line 6704 "renderer.axe"
 const char ch = std__string__get_char( args_str , i2 );
 if (ch == '(') {
 depth = depth + 1;
@@ -19460,11 +25068,15 @@ depth = depth - 1;
 std__string__StringBuilder__append_char(&sb_current, ch);
 }
 else if (ch == ',' && depth == 0) {
+#line 6714 "renderer.axe"
 std__string__string part = std__string__strip( std__string__StringBuilder__to_string( &sb_current ) );
 if (std__string__str_len ( part ) > 0) {
+#line 6716 "renderer.axe"
 const int32_t colon_pos = std__string__find_char_from( part , ':' , 0 );
 if (colon_pos >= 0) {
+#line 6718 "renderer.axe"
 const std__string__string field_name = std__string__strip( std__string__substring_se ( part , 0 , colon_pos ) );
+#line 6719 "renderer.axe"
 const std__string__string value_expr = std__string__strip( std__string__substr ( part , colon_pos + 1 , std__string__str_len ( part ) - colon_pos - 1 ) );
 if (std__string__str_len ( field_name ) > 0 && std__string__str_len ( value_expr ) > 0) {
 if (! first_field) {
@@ -19485,12 +25097,16 @@ std__string__StringBuilder__append_char(&sb_current, ch);
 }
 i2++;
 }
+#line 6739 "renderer.axe"
 std__string__string part_last = std__string__strip( std__string__StringBuilder__to_string( &sb_current ) );
 std__string__StringBuilder__destroy(&sb_current);
 if (std__string__str_len ( part_last ) > 0) {
+#line 6742 "renderer.axe"
 const int32_t colon_pos_last = std__string__find_char_from( part_last , ':' , 0 );
 if (colon_pos_last >= 0) {
+#line 6744 "renderer.axe"
 const std__string__string field_name_last = std__string__strip( std__string__substring_se ( part_last , 0 , colon_pos_last ) );
+#line 6745 "renderer.axe"
 const std__string__string value_expr_last = std__string__strip( std__string__substr ( part_last , colon_pos_last + 1 , std__string__str_len ( part_last ) - colon_pos_last - 1 ) );
 if (std__string__str_len ( field_name_last ) > 0 && std__string__str_len ( value_expr_last ) > 0) {
 if (! first_field) {
@@ -19514,21 +25130,30 @@ std__string__StringBuilder__append_c(&sb_decl, "}");
 }
 }
 else {
+#line 6767 "renderer.axe"
 const int32_t brace_pos = std__string__find_char_from( trimmed , '{' , 0 );
 if (brace_pos > 0 && std__string__get_char ( trimmed , std__string__str_len ( trimmed ) - 1 ) == '}') {
+#line 6769 "renderer.axe"
 const std__string__string prefix = std__string__strip( std__string__substring_se ( trimmed , 0 , brace_pos ) );
+#line 6770 "renderer.axe"
 const std__string__string inner = std__string__substring_se( trimmed , brace_pos + 1 , std__string__str_len ( trimmed ) - 1 );
 if (( std__string__str_len ( type_name ) == 0 || std__string__equals_c ( prefix , type_name.data) )) {
 std__string__StringBuilder__append_c(&sb_decl, " = {");
+#line 6775 "renderer.axe"
 std__string__StringBuilder sb_current2 = std__string__StringBuilder__init( std__string__str_len ( inner ) + 16 );
+#line 6776 "renderer.axe"
 int32_t depth2 = 0;
+#line 6777 "renderer.axe"
 bool first_field2 = true;
+#line 6778 "renderer.axe"
 int32_t i3 = 0;
+#line 6779 "renderer.axe"
 const int32_t inner_len = (int32_t)( std__string__str_len ( inner ) );
 while (1) {
 if (i3 >= inner_len) {
 break;
 }
+#line 6785 "renderer.axe"
 const char ch2 = std__string__get_char( inner , i3 );
 if (ch2 == '(') {
 depth2 = depth2 + 1;
@@ -19541,11 +25166,15 @@ depth2 = depth2 - 1;
 std__string__StringBuilder__append_char(&sb_current2, ch2);
 }
 else if (ch2 == ',' && depth2 == 0) {
+#line 6795 "renderer.axe"
 std__string__string part2 = std__string__strip( std__string__StringBuilder__to_string( &sb_current2 ) );
 if (std__string__str_len ( part2 ) > 0) {
+#line 6797 "renderer.axe"
 const int32_t colon_pos2 = std__string__find_char_from( part2 , ':' , 0 );
 if (colon_pos2 >= 0) {
+#line 6799 "renderer.axe"
 const std__string__string field_name2 = std__string__strip( std__string__substring_se ( part2 , 0 , colon_pos2 ) );
+#line 6800 "renderer.axe"
 const std__string__string value_expr2 = std__string__strip( std__string__substr ( part2 , colon_pos2 + 1 , std__string__str_len ( part2 ) - colon_pos2 - 1 ) );
 if (std__string__str_len ( field_name2 ) > 0 && std__string__str_len ( value_expr2 ) > 0) {
 if (! first_field2) {
@@ -19566,12 +25195,16 @@ std__string__StringBuilder__append_char(&sb_current2, ch2);
 }
 i3 = i3 + 1;
 }
+#line 6820 "renderer.axe"
 std__string__string part_last2 = std__string__strip( std__string__StringBuilder__to_string( &sb_current2 ) );
 std__string__StringBuilder__destroy(&sb_current2);
 if (std__string__str_len ( part_last2 ) > 0) {
+#line 6823 "renderer.axe"
 const int32_t colon_pos_last2 = std__string__find_char_from( part_last2 , ':' , 0 );
 if (colon_pos_last2 >= 0) {
+#line 6825 "renderer.axe"
 const std__string__string field_name_last2 = std__string__strip( std__string__substring_se ( part_last2 , 0 , colon_pos_last2 ) );
+#line 6826 "renderer.axe"
 const std__string__string value_expr_last2 = std__string__strip( std__string__substr ( part_last2 , colon_pos_last2 + 1 , std__string__str_len ( part_last2 ) - colon_pos_last2 - 1 ) );
 if (std__string__str_len ( field_name_last2 ) > 0 && std__string__str_len ( value_expr_last2 ) > 0) {
 if (! first_field2) {
@@ -19593,21 +25226,27 @@ std__string__StringBuilder__append_c(&sb_decl, "}");
 }
 }
 else {
+#line 6846 "renderer.axe"
 const std__string__string processed_init2 = renderer__process_expression( trimmed );
 std__string__StringBuilder__append_c(&sb_decl, " = ");
 std__string__StringBuilder__append(&sb_decl, processed_init2);
 }
 }
 else {
+#line 6851 "renderer.axe"
 const int32_t paren_pos = std__string__find_char_from( trimmed , '(' , 0 );
 if (paren_pos > 0) {
+#line 6853 "renderer.axe"
 const std__string__string call_name_raw = std__string__strip( std__string__substring_se ( trimmed , 0 , paren_pos ) );
 if (std__maps__StringStringMap__contains( &g_function_prefixes , call_name_raw )) {
+#line 6855 "renderer.axe"
 const std__string__string full_name = std__maps__StringStringMap__get( &g_function_prefixes , call_name_raw );
+#line 6856 "renderer.axe"
 const std__string__string rest = std__string__substring_se( trimmed , paren_pos , std__string__str_len ( trimmed ) );
 trimmed = std__string__concat ( full_name , rest );
 }
 }
+#line 6861 "renderer.axe"
 const std__string__string processed_init = renderer__process_expression( trimmed );
 std__string__StringBuilder__append_c(&sb_decl, " = ");
 std__string__StringBuilder__append(&sb_decl, processed_init);
@@ -19623,7 +25262,9 @@ std__string__StringBuilder__destroy(&sb_decl);
 return result;
 }
 if (std__string__equals_c ( node_type , "Assignment" )) {
+#line 6877 "renderer.axe"
 const std__string__string variable = ast->data.assignment.variable;
+#line 6878 "renderer.axe"
 const std__string__string expression = ast->data.assignment.expression;
 gstate__debug_print_raw("\n[DBG-ASSIGN] Assignment node");
 gstate__debug_print_raw("\n[DBG-ASSIGN]   raw variable:");
@@ -19632,33 +25273,43 @@ gstate__debug_print_raw("\n[DBG-ASSIGN]   raw expression:");
 gstate__debug_print_str(expression);
 gstate__debug_print_raw("\n[DBG-CALL] process_expression from Assignment.variable:");
 gstate__debug_print_str(variable);
+#line 6888 "renderer.axe"
 const std__string__string processed_var = renderer__process_expression( variable );
 gstate__debug_print_raw("\n[DBG-CALL] process_expression from Assignment.expression:");
 gstate__debug_print_str(expression);
+#line 6891 "renderer.axe"
 const std__string__string processed_expr = renderer__process_expression( expression );
 gstate__debug_print_raw("\n[DBG-ASSIGN]   processed variable:");
 gstate__debug_print_str(processed_var);
 gstate__debug_print_raw("\n[DBG-ASSIGN]   processed expression:");
 gstate__debug_print_str(processed_expr);
+#line 6898 "renderer.axe"
 const std__string__string pv = processed_var;
 gstate__debug_print_raw("\n[DBG-ASSIGN]   pv before fix:");
 gstate__debug_print_str(pv);
+#line 6902 "renderer.axe"
 std__string__StringBuilder sb_fixed_var = std__string__StringBuilder__init( std__string__str_len ( pv ) + 16 );
+#line 6903 "renderer.axe"
 int32_t idx_av = 0;
+#line 6904 "renderer.axe"
 const int32_t pv_len = (int32_t)( std__string__str_len ( pv ) );
 while (1) {
 if (idx_av >= pv_len) {
 break;
 }
+#line 6909 "renderer.axe"
 const char chx = std__string__get_char( pv , idx_av );
 if (chx == '(' && idx_av > 0) {
+#line 6912 "renderer.axe"
 const char prev_ch = std__string__get_char( pv , idx_av - 1 );
 if (( prev_ch >= 'a' && prev_ch <= 'z' ) || ( prev_ch >= 'A' && prev_ch <= 'Z' ) || ( prev_ch >= '0' && prev_ch <= '9' ) || prev_ch == '_') {
+#line 6918 "renderer.axe"
 int32_t k2 = idx_av + 1;
 while (1) {
 if (k2 >= pv_len) {
 break;
 }
+#line 6923 "renderer.axe"
 const char ws2 = std__string__get_char( pv , k2 );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
@@ -19674,15 +25325,20 @@ continue;
 std__string__StringBuilder__append_char(&sb_fixed_var, chx);
 idx_av = idx_av + 1;
 }
+#line 6943 "renderer.axe"
 std__string__string fixed_var = std__string__StringBuilder__to_string( &sb_fixed_var );
 std__string__StringBuilder__destroy(&sb_fixed_var);
+#line 6946 "renderer.axe"
 std__string__string out_lhs = fixed_var;
+#line 6947 "renderer.axe"
 std__string__string out_rhs = processed_expr;
+#line 6948 "renderer.axe"
 int32_t ri = 0;
 while (1) {
 if (ri >= std__string__str_len ( processed_expr )) {
 break;
 }
+#line 6954 "renderer.axe"
 const char ws0 = std__string__get_char( processed_expr , ri );
 if (ws0 != ' ' && ws0 != '\t' && ws0 != '\n') {
 break;
@@ -19690,24 +25346,30 @@ break;
 ri = ri + 1;
 }
 if (ri < std__string__str_len ( processed_expr ) && renderer__is_ident_start ( std__string__get_char ( processed_expr , ri ) )) {
+#line 6962 "renderer.axe"
 const int32_t istart = ri;
+#line 6963 "renderer.axe"
 int32_t j = ri + 1;
 while (1) {
 if (j >= std__string__str_len ( processed_expr )) {
 break;
 }
+#line 6968 "renderer.axe"
 const char cj = std__string__get_char( processed_expr , j );
 if (! ( ( cj >= 'a' && cj <= 'z' ) || ( cj >= 'A' && cj <= 'Z' ) || ( cj >= '0' && cj <= '9' ) || cj == '_' )) {
 break;
 }
 j = j + 1;
 }
+#line 6975 "renderer.axe"
 const std__string__string enum_ident = std__string__substring_se( processed_expr , istart , j );
+#line 6977 "renderer.axe"
 int32_t k = j;
 while (1) {
 if (k >= std__string__str_len ( processed_expr )) {
 break;
 }
+#line 6982 "renderer.axe"
 const char ws1 = std__string__get_char( processed_expr , k );
 if (ws1 != ' ' && ws1 != '\t' && ws1 != '\n') {
 break;
@@ -19720,6 +25382,7 @@ while (1) {
 if (k >= std__string__str_len ( processed_expr )) {
 break;
 }
+#line 6995 "renderer.axe"
 const char ws2 = std__string__get_char( processed_expr , k );
 if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
 break;
@@ -19727,21 +25390,27 @@ break;
 k = k + 1;
 }
 if (k < std__string__str_len ( processed_expr ) && renderer__is_ident_start ( std__string__get_char ( processed_expr , k ) )) {
+#line 7003 "renderer.axe"
 const int32_t mstart = k;
+#line 7004 "renderer.axe"
 int32_t m = k + 1;
 while (1) {
 if (m >= std__string__str_len ( processed_expr )) {
 break;
 }
+#line 7009 "renderer.axe"
 const char cm = std__string__get_char( processed_expr , m );
 if (! ( ( cm >= 'a' && cm <= 'z' ) || ( cm >= 'A' && cm <= 'Z' ) || ( cm >= '0' && cm <= '9' ) || cm == '_' )) {
 break;
 }
 m = m + 1;
 }
+#line 7016 "renderer.axe"
 const std__string__string member = std__string__substring_se( processed_expr , mstart , m );
+#line 7017 "renderer.axe"
 const std__string__string enum_c_name2 = renderer__canonical_model_c_name( enum_ident );
 if (std__string__str_len ( enum_c_name2 ) > 0) {
+#line 7020 "renderer.axe"
 std__string__string rebuilt = std__string__str( "" );
 if (ri > 0) {
 rebuilt = std__string__substring_se ( processed_expr , 0 , ri );
@@ -19750,6 +25419,7 @@ rebuilt = std__string__concat ( rebuilt , enum_c_name2 );
 rebuilt = std__string__concat ( rebuilt , std__string__str ( "_" ) );
 rebuilt = std__string__concat ( rebuilt , member );
 if (m < std__string__str_len ( processed_expr )) {
+#line 7028 "renderer.axe"
 const std__string__string suffix = std__string__substring_se( processed_expr , m , std__string__str_len ( processed_expr ) );
 rebuilt = std__string__concat ( rebuilt , suffix );
 }
@@ -19759,9 +25429,12 @@ out_rhs = rebuilt;
 }
 }
 if (std__string__has_prefix ( processed_expr , std__string__str ( "->" ) )) {
+#line 7038 "renderer.axe"
 const int32_t eq_pos = std__string__find_char_from( processed_expr , '=' , 0 );
 if (eq_pos > 0) {
+#line 7040 "renderer.axe"
 const std__string__string lhs_suffix = std__string__substring_se( processed_expr , 0 , eq_pos );
+#line 7041 "renderer.axe"
 const std__string__string rhs_suffix = std__string__substring_se( processed_expr , eq_pos + 1 , std__string__str_len ( processed_expr ) );
 out_lhs = std__string__concat ( fixed_var , lhs_suffix );
 out_rhs = std__string__strip ( rhs_suffix );
@@ -19771,8 +25444,10 @@ gstate__debug_print_raw("\n[DBG-ASSIGN]   reconstructed RHS (arrow sugar):");
 gstate__debug_print_str(out_rhs);
 }
 }
+#line 7053 "renderer.axe"
 std__string__StringBuilder sb_assign = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_assign, out_lhs);
+#line 7056 "renderer.axe"
 const std__string__string op = ast->data.assignment.operator;
 if (std__string__str_len ( op ) > 0) {
 std__string__StringBuilder__append_char(&sb_assign, ' ');
@@ -19789,8 +25464,11 @@ std__string__StringBuilder__destroy(&sb_assign);
 return result;
 }
 if (std__string__equals_c ( node_type , "MemberAccess" )) {
+#line 7074 "renderer.axe"
 const std__string__string object_name = ast->data.member_access.object_name;
+#line 7075 "renderer.axe"
 const std__string__string member_name = ast->data.member_access.member_name;
+#line 7076 "renderer.axe"
 const std__string__string value = ast->data.member_access.value;
 gstate__debug_print_raw("\n[DBG-MEM] MemberAccess node");
 gstate__debug_print_raw("\n[DBG-MEM]   object_name:");
@@ -19799,15 +25477,21 @@ gstate__debug_print_raw("\n[DBG-MEM]   member_name:");
 gstate__debug_print_str(member_name);
 gstate__debug_print_raw("\n[DBG-MEM]   raw value:");
 gstate__debug_print_str(value);
+#line 7086 "renderer.axe"
 std__string__string access_op = std__string__str( "." );
+#line 7087 "renderer.axe"
 bool is_pointer = false;
+#line 7088 "renderer.axe"
 const std__string__string trimmed_obj = std__string__strip( object_name );
+#line 7089 "renderer.axe"
 const int32_t arrow_pos = std__string__find_char_from( trimmed_obj , '-' , 0 );
 if (arrow_pos >= 0 && std__string__find_char_from ( trimmed_obj , '>' , arrow_pos ) >= 0) {
 is_pointer = true;
 }
 else if (std__maps__StringStringMap__contains( &g_var_types , trimmed_obj )) {
+#line 7094 "renderer.axe"
 const std__string__string raw_type = std__maps__StringStringMap__get( &g_var_types , trimmed_obj );
+#line 7095 "renderer.axe"
 std__string__string t = std__string__strip( raw_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -19821,23 +25505,30 @@ is_pointer = true;
 if (is_pointer) {
 access_op = std__string__str ( "->" );
 }
+#line 7113 "renderer.axe"
 std__string__StringBuilder sb_mem = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append(&sb_mem, trimmed_obj);
 std__string__StringBuilder__append(&sb_mem, access_op);
 std__string__StringBuilder__append(&sb_mem, member_name);
+#line 7118 "renderer.axe"
 const std__string__string member_chain = std__string__StringBuilder__to_string( &sb_mem );
 std__string__StringBuilder__destroy(&sb_mem);
+#line 7120 "renderer.axe"
 const std__string__string processed_chain = renderer__rewrite_ref_member_access( member_chain );
+#line 7122 "renderer.axe"
 const std__string__string trimmed_value = std__string__strip( value );
 if (std__string__str_len ( trimmed_value ) > 0) {
+#line 7124 "renderer.axe"
 const std__string__string processed_value = renderer__process_expression( trimmed_value );
 gstate__debug_print_raw("\n[DEBUG]   processed value:");
 gstate__debug_print_str(processed_value);
+#line 7127 "renderer.axe"
 std__string__StringBuilder sb_result_mem = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append(&sb_result_mem, processed_chain);
 std__string__StringBuilder__append_c(&sb_result_mem, " = ");
 std__string__StringBuilder__append(&sb_result_mem, processed_value);
 std__string__StringBuilder__append_c(&sb_result_mem, ";\n");
+#line 7132 "renderer.axe"
 std__string__string result_mem = std__string__StringBuilder__to_string( &sb_result_mem );
 std__string__StringBuilder__destroy(&sb_result_mem);
 return result_mem;
@@ -19845,9 +25536,13 @@ return result_mem;
 return std__string__concat( processed_chain , std__string__str ( ";\n" ) );
 }
 if (std__string__equals_c ( node_type , "ArrayAssign" )) {
+#line 7141 "renderer.axe"
 const std__string__string array_name = ast->data.array_assign.array_name;
+#line 7142 "renderer.axe"
 const std__string__string index_expr = ast->data.array_assign.index;
+#line 7143 "renderer.axe"
 const std__string__string index2_expr = ast->data.array_assign.index2;
+#line 7144 "renderer.axe"
 const std__string__string value_expr = ast->data.array_assign.value;
 gstate__debug_print_raw("\n[DBG-ARRAYASSIGN] ArrayAssign node");
 gstate__debug_print_raw("\n[DBG-ARRAYASSIGN]   array_name:");
@@ -19856,15 +25551,20 @@ gstate__debug_print_raw("\n[DBG-ARRAYASSIGN]   index:");
 gstate__debug_print_str(index_expr);
 gstate__debug_print_raw("\n[DBG-ARRAYASSIGN]   value:");
 gstate__debug_print_str(value_expr);
+#line 7154 "renderer.axe"
 const std__string__string processed_array = renderer__process_expression( array_name );
+#line 7155 "renderer.axe"
 const std__string__string processed_index = renderer__process_expression( index_expr );
+#line 7156 "renderer.axe"
 const std__string__string processed_value = renderer__process_expression( value_expr );
+#line 7158 "renderer.axe"
 std__string__StringBuilder sb_arr = std__string__StringBuilder__init( 1256 );
 std__string__StringBuilder__append(&sb_arr, processed_array);
 std__string__StringBuilder__append_char(&sb_arr, '[');
 std__string__StringBuilder__append(&sb_arr, processed_index);
 std__string__StringBuilder__append_char(&sb_arr, ']');
 if (std__string__str_len ( index2_expr ) > 0) {
+#line 7165 "renderer.axe"
 const std__string__string processed_index2 = renderer__process_expression( index2_expr );
 std__string__StringBuilder__append_char(&sb_arr, '[');
 std__string__StringBuilder__append(&sb_arr, processed_index2);
@@ -19876,13 +25576,18 @@ std__string__StringBuilder__append_c(&sb_arr, ";\n");
 return std__string__StringBuilder__to_string( &sb_arr );
 }
 if (std__string__equals_c ( node_type , "FunctionCall" )) {
+#line 7178 "renderer.axe"
 const std__string__string func_name = ast->data.func_call.function_name;
+#line 7180 "renderer.axe"
 const bool has_module_sep = std__string__str_contains_c( func_name , "__" );
+#line 7181 "renderer.axe"
 const bool is_method_call = std__string__find_char_from( func_name , '.' , 0 ) >= 0;
+#line 7182 "renderer.axe"
 const bool is_c_call = std__string__has_prefix( func_name , std__string__str ( "" ) );
 if (! has_module_sep && ! is_method_call && ! is_c_call && ! renderer__is_builtin_function ( func_name )) {
 if (! std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 if (! std__maps__StringStringMap__contains( &g_function_param_types , func_name )) {
+#line 7187 "renderer.axe"
 const std__string__string base_func = func_name;
 if (! imports__is_symbol_imported ( base_func )) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
@@ -19896,27 +25601,40 @@ exit(1);
 }
 }
 }
+#line 7204 "renderer.axe"
 const __list_std__string_t* call_args = ast->data.func_call.args;
 if (call_args != nil && len_v((*call_args)) > 0) {
+#line 7206 "renderer.axe"
 const std__string__string args_str = std__string__strip( call_args->data[ 0 ]);
 renderer__validate_function_call(func_name, args_str, 0);
 }
 if (std__string__equals_c ( func_name , "append" )) {
+#line 7211 "renderer.axe"
 const __list_std__string_t* args = ast->data.func_call.args;
+#line 7212 "renderer.axe"
 std__string__string var_name = std__string__str( "" );
+#line 7213 "renderer.axe"
 std__string__string value = std__string__str( "" );
+#line 7214 "renderer.axe"
 bool args_extracted = false;
 if (args != nil && len_v((*args)) >= 1) {
+#line 7217 "renderer.axe"
 const std__string__string args_str = std__string__strip( args->data[ 0 ]);
+#line 7218 "renderer.axe"
 int32_t comma_pos = - 1;
+#line 7219 "renderer.axe"
 int32_t paren_depth = 0;
+#line 7220 "renderer.axe"
 int32_t bracket_depth = 0;
+#line 7221 "renderer.axe"
 int32_t brace_depth = 0;
+#line 7222 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= std__string__str_len ( args_str )) {
 break;
 }
+#line 7227 "renderer.axe"
 const char ch = std__string__get_char( args_str , i );
 if (ch == '(') {
 paren_depth = paren_depth + 1;
@@ -19949,14 +25667,20 @@ args_extracted = true;
 }
 }
 if (args_extracted && std__string__str_len ( var_name ) > 0 && std__string__str_len ( value ) > 0) {
+#line 7255 "renderer.axe"
 const bool contains_in_list_of_types = std__maps__StringStringMap__contains( &g_list_of_types , var_name );
 if (contains_in_list_of_types) {
+#line 7258 "renderer.axe"
 const std__string__string element_type = std__maps__StringStringMap__get( &g_list_of_types , var_name );
 gstate__debug_print_raw("\n[APPEND] Found in g_list_of_types: ");
 gstate__debug_print_str(element_type);
+#line 7263 "renderer.axe"
 const std__string__string c_element_type = renderer__map_axe_type_to_c( element_type );
+#line 7264 "renderer.axe"
 const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+#line 7265 "renderer.axe"
 const std__string__string processed_value = renderer__process_expression( value );
+#line 7267 "renderer.axe"
 std__string__StringBuilder sb_append = std__string__StringBuilder__init( 1256 );
 std__string__StringBuilder__append_c(&sb_append, "__list_");
 std__string__StringBuilder__append(&sb_append, sanitized_element);
@@ -19971,16 +25695,21 @@ gstate__debug_print_raw("'");
 return std__string__StringBuilder__to_string( &sb_append );
 }
 else if (std__maps__StringStringMap__contains( &g_var_types , var_name )) {
+#line 7283 "renderer.axe"
 const std__string__string var_type = std__maps__StringStringMap__get( &g_var_types , var_name );
 if (std__string__has_prefix ( var_type , std__string__str ( "list(" ) ) || std__string__has_suffix ( var_type , std__string__str ( "[999]" ) )) {
+#line 7285 "renderer.axe"
 std__string__string element_type = var_type;
 if (std__string__has_prefix ( element_type , std__string__str ( "list(" ) )) {
+#line 7287 "renderer.axe"
 int32_t paren_pos = 5;
+#line 7288 "renderer.axe"
 int32_t depth = 1;
 while (1) {
 if (paren_pos >= std__string__str_len ( element_type )) {
 break;
 }
+#line 7293 "renderer.axe"
 const char ch = std__string__get_char( element_type , paren_pos );
 if (ch == '(') {
 depth++;
@@ -19998,9 +25727,13 @@ element_type = std__string__strip ( std__string__substr ( var_type , 5 , paren_p
 else if (std__string__has_suffix ( element_type , std__string__str ( "[999]" ) )) {
 element_type = std__string__strip ( std__string__substring_se ( var_type , 0 , std__string__str_len ( var_type ) - 5 ) );
 }
+#line 7309 "renderer.axe"
 const std__string__string c_element_type = renderer__map_axe_type_to_c( element_type );
+#line 7310 "renderer.axe"
 const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+#line 7311 "renderer.axe"
 const std__string__string processed_value = renderer__process_expression( value );
+#line 7313 "renderer.axe"
 std__string__StringBuilder sb_append2 = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_append2, "__list_");
 std__string__StringBuilder__append(&sb_append2, sanitized_element);
@@ -20017,6 +25750,7 @@ return std__string__StringBuilder__to_string( &sb_append2 );
 }
 }
 }
+#line 7331 "renderer.axe"
 std__string__string emitted_name = func_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 emitted_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
@@ -20026,11 +25760,14 @@ gstate__debug_print_str(emitted_name);
 else {
 gstate__debug_print_raw("\n[DBG-FUNCCALL]   No prefix found, emitting as-is");
 }
+#line 7340 "renderer.axe"
 std__string__StringBuilder sb_call = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_call, emitted_name);
 std__string__StringBuilder__append_char(&sb_call, '(');
+#line 7344 "renderer.axe"
 const __list_std__string_t* args = ast->data.func_call.args;
 if (args != nil) {
+#line 7346 "renderer.axe"
 int32_t arg_idx = 0;
 while (1) {
 if (arg_idx >= len_v((*args))) {
@@ -20039,7 +25776,9 @@ break;
 if (arg_idx > 0) {
 std__string__StringBuilder__append_c(&sb_call, ", ");
 }
+#line 7356 "renderer.axe"
 const std__string__string raw_arg = args->data[ arg_idx ];
+#line 7357 "renderer.axe"
 const std__string__string processed_arg = renderer__process_expression( raw_arg );
 std__string__StringBuilder__append(&sb_call, processed_arg);
 arg_idx++;
@@ -20049,17 +25788,22 @@ std__string__StringBuilder__append_c(&sb_call, ");\n");
 return std__string__StringBuilder__to_string( &sb_call );
 }
 if (std__string__equals_c ( node_type , "Print" )) {
+#line 7368 "renderer.axe"
 const __list_std__string_t* messages_ref = ast->data.print.messages;
+#line 7369 "renderer.axe"
 const __list_bool_t* flags_ref = ast->data.print.is_expressions;
 if (messages_ref == nil || flags_ref == nil) {
 return result;
 }
+#line 7375 "renderer.axe"
 const __list_std__string_t messages = (*messages_ref);
+#line 7376 "renderer.axe"
 const __list_bool_t flags = (*flags_ref);
 if (len_v(messages) == 0) {
 return result;
 }
 if (len_v(messages) == 1 && len_v(flags) == 1 && ! flags.data[ 0 ]) {
+#line 7383 "renderer.axe"
 std__string__StringBuilder sb_print = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_print, "printf(\"");
 std__string__StringBuilder__append(&sb_print, messages.data[0]);
@@ -20070,15 +25814,19 @@ result = renderer__strip_all_c_prefixes ( result );
 return result;
 }
 if (std__string__equals_c ( node_type , "Loop" )) {
+#line 7395 "renderer.axe"
 std__string__StringBuilder sb_loop = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_loop, "while (1) {\n");
 if (ast->children!= nil) {
+#line 7399 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7400 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 7405 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_loop, child_code);
 i++;
@@ -20088,19 +25836,25 @@ std__string__StringBuilder__append_c(&sb_loop, "}\n");
 return std__string__StringBuilder__to_string( &sb_loop );
 }
 if (std__string__equals_c ( node_type , "Platform" )) {
+#line 7415 "renderer.axe"
 const std__string__string platform_name = ast->data.platform_node.platform_name;
+#line 7417 "renderer.axe"
 std__string__StringBuilder sb_plat = std__string__StringBuilder__init( 1024 );
+#line 7418 "renderer.axe"
 const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_plat, plat_dir);
 }
 if (ast->children!= nil) {
+#line 7424 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7425 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 7430 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_plat, child_code);
 i++;
@@ -20112,17 +25866,27 @@ std__string__StringBuilder__append_c(&sb_plat, "#endif\n");
 return std__string__StringBuilder__to_string( &sb_plat );
 }
 if (std__string__equals_c ( node_type , "For" )) {
+#line 7443 "renderer.axe"
 const std__string__string init_raw = ast->data.for_loop.initialization;
+#line 7444 "renderer.axe"
 const std__string__string cond_raw = ast->data.for_loop.condition;
+#line 7445 "renderer.axe"
 const std__string__string incr_raw = ast->data.for_loop.increment;
+#line 7447 "renderer.axe"
 std__string__string init = std__string__strip( init_raw );
+#line 7448 "renderer.axe"
 const std__string__string cond = std__string__strip( cond_raw );
+#line 7449 "renderer.axe"
 const std__string__string incr = std__string__strip( incr_raw );
+#line 7451 "renderer.axe"
 std__string__string loop_var_name = std__string__str( "" );
+#line 7452 "renderer.axe"
 bool loop_var_added = false;
 if (std__string__has_prefix ( init , std__string__str ( "mut " ) )) {
 init = std__string__strip ( std__string__substr ( init , 4 , std__string__str_len ( init ) - 4 ) );
+#line 7457 "renderer.axe"
 int32_t k_var = 0;
+#line 7458 "renderer.axe"
 const int32_t init_len = (int32_t)( std__string__str_len ( init ) );
 while (1) {
 if (k_var >= init_len) {
@@ -20136,12 +25900,14 @@ k_var = k_var + 1;
 if (k_var > 0) {
 loop_var_name = std__string__substring_se ( init , 0 , k_var );
 if (! std__maps__StringStringMap__contains( &g_var_types , loop_var_name )) {
+#line 7467 "renderer.axe"
 std__arena__Arena temp_arena = std__arena__Arena__create( 256 );
 std__maps__StringStringMap__set(&g_var_types, &temp_arena, loop_var_name, std__string__str("i32"));
 loop_var_added = true;
 }
 }
 }
+#line 7474 "renderer.axe"
 std__string__StringBuilder sb_header = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_header, "int32_t ");
 std__string__StringBuilder__append(&sb_header, init);
@@ -20149,24 +25915,30 @@ std__string__StringBuilder__append_c(&sb_header, "; ");
 std__string__StringBuilder__append(&sb_header, cond);
 std__string__StringBuilder__append_c(&sb_header, "; ");
 std__string__StringBuilder__append(&sb_header, incr);
+#line 7482 "renderer.axe"
 std__string__string header = std__string__StringBuilder__to_string( &sb_header );
 std__string__StringBuilder__destroy(&sb_header);
 header = std__string__replace_all ( header , std__string__str ( "+ =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "- =" ) , std__string__str ( "-=" ) );
 header = std__string__replace_all ( header , std__string__str ( "+  =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "-  =" ) , std__string__str ( "-=" ) );
+#line 7490 "renderer.axe"
 const std__string__string header_norm = renderer__process_expression( header );
+#line 7492 "renderer.axe"
 std__string__StringBuilder sb_for = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_for, "for (");
 std__string__StringBuilder__append(&sb_for, header_norm);
 std__string__StringBuilder__append_c(&sb_for, ") {\n");
 if (ast->children!= nil) {
+#line 7498 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7499 "renderer.axe"
 int32_t i_for = 0;
 while (1) {
 if (i_for >= len_v((*children))) {
 break;
 }
+#line 7504 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_for ]) );
 std__string__StringBuilder__append(&sb_for, child_code);
 i_for = i_for + 1;
@@ -20179,33 +25951,45 @@ std__maps__StringStringMap__pop(&g_var_types, loop_var_name);
 return std__string__StringBuilder__to_string( &sb_for );
 }
 if (std__string__equals_c ( node_type , "ParallelFor" )) {
+#line 7520 "renderer.axe"
 const std__string__string init_raw = ast->data.parallel_for.initialization;
+#line 7521 "renderer.axe"
 const std__string__string cond_raw = ast->data.parallel_for.condition;
+#line 7522 "renderer.axe"
 const std__string__string incr_raw = ast->data.parallel_for.increment;
+#line 7524 "renderer.axe"
 std__string__string init = std__string__strip( init_raw );
+#line 7525 "renderer.axe"
 const std__string__string cond = std__string__strip( cond_raw );
+#line 7526 "renderer.axe"
 const std__string__string incr = std__string__strip( incr_raw );
 if (std__string__has_prefix ( init , std__string__str ( "mut " ) )) {
 init = std__string__strip ( std__string__substr ( init , 4 , std__string__str_len ( init ) - 4 ) );
 }
+#line 7532 "renderer.axe"
 std__string__StringBuilder sb_pheader = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append(&sb_pheader, init);
 std__string__StringBuilder__append_c(&sb_pheader, "; ");
 std__string__StringBuilder__append(&sb_pheader, cond);
 std__string__StringBuilder__append_c(&sb_pheader, "; ");
 std__string__StringBuilder__append(&sb_pheader, incr);
+#line 7539 "renderer.axe"
 std__string__string header = std__string__StringBuilder__to_string( &sb_pheader );
 std__string__StringBuilder__destroy(&sb_pheader);
 header = std__string__replace_all ( header , std__string__str ( "+ =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "- =" ) , std__string__str ( "-=" ) );
 header = std__string__replace_all ( header , std__string__str ( "+  =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "-  =" ) , std__string__str ( "-=" ) );
+#line 7547 "renderer.axe"
 const std__string__string header_norm = renderer__process_expression( header );
+#line 7549 "renderer.axe"
 std__string__StringBuilder sb_pfor = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_pfor, "#pragma omp parallel for");
+#line 7553 "renderer.axe"
 const __list_std__string_t* reduction_clauses = ast->data.parallel_for.reduction_clauses;
 if (reduction_clauses != nil && len_v((*reduction_clauses)) > 0) {
 std__string__StringBuilder__append_c(&sb_pfor, " reduction(");
+#line 7557 "renderer.axe"
 int32_t ri = 0;
 while (1) {
 if (ri >= len_v((*reduction_clauses))) {
@@ -20224,12 +26008,15 @@ std__string__StringBuilder__append_c(&sb_pfor, "for (");
 std__string__StringBuilder__append(&sb_pfor, header_norm);
 std__string__StringBuilder__append_c(&sb_pfor, ") {\n");
 if (ast->children!= nil) {
+#line 7577 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7578 "renderer.axe"
 int32_t i_pfor = 0;
 while (1) {
 if (i_pfor >= len_v((*children))) {
 break;
 }
+#line 7583 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_pfor ]) );
 std__string__StringBuilder__append(&sb_pfor, child_code);
 i_pfor = i_pfor + 1;
@@ -20239,15 +26026,19 @@ std__string__StringBuilder__append_c(&sb_pfor, "}\n");
 return std__string__StringBuilder__to_string( &sb_pfor );
 }
 if (std__string__equals_c ( node_type , "Parallel" )) {
+#line 7594 "renderer.axe"
 std__string__StringBuilder sb_par = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append_c(&sb_par, "#pragma omp parallel\n{\n");
 if (ast->children!= nil) {
+#line 7598 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7599 "renderer.axe"
 int32_t i_par = 0;
 while (1) {
 if (i_par >= len_v((*children))) {
 break;
 }
+#line 7604 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_par ]) );
 std__string__StringBuilder__append(&sb_par, child_code);
 i_par++;
@@ -20257,15 +26048,19 @@ std__string__StringBuilder__append_c(&sb_par, "}\n");
 return std__string__StringBuilder__to_string( &sb_par );
 }
 if (std__string__equals_c ( node_type , "Single" )) {
+#line 7615 "renderer.axe"
 std__string__StringBuilder sb_single = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append_c(&sb_single, "#pragma omp single\n{\n");
 if (ast->children!= nil) {
+#line 7619 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7620 "renderer.axe"
 int32_t i_single = 0;
 while (1) {
 if (i_single >= len_v((*children))) {
 break;
 }
+#line 7625 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_single ]) );
 std__string__StringBuilder__append(&sb_single, child_code);
 i_single = i_single + 1;
@@ -20275,16 +26070,23 @@ std__string__StringBuilder__append_c(&sb_single, "}\n");
 return std__string__StringBuilder__to_string( &sb_single );
 }
 if (std__string__equals_c ( node_type , "ParallelLocal" )) {
+#line 7636 "renderer.axe"
 std__string__StringBuilder sb_ploc = std__string__StringBuilder__init( 512 );
+#line 7638 "renderer.axe"
 const __list_std__string_t* private_vars = ast->data.parallel_local.private_vars;
+#line 7639 "renderer.axe"
 const __list_std__string_t* private_types = ast->data.parallel_local.private_types;
+#line 7641 "renderer.axe"
 int32_t vi = 0;
 while (1) {
 if (vi >= len_v((*private_vars))) {
 break;
 }
+#line 7646 "renderer.axe"
 const std__string__string var_name = private_vars->data[ vi ];
+#line 7647 "renderer.axe"
 const std__string__string type_name = private_types->data[ vi ];
+#line 7648 "renderer.axe"
 const std__string__string c_type = renderer__map_axe_type_to_c( type_name );
 std__string__StringBuilder__append(&sb_ploc, c_type);
 std__string__StringBuilder__append_c(&sb_ploc, " ");
@@ -20293,6 +26095,7 @@ std__string__StringBuilder__append_c(&sb_ploc, ";\n");
 vi = vi + 1;
 }
 std__string__StringBuilder__append_c(&sb_ploc, "#pragma omp parallel private(");
+#line 7658 "renderer.axe"
 int32_t pi = 0;
 while (1) {
 if (pi >= len_v((*private_vars))) {
@@ -20306,12 +26109,15 @@ pi = pi + 1;
 }
 std__string__StringBuilder__append_c(&sb_ploc, ")\n{\n");
 if (ast->children!= nil) {
+#line 7672 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7673 "renderer.axe"
 int32_t i_ploc = 0;
 while (1) {
 if (i_ploc >= len_v((*children))) {
 break;
 }
+#line 7678 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_ploc ]) );
 std__string__StringBuilder__append(&sb_ploc, child_code);
 i_ploc = i_ploc + 1;
@@ -20321,17 +26127,25 @@ std__string__StringBuilder__append_c(&sb_ploc, "}\n");
 return std__string__StringBuilder__to_string( &sb_ploc );
 }
 if (std__string__equals_c ( node_type , "ForIn" )) {
+#line 7694 "renderer.axe"
 const std__string__string var_name = ast->data.for_in.var_name;
+#line 7695 "renderer.axe"
 const std__string__string array_name_raw = ast->data.for_in.array_name;
+#line 7697 "renderer.axe"
 std__string__string array_name = renderer__process_expression( array_name_raw );
 array_name = renderer__rewrite_method_calls ( array_name );
 array_name = renderer__rewrite_function_prefixes ( array_name );
+#line 7701 "renderer.axe"
 std__string__string index_var = std__string__str( "_i_" );
 index_var = std__string__concat ( index_var , var_name );
+#line 7704 "renderer.axe"
 std__string__string accessor = std__string__str( "." );
+#line 7705 "renderer.axe"
 const std__string__string trimmed_coll = std__string__strip( array_name_raw );
 if (std__maps__StringStringMap__contains( &g_var_types , trimmed_coll )) {
+#line 7708 "renderer.axe"
 const std__string__string coll_type = std__maps__StringStringMap__get( &g_var_types , trimmed_coll );
+#line 7709 "renderer.axe"
 std__string__string t = std__string__strip( coll_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -20343,6 +26157,7 @@ accessor = std__string__str ( "->" );
 else {
 accessor = std__string__str ( "->" );
 }
+#line 7720 "renderer.axe"
 std__string__StringBuilder sb_forin = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_forin, "for (int32_t ");
 std__string__StringBuilder__append(&sb_forin, index_var);
@@ -20367,12 +26182,15 @@ std__string__StringBuilder__append(&sb_forin, index_var);
 std__string__StringBuilder__append_c(&sb_forin, "];\n");
 std__maps__StringStringMap__set(&g_var_types, &arena, var_name, std__string__str("auto"));
 if (ast->children!= nil) {
+#line 7747 "renderer.axe"
 const __list_structs__ASTNode_t* children = ast->children;
+#line 7748 "renderer.axe"
 int32_t i_for_in = 0;
 while (1) {
 if (i_for_in >= len_v((*children))) {
 break;
 }
+#line 7753 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(children->data[ i_for_in ]) );
 std__string__StringBuilder__append(&sb_forin, child_code);
 i_for_in = i_for_in + 1;
@@ -20382,14 +26200,19 @@ std__string__StringBuilder__append_c(&sb_forin, "}\n");
 return std__string__StringBuilder__to_string( &sb_forin );
 }
 if (std__string__equals_c ( node_type , "If" )) {
+#line 7764 "renderer.axe"
 structs__ASTNode* current_if = ast;
+#line 7765 "renderer.axe"
 bool is_first = true;
+#line 7766 "renderer.axe"
 std__string__StringBuilder sb_if = std__string__StringBuilder__init( 2048 );
 while (1) {
 if (current_if == nil) {
 break;
 }
+#line 7773 "renderer.axe"
 const std__string__string condition = current_if->data.if_node.condition;
+#line 7774 "renderer.axe"
 std__string__string trimmed_cond = std__string__strip( condition );
 trimmed_cond = renderer__process_expression ( trimmed_cond );
 if (is_first) {
@@ -20401,19 +26224,24 @@ std__string__StringBuilder__append_c(&sb_if, "else if (");
 std__string__StringBuilder__append(&sb_if, trimmed_cond);
 std__string__StringBuilder__append_c(&sb_if, ") {\n");
 is_first = false;
+#line 7786 "renderer.axe"
 int32_t else_marker_idx = - 1;
 if (current_if->children!= nil) {
+#line 7788 "renderer.axe"
 const __list_structs__ASTNode_t* children = current_if->children;
+#line 7789 "renderer.axe"
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
+#line 7794 "renderer.axe"
 const structs__ASTNode* child_ref = &(children->data[ i ]);
 if (std__string__equals_c ( child_ref->node_type, "ElseMarker" )) {
 else_marker_idx = i;
 break;
 }
+#line 7799 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( child_ref );
 std__string__StringBuilder__append(&sb_if, child_code);
 i++;
@@ -20421,9 +26249,12 @@ i++;
 }
 std__string__StringBuilder__append_c(&sb_if, "}\n");
 if (current_if->children!= nil && else_marker_idx >= 0) {
+#line 7808 "renderer.axe"
 const __list_structs__ASTNode_t* children = current_if->children;
+#line 7809 "renderer.axe"
 const int32_t child_count = len_v((*children));
 if (else_marker_idx + 1 < child_count) {
+#line 7812 "renderer.axe"
 const structs__ASTNode* first_else_child = &(children->data[ else_marker_idx + 1 ]);
 if (std__string__equals_c ( first_else_child->node_type, "If" ) && else_marker_idx + 2 == child_count) {
 current_if = first_else_child;
@@ -20431,12 +26262,15 @@ continue;
 }
 else {
 std__string__StringBuilder__append_c(&sb_if, "else {\n");
+#line 7819 "renderer.axe"
 int32_t j = else_marker_idx + 1;
 while (1) {
 if (j >= child_count) {
 break;
 }
+#line 7824 "renderer.axe"
 const structs__ASTNode* else_child = &(children->data[ j ]);
+#line 7825 "renderer.axe"
 const std__string__string else_code = renderer__generate_c( else_child );
 std__string__StringBuilder__append(&sb_if, else_code);
 j = j + 1;
@@ -20456,14 +26290,18 @@ break;
 return std__string__StringBuilder__to_string( &sb_if );
 }
 if (std__string__equals_c ( node_type , "Unsafe" )) {
+#line 7844 "renderer.axe"
 const __list_structs__ASTNode_t* body = ast->data.unsafe_node.body;
+#line 7845 "renderer.axe"
 std__string__StringBuilder sb_unsafe = std__string__StringBuilder__init( 1024 );
 if (body != nil) {
+#line 7847 "renderer.axe"
 int32_t i_unsafe = 0;
 while (1) {
 if (i_unsafe >= len_v((*body))) {
 break;
 }
+#line 7852 "renderer.axe"
 const std__string__string child_code = renderer__generate_c( &(body->data[ i_unsafe ]) );
 gstate__debug_print_raw("\n[DBG-UNSAFE] Processing unsafe block child (index ");
 gstate__debug_print_str(renderer__int_to_ascii(i_unsafe));
@@ -20473,6 +26311,7 @@ std__string__StringBuilder__append(&sb_unsafe, child_code);
 i_unsafe++;
 }
 }
+#line 7861 "renderer.axe"
 std__string__string unsafe_result = std__string__StringBuilder__to_string( &sb_unsafe );
 std__string__StringBuilder__destroy(&sb_unsafe);
 gstate__debug_print_raw("\n[DBG-UNSAFE] Before method call transformation:");
@@ -20486,42 +26325,57 @@ gstate__debug_print_str(unsafe_result);
 return unsafe_result;
 }
 if (std__string__equals_c ( node_type , "RawC" )) {
+#line 7875 "renderer.axe"
 const std__string__string raw_code = ast->data.raw_c.code;
 gstate__debug_print_raw("\n[DBG-RAWC] RawC node emitting:");
 gstate__debug_print_str(raw_code);
+#line 7878 "renderer.axe"
 std__string__StringBuilder sb_rawc = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append(&sb_rawc, raw_code);
 std__string__StringBuilder__append_char(&sb_rawc, '\n');
 return std__string__StringBuilder__to_string( &sb_rawc );
 }
 if (std__string__equals_c ( node_type , "Model" )) {
+#line 7885 "renderer.axe"
 const std__string__string model_name = ast->data.model_node.name;
+#line 7886 "renderer.axe"
 const bool is_public = ast->data.model_node.is_public;
+#line 7887 "renderer.axe"
 const __list_std__string_t* field_names = ast->data.model_node.field_names;
+#line 7888 "renderer.axe"
 const __list_std__string_t* field_types = ast->data.model_node.field_types;
+#line 7889 "renderer.axe"
 const __list_std__string_t* union_parents = ast->data.model_node.union_member_parents;
+#line 7890 "renderer.axe"
 const __list_std__string_t* union_names = ast->data.model_node.union_member_names;
+#line 7891 "renderer.axe"
 const __list_std__string_t* union_types = ast->data.model_node.union_member_types;
 if (std__maps__StringBoolMap__contains( &g_generated_typedefs , model_name )) {
 return std__string__str( "" );
 }
+#line 7897 "renderer.axe"
 std__arena__Arena typedef_arena = std__arena__Arena__create( 1024 );
 std__maps__StringBoolMap__set(&g_generated_typedefs, &typedef_arena, model_name, true);
+#line 7901 "renderer.axe"
 std__string__StringBuilder sb = std__string__StringBuilder__init( 4096 );
 std__string__StringBuilder__append_c(&sb, "typedef struct ");
 std__string__StringBuilder__append(&sb, model_name);
 std__string__StringBuilder__append_c(&sb, " {\n");
 if (field_names != nil && field_types != nil) {
+#line 7908 "renderer.axe"
 int32_t field_idx = 0;
 while (1) {
 if (field_idx >= len_v((*field_names))) {
 break;
 }
+#line 7914 "renderer.axe"
 const std__string__string field_name = field_names->data[ field_idx ];
+#line 7915 "renderer.axe"
 const std__string__string field_type = field_types->data[ field_idx ];
 if (! std__string__equals_c ( field_type , "union" ) && ! std__string__equals_c ( field_type , "model" )) {
 renderer__validate_type_imported(field_type);
 }
+#line 7921 "renderer.axe"
 std__string__string field_key = model_name;
 field_key = std__string__concat ( field_key , std__string__str ( "." ) );
 field_key = std__string__concat ( field_key , field_name );
@@ -20540,36 +26394,50 @@ std__maps__StringBoolMap__set(&g_pointer_fields, &arena, field_key, true);
 }
 if (std__string__str_len ( field_type ) == 5 && std__string__equals_c ( field_type , "union" ) && union_parents != nil && union_names != nil && union_types != nil) {
 std__string__StringBuilder__append_c(&sb, "    union {\n");
+#line 7943 "renderer.axe"
 const __list_std__string_t up = (*union_parents);
+#line 7944 "renderer.axe"
 const __list_std__string_t un = (*union_names);
+#line 7945 "renderer.axe"
 const __list_std__string_t ut = (*union_types);
+#line 7947 "renderer.axe"
 int32_t uidx = 0;
 while (1) {
 if (uidx >= len_v(up) || uidx >= len_v(un) || uidx >= len_v(ut)) {
 break;
 }
+#line 7953 "renderer.axe"
 const std__string__string parent_name = up.data[ uidx ];
 if (std__string__compare ( parent_name , field_name ) == 0) {
+#line 7955 "renderer.axe"
 const std__string__string member_name = un.data[ uidx ];
+#line 7956 "renderer.axe"
 const std__string__string member_type_raw = ut.data[ uidx ];
 if (std__string__str_len ( member_type_raw ) == 5 && std__string__equals_c ( member_type_raw , "model" )) {
 std__string__StringBuilder__append_c(&sb, "        struct {\n");
+#line 7961 "renderer.axe"
 int32_t nidx = 0;
 while (1) {
 if (nidx >= len_v(up) || nidx >= len_v(un) || nidx >= len_v(ut)) {
 break;
 }
+#line 7967 "renderer.axe"
 const std__string__string nested_parent = up.data[ nidx ];
 if (std__string__compare ( nested_parent , member_name ) == 0) {
+#line 7969 "renderer.axe"
 const std__string__string nested_name = un.data[ nidx ];
+#line 7970 "renderer.axe"
 const std__string__string nested_type_raw = ut.data[ nidx ];
+#line 7972 "renderer.axe"
 std__string__string mapped_nested_type = renderer__map_axe_type_to_c( nested_type_raw );
+#line 7973 "renderer.axe"
 std__string__string nested_array_part = std__string__str( "" );
 if (std__string__has_suffix ( nested_type_raw , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_nested_type , std__string__str ( "*" ) )) {
 mapped_nested_type = std__string__concat ( mapped_nested_type , std__string__str ( "*" ) );
 }
 }
+#line 7981 "renderer.axe"
 const int32_t n_bracket_pos = std__string__find_char_from( mapped_nested_type , '[' , 0 );
 if (n_bracket_pos >= 0) {
 nested_array_part = std__string__substring_se ( mapped_nested_type , n_bracket_pos , std__string__str_len ( mapped_nested_type ) );
@@ -20578,6 +26446,7 @@ mapped_nested_type = std__string__substring_se ( mapped_nested_type , 0 , n_brac
 if (std__string__has_prefix ( mapped_nested_type , std__string__str ( "ref " ) )) {
 mapped_nested_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_nested_type , 4 , std__string__str_len ( mapped_nested_type ) ) ) , std__string__str ( "*" ) );
 }
+#line 7991 "renderer.axe"
 const std__string__string c_nested_model_name = renderer__canonical_model_c_name( mapped_nested_type );
 if (std__string__str_len ( c_nested_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_nested_model_name )) {
@@ -20601,13 +26470,16 @@ std__string__StringBuilder__append(&sb, member_name);
 std__string__StringBuilder__append_c(&sb, ";\n");
 }
 else {
+#line 8015 "renderer.axe"
 std__string__string mapped_member_type = renderer__map_axe_type_to_c( member_type_raw );
+#line 8016 "renderer.axe"
 std__string__string member_array_part = std__string__str( "" );
 if (std__string__has_suffix ( member_type_raw , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_member_type , std__string__str ( "*" ) )) {
 mapped_member_type = std__string__concat ( mapped_member_type , std__string__str ( "*" ) );
 }
 }
+#line 8024 "renderer.axe"
 const int32_t m_bracket_pos = std__string__find_char_from( mapped_member_type , '[' , 0 );
 if (m_bracket_pos >= 0) {
 member_array_part = std__string__substring_se ( mapped_member_type , m_bracket_pos , std__string__str_len ( mapped_member_type ) );
@@ -20616,6 +26488,7 @@ mapped_member_type = std__string__substring_se ( mapped_member_type , 0 , m_brac
 if (std__string__has_prefix ( mapped_member_type , std__string__str ( "ref " ) )) {
 mapped_member_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_member_type , 4 , std__string__str_len ( mapped_member_type ) ) ) , std__string__str ( "*" ) );
 }
+#line 8034 "renderer.axe"
 const std__string__string c_member_model_name = renderer__canonical_model_c_name( mapped_member_type );
 if (std__string__str_len ( c_member_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_member_model_name )) {
@@ -20640,13 +26513,16 @@ std__string__StringBuilder__append(&sb, field_name);
 std__string__StringBuilder__append_c(&sb, ";\n");
 }
 else {
+#line 8059 "renderer.axe"
 std__string__string mapped_type = renderer__map_axe_type_to_c( field_type );
+#line 8060 "renderer.axe"
 std__string__string array_part = std__string__str( "" );
 if (std__string__has_suffix ( field_type , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_type , std__string__str ( "*" ) )) {
 mapped_type = std__string__concat ( mapped_type , std__string__str ( "*" ) );
 }
 }
+#line 8068 "renderer.axe"
 const int32_t bracket_pos = std__string__find_char_from( mapped_type , '[' , 0 );
 if (bracket_pos >= 0) {
 array_part = std__string__substring_se ( mapped_type , bracket_pos , std__string__str_len ( mapped_type ) );
@@ -20655,6 +26531,7 @@ mapped_type = std__string__substring_se ( mapped_type , 0 , bracket_pos );
 if (std__string__has_prefix ( mapped_type , std__string__str ( "ref " ) )) {
 mapped_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_type , 4 , std__string__str_len ( mapped_type ) ) ) , std__string__str ( "*" ) );
 }
+#line 8078 "renderer.axe"
 const std__string__string c_model_name = renderer__canonical_model_c_name( mapped_type );
 if (std__string__str_len ( c_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_model_name )) {
@@ -20682,23 +26559,32 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 if (std__string__equals_c ( node_type , "Enum" )) {
+#line 8108 "renderer.axe"
 const std__string__string enum_name = ast->data.enum_node.name;
+#line 8109 "renderer.axe"
 const __list_std__string_t* enum_values = ast->data.enum_node.values;
 if (std__maps__StringBoolMap__contains( &g_generated_typedefs , enum_name )) {
 return std__string__str( "" );
 }
+#line 8115 "renderer.axe"
 std__arena__Arena enum_arena = std__arena__Arena__create( 1024 );
 std__maps__StringBoolMap__set(&g_generated_typedefs, &enum_arena, enum_name, true);
 std__maps__StringBoolMap__set(&g_enum_names, &enum_arena, enum_name, true);
+#line 8119 "renderer.axe"
 std__string__string base_enum_name = enum_name;
+#line 8120 "renderer.axe"
 int32_t last_sep_enum = - 1;
+#line 8121 "renderer.axe"
 int32_t ei = 0;
+#line 8122 "renderer.axe"
 const int32_t elen = std__string__str_len( enum_name );
 while (1) {
 if (ei + 1 >= elen) {
 break;
 }
+#line 8127 "renderer.axe"
 const char ec1 = std__string__get_char( enum_name , ei );
+#line 8128 "renderer.axe"
 const char ec2 = std__string__get_char( enum_name , ei + 1 );
 if (ec1 == '_' && ec2 == '_') {
 last_sep_enum = ei;
@@ -20712,15 +26598,19 @@ if (std__string__str_len ( base_enum_name ) > 0) {
 std__maps__StringStringMap__set(&g_model_names, &enum_arena, base_enum_name, enum_name);
 std__maps__StringBoolMap__set(&g_enum_names, &enum_arena, base_enum_name, true);
 }
+#line 8144 "renderer.axe"
 std__string__StringBuilder sb_enum = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_enum, "typedef enum {\n");
 if (enum_values != nil) {
+#line 8148 "renderer.axe"
 int32_t value_idx = 0;
+#line 8149 "renderer.axe"
 const int32_t num_values = len_v((*enum_values));
 while (1) {
 if (value_idx >= num_values) {
 break;
 }
+#line 8156 "renderer.axe"
 const std__string__string enum_value = enum_values->data[ value_idx ];
 std__string__StringBuilder__append_c(&sb_enum, "    ");
 std__string__StringBuilder__append(&sb_enum, enum_name);
@@ -20741,21 +26631,28 @@ std__string__StringBuilder__destroy(&sb_enum);
 return result;
 }
 if (std__string__equals_c ( node_type , "Extern" )) {
+#line 8182 "renderer.axe"
 const std__string__string func_name = ast->data.extern_node.function_name;
+#line 8183 "renderer.axe"
 std__arena__Arena extern_arena = std__arena__Arena__create( 2560 );
 std__maps__StringBoolMap__set(&g_generated_functions, &extern_arena, func_name, true);
 return std__string__str( "" );
 }
 if (std__string__equals_c ( node_type , "Opaque" )) {
+#line 8189 "renderer.axe"
 const __list_std__string_t* onames = ast->data.opaque_node.type_names;
 if (onames != nil) {
+#line 8191 "renderer.axe"
 std__arena__Arena arena_opaque = std__arena__Arena__create( 2560 );
+#line 8192 "renderer.axe"
 std__string__StringBuilder sb_opaque = std__string__StringBuilder__init( 512 );
+#line 8193 "renderer.axe"
 int32_t oi = 0;
 while (1) {
 if (oi >= len_v((*onames))) {
 break;
 }
+#line 8198 "renderer.axe"
 const std__string__string type_name = onames->data[ oi ];
 std__maps__StringBoolMap__set(&g_opaque_types, &arena_opaque, type_name, true);
 std__string__StringBuilder__append_c(&sb_opaque, "typedef struct ");
@@ -20770,14 +26667,18 @@ return std__string__StringBuilder__to_string( &sb_opaque );
 return result;
 }
 if (std__string__equals_c ( node_type , "Foreign" )) {
+#line 8213 "renderer.axe"
 const __list_std__string_t* fnames = ast->data.foreign_node.type_names;
 if (fnames != nil) {
+#line 8215 "renderer.axe"
 std__arena__Arena arena_foreign = std__arena__Arena__create( 2560 );
+#line 8216 "renderer.axe"
 int32_t fi = 0;
 while (1) {
 if (fi >= len_v((*fnames))) {
 break;
 }
+#line 8221 "renderer.axe"
 const std__string__string type_name = fnames->data[ fi ];
 std__maps__StringBoolMap__set(&g_foreign_types, &arena_foreign, type_name, true);
 fi++;
@@ -20786,8 +26687,11 @@ fi++;
 return std__string__str( "" );
 }
 if (std__string__equals_c ( node_type , "IncDec" )) {
+#line 8230 "renderer.axe"
 const std__string__string variable = ast->data.inc_dec.variable;
+#line 8231 "renderer.axe"
 const bool is_increment = ast->data.inc_dec.is_increment;
+#line 8233 "renderer.axe"
 std__string__StringBuilder sb_incdec = std__string__StringBuilder__init( 64 );
 std__string__StringBuilder__append(&sb_incdec, variable);
 if (is_increment) {
@@ -20800,13 +26704,20 @@ std__string__StringBuilder__append_c(&sb_incdec, ";\n");
 return std__string__StringBuilder__to_string( &sb_incdec );
 }
 if (std__string__equals_c ( node_type , "MemberIncDec" )) {
+#line 8245 "renderer.axe"
 const std__string__string object_name = ast->data.member_inc_dec.object_name;
+#line 8246 "renderer.axe"
 const std__string__string member_name = ast->data.member_inc_dec.member_name;
+#line 8247 "renderer.axe"
 const bool is_increment = ast->data.member_inc_dec.is_increment;
+#line 8248 "renderer.axe"
 std__string__string access_op = std__string__str( "." );
+#line 8249 "renderer.axe"
 const std__string__string trimmed_obj = std__string__strip( object_name );
 if (std__maps__StringStringMap__contains( &g_var_types , trimmed_obj )) {
+#line 8252 "renderer.axe"
 const std__string__string raw_type = std__maps__StringStringMap__get( &g_var_types , trimmed_obj );
+#line 8253 "renderer.axe"
 std__string__string t = std__string__strip( raw_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -20815,6 +26726,7 @@ if (std__string__has_prefix ( t , std__string__str ( "ref " ) ) || std__string__
 access_op = std__string__str ( "->" );
 }
 }
+#line 8262 "renderer.axe"
 std__string__StringBuilder sb_minc = std__string__StringBuilder__init( 128 );
 std__string__StringBuilder__append(&sb_minc, trimmed_obj);
 std__string__StringBuilder__append(&sb_minc, access_op);
@@ -20829,9 +26741,13 @@ std__string__StringBuilder__append_c(&sb_minc, ";\n");
 return std__string__StringBuilder__to_string( &sb_minc );
 }
 if (std__string__equals_c ( node_type , "PtrMemberIncDec" )) {
+#line 8276 "renderer.axe"
 const std__string__string ptr_object = ast->data.member_inc_dec.object_name;
+#line 8277 "renderer.axe"
 const std__string__string ptr_member = ast->data.member_inc_dec.member_name;
+#line 8278 "renderer.axe"
 const bool ptr_is_inc = ast->data.member_inc_dec.is_increment;
+#line 8280 "renderer.axe"
 std__string__StringBuilder sb_pinc = std__string__StringBuilder__init( 128 );
 std__string__StringBuilder__append(&sb_pinc, std__string__strip(ptr_object));
 std__string__StringBuilder__append_c(&sb_pinc, "->");
@@ -20846,15 +26762,20 @@ std__string__StringBuilder__append_c(&sb_pinc, ";\n");
 return std__string__StringBuilder__to_string( &sb_pinc );
 }
 if (std__string__equals_c ( node_type , "PtrMemberAccess" )) {
+#line 8294 "renderer.axe"
 const std__string__string ptr_obj = ast->data.member_access.object_name;
+#line 8295 "renderer.axe"
 const std__string__string ptr_memb = ast->data.member_access.member_name;
+#line 8296 "renderer.axe"
 const std__string__string ptr_val = ast->data.member_access.value;
+#line 8298 "renderer.axe"
 std__string__StringBuilder sb_ptr = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_ptr, std__string__strip(ptr_obj));
 std__string__StringBuilder__append_c(&sb_ptr, "->");
 std__string__StringBuilder__append(&sb_ptr, ptr_memb);
 if (std__string__str_len ( std__string__strip ( ptr_val ) ) > 0) {
 std__string__StringBuilder__append_c(&sb_ptr, " = ");
+#line 8305 "renderer.axe"
 const std__string__string processed_ptr_val = renderer__process_expression( ptr_val );
 std__string__StringBuilder__append(&sb_ptr, processed_ptr_val);
 }
@@ -20901,7 +26822,9 @@ __axe_argc = argc;
 __axe_argv = argv;
     signal(SIGSEGV, axe_segv_handler);
     signal(SIGABRT, axe_segv_handler);
+#line 13 "axc.axe"
 const std__arena__Arena arena = std__arena__Arena__create( 1024 );
+#line 14 "axc.axe"
 const std__lists__StringList* args = std__os__get_cmdline_args( &arena );
 if (args->len< 2) {
 std__io__println("Usage: axe <input.axe> [options]");
@@ -20929,19 +26852,26 @@ std__io__println("");
 std__io__println("Note: Cross-compiling requires the target platform's SDK and sysroot.\n");
 std__os__quit(0);
 }
+#line 43 "axc.axe"
 std__string__string source_file = std__lists__StringList__get( args , 1 );
+#line 44 "axc.axe"
 std__string__string output_filename = std__string__str( "" );
+#line 45 "axc.axe"
 const std__lists__StringList* inc_paths = std__lists__StringList__create( &arena , 16 );
+#line 46 "axc.axe"
 const std__lists__StringList* lib_paths = std__lists__StringList__create( &arena , 16 );
+#line 47 "axc.axe"
 const std__lists__StringList* link_libs = std__lists__StringList__create( &arena , 16 );
 gstate__set_include_paths(inc_paths);
 gstate__set_library_paths(lib_paths);
 gstate__set_link_libraries(link_libs);
+#line 53 "axc.axe"
 int32_t i = 2;
 while (1) {
 if (i >= args->len) {
 break;
 }
+#line 59 "axc.axe"
 const std__string__string arg = std__lists__StringList__get( args , i );
 if (std__string__equals_c ( arg , "-o" ) && i + 1 < args->len) {
 output_filename = std__lists__StringList__get( args , i + 1 );
@@ -20954,6 +26884,7 @@ i++;
 continue;
 }
 if (std__string__equals_c ( arg , "--target" ) && i + 1 < args->len) {
+#line 71 "axc.axe"
 const std__string__string target = std__lists__StringList__get( args , i + 1 );
 gstate__set_target_triple(target);
 i += 2;
@@ -20965,20 +26896,24 @@ i++;
 continue;
 }
 if (std__string__equals_c ( arg , "--sysroot" ) && i + 1 < args->len) {
+#line 82 "axc.axe"
 const std__string__string sysroot = std__lists__StringList__get( args , i + 1 );
 gstate__set_sysroot_path(sysroot);
 i += 2;
 continue;
 }
 if (std__string__has_prefix ( arg , std__string__str ( "-I" ) ) && std__string__str_len ( arg ) > 2) {
+#line 88 "axc.axe"
 const std__string__string inc_path = std__string__substring_se( arg , 2 , std__string__str_len ( arg ) );
 std__lists__StringList__push(inc_paths, &arena, inc_path);
 }
 if (std__string__has_prefix ( arg , std__string__str ( "-L" ) ) && std__string__str_len ( arg ) > 2) {
+#line 92 "axc.axe"
 const std__string__string lib_path = std__string__substring_se( arg , 2 , std__string__str_len ( arg ) );
 std__lists__StringList__push(lib_paths, &arena, lib_path);
 }
 if (std__string__has_prefix ( arg , std__string__str ( "-l" ) ) && std__string__str_len ( arg ) > 2) {
+#line 96 "axc.axe"
 const std__string__string lib_name = std__string__substring_se( arg , 2 , std__string__str_len ( arg ) );
 std__lists__StringList__push(link_libs, &arena, lib_name);
 }
@@ -21020,11 +26955,13 @@ gstate__set_quiet_mode(true);
 if (! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) ) && ! std__string__has_suffix ( source_file , std__string__str ( ".axec" ) )) {
 source_file = std__string__concat ( source_file , std__string__str ( ".axe" ) );
 }
+#line 149 "axc.axe"
 const bool is_axec = std__string__has_suffix( source_file , std__string__str ( ".axec" ) );
 if (! std__os__is_file ( source_file )) {
 std__io__println(({ size_t _axe_interp_len = 0 + sizeof("Error: File '") - 1 + 32 + sizeof("' not found") - 1; char* _axe_interp = (char*)malloc(_axe_interp_len + 1); char* _axe_interp_p = _axe_interp; memcpy(_axe_interp_p, "Error: File '", sizeof("Error: File '") - 1); _axe_interp_p += sizeof("Error: File '") - 1; { struct std__string__string _s = source_file; memcpy(_axe_interp_p, _s.data, _s.len); _axe_interp_p += _s.len; } memcpy(_axe_interp_p, "' not found", sizeof("' not found") - 1); _axe_interp_p += sizeof("' not found") - 1; *_axe_interp_p = '\0'; _axe_interp; }));
 std__os__quit(1);
 }
+#line 156 "axc.axe"
 const bool ok = builds__compile_file( source_file , is_axec , output_filename );
 std__arena__Arena__destroy(&arena);
 if (! ok) {
