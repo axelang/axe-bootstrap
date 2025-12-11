@@ -2984,7 +2984,7 @@ return lst;
 
 void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 int32_t* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(int32_t) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3043,7 +3043,7 @@ return lst;
 
 void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 float* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(float) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3102,7 +3102,7 @@ return lst;
 
 void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 char* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(char) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3161,7 +3161,7 @@ return lst;
 
 void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 int64_t* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(int64_t) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3220,7 +3220,7 @@ return lst;
 
 void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 double* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(double) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3279,7 +3279,7 @@ return lst;
 
 void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 std__string__string* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(std__string__string) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -3338,7 +3338,7 @@ return lst;
 
 void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value) {
 if (lst->len>= lst->cap) {
-const int32_t new_cap = lst->cap* 2;
+const uintptr_t new_cap = lst->cap* 2;
 bool* new_data = {0};
 new_data = std__arena__Arena__alloc_array( arena , sizeof(bool) , new_cap );
 for (int32_t i = 0; i < lst->len; i ++) {
@@ -17252,7 +17252,7 @@ std__string__StringBuilder__destroy(&sb_final);
 const std__string__string first_pass = std__string__strip( out_final );
 gstate__debug_print_raw("\nFIRST PASS:");
 gstate__debug_print_str(first_pass);
-const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "(->" ) , std__string__str ( "->" ) );
+const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
 const std__string__string addr_fixed2 = renderer__rewrite_adr( fixed );
@@ -18635,7 +18635,7 @@ i++;
 result = std__string__StringBuilder__to_string( &sb_prog );
 std__string__StringBuilder__destroy(&sb_prog);
 }
-result = std__string__replace_all ( result , std__string__str ( "(->" ) , std__string__str ( "->" ) );
+result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
 std__string__string fixed_result = std__string__str( "" );
 int32_t start_idx = 0;
 int32_t idx_line = 0;
@@ -18827,7 +18827,7 @@ if (std__string__equals_c ( node_type , "Program" )) {
 result = renderer__strip_all_c_prefixes ( result );
 result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
 result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
-result = std__string__replace_all ( result , std__string__str ( "C__" ) , std__string__str ( "" ) );
+result = std__string__replace_all ( result , std__string__str ( "" ) , std__string__str ( "" ) );
 result = renderer__collapse_duplicate_segments ( result );
 result = renderer__rewrite_method_calls ( result );
 result = renderer__rewrite_function_prefixes ( result );
