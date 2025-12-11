@@ -1232,43 +1232,43 @@ bool std__lists__char_eq(char a, char b);
 bool std__lists__bool_eq(bool a, bool b);
 std__lists__IntList* std__lists__IntList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__IntList__push(std__lists__IntList* lst, std__arena__Arena* arena, int32_t value);
-int32_t std__lists__IntList__get(std__lists__IntList* lst, int32_t index);
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index);
 void std__lists__IntList__clear(std__lists__IntList* lst);
 bool std__lists__IntList__contains(std__lists__IntList* lst, int32_t value);
 void std__lists__IntList__print_all(std__lists__IntList* lst);
 std__lists__FloatList* std__lists__FloatList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__FloatList__push(std__lists__FloatList* lst, std__arena__Arena* arena, float value);
-float std__lists__FloatList__get(std__lists__FloatList* lst, int32_t index);
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index);
 void std__lists__FloatList__clear(std__lists__FloatList* lst);
 bool std__lists__FloatList__contains(std__lists__FloatList* lst, float value);
 void std__lists__FloatList__print_all(std__lists__FloatList* lst);
 std__lists__CharList* std__lists__CharList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__CharList__push(std__lists__CharList* lst, std__arena__Arena* arena, char value);
-char std__lists__CharList__get(std__lists__CharList* lst, int32_t index);
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index);
 void std__lists__CharList__clear(std__lists__CharList* lst);
 bool std__lists__CharList__contains(std__lists__CharList* lst, char value);
 void std__lists__CharList__print_all(std__lists__CharList* lst);
 std__lists__LongList* std__lists__LongList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__LongList__push(std__lists__LongList* lst, std__arena__Arena* arena, int64_t value);
-int64_t std__lists__LongList__get(std__lists__LongList* lst, int32_t index);
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index);
 void std__lists__LongList__clear(std__lists__LongList* lst);
 bool std__lists__LongList__contains(std__lists__LongList* lst, int64_t value);
 void std__lists__LongList__print_all(std__lists__LongList* lst);
 std__lists__DoubleList* std__lists__DoubleList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__DoubleList__push(std__lists__DoubleList* lst, std__arena__Arena* arena, double value);
-double std__lists__DoubleList__get(std__lists__DoubleList* lst, int32_t index);
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index);
 void std__lists__DoubleList__clear(std__lists__DoubleList* lst);
 bool std__lists__DoubleList__contains(std__lists__DoubleList* lst, double value);
 void std__lists__DoubleList__print_all(std__lists__DoubleList* lst);
 std__lists__StringList* std__lists__StringList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__StringList__push(std__lists__StringList* lst, std__arena__Arena* arena, std__string__string value);
-std__string__string std__lists__StringList__get(std__lists__StringList* lst, int32_t index);
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index);
 void std__lists__StringList__clear(std__lists__StringList* lst);
 bool std__lists__StringList__contains(std__lists__StringList* lst, std__string__string value);
 void std__lists__StringList__print_all(std__lists__StringList* lst);
 std__lists__BoolList* std__lists__BoolList__create(std__arena__Arena* arena, uintptr_t capacity);
 void std__lists__BoolList__push(std__lists__BoolList* lst, std__arena__Arena* arena, bool value);
-bool std__lists__BoolList__get(std__lists__BoolList* lst, int32_t index);
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index);
 void std__lists__BoolList__clear(std__lists__BoolList* lst);
 bool std__lists__BoolList__contains(std__lists__BoolList* lst, bool value);
 void std__lists__BoolList__print_all(std__lists__BoolList* lst);
@@ -2997,7 +2997,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-int32_t std__lists__IntList__get(std__lists__IntList* lst, int32_t index) {
+int32_t std__lists__IntList__get(std__lists__IntList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return 0;
@@ -3056,7 +3056,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-float std__lists__FloatList__get(std__lists__FloatList* lst, int32_t index) {
+float std__lists__FloatList__get(std__lists__FloatList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return 0.0;
@@ -3115,7 +3115,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-char std__lists__CharList__get(std__lists__CharList* lst, int32_t index) {
+char std__lists__CharList__get(std__lists__CharList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return "";
@@ -3174,7 +3174,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-int64_t std__lists__LongList__get(std__lists__LongList* lst, int32_t index) {
+int64_t std__lists__LongList__get(std__lists__LongList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return 0;
@@ -3233,7 +3233,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-double std__lists__DoubleList__get(std__lists__DoubleList* lst, int32_t index) {
+double std__lists__DoubleList__get(std__lists__DoubleList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return 0.0;
@@ -3292,7 +3292,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-std__string__string std__lists__StringList__get(std__lists__StringList* lst, int32_t index) {
+std__string__string std__lists__StringList__get(std__lists__StringList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return std__string__string__create("");
@@ -3351,7 +3351,7 @@ lst->data[lst->len] = value;
 lst->len = lst->len+ 1;
 }
 
-bool std__lists__BoolList__get(std__lists__BoolList* lst, int32_t index) {
+bool std__lists__BoolList__get(std__lists__BoolList* lst, uintptr_t index) {
 if (index < 0 || index >= lst->len) {
 std__errors__panic(std__errors__error__create("Index out of bounds for list."));
 return false;
