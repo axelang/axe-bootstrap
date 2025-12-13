@@ -21,6 +21,7 @@
 #include <unistd.h>
 #ifdef __APPLE__
 #include <ctype.h>
+#include <mach-o/dyld.h> /* _NSGetExecutablePath */
 #endif
 
 static void axe_segv_handler(int sig) {
