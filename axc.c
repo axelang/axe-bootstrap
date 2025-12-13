@@ -19,6 +19,9 @@
 #include <execinfo.h>
 #include <signal.h>
 #include <unistd.h>
+#ifdef __APPLE__
+#include <ctype.h>
+#endif
 
 static void axe_segv_handler(int sig) {
     const char* name = (sig == SIGSEGV ? "SIGSEGV" : (sig == SIGABRT ? "SIGABRT" : "SIGNAL"));
