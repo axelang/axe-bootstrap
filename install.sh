@@ -12,8 +12,19 @@ STD_SRC="$TMP_DIR/axe/source/compiler/std"
 cleanup() {
     rm -rf "$TMP_DIR"
 }
-
 trap cleanup EXIT
+
+if [ -x "$AXE_ROOT/axe" ]; then
+    echo "Axe is already installed at:"
+    echo "  $AXE_ROOT"
+    echo
+    printf "Update it? [Y/N]: "
+    read ans
+    case "$ans" in
+        y|Y) echo "Updating Axe..." ;;
+        *)   echo "Aborting."; exit 0 ;;
+    esac
+fi
 
 if ! command -v clang >/dev/null 2>&1; then
     echo "clang not found, attempting to install..."
@@ -50,7 +61,6 @@ if ! command -v clang >/dev/null 2>&1; then
 fi
 
 CC=clang
-
 LIBS=""
 if command -v ldconfig >/dev/null 2>&1; then
     if ldconfig -p 2>/dev/null | grep -q libexecinfo; then
@@ -70,14 +80,10 @@ if [ ! -d "$STD_SRC" ]; then
 fi
 
 echo "Installing axe to $AXE_ROOT"
-
 sudo mkdir -p "$AXE_ROOT"
-
 sudo install -m 755 axe "$AXE_ROOT/axe"
-
 sudo mkdir -p "$AXE_ROOT/std"
 sudo cp -R "$STD_SRC/"* "$AXE_ROOT/std/"
-
 sudo ln -sf "$AXE_ROOT/axe" "$BIN_LINK"
 
 echo "Installation complete."
