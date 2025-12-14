@@ -4,7 +4,6 @@ set -e
 PREFIX=/usr/local
 AXE_ROOT="$PREFIX/lib/axe"
 BIN_LINK="$PREFIX/bin/axe"
-
 AXE_REPO="https://github.com/axelang/axe.git"
 TMP_DIR="$(mktemp -d)"
 STD_SRC="$TMP_DIR/axe/source/compiler/std"
