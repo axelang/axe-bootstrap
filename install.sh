@@ -3,23 +3,17 @@ set -e
 
 PREFIX=/usr/local
 AXE_ROOT="$PREFIX/lib/axe"
-BIN_LINK="$PREFIX/bin/axe"
 AXE_REPO="https://github.com/axelang/axe.git"
 TMP_DIR="$(mktemp -d)"
 STD_SRC="$TMP_DIR/axe/source/compiler/std"
-ENV_FILE="/etc/axe.sh"
 
 cleanup() {
     rm -rf "$TMP_DIR"
 }
-
 trap cleanup EXIT
 
 if [ -x "$AXE_ROOT/axe" ]; then
-    echo "Axe is already installed at:"
-    echo "  $AXE_ROOT"
-    echo
-    printf "Update it? [Y/N]: "
+    printf "Axe is already installed at $AXE_ROOT. Update it? [Y/N]: "
     read ans
     case "$ans" in
         y|Y) ;;
@@ -64,20 +58,29 @@ git clone --depth=1 "$AXE_REPO" "$TMP_DIR/axe"
 
 [ -d "$STD_SRC" ] || exit 1
 
-sudo mkdir -p "$AXE_ROOT"
-sudo install -m 755 axe "$AXE_ROOT/axe"
-sudo mkdir -p "$AXE_ROOT/std"
-sudo cp -R "$STD_SRC/"* "$AXE_ROOT/std/"
-sudo ln -sf "$AXE_ROOT/axe" "$BIN_LINK"
+mkdir -p "$AXE_ROOT"
+install -m 755 axe "$AXE_ROOT/axe"
+mkdir -p "$AXE_ROOT/std"
+cp -R "$STD_SRC/"* "$AXE_ROOT/std/"
 
-echo "export AXE_HOME=\"$AXE_ROOT\"" | sudo tee "$ENV_FILE" >/dev/null
-
-if ! grep -q "$ENV_FILE" /etc/profile 2>/dev/null; then
-    echo ". $ENV_FILE" | sudo tee -a /etc/profile >/dev/null
+USER_FILES="$HOME/.profile $HOME/.bashrc $HOME/.zshrc $HOME/.zprofile"
+if [ "$(uname)" = "Darwin" ]; then
+    USER_FILES="$USER_FILES $HOME/.zprofile"
 fi
 
-if [ -f /etc/zshrc ] && ! grep -q "$ENV_FILE" /etc/zshrc; then
-    echo ". $ENV_FILE" | sudo tee -a /etc/zshrc >/dev/null
-fi
+for f in $USER_FILES; do
+    if [ ! -f "$f" ]; then
+        touch "$f"
+    fi
+    if ! grep -q "export AXE_HOME=" "$f"; then
+        echo "export AXE_HOME=\"$AXE_ROOT\"" >> "$f"
+    fi
+    if ! grep -q "PATH=.*\$AXE_HOME" "$f"; then
+        echo 'export PATH="$AXE_HOME:$PATH"' >> "$f"
+    fi
+done
 
 echo "Installation complete."
+echo "Executable: $AXE_ROOT/axe"
+echo "Standard library: $AXE_ROOT/std"
+echo "AXE_HOME and PATH updated. Restart your shell."
