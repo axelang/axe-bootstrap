@@ -1,6 +1,18 @@
 #!/bin/sh
 set -e
 
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Error: This script must be run with sudo."
+    echo "Re-run with: sudo $0"
+    exit 1
+fi
+
+if ! command -v git >/dev/null 2>&1; then
+    echo "Error: git is not installed."
+    echo "Install git and re-run this script."
+    exit 1
+fi
+
 PREFIX=/usr/local
 AXE_ROOT="$PREFIX/lib/axe"
 AXE_REPO="https://github.com/axelang/axe.git"
