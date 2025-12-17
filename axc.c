@@ -1565,7 +1565,9 @@ void parser__check_null_usage(structs__ParserContext* ctx, std__string__string i
 bool parser__has_function_call_in_expression(std__string__string expr);
 std__string__string parser__extract_function_name(std__string__string expr);
 bool parser__has_pointer_syntax(std__string__string type_str);
+void parser__check_star_deref(structs__ParserContext* ctx, int32_t start_pos, int32_t end_pos);
 void parser__add_child_to_ast(structs__ASTNode* ast, structs__ASTNode child);
+void parser__validate_consecutive_operators(structs__ParserContext* ctx);
 structs__ASTNode parser__parse(__list_lexer__Token_t* tokens, bool is_axec, bool check_entry_point, std__string__string current_module, std__string__string filename);
 void parser__parse_top_level(structs__ParserContext* ctx, structs__ASTNode* ast);
 void parser__skip_whitespace(structs__ParserContext* ctx);
@@ -4703,7 +4705,7 @@ compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
 compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libpcre.a" );
 #endif
 }
-if (imports__has_imported_module ( std__string__str ( "std/net" ) ) || imports__has_imported_module ( std__string__str ( "net.axec" ) ) || std__string__find_substr ( filename , std__string__str ( "net.axec" ) ) >= 0) {
+if (imports__has_imported_module ( std__string__str ( "std/net" ) ) || imports__has_imported_module ( std__string__str ( "net.axe" ) ) || std__string__find_substr ( filename , std__string__str ( "net.axe" ) ) >= 0) {
 compile_cmd = std__string__concat_c ( compile_cmd , " -DCURL_STATICLIB -I" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
 compile_cmd = std__string__concat_c ( compile_cmd , "/external/curl/include" );
@@ -4720,7 +4722,7 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -lnormaliz -liphlpapi -lse
 compile_cmd = std__string__concat_c ( compile_cmd , " -lcurl -lz" );
 #endif
 }
-if (imports__has_imported_module ( std__string__str ( "std/json" ) ) || imports__has_imported_module ( std__string__str ( "json.axec" ) ) || std__string__find_substr ( filename , std__string__str ( "json.axec" ) ) >= 0) {
+if (imports__has_imported_module ( std__string__str ( "std/json" ) ) || imports__has_imported_module ( std__string__str ( "json.axe" ) ) || std__string__find_substr ( filename , std__string__str ( "json.axe" ) ) >= 0) {
 compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
 compile_cmd = std__string__concat_c ( compile_cmd , "/external/yyjson/include" );
@@ -4884,7 +4886,7 @@ return result;
 }
 
 bool builds__should_link_openmp(structs__ASTNode* ast, std__string__string filename) {
-if (std__string__has_suffix ( filename , std__string__str ( "parallelism.axec" ) )) {
+if (std__string__has_suffix ( filename , std__string__str ( "parallelism.axe" ) )) {
 return true;
 }
 if (builds__has_parallel_blocks ( ast )) {
@@ -8259,6 +8261,49 @@ i++;
 return false;
 }
 
+void parser__check_star_deref(structs__ParserContext* ctx, int32_t start_pos, int32_t end_pos) {
+int32_t prev_sig = - 1;
+int32_t i = start_pos;
+while (1) {
+if (i >= end_pos) {
+break;
+}
+const lexer__Token t = ctx->tokens->data[ i ];
+if (t.token_type== lexer__TokenType_WHITESPACE|| t.token_type== lexer__TokenType_NEWLINE) {
+i = i + 1;
+continue;
+}
+if (t.token_type== lexer__TokenType_STAR) {
+int32_t j = i + 1;
+lexer__Token next_t = {0};
+while (1) {
+if (j >= end_pos) {
+break;
+}
+next_t = ctx->tokens->data[ j ];
+if (next_t.token_type== lexer__TokenType_WHITESPACE|| next_t.token_type== lexer__TokenType_NEWLINE) {
+j = j + 1;
+continue;
+}
+break;
+}
+if (j < end_pos && next_t.token_type== lexer__TokenType_IDENTIFIER) {
+if (! ( prev_sig == lexer__TokenType_IDENTIFIER|| prev_sig == lexer__TokenType_NUMBER|| prev_sig == lexer__TokenType_CHAR|| prev_sig == lexer__TokenType_STR|| prev_sig == lexer__TokenType_RPAREN|| prev_sig == lexer__TokenType_RBRACKET)) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(parser__current_line(ctx)));
+std__io__println(": error: C-style dereference '*var' is not allowed. Use deref(var) instead.");
+std__os__quit(1);
+}
+}
+}
+if (t.token_type!= lexer__TokenType_WHITESPACE&& t.token_type!= lexer__TokenType_NEWLINE) {
+prev_sig = t.token_type;
+}
+i++;
+}
+}
+
 void parser__add_child_to_ast(structs__ASTNode* ast, structs__ASTNode child) {
 if (ast->children== nil) {
 __list_structs__ASTNode_t new_list = {0};
@@ -8275,6 +8320,25 @@ const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
 memcpy(&temp_list, ast->children, list_size);
 __list_structs__ASTNode_push(&temp_list, child);
 memcpy(ast->children, &temp_list, list_size);
+}
+}
+
+void parser__validate_consecutive_operators(structs__ParserContext* ctx) {
+if (ctx->pos+ 1 < len_ptr(ctx->tokens)) {
+const lexer__Token current_token = ctx->tokens->data[ ctx->pos];
+const lexer__Token next_token = ctx->tokens->data[ ctx->pos+ 1 ];
+if (current_token.token_type== lexer__TokenType_OPERATOR&& next_token.token_type== lexer__TokenType_OPERATOR) {
+if (std__string__equals_c ( current_token.value, "&" ) && std__string__equals_c ( next_token.value, "&" )) {
+const std__string__string err = parser__format_error( ctx , std__string__str ( "&& operator is not allowed, use 'and' instead" ) );
+std__errors__enforce_raw(false, err.data);
+std__os__quit(1);
+}
+else if (std__string__equals_c ( current_token.value, "|" ) && std__string__equals_c ( next_token.value, "|" )) {
+const std__string__string err = parser__format_error( ctx , std__string__str ( "|| operator is not allowed, use 'or' instead" ) );
+std__errors__enforce_raw(false, err.data);
+std__os__quit(1);
+}
+}
 }
 }
 
@@ -10377,12 +10441,14 @@ if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 has_parens = true;
 parser__consume(ctx);
 }
+const int32_t condition_start = ctx->pos;
 std__string__string condition = std__string__str( "" );
 int32_t paren_depth = 0;
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+parser__validate_consecutive_operators(ctx);
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LPAREN) {
 paren_depth = paren_depth + 1;
@@ -10418,6 +10484,7 @@ condition = std__string__concat ( condition , std__string__str ( " " ) );
 }
 parser__consume(ctx);
 }
+parser__check_star_deref(ctx, condition_start, ctx->pos);
 condition = parser__expand_macros_in_expression ( condition );
 if (! parser__expect ( ctx , lexer__TokenType_COMMA)) {
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected ',' after assert condition" ) );
@@ -10464,11 +10531,13 @@ if (token_type == lexer__TokenType_RETURN) {
 const int32_t return_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t return_start = ctx->pos;
 std__string__string expr = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+parser__validate_consecutive_operators(ctx);
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 break;
@@ -10505,6 +10574,7 @@ std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+parser__check_star_deref(ctx, return_start, ctx->pos);
 expr = parser__expand_macros_in_expression ( expr );
 node.node_type = std__string__str ( "Return" );
 node.line = return_line;
@@ -10625,6 +10695,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+parser__validate_consecutive_operators(ctx);
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -10711,6 +10782,7 @@ while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
+parser__validate_consecutive_operators(ctx);
 const lexer__Token t_el = parser__peek( ctx );
 if (t_el.token_type== lexer__TokenType_LBRACE) {
 break;
@@ -11226,6 +11298,7 @@ const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t initializer_start = ctx->pos;
 lexer__Token first_non_ws_token = {0};
 int32_t non_ws_count = 0;
 bool found_semicolon = false;
@@ -11274,6 +11347,7 @@ std__string__string err = parser__format_error( ctx , std__string__str ( "Expect
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+parser__check_star_deref(ctx, initializer_start, ctx->pos);
 initializer = parser__expand_macros_in_expression ( initializer );
 if (! has_explicit_type) {
 if (non_ws_count == 1) {
@@ -11378,6 +11452,7 @@ const lexer__Token op_token = parser__peek( ctx );
 if (std__string__equals_c ( op_token.value, "=" )) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t initializer_start_mut = ctx->pos;
 lexer__Token first_non_ws_token_mut = {0};
 int32_t non_ws_count_mut = 0;
 bool found_semicolon_mut = false;
@@ -11426,6 +11501,7 @@ std__string__string err = parser__format_error( ctx , std__string__str ( "Expect
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+parser__check_star_deref(ctx, initializer_start_mut, ctx->pos);
 initializer = parser__expand_macros_in_expression ( initializer );
 if (! has_explicit_type_mut) {
 if (non_ws_count_mut == 1) {
@@ -11696,6 +11772,7 @@ const lexer__Token next_token = parser__peek( ctx );
 if (next_token.token_type== lexer__TokenType_LPAREN) {
 parser__consume(ctx);
 int32_t paren_depth = 1;
+const int32_t args_start = ctx->pos;
 std__string__string args_str = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -11736,6 +11813,7 @@ args_str = std__string__concat ( args_str , t.value);
 parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
+parser__check_star_deref(ctx, args_start, ctx->pos);
 parser__scan_expression_for_addr(args_str);
 parser__scan_expression_for_c_calls(args_str, ctx);
 parser__scan_expression_for_usage(args_str);
@@ -11750,6 +11828,7 @@ is_assignment = true;
 if (is_assignment) {
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t value_start = ctx->pos;
 std__string__string value_str = std__string__str( "" );
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
@@ -11786,6 +11865,7 @@ std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+parser__check_star_deref(ctx, value_start, ctx->pos);
 value_str = parser__expand_macros_in_expression ( value_str );
 std__string__string left_side = std__string__concat( ident_name , std__string__str ( "(" ) );
 left_side = std__string__concat ( left_side , std__string__strip ( args_str ) );
@@ -12278,6 +12358,7 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t value_start = ctx->pos;
 std__string__string value_expr = std__string__str( "" );
 bool found_semicolon_member = false;
 while (1) {
@@ -12316,6 +12397,7 @@ std__string__string err = parser__format_error( ctx , std__string__str ( "Expect
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+parser__check_star_deref(ctx, value_start, ctx->pos);
 node.node_type = std__string__str ( "MemberAccess" );
 node.data.member_access.object_name = ident_name;
 node.data.member_access.member_name = member_name;
@@ -12620,6 +12702,7 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t compound_start = ctx->pos;
 std__string__string expr = std__string__str( "" );
 bool found_semicolon_compound = false;
 while (1) {
@@ -12658,6 +12741,7 @@ std__string__string err = parser__format_error( ctx , std__string__str ( "Expect
 std__errors__enforce_raw(false, err.data);
 return node;
 }
+parser__check_star_deref(ctx, compound_start, ctx->pos);
 expr = parser__expand_macros_in_expression ( expr );
 parser__scan_expression_for_addr(expr);
 parser__scan_expression_for_c_calls(expr, ctx);
@@ -12689,6 +12773,7 @@ return node;
 }
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
+const int32_t assign_start = ctx->pos;
 std__string__string expr = std__string__str( "" );
 bool found_semicolon_assign = false;
 while (1) {
@@ -12696,6 +12781,7 @@ if (ctx->pos>= len_ptr(ctx->tokens)) {
 gstate__debug_print_raw("\n[DEBUG]   reached end of tokens while collecting RHS");
 break;
 }
+parser__validate_consecutive_operators(ctx);
 const lexer__Token t = parser__peek( ctx );
 if (t.token_type== lexer__TokenType_SEMICOLON) {
 gstate__debug_print_raw("\n[DEBUG]   encountered ';' terminating RHS");
@@ -12744,6 +12830,7 @@ return node;
 }
 gstate__debug_print_raw("\n[DEBUG]   final RHS expr:");
 gstate__debug_print_str(expr);
+parser__check_star_deref(ctx, assign_start, ctx->pos);
 expr = parser__expand_macros_in_expression ( expr );
 std__string__string trimmed_assign = std__string__strip( expr );
 const std__string__string prefix_fix = std__string__str( "_state = " );
@@ -13314,72 +13401,10 @@ node.data.unsafe_node.body = heap_body;
 return node;
 }
 if (token_type == lexer__TokenType_RAW) {
-if (! ctx->is_axec) {
-std__string__string err = parser__format_error( ctx , std__string__str ( "Raw C blocks are only allowed in .axec files" ) );
-std__errors__enforce_raw(false, err.data);
-return node;
-}
-g_function_has_raw_block = true;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
-if (! parser__expect ( ctx , lexer__TokenType_LBRACE)) {
-std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '{' after 'raw'" ) );
-std__errors__enforce_raw(false, err.data);
-return node;
-}
-parser__consume(ctx);
-std__string__string raw_code = std__string__str( "" );
-int32_t depth = 1;
-while (1) {
-if (ctx->pos>= len_ptr(ctx->tokens)) {
-std__string__string err = parser__format_error( ctx , std__string__str ( "Unexpected end of tokens in raw block" ) );
-std__errors__enforce_raw(false, err.data);
-return node;
-}
-const lexer__Token t = parser__peek( ctx );
-if (t.token_type== lexer__TokenType_LBRACE) {
-raw_code = std__string__concat ( raw_code , std__string__str ( "{" ) );
-depth = depth + 1;
-parser__consume(ctx);
-continue;
-}
-else if (t.token_type== lexer__TokenType_RBRACE) {
-depth = depth - 1;
-if (depth == 0) {
-break;
-}
-else {
-raw_code = std__string__concat ( raw_code , std__string__str ( "}" ) );
-parser__consume(ctx);
-continue;
-}
-}
-if (t.token_type== lexer__TokenType_NEWLINE) {
-raw_code = std__string__concat ( raw_code , std__string__str ( "\n" ) );
-}
-else if (t.token_type== lexer__TokenType_STR) {
-raw_code = std__string__concat ( raw_code , std__string__str ( "\"" ) );
-raw_code = std__string__concat ( raw_code , t.value);
-raw_code = std__string__concat ( raw_code , std__string__str ( "\"" ) );
-}
-else if (t.token_type== lexer__TokenType_CHAR) {
-raw_code = std__string__concat ( raw_code , std__string__str ( "'" ) );
-raw_code = std__string__concat ( raw_code , t.value);
-raw_code = std__string__concat ( raw_code , std__string__str ( "'" ) );
-}
-else {
-raw_code = std__string__concat ( raw_code , t.value);
-}
-parser__consume(ctx);
-}
-if (! parser__expect ( ctx , lexer__TokenType_RBRACE)) {
-std__string__string err = parser__format_error( ctx , std__string__str ( "Expected '}' after raw block body" ) );
-std__errors__enforce_raw(false, err.data);
-return node;
-}
-parser__consume(ctx);
-node.node_type = std__string__str ( "RawC" );
-node.data.raw_c.code = raw_code;
+std__string__string msg = std__string__str( "raw { } blocks are deprecated, use the FFI or external C files instead." );
+std__errors__enforce_raw(false, parser__format_error(ctx, msg).data);
 return node;
 }
 if (token_type == lexer__TokenType_OPAQUE) {
@@ -13684,6 +13709,17 @@ parser__consume(ctx);
 node.node_type = std__string__str ( "Use" );
 node.data.use_node.module_name = module_name;
 node.data.use_node.import_all = true;
+if (std__maps__StringBoolMap__contains( &g_imported_modules , module_name )) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(token.line));
+std__io__print(": error: duplicate use statement for '");
+std__io__print(module_name);
+std__io__println("'.");
+std__os__quit(1);
+}
+std__arena__Arena arena = std__arena__Arena__create( 256 );
+std__maps__StringBoolMap__set(&g_imported_modules, &arena, module_name, true);
 return node;
 }
 if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
@@ -13731,6 +13767,17 @@ if (heap_list != nil) {
 memcpy(heap_list, &imports, list_size);
 node.data.use_node.imports = heap_list;
 }
+if (std__maps__StringBoolMap__contains( &g_imported_modules , module_name )) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(token.line));
+std__io__print(": error: duplicate use statement for '");
+std__io__print(module_name);
+std__io__println("'.");
+std__os__quit(1);
+}
+std__arena__Arena arena2 = std__arena__Arena__create( 256 );
+std__maps__StringBoolMap__set(&g_imported_modules, &arena2, module_name, true);
 node.data.use_node.import_all = false;
 return node;
 }
@@ -13958,7 +14005,7 @@ path_rest = std__string__concat ( path_rest , tmp );
 }
 i++;
 }
-const std__string__string rel = std__string__concat( path_rest , std__string__str ( ".axec" ) );
+const std__string__string rel = std__string__concat( path_rest , std__string__str ( ".axe" ) );
 const std__string__string axe_home = std__os__get_env( std__string__str ( "AXE_HOME" ) );
 if (std__string__str_len ( axe_home ) > 0) {
 const std__string__string axe_home_std = imports__join_path( axe_home , std__string__str ( "std" ) );
@@ -14528,11 +14575,11 @@ i++;
 
 structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name) {
 if (! std__string__equals_c ( ast->node_type, "Program" )) {
-return * ast;
+return (*ast);
 }
 if (std__string__str_len ( current_file ) > 0) {
 if (imports__is_module_processed ( current_file )) {
-return * ast;
+return (*ast);
 }
 imports__add_processed_module(current_file);
 }
@@ -14546,7 +14593,7 @@ effective_base = std__string__str ( "." );
 }
 }
 if (ast->children== nil) {
-return * ast;
+return (*ast);
 }
 const __list_structs__ASTNode_t* program_children = ast->children;
 int32_t idx = 0;
@@ -14567,13 +14614,13 @@ const __list_lexer__Token_t toks = lexer__lex( src );
 bool import_is_axec = false;
 if (std__string__str_len ( module_path ) >= 5) {
 const std__string__string ext = std__string__substring_se( module_path , (int32_t)( std__string__str_len ( module_path ) - 5 ) , (int32_t)( std__string__str_len ( module_path ) ) );
-if (std__string__equals_c ( ext , ".axec" )) {
+if (std__string__equals_c ( ext , ".axe" )) {
 import_is_axec = true;
 }
 }
 structs__ASTNode import_ast = parser__parse( &toks , import_is_axec , false , use_mod , module_path );
 const std__string__string import_base = imports__get_dir_from_path( module_path );
-if (! child.data.use_node.import_all& & child.data.use_node.imports!= nil) {
+if (! child.data.use_node.import_all&& child.data.use_node.imports!= nil) {
 const __list_structs__ASTNode_t* import_children = import_ast.children;
 if (import_children != nil) {
 int32_t j = 0;
@@ -14658,7 +14705,7 @@ imports__merge_imported_module(ast, &import_ast, use_mod);
 }
 idx++;
 }
-return * ast;
+return (*ast);
 }
 
 #ifdef _WIN32
@@ -15091,9 +15138,55 @@ if (br_sq > 0) {
 const int32_t br_sq_end = std__string__find_char_from( func_name , ']' , (uintptr_t)( br_sq ) );
 if (br_sq_end > br_sq) {
 const std__string__string base_fn = std__string__strip( std__string__substring_se ( func_name , 0 , br_sq ) );
-const std__string__string type_arg = std__string__strip( std__string__substring_se ( func_name , br_sq + 1 , br_sq_end ) );
-std__string__string mangled = std__string__concat( base_fn , std__string__str ( "__T_" ) );
-mangled = std__string__concat ( mangled , type_arg );
+const std__string__string type_arg_raw = std__string__strip( std__string__substring_se ( func_name , br_sq + 1 , br_sq_end ) );
+std__string__string mangled = base_fn;
+__list_std__string_t parts = {0};
+std__string__StringBuilder sbt = std__string__StringBuilder__init( 64 );
+int32_t pi = 0;
+while (1) {
+if (pi >= std__string__str_len ( type_arg_raw )) {
+break;
+}
+const char chp = std__string__get_char( type_arg_raw , pi );
+if (chp == ',') {
+__list_std__string_push(&parts, std__string__strip(std__string__StringBuilder__to_string(&sbt)));
+sbt = std__string__StringBuilder__init( 64 );
+}
+else {
+std__string__StringBuilder__append_char(&sbt, chp);
+}
+pi++;
+}
+const std__string__string lastp = std__string__StringBuilder__to_string( &sbt );
+if (std__string__str_len ( std__string__strip ( lastp ) ) > 0) {
+__list_std__string_push(&parts, std__string__strip(lastp));
+}
+std__string__StringBuilder__destroy(&sbt);
+if (len_v(parts) == 1) {
+mangled = std__string__concat ( mangled , std__string__str ( "__T_" ) );
+mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( parts.data[ 0 ]) );
+}
+else if (len_v(parts) == 2) {
+mangled = std__string__concat ( mangled , std__string__str ( "__T2_" ) );
+mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( parts.data[ 1 ]) );
+mangled = std__string__concat ( mangled , std__string__str ( "__T_" ) );
+mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( parts.data[ 0 ]) );
+}
+else {
+bool first = true;
+int32_t idxp = 0;
+while (1) {
+if (idxp >= len_v(parts)) {
+break;
+}
+if (! first) {
+mangled = std__string__concat ( mangled , std__string__str ( "__" ) );
+}
+mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( parts.data[ idxp ]) );
+first = false;
+idxp++;
+}
+}
 lookup_name = mangled;
 }
 }
@@ -15122,6 +15215,18 @@ return ;
 }
 if (renderer__is_builtin_function ( func_name )) {
 return ;
+}
+if (std__string__find_char_from ( func_name , '"' , (uintptr_t)( 0 ) ) >= 0 || std__string__find_char_from ( func_name , ',' , (uintptr_t)( 0 ) ) >= 0) {
+return ;
+}
+if (std__string__find_char_from ( func_name , '&' , (uintptr_t)( 0 ) ) >= 0) {
+return ;
+}
+if (std__string__has_suffix ( func_name , std__string__str ( "]" ) ) && std__string__find_char_from ( func_name , '[' , (uintptr_t)( 0 ) ) < 0) {
+const std__string__string maybe_type = std__string__strip( std__string__replace_all ( func_name , std__string__str ( "]" ) , std__string__str ( "" ) ) );
+if (std__string__str_len ( maybe_type ) > 0 && ( renderer__is_builtin_type ( maybe_type ) || std__maps__StringStringMap__contains( &g_model_names , maybe_type ) || imports__is_symbol_imported ( maybe_type ) )) {
+return ;
+}
 }
 __list_std__string_t arg_list = {0};
 std__string__StringBuilder sb_arg = std__string__StringBuilder__init( 256 );
@@ -15192,6 +15297,63 @@ arg_idx_nested++;
 std__string__string lookup_name = func_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
+}
+const int32_t br_sq_v = std__string__find_char_from( func_name , '[' , (uintptr_t)( 0 ) );
+if (br_sq_v > 0) {
+const int32_t br_sq_end_v = std__string__find_char_from( func_name , ']' , (uintptr_t)( br_sq_v ) );
+if (br_sq_end_v > br_sq_v) {
+const std__string__string base_fn_v = std__string__strip( std__string__substring_se ( func_name , 0 , br_sq_v ) );
+const std__string__string type_arg_raw_v = std__string__strip( std__string__substring_se ( func_name , br_sq_v + 1 , br_sq_end_v ) );
+std__string__string mangled_v = base_fn_v;
+__list_std__string_t parts_v = {0};
+std__string__StringBuilder sbtv = std__string__StringBuilder__init( 64 );
+int32_t pvi = 0;
+while (1) {
+if (pvi >= std__string__str_len ( type_arg_raw_v )) {
+break;
+}
+const char chp_v = std__string__get_char( type_arg_raw_v , pvi );
+if (chp_v == ',') {
+__list_std__string_push(&parts_v, std__string__strip(std__string__StringBuilder__to_string(&sbtv)));
+sbtv = std__string__StringBuilder__init( 64 );
+}
+else {
+std__string__StringBuilder__append_char(&sbtv, chp_v);
+}
+pvi++;
+}
+const std__string__string lastpv = std__string__StringBuilder__to_string( &sbtv );
+if (std__string__str_len ( std__string__strip ( lastpv ) ) > 0) {
+__list_std__string_push(&parts_v, std__string__strip(lastpv));
+}
+std__string__StringBuilder__destroy(&sbtv);
+if (len_v(parts_v) == 1) {
+mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T_" ) );
+mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( parts_v.data[ 0 ]) );
+}
+else if (len_v(parts_v) == 2) {
+mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T2_" ) );
+mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( parts_v.data[ 1 ]) );
+mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T_" ) );
+mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( parts_v.data[ 0 ]) );
+}
+else {
+bool first_v = true;
+int32_t idxpv = 0;
+while (1) {
+if (idxpv >= len_v(parts_v)) {
+break;
+}
+if (! first_v) {
+mangled_v = std__string__concat ( mangled_v , std__string__str ( "__" ) );
+}
+mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( parts_v.data[ idxpv ]) );
+first_v = false;
+idxpv++;
+}
+}
+lookup_name = mangled_v;
+}
 }
 if (std__string__has_prefix ( func_name , std__string__str ( "cast" ) )) {
 return ;
@@ -16018,6 +16180,44 @@ return std__string__str( "" );
 
 std__string__string renderer__map_axe_type_to_c(std__string__string axe_type) {
 std__string__string result = axe_type;
+if (std__string__find_char_from ( result , '$' , (uintptr_t)( 0 ) ) >= 0) {
+std__string__StringBuilder out_sb = std__string__StringBuilder__init( std__string__str_len ( result ) + 32 );
+int32_t i = 0;
+const int32_t n = (int32_t)( std__string__str_len ( result ) );
+while (1) {
+if (i >= n) {
+break;
+}
+const char ch = std__string__get_char( result , i );
+if (ch == '$' && i + 1 < n && std__string__get_char ( result , i + 1 ) == '(') {
+int32_t j = i + 2;
+std__string__StringBuilder ident_sb = std__string__StringBuilder__init( 32 );
+while (1) {
+if (j >= n) {
+break;
+}
+const char cj = std__string__get_char( result , j );
+if (cj == ')') {
+break;
+}
+std__string__StringBuilder__append_char(&ident_sb, cj);
+j++;
+}
+const std__string__string ident = std__string__strip( std__string__StringBuilder__to_string( &ident_sb ) );
+std__string__StringBuilder__destroy(&ident_sb);
+if (std__string__str_len ( ident ) > 0) {
+std__string__StringBuilder__append(&out_sb, std__string__str("struct "));
+std__string__StringBuilder__append(&out_sb, ident);
+}
+i = j + 1;
+continue;
+}
+std__string__StringBuilder__append_char(&out_sb, ch);
+i++;
+}
+result = std__string__StringBuilder__to_string( &out_sb );
+std__string__StringBuilder__destroy(&out_sb);
+}
 if (std__string__has_prefix ( result , std__string__str ( "mut " ) )) {
 result = std__string__strip ( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
 return renderer__map_axe_type_to_c( result );
@@ -16540,7 +16740,7 @@ k = k + 1;
 }
 }
 const int32_t type_end = k;
-const std__string__string type_arg = std__string__strip( std__string__substring_se ( expr , type_start , type_end ) );
+const std__string__string type_arg_raw = std__string__strip( std__string__substring_se ( expr , type_start , type_end ) );
 if (k < expr_len && std__string__get_char ( expr , k ) == ']') {
 k = k + 1;
 while (1) {
@@ -16558,9 +16758,78 @@ std__string__string base_ident = ident;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , ident )) {
 base_ident = std__maps__StringStringMap__get( &g_function_prefixes , ident );
 }
+__list_std__string_t parts = {0};
+std__string__StringBuilder sbt = std__string__StringBuilder__init( 64 );
+int32_t pidx = 0;
+int32_t depth_p = 0;
+bool in_p_str = false;
+bool in_p_char = false;
+while (1) {
+if (pidx >= std__string__str_len ( type_arg_raw )) {
+break;
+}
+const char pc = std__string__get_char( type_arg_raw , pidx );
+if (pc == '"' && ! in_p_char && ! renderer__is_escaped_quote ( type_arg_raw , pidx )) {
+in_p_str = ! in_p_str;
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+else if (pc == '\'' && ! in_p_str && ! renderer__is_escaped_quote ( type_arg_raw , pidx )) {
+in_p_char = ! in_p_char;
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+else if (! in_p_str && ! in_p_char) {
+if (pc == '(') {
+depth_p = depth_p + 1;
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+else if (pc == ')') {
+depth_p = depth_p - 1;
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+else if (pc == ',' && depth_p == 0) {
+__list_std__string_push(&parts, std__string__strip(std__string__StringBuilder__to_string(&sbt)));
+sbt = std__string__StringBuilder__init( 64 );
+}
+else {
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+}
+else {
+std__string__StringBuilder__append_char(&sbt, pc);
+}
+pidx++;
+}
+const std__string__string lastp = std__string__StringBuilder__to_string( &sbt );
+if (std__string__str_len ( std__string__strip ( lastp ) ) > 0) {
+__list_std__string_push(&parts, std__string__strip(lastp));
+}
+std__string__StringBuilder__destroy(&sbt);
 std__string__StringBuilder__append(&sb, base_ident);
+if (len_v(parts) == 1) {
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(type_arg));
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(parts.data[0]));
+}
+else if (len_v(parts) == 2) {
+std__string__StringBuilder__append_c(&sb, "__T2_");
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(parts.data[1]));
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(parts.data[0]));
+}
+else {
+bool first_p = true;
+int32_t ip = 0;
+while (1) {
+if (ip >= len_v(parts)) {
+break;
+}
+if (! first_p) {
+std__string__StringBuilder__append_c(&sb, "__");
+}
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(parts.data[ip]));
+first_p = false;
+ip++;
+}
+}
 i = k;
 continue;
 }
@@ -16854,75 +17123,112 @@ renderer__validate_function_call(ident, std__string__str(""), 0);
 }
 }
 if (is_generic_match) {
-int32_t arg_start = k + 1;
+const int32_t args_paren_start = k;
+int32_t v_paren_depth = 0;
+bool v_in_str = false;
+bool v_in_char = false;
+int32_t v_end_idx = - 1;
+int32_t vpos = args_paren_start;
 while (1) {
-if (arg_start >= expr_len) {
+if (vpos >= expr_len) {
 break;
 }
-const char wc = std__string__get_char( expr , arg_start );
-if (wc != ' ' && wc != '\t' && wc != '\n') {
+const char vc = std__string__get_char( expr , vpos );
+if (vc == '"' && ! v_in_char && ! renderer__is_escaped_quote ( expr , vpos )) {
+v_in_str = ! v_in_str;
+}
+else if (vc == '\'' && ! v_in_str && ! renderer__is_escaped_quote ( expr , vpos )) {
+v_in_char = ! v_in_char;
+}
+else if (! v_in_str && ! v_in_char) {
+if (vc == '(') {
+v_paren_depth = v_paren_depth + 1;
+}
+else if (vc == ')') {
+v_paren_depth = v_paren_depth - 1;
+if (v_paren_depth == 0) {
+v_end_idx = vpos;
 break;
 }
-arg_start++;
 }
-std__string__string inferred_type = std__string__str( "" );
-if (arg_start < expr_len) {
-const char first_ch = std__string__get_char( expr , arg_start );
-if (first_ch == '"') {
-inferred_type = std__string__str ( "ref char" );
 }
-else if (first_ch == '-' || ( first_ch >= '0' && first_ch <= '9' )) {
-bool has_decimal = false;
-int32_t scan_pos = arg_start;
+vpos++;
+}
+if (v_end_idx > args_paren_start) {
+const std__string__string raw_args = std__string__strip( std__string__substring_se ( expr , args_paren_start + 1 , v_end_idx ) );
+__list_std__string_t arg_parts = {0};
+std__string__StringBuilder sbp = std__string__StringBuilder__init( 256 );
+int32_t depth_p = 0;
+bool in_sbp_str = false;
+bool in_sbp_char = false;
+int32_t pi2 = 0;
 while (1) {
-if (scan_pos >= expr_len) {
+if (pi2 >= std__string__str_len ( raw_args )) {
 break;
 }
-const char sc = std__string__get_char( expr , scan_pos );
-if (sc == '.') {
-has_decimal = true;
-break;
+const char cc = std__string__get_char( raw_args , pi2 );
+if (cc == '"' && ! in_sbp_char && ! renderer__is_escaped_quote ( raw_args , pi2 )) {
+in_sbp_str = ! in_sbp_str;
+std__string__StringBuilder__append_char(&sbp, cc);
 }
-if (sc == ',' || sc == ')' || sc == ' ' || sc == '\t') {
-break;
+else if (cc == '\'' && ! in_sbp_str && ! renderer__is_escaped_quote ( raw_args , pi2 )) {
+in_sbp_char = ! in_sbp_char;
+std__string__StringBuilder__append_char(&sbp, cc);
 }
-scan_pos++;
+else if (! in_sbp_str && ! in_sbp_char) {
+if (cc == '(') {
+depth_p = depth_p + 1;
+std__string__StringBuilder__append_char(&sbp, cc);
 }
-if (has_decimal) {
-inferred_type = std__string__str ( "f32" );
+else if (cc == ')') {
+depth_p = depth_p - 1;
+std__string__StringBuilder__append_char(&sbp, cc);
+}
+else if (cc == ',' && depth_p == 0) {
+__list_std__string_push(&arg_parts, std__string__strip(std__string__StringBuilder__to_string(&sbp)));
+sbp = std__string__StringBuilder__init( 256 );
 }
 else {
-inferred_type = std__string__str ( "i32" );
+std__string__StringBuilder__append_char(&sbp, cc);
 }
 }
-else if (renderer__is_ident_start ( first_ch )) {
-int32_t var_end = arg_start;
-while (1) {
-if (var_end >= expr_len) {
-break;
+else {
+std__string__StringBuilder__append_char(&sbp, cc);
 }
-const char vc = std__string__get_char( expr , var_end );
-if (! renderer__is_token_char ( vc )) {
-break;
+pi2++;
 }
-var_end++;
+const std__string__string lastp2 = std__string__StringBuilder__to_string( &sbp );
+if (std__string__str_len ( std__string__strip ( lastp2 ) ) > 0) {
+__list_std__string_push(&arg_parts, std__string__strip(lastp2));
 }
-const std__string__string arg_var_name = std__string__substring_se( expr , arg_start , var_end );
-if (std__maps__StringStringMap__contains( &g_var_types , arg_var_name )) {
-inferred_type = std__maps__StringStringMap__get( &g_var_types , arg_var_name );
+std__string__StringBuilder__destroy(&sbp);
+std__string__string type1 = std__string__str( "" );
+std__string__string type2 = std__string__str( "" );
+if (len_v(arg_parts) > 0) {
+type1 = renderer__infer_expression_type ( arg_parts.data[ 0 ]);
 }
+if (len_v(arg_parts) > 1) {
+type2 = renderer__infer_expression_type ( arg_parts.data[ 1 ]);
 }
-}
-if (std__string__str_len ( inferred_type ) > 0) {
+if (std__string__str_len ( type1 ) > 0 || std__string__str_len ( type2 ) > 0) {
 std__string__string base_ident2 = ident;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , ident )) {
 base_ident2 = std__maps__StringStringMap__get( &g_function_prefixes , ident );
 }
 std__string__StringBuilder__append(&sb, base_ident2);
+if (std__string__str_len ( type2 ) > 0 && std__string__str_len ( type1 ) > 0) {
+std__string__StringBuilder__append_c(&sb, "__T2_");
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(type2));
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(inferred_type));
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(type1));
+}
+else if (std__string__str_len ( type1 ) > 0) {
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(type1));
+}
 i = k;
 continue;
+}
 }
 }
 }
@@ -22759,6 +23065,44 @@ std__string__string emitted_name = func_name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 emitted_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
 }
+if (call_args != nil && len_v((*call_args)) > 0) {
+bool is_generic_em = std__maps__StringBoolMap__contains( &g_generic_functions , emitted_name );
+if (! is_generic_em) {
+if (std__maps__StringBoolMap__contains( &g_generic_functions , func_name )) {
+is_generic_em = true;
+}
+else if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
+const std__string__string pref_fn = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
+if (std__maps__StringBoolMap__contains( &g_generic_functions , pref_fn )) {
+is_generic_em = true;
+}
+}
+}
+if (is_generic_em && std__string__find_substr ( emitted_name , std__string__str ( "__T_" ) ) < 0 && std__string__find_substr ( emitted_name , std__string__str ( "__T2_" ) ) < 0) {
+std__string__string inferred1 = std__string__str( "" );
+std__string__string inferred2 = std__string__str( "" );
+if (len_v((*call_args)) > 0) {
+inferred1 = renderer__infer_expression_type ( call_args->data[ 0 ]);
+}
+if (len_v((*call_args)) > 1) {
+inferred2 = renderer__infer_expression_type ( call_args->data[ 1 ]);
+}
+if (std__string__str_len ( inferred1 ) > 0 || std__string__str_len ( inferred2 ) > 0) {
+std__string__string newname = emitted_name;
+if (std__string__str_len ( inferred2 ) > 0 && std__string__str_len ( inferred1 ) > 0) {
+newname = std__string__concat ( newname , std__string__str ( "__T2_" ) );
+newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( inferred2 ) );
+newname = std__string__concat ( newname , std__string__str ( "__T_" ) );
+newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( inferred1 ) );
+}
+else if (std__string__str_len ( inferred1 ) > 0) {
+newname = std__string__concat ( newname , std__string__str ( "__T_" ) );
+newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( inferred1 ) );
+}
+emitted_name = newname;
+}
+}
+}
 std__string__StringBuilder sb_call = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_call, emitted_name);
 std__string__StringBuilder__append_char(&sb_call, '(');
@@ -22782,9 +23126,7 @@ arg_idx++;
 std__string__StringBuilder__append_c(&sb_call, ");\n");
 std__string__string final_call = std__string__StringBuilder__to_string( &sb_call );
 std__string__StringBuilder__destroy(&sb_call);
-if (std__maps__StringBoolMap__contains( &g_generic_functions , emitted_name )) {
 final_call = renderer__rewrite_generic_calls ( final_call );
-}
 return final_call;
 }
 if (std__string__equals_c ( node_type , "Print" )) {
@@ -23956,10 +24298,10 @@ if (std__algorithms__strlst_contains_c ( (*args) , "--syntax-check" )) {
 gstate__set_syntax_check_only(true);
 gstate__set_quiet_mode(true);
 }
-if (! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) ) && ! std__string__has_suffix ( source_file , std__string__str ( ".axec" ) )) {
+if (! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) ) && ! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) )) {
 source_file = std__string__concat ( source_file , std__string__str ( ".axe" ) );
 }
-const bool is_axec = std__string__has_suffix( source_file , std__string__str ( ".axec" ) );
+const bool is_axec = std__string__has_suffix( source_file , std__string__str ( ".axe" ) );
 if (! std__os__is_file ( source_file )) {
 std__io__println(({ size_t _axe_interp_len = 0 + sizeof("Error: File '") - 1 + 32 + sizeof("' not found") - 1; char* _axe_interp = (char*)malloc(_axe_interp_len + 1); char* _axe_interp_p = _axe_interp; memcpy(_axe_interp_p, "Error: File '", sizeof("Error: File '") - 1); _axe_interp_p += sizeof("Error: File '") - 1; { struct std__string__string _s = source_file; memcpy(_axe_interp_p, _s.data, _s.len); _axe_interp_p += _s.len; } memcpy(_axe_interp_p, "' not found", sizeof("' not found") - 1); _axe_interp_p += sizeof("' not found") - 1; *_axe_interp_p = '\0'; _axe_interp; }));
 std__os__quit(1);
