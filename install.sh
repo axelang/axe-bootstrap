@@ -4,8 +4,11 @@ set -e
 PREFIX=/usr/local
 AXE_ROOT="$PREFIX/lib/axe"
 AXE_REPO="https://github.com/axelang/axe.git"
+SAW_REPO="https://github.com/axelang/saw.git"
+AXEDOC_REPO="https://github.com/axelang/axedoc.git"
 TMP_DIR="$(mktemp -d)"
 STD_SRC="$TMP_DIR/axe/source/compiler/std"
+EXT_SRC="$TMP_DIR/axe/source/compiler/external"
 
 cleanup() {
     rm -rf "$TMP_DIR"
@@ -13,7 +16,7 @@ cleanup() {
 trap cleanup EXIT
 
 if [ -x "$AXE_ROOT/axe" ]; then
-    printf "Axe is already installed at $AXE_ROOT. Update it? [Y/N]: "
+    printf "Axe is already installed at %s. Update it? [Y/N]: " "$AXE_ROOT"
     read ans
     case "$ans" in
         y|Y) ;;
@@ -57,30 +60,56 @@ fi
 git clone --depth=1 "$AXE_REPO" "$TMP_DIR/axe"
 
 [ -d "$STD_SRC" ] || exit 1
+[ -d "$EXT_SRC" ] || exit 1
 
 mkdir -p "$AXE_ROOT"
 install -m 755 axe "$AXE_ROOT/axe"
+
 mkdir -p "$AXE_ROOT/std"
 cp -R "$STD_SRC/"* "$AXE_ROOT/std/"
 
-USER_FILES="$HOME/.profile $HOME/.bashrc $HOME/.zshrc $HOME/.zprofile"
+mkdir -p "$AXE_ROOT/external"
+cp -R "$EXT_SRC/"* "$AXE_ROOT/external/"
+
+export AXE_HOME="$AXE_ROOT"
+export PATH="$AXE_ROOT:$PATH"
+
+git clone --depth=1 "$SAW_REPO" "$TMP_DIR/saw"
+(
+    cd "$TMP_DIR/saw"
+    "$AXE_ROOT/axe" saw.axe
+    install -m 755 saw "$AXE_ROOT/saw"
+)
+
+git clone --depth=1 "$AXEDOC_REPO" "$TMP_DIR/axedoc"
+(
+    cd "$TMP_DIR/axedoc"
+    "$AXE_ROOT/axe" axedoc.axe
+    install -m 755 axedoc "$AXE_ROOT/axedoc"
+)
+
+USER_FILES="$HOME/.profile $HOME/.bashrc $HOME/.zshrc"
 if [ "$(uname)" = "Darwin" ]; then
     USER_FILES="$USER_FILES $HOME/.zprofile"
 fi
 
 for f in $USER_FILES; do
-    if [ ! -f "$f" ]; then
-        touch "$f"
-    fi
+    [ -f "$f" ] || touch "$f"
+
     if ! grep -q "export AXE_HOME=" "$f"; then
         echo "export AXE_HOME=\"$AXE_ROOT\"" >> "$f"
     fi
-    if ! grep -q "PATH=.*\$AXE_HOME" "$f"; then
+
+    if ! grep -q 'PATH=.*\$AXE_HOME' "$f"; then
         echo 'export PATH="$AXE_HOME:$PATH"' >> "$f"
     fi
 done
 
 echo "Installation complete."
-echo "Executable: $AXE_ROOT/axe"
+echo "Executables:"
+echo "  axe     -> $AXE_ROOT/axe"
+echo "  saw     -> $AXE_ROOT/saw"
+echo "  axedoc  -> $AXE_ROOT/axedoc"
 echo "Standard library: $AXE_ROOT/std"
-echo "AXE_HOME and PATH updated. Restart your shell."
+echo "External: $AXE_ROOT/external"
+echo "Restart your shell."
