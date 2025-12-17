@@ -1189,6 +1189,10 @@ std__string__string g_current_source_file = {0};
 int32_t g_current_line;
 std__maps__StringStringMap* g_current_type_mapping = {0};
 bool g_emit_line_directives;
+bool std__algorithms__list_contains__T2_bool__T_BoolList(std__lists__BoolList lst, bool value);
+bool std__algorithms__list_contains__T2_float__T_FloatList(std__lists__FloatList lst, float value);
+bool std__algorithms__list_contains__T2_string__T_StringList(std__lists__StringList lst, std__string__string value);
+bool std__algorithms__list_contains__T2_i32__T_IntList(std__lists__IntList lst, int32_t value);
 bool std__algorithms__strlst_contains(std__lists__StringList lst, std__string__string value);
 bool std__algorithms__strlst_contains_c(std__lists__StringList lst, char* value);
 bool std__algorithms__intlst_contains(std__lists__IntList lst, int32_t vlue);
@@ -15071,7 +15075,7 @@ return std__string__concat( std__string__str ( "ref " ) , inner_type );
 }
 const int32_t paren_idx = std__string__find_char_from( trimmed , '(' , (uintptr_t)( 0 ) );
 if (paren_idx > 0 && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
-const std__string__string func_name = std__string__strip( std__string__substring_se ( trimmed , 0 , paren_idx ) );
+std__string__string func_name = std__string__strip( std__string__substring_se ( trimmed , 0 , paren_idx ) );
 const int32_t args_start = paren_idx + 1;
 const int32_t args_end = std__string__str_len( trimmed ) - 1;
 if (args_end > args_start) {
@@ -15082,7 +15086,21 @@ else {
 renderer__validate_function_call(func_name, std__string__str(""), 0);
 }
 std__string__string lookup_name = func_name;
-if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
+const int32_t br_sq = std__string__find_char_from( func_name , '[' , (uintptr_t)( 0 ) );
+if (br_sq > 0) {
+const int32_t br_sq_end = std__string__find_char_from( func_name , ']' , (uintptr_t)( br_sq ) );
+if (br_sq_end > br_sq) {
+const std__string__string base_fn = std__string__strip( std__string__substring_se ( func_name , 0 , br_sq ) );
+const std__string__string type_arg = std__string__strip( std__string__substring_se ( func_name , br_sq + 1 , br_sq_end ) );
+std__string__string mangled = std__string__concat( base_fn , std__string__str ( "__T_" ) );
+mangled = std__string__concat ( mangled , type_arg );
+lookup_name = mangled;
+}
+}
+if (std__maps__StringStringMap__contains( &g_function_prefixes , lookup_name )) {
+lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , lookup_name );
+}
+else if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 lookup_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
 }
 if (std__maps__StringStringMap__contains( &g_function_return_types , lookup_name )) {
@@ -15216,7 +15234,8 @@ return ;
 const std__string__string expected_types_str = std__maps__StringStringMap__get( &g_function_param_types , lookup_name );
 if (std__string__str_len ( expected_types_str ) == 0) {
 if (len_v(arg_list) > 0) {
-if (! std__string__has_prefix ( func_name , std__string__str ( "__INTERPOLATED__" ) )) {
+const bool has_brace = std__string__find_char_from( func_name , '{' , (uintptr_t)( 0 ) ) >= 0;
+if (! std__string__has_prefix ( func_name , std__string__str ( "__INTERPOLATED__" ) ) && ! has_brace) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
 std__io__print(":");
 std__io__print(std__string__i32_to_string(g_current_line));
@@ -17864,14 +17883,38 @@ code = std__string__concat ( code , std__string__str ( "\") - 1; " ) );
 }
 if (i_part < len_v(expressions)) {
 const std__string__string e = expressions.data[ i_part ];
-const std__string__string etype = renderer__lookup_expression_type( e );
 const std__string__string processed_e = renderer__process_expression( e );
-if (std__string__str_len ( etype ) > 0 && ( std__string__equals_c ( etype , "string" ) || std__string__has_suffix ( etype , std__string__str ( "_string" ) ) || std__string__equals_c ( etype , "std__string__string" ) )) {
+const std__string__string lookup_et = renderer__lookup_expression_type( e );
+std__string__string etype = lookup_et;
+if (std__string__str_len ( etype ) == 0) {
+etype = renderer__infer_expression_type ( e );
+}
+std__string__string mapped_etype = renderer__map_axe_type_to_c( etype );
+const int32_t proc_paren = std__string__find_char_from( processed_e , '(' , (uintptr_t)( 0 ) );
+if (proc_paren > 0) {
+const std__string__string proc_fn = std__string__strip( std__string__substring_se ( processed_e , 0 , proc_paren ) );
+const int32_t tpos_spec = std__string__find_substr( proc_fn , std__string__str ( "__T_" ) );
+if (tpos_spec > 0) {
+const std__string__string type_arg_spec = std__string__strip( std__string__substring_se ( proc_fn , tpos_spec + 4 , (int32_t)( std__string__str_len ( proc_fn ) ) ) );
+if (std__string__str_len ( type_arg_spec ) > 0) {
+mapped_etype = renderer__map_axe_type_to_c ( type_arg_spec );
+etype = type_arg_spec;
+}
+}
+if (std__maps__StringStringMap__contains( &g_function_return_types , proc_fn )) {
+const std__string__string ret_sig = std__maps__StringStringMap__get( &g_function_return_types , proc_fn );
+if (std__string__str_len ( ret_sig ) > 0) {
+mapped_etype = renderer__map_axe_type_to_c ( ret_sig );
+etype = ret_sig;
+}
+}
+}
+if (std__string__str_len ( etype ) > 0 && ( std__string__equals_c ( etype , "string" ) || std__string__has_suffix ( etype , std__string__str ( "_string" ) ) || std__string__equals_c ( mapped_etype , "std__string__string" ) )) {
 code = std__string__concat_c ( code , "{ struct std__string__string _s = " );
 code = std__string__concat ( code , processed_e );
 code = std__string__concat_c ( code , "; memcpy(_axe_interp_p, _s.data, _s.len); _axe_interp_p += _s.len; } " );
 }
-else if (std__string__str_len ( etype ) > 0 && ( std__string__has_prefix ( etype , std__string__str ( "ref char" ) ) || std__string__has_suffix ( etype , std__string__str ( "char*" ) ) )) {
+else if (std__string__str_len ( etype ) > 0 && ( std__string__has_prefix ( etype , std__string__str ( "ref char" ) ) || std__string__has_suffix ( mapped_etype , std__string__str ( "char*" ) ) || std__string__has_suffix ( etype , std__string__str ( "char*" ) ) )) {
 code = std__string__concat_c ( code , "memcpy(_axe_interp_p, " );
 code = std__string__concat ( code , processed_e );
 code = std__string__concat_c ( code , ", strlen(" );
@@ -17881,7 +17924,7 @@ code = std__string__concat ( code , processed_e );
 code = std__string__concat_c ( code , "); " );
 }
 else {
-const std__string__string format_spec = renderer__get_type_format_specifier( etype );
+const std__string__string format_spec = renderer__get_type_format_specifier( mapped_etype );
 if (std__string__equals_c ( format_spec , "%s" )) {
 code = std__string__concat_c ( code , "memcpy(_axe_interp_p, " );
 code = std__string__concat ( code , processed_e );
@@ -20510,6 +20553,224 @@ break;
 const structs__ASTNode* proto_child = &(children->data[ i_proto ]);
 if (std__string__equals_c ( proto_child->node_type, "Function" )) {
 if (proto_child->data.function.is_generic) {
+const __list_std__string_t* when_types = proto_child->data.function.when_branch_types;
+__list_std__string_t collected_constraints = {0};
+bool has_top_level_when = false;
+if (when_types != nil && len_v((*when_types)) > 0) {
+has_top_level_when = true;
+}
+if (! has_top_level_when) {
+if (proto_child->children!= nil) {
+__list_int64_t_t scan_stack = {0};
+const __list_structs__ASTNode_t* root_children = proto_child->children;
+int32_t ri = 0;
+while (1) {
+if (ri >= len_v((*root_children))) {
+break;
+}
+__list_int64_t_push(&scan_stack, (int64_t)(&(root_children->data[ri])));
+ri++;
+}
+while (1) {
+if (len_v(scan_stack) == 0) {
+break;
+}
+const structs__ASTNode* scan_node = (structs__ASTNode*)( scan_stack.data[ len_v(scan_stack) - 1 ]);
+scan_stack.len = scan_stack.len- 1;
+if (std__string__equals_c ( scan_node->node_type, "WhenBranch" )) {
+const __list_std__string_t* tp_list = scan_node->data.when_branch.type_params;
+const __list_std__string_t* ct_list = scan_node->data.when_branch.concrete_types;
+if (tp_list != nil && ct_list != nil) {
+std__string__string constraint_str = std__string__str( "" );
+int32_t cti = 0;
+while (1) {
+if (cti >= len_v((*tp_list))) {
+break;
+}
+if (cti > 0) {
+constraint_str = std__string__concat ( constraint_str , std__string__str ( "," ) );
+}
+constraint_str = std__string__concat ( constraint_str , tp_list->data[ cti ]);
+constraint_str = std__string__concat ( constraint_str , std__string__str ( ":" ) );
+constraint_str = std__string__concat ( constraint_str , ct_list->data[ cti ]);
+cti++;
+}
+bool found = false;
+int32_t fi = 0;
+while (1) {
+if (fi >= len_v(collected_constraints)) {
+break;
+}
+if (std__string__equals_c ( collected_constraints.data[ fi ], constraint_str.data)) {
+found = true;
+break;
+}
+fi++;
+}
+if (! found) {
+__list_std__string_push(&collected_constraints, constraint_str);
+}
+}
+}
+if (scan_node->children!= nil) {
+const __list_structs__ASTNode_t* sub_children = scan_node->children;
+int32_t sci = 0;
+while (1) {
+if (sci >= len_v((*sub_children))) {
+break;
+}
+__list_int64_t_push(&scan_stack, (int64_t)(&(sub_children->data[sci])));
+sci++;
+}
+}
+}
+}
+}
+int32_t constraint_list_len = 0;
+if (has_top_level_when) {
+constraint_list_len = len_v((*when_types));
+}
+else {
+constraint_list_len = len_v(collected_constraints);
+}
+int32_t branch_idx2 = 0;
+while (1) {
+if (branch_idx2 >= constraint_list_len) {
+break;
+}
+std__string__string constraint_str2 = std__string__str( "" );
+if (has_top_level_when) {
+constraint_str2 = when_types->data[ branch_idx2 ];
+}
+else {
+constraint_str2 = collected_constraints.data[ branch_idx2 ];
+}
+std__string__StringBuilder sb_spec_name2 = std__string__StringBuilder__init( 256 );
+std__string__string base_name_for_spec2 = proto_child->data.function.name;
+if (std__maps__StringStringMap__contains( &g_function_prefixes , base_name_for_spec2 )) {
+base_name_for_spec2 = std__maps__StringStringMap__get( &g_function_prefixes , base_name_for_spec2 );
+}
+std__string__StringBuilder__append(&sb_spec_name2, base_name_for_spec2);
+int32_t constraint_idx2 = 0;
+int32_t constraint_start2 = 0;
+const int32_t constraint_len2 = std__string__str_len( constraint_str2 );
+while (1) {
+if (constraint_idx2 > constraint_len2) {
+break;
+}
+bool is_sep2 = false;
+if (constraint_idx2 == constraint_len2) {
+is_sep2 = true;
+}
+else if (std__string__get_char ( constraint_str2 , constraint_idx2 ) == ',') {
+is_sep2 = true;
+}
+if (is_sep2) {
+const std__string__string one_constraint2 = std__string__substring_se( constraint_str2 , constraint_start2 , constraint_idx2 );
+const int32_t colon_pos2 = std__string__find_char_from( one_constraint2 , ':' , (uintptr_t)( 0 ) );
+if (colon_pos2 > 0) {
+const std__string__string param_name2 = std__string__substring_se( one_constraint2 , 0 , colon_pos2 );
+const std__string__string concrete_tp2 = std__string__substring_se( one_constraint2 , colon_pos2 + 1 , (int32_t)( std__string__str_len ( one_constraint2 ) ) );
+std__string__StringBuilder__append_c(&sb_spec_name2, "__");
+std__string__StringBuilder__append(&sb_spec_name2, param_name2);
+std__string__StringBuilder__append_c(&sb_spec_name2, "_");
+std__string__StringBuilder__append(&sb_spec_name2, renderer__sanitize_c_identifier(concrete_tp2));
+}
+constraint_start2 = constraint_idx2 + 1;
+}
+constraint_idx2++;
+}
+const std__string__string spec_func_name2 = std__string__StringBuilder__to_string( &sb_spec_name2 );
+std__string__StringBuilder__destroy(&sb_spec_name2);
+std__arena__Arena spec_arena = std__arena__Arena__create( 256 );
+int32_t tm_idx2 = 0;
+int32_t tm_start2 = 0;
+const int32_t tm_len2 = std__string__str_len( constraint_str2 );
+std__maps__StringStringMap type_mapping2 = (*std__maps__StringStringMap__create( &spec_arena , 8 ));
+while (1) {
+if (tm_idx2 > tm_len2) {
+break;
+}
+bool is_tm_sep2 = false;
+if (tm_idx2 == tm_len2) {
+is_tm_sep2 = true;
+}
+else if (std__string__get_char ( constraint_str2 , tm_idx2 ) == ',') {
+is_tm_sep2 = true;
+}
+if (is_tm_sep2) {
+const std__string__string tm_constraint2 = std__string__substring_se( constraint_str2 , tm_start2 , tm_idx2 );
+const int32_t tm_colon2 = std__string__find_char_from( tm_constraint2 , ':' , (uintptr_t)( 0 ) );
+if (tm_colon2 > 0) {
+const std__string__string tm_param2 = std__string__substring_se( tm_constraint2 , 0 , tm_colon2 );
+const std__string__string tm_concrete2 = std__string__substring_se( tm_constraint2 , tm_colon2 + 1 , (int32_t)( std__string__str_len ( tm_constraint2 ) ) );
+std__maps__StringStringMap__set(&type_mapping2, &spec_arena, tm_param2, tm_concrete2);
+}
+tm_start2 = tm_idx2 + 1;
+}
+tm_idx2++;
+}
+std__string__StringBuilder sb_proto2 = std__string__StringBuilder__init( 512 );
+const __list_std__string_t* spec_tags2 = proto_child->data.function.tags;
+if (spec_tags2 != nil) {
+int32_t ti_spec2 = 0;
+while (1) {
+if (ti_spec2 >= len_v((*spec_tags2))) {
+break;
+}
+if (std__string__equals_c ( spec_tags2->data[ ti_spec2 ], "inline" )) {
+std__string__StringBuilder__append_c(&sb_proto2, "static ");
+break;
+}
+ti_spec2++;
+}
+}
+std__string__string spec_return_type2 = proto_child->data.function.return_type;
+if (std__string__str_len ( spec_return_type2 ) == 0) {
+spec_return_type2 = std__string__str ( "void" );
+}
+if (std__maps__StringStringMap__contains( &type_mapping2 , spec_return_type2 )) {
+spec_return_type2 = std__maps__StringStringMap__get( &type_mapping2 , spec_return_type2 );
+}
+const std__string__string mapped_ret2 = renderer__map_axe_type_to_c( spec_return_type2 );
+std__string__StringBuilder__append(&sb_proto2, mapped_ret2);
+std__string__StringBuilder__append_char(&sb_proto2, ' ');
+std__string__StringBuilder__append(&sb_proto2, spec_func_name2);
+std__string__StringBuilder__append_c(&sb_proto2, "(");
+const __list_std__string_t* params2 = proto_child->data.function.params;
+if (params2 != nil) {
+int32_t pidx2 = 0;
+while (1) {
+if (pidx2 >= len_v((*params2))) {
+break;
+}
+if (pidx2 > 0) {
+std__string__StringBuilder__append_c(&sb_proto2, ", ");
+}
+const std__string__string param2 = params2->data[ pidx2 ];
+const int32_t colon_pos_p2 = std__string__find_char_from( param2 , ':' , (uintptr_t)( 0 ) );
+if (colon_pos_p2 >= 0) {
+const std__string__string param_name_p2 = std__string__strip( std__string__substring_se ( param2 , 0 , colon_pos_p2 ) );
+std__string__string param_type_p2 = std__string__strip( std__string__substr ( param2 , colon_pos_p2 + 1 , std__string__str_len ( param2 ) - colon_pos_p2 - 1 ) );
+if (std__maps__StringStringMap__contains( &type_mapping2 , param_type_p2 )) {
+param_type_p2 = std__maps__StringStringMap__get( &type_mapping2 , param_type_p2 );
+}
+const std__string__string processed_param_type_p2 = renderer__process_parameter_type( param_type_p2 );
+std__string__StringBuilder__append(&sb_proto2, processed_param_type_p2);
+std__string__StringBuilder__append_char(&sb_proto2, ' ');
+std__string__StringBuilder__append(&sb_proto2, param_name_p2);
+}
+else {
+std__string__StringBuilder__append(&sb_proto2, param2);
+}
+pidx2++;
+}
+}
+std__string__StringBuilder__append_c(&sb_proto2, ");\n");
+std__string__StringBuilder__append(&sb_prog, std__string__StringBuilder__to_string(&sb_proto2));
+std__string__StringBuilder__destroy(&sb_proto2);
+branch_idx2++;
+}
 i_proto++;
 continue;
 }
@@ -20924,14 +21185,33 @@ std__string__StringBuilder__append_c(&sb_test, "\\n\");\n        failed++;\n    
 }
 else if (std__string__equals_c ( child->node_type, "Declaration" )) {
 const std__string__string var_name = child->data.declaration.name;
-const std__string__string type_name = child->data.declaration.type_name;
+std__string__string type_name = child->data.declaration.type_name;
 const bool is_mutable = child->data.declaration.is_mutable;
 const std__string__string initializer = child->data.declaration.initializer;
+if (std__string__str_len ( type_name ) == 0 && std__string__str_len ( initializer ) > 0) {
+const std__string__string inferred_tt = renderer__infer_expression_type( std__string__strip ( initializer ) );
+if (std__string__str_len ( inferred_tt ) > 0) {
+type_name = inferred_tt;
+}
+else {
+const std__string__string trimmed_i2 = std__string__strip( initializer );
+const int32_t pidx2 = std__string__find_char_from( trimmed_i2 , '(' , (uintptr_t)( 0 ) );
+if (pidx2 > 0) {
+const std__string__string call_name_raw2 = std__string__strip( std__string__substring_se ( trimmed_i2 , 0 , pidx2 ) );
+if (std__string__str_len ( call_name_raw2 ) > 0 && renderer__is_ident_start ( std__string__get_char ( call_name_raw2 , 0 ) )) {
+type_name = std__string__str ( "auto" );
+}
+}
+}
+}
 if (std__string__str_len ( var_name ) > 0 && std__string__str_len ( type_name ) > 0) {
 std__arena__Arena arena_decl = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_var_types, &arena_decl, var_name, type_name);
 }
 std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
+if (std__string__str_len ( type_name ) > 0 && std__string__equals_c ( type_name , "auto" )) {
+mapped_type = std__string__str ( "__auto_type" );
+}
 std__string__string array_suffix = std__string__str( "" );
 const int32_t br = std__string__find_char_from( type_name , '[' , (uintptr_t)( 0 ) );
 if (br >= 0) {
@@ -21671,6 +21951,17 @@ const std__string__string inferred = renderer__infer_expression_type( std__strin
 if (std__string__str_len ( inferred ) > 0) {
 type_name = inferred;
 mapped_type = renderer__map_axe_type_to_c ( type_name );
+}
+if (std__string__str_len ( type_name ) == 0) {
+const std__string__string trimmed_init2 = std__string__strip( initializer );
+const int32_t pidx2 = std__string__find_char_from( trimmed_init2 , '(' , (uintptr_t)( 0 ) );
+if (pidx2 > 0) {
+const std__string__string call_name_raw = std__string__strip( std__string__substring_se ( trimmed_init2 , 0 , pidx2 ) );
+if (std__string__str_len ( call_name_raw ) > 0 && renderer__is_ident_start ( std__string__get_char ( call_name_raw , 0 ) )) {
+mapped_type = std__string__str ( "__auto_type" );
+type_name = std__string__str ( "auto" );
+}
+}
 }
 }
 if (std__string__str_len ( var_name ) > 0 && std__string__str_len ( type_name ) > 0) {
