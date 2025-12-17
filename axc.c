@@ -677,6 +677,7 @@ typedef struct structs__ParserContext {
     struct structs__Scope current_scope;
     struct std__string__string filename;
     bool in_test_block;
+    bool expecting_public;
 } structs__ParserContext;
 
 typedef struct structs__ASTNode {
@@ -1145,6 +1146,7 @@ bool g_function_has_raw_block;
 bool g_check_shadowing;
 __list_std__string_t g_macro_names = {0};
 __list_structs__MacroDef_t g_macro_defs = {0};
+int32_t g_inside_unsafe_block;
 std__maps__StringBoolMap g_processed_modules = {0};
 std__maps__StringStringMap g_import_model_names = {0};
 std__arena__Arena g_model_names_arena = {0};
@@ -1351,17 +1353,15 @@ bool std__os__rm_dir(std__string__string path);
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
+#endif
 char* std__os__dirent_d_name(uintptr_t entry);
 int32_t std__os__stat_is_dir(uintptr_t st);
-#endif
 #ifdef _WIN32
+#endif
 char* std__os__finddata_name(uintptr_t data);
 int32_t std__os__finddata_is_dir(uintptr_t data);
-#endif
 bool std__os__rm_dir_recursive(std__string__string path);
-#ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st);
-#endif
 void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena);
 std__lists__StringList* std__os__list_files_recursive(std__string__string path, std__arena__Arena* arena);
 std__string__string std__os__get_user_home_dir();
@@ -1553,8 +1553,9 @@ void parser__mark_variable_mutated(std__string__string var_name);
 void parser__mark_variable_used(std__string__string var_name);
 void parser__scan_expression_for_usage(std__string__string expr);
 bool parser__contains_c_call(std__string__string s);
+void parser__check_c_call_unsafe_rule(std__string__string s, structs__ParserContext* ctx);
 void parser__scan_expression_for_addr(std__string__string expr);
-void parser__scan_expression_for_c_calls(std__string__string expr);
+void parser__scan_expression_for_c_calls(std__string__string expr, structs__ParserContext* ctx);
 void parser__scan_function_args_for_ref_params(std__string__string args_str);
 void parser__check_null_usage(structs__ParserContext* ctx, std__string__string ident);
 bool parser__has_function_call_in_expression(std__string__string expr);
@@ -1604,15 +1605,8 @@ structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__st
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
-char* std__os__dirent_d_name(uintptr_t entry);
-int32_t std__os__stat_is_dir(uintptr_t st);
 #endif
 #ifdef _WIN32
-char* std__os__finddata_name(uintptr_t data);
-int32_t std__os__finddata_is_dir(uintptr_t data);
-#endif
-#ifndef _WIN32
-int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
 #ifdef __APPLE__
 #endif
@@ -1625,15 +1619,8 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
-char* std__os__dirent_d_name(uintptr_t entry);
-int32_t std__os__stat_is_dir(uintptr_t st);
 #endif
 #ifdef _WIN32
-char* std__os__finddata_name(uintptr_t data);
-int32_t std__os__finddata_is_dir(uintptr_t data);
-#endif
-#ifndef _WIN32
-int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
 #ifdef __APPLE__
 #endif
@@ -1723,15 +1710,8 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
-char* std__os__dirent_d_name(uintptr_t entry);
-int32_t std__os__stat_is_dir(uintptr_t st);
 #endif
 #ifdef _WIN32
-char* std__os__finddata_name(uintptr_t data);
-int32_t std__os__finddata_is_dir(uintptr_t data);
-#endif
-#ifndef _WIN32
-int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
 #ifdef __APPLE__
 #endif
@@ -1744,22 +1724,16 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
-char* std__os__dirent_d_name(uintptr_t entry);
-int32_t std__os__stat_is_dir(uintptr_t st);
 #endif
 #ifdef _WIN32
-char* std__os__finddata_name(uintptr_t data);
-int32_t std__os__finddata_is_dir(uintptr_t data);
-#endif
-#ifndef _WIN32
-int32_t std__os__stat_is_reg(uintptr_t st);
 #endif
 #ifdef __APPLE__
 #endif
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1771,6 +1745,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1780,8 +1755,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1793,6 +1769,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1802,8 +1779,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1815,6 +1793,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1824,8 +1803,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1837,6 +1817,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1846,8 +1827,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1859,6 +1841,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1868,8 +1851,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1881,6 +1865,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1890,8 +1875,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1903,6 +1889,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1912,8 +1899,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1925,6 +1913,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -1934,8 +1923,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -1947,78 +1937,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define gstate__debug_print(x) _Generic((x), \
-    std__string__string: gstate__debug_print_str, \
-    char*: gstate__debug_print_raw, \
-    int32_t: gstate__debug_print_int \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -2034,8 +1953,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -2047,6 +1967,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -2056,8 +1977,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -2069,6 +1991,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -2078,8 +2001,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -2091,6 +2015,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -2106,8 +2031,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -2119,6 +2045,7 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -2128,8 +2055,9 @@ int32_t std__os__stat_is_reg(uintptr_t st);
     )(x)
 
 #define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
+    std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
     int32_t: std__io__println_i32, \
     char: std__io__println_char, \
     float: std__io__println_f32, \
@@ -2141,6 +2069,85 @@ int32_t std__os__stat_is_reg(uintptr_t st);
 #define std__io__print(x) _Generic((x), \
     std__string__string: std__io__print_str, \
     char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
+    )(x)
+
+#define gstate__debug_print(x) _Generic((x), \
+    std__string__string: gstate__debug_print_str, \
+    char*: gstate__debug_print_raw, \
+    int32_t: gstate__debug_print_int \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
     int32_t: std__io__print_i32, \
     char: std__io__print_char, \
     float: std__io__print_f32, \
@@ -3847,29 +3854,37 @@ return ok;
 #ifndef _WIN32
 #endif
 #ifndef _WIN32
+#endif
 char* std__os__dirent_d_name(uintptr_t entry) {
+#ifndef _WIN32
 const dirent* d = entry;
 return d->d_name;
+#endif
 }
 
 int32_t std__os__stat_is_dir(uintptr_t st) {
+#ifndef _WIN32
 const struct stat* sb = (struct stat*)( st );
 return S_ISDIR ( sb->st_mode);
+#endif
 }
 
-#endif
 #ifdef _WIN32
+#endif
 char* std__os__finddata_name(uintptr_t data) {
+#ifdef _WIN32
 const _finddata_t* info = data;
 return info->name;
+#endif
 }
 
 int32_t std__os__finddata_is_dir(uintptr_t data) {
+#ifdef _WIN32
 const _finddata_t* info = data;
 return ( info->attrib& _A_SUBDIR ) != 0;
+#endif
 }
 
-#endif
 bool std__os__rm_dir_recursive(std__string__string path) {
 bool ok = true;
 #ifndef _WIN32
@@ -3976,13 +3991,13 @@ ok = false;
 return ok;
 }
 
-#ifndef _WIN32
 int32_t std__os__stat_is_reg(uintptr_t st) {
+#ifndef _WIN32
 const struct stat* sb = (struct stat*)( st );
 return S_ISREG ( sb->st_mode);
+#endif
 }
 
-#endif
 void std__os__collect_files_recursive(std__string__string path, std__lists__StringList* result, std__arena__Arena* arena) {
 #ifndef _WIN32
 const uintptr_t d = opendir ( path.data);
@@ -4252,7 +4267,7 @@ if (ci >= len_v((*chs))) {
 break;
 }
 builds__prefix_root_enums(&(chs->data[ci]), mprefix);
-ci = ci + 1;
+ci++;
 }
 }
 }
@@ -4297,7 +4312,7 @@ if (ii >= indent) {
 break;
 }
 std__io__print("  ");
-ii = ii + 1;
+ii++;
 }
 std__io__println(node->node_type);
 if (node->children!= nil) {
@@ -4391,7 +4406,7 @@ return true;
 bool builds__compile_file(std__string__string filename, bool is_axec, std__string__string output_filename) {
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Compiling: "), filename));
-std__io__println("\n1 | IO");
+std__io__println("1 | IO");
 }
 const std__string__string source = std__os__read_file( filename );
 if (std__string__str_len ( source ) == 0) {
@@ -4573,7 +4588,14 @@ std__io__println("12| Last compilation pass");
 }
 const std__string__string exe_filename = builds__get_output_filename( output_filename , filename );
 const bool needs_omp = builds__should_link_openmp( &ast , filename );
+const std__string__string homebrew_llvm_path = std__string__str( "/opt/homebrew/opt/llvm/bin/clang" );
 std__string__string compiler = std__string__str( "" );
+#ifdef __APPLE__
+if (std__os__file_exists ( homebrew_llvm_path )) {
+compiler = homebrew_llvm_path;
+}
+#endif
+if (std__string__str_len ( compiler ) == 0) {
 if (builds__command_exists ( std__string__str ( "clang" ) )) {
 compiler = std__string__str ( "clang" );
 }
@@ -4588,7 +4610,11 @@ if (std__string__str_len ( compiler ) == 0) {
 std__io__println("\nYou do not have the LLVM C toolchain installed.");
 std__io__println("Install clang from https://releases.llvm.org/ or via your package manager.");
 std__io__println("Alternatively, ensure 'cc' is available in your PATH.");
+#ifdef __APPLE__
+std__io__println("For parallel features to work, run 'brew install llvm' first (requires installing Homebrew).");
+#endif
 return false;
+}
 }
 }
 std__string__string compile_cmd = std__string__concat( compiler , std__string__str ( " " ) );
@@ -4687,7 +4713,7 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -lws2_32 -lwldap32 -ladvap
 compile_cmd = std__string__concat_c ( compile_cmd , " -lnormaliz -liphlpapi -lsecur32 -lbcrypt" );
 #endif
 #ifndef _WIN32
-compile_cmd = std__string__concat_c ( compile_cmd , " -lcurl -lssl -lcrypto -lz" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -lcurl -lz" );
 #endif
 }
 if (imports__has_imported_module ( std__string__str ( "std/json" ) ) || imports__has_imported_module ( std__string__str ( "json.axec" ) ) || std__string__find_substr ( filename , std__string__str ( "json.axec" ) ) >= 0) {
@@ -7404,6 +7430,7 @@ g_current_scope_depth = 0;
 g_check_shadowing = false;
 g_macro_names.len = 0;
 g_macro_defs.len = 0;
+g_inside_unsafe_block = 0;
 }
 
 void parser__macros_add(std__string__string name, structs__MacroDef defn) {
@@ -7858,6 +7885,70 @@ i++;
 return false;
 }
 
+void parser__check_c_call_unsafe_rule(std__string__string s, structs__ParserContext* ctx) {
+if (s.len< 2) {
+return ;
+}
+uintptr_t i = 0;
+while (1) {
+if (i >= s.len) {
+break;
+}
+if (s . data [ i ] == 'C') {
+const bool prev_is_valid = ( i == 0 ) || ! ( ( s . data [ i - 1 ] >= 'a' && s . data [ i - 1 ] <= 'z' ) || ( s . data [ i - 1 ] >= 'A' && s . data [ i - 1 ] <= 'Z' ) || ( s . data [ i - 1 ] >= '0' && s . data [ i - 1 ] <= '9' ) || s . data [ i - 1 ] == '_' );
+if (prev_is_valid) {
+uintptr_t j = i + 1;
+while (1) {
+if (j >= s.len) {
+break;
+}
+const char ch = s.data[ j ];
+if (ch == ' ' || ch == '\t') {
+j++;
+continue;
+}
+if (ch == '.') {
+uintptr_t func_start = j + 1;
+while (1) {
+if (func_start >= s.len) {
+break;
+}
+func_start++;
+}
+uintptr_t func_end = func_start;
+while (1) {
+if (func_end >= s.len) {
+break;
+}
+const char func_ch = s.data[ func_end ];
+if (( func_ch >= 'a' && func_ch <= 'z' ) || ( func_ch >= 'A' && func_ch <= 'Z' ) || ( func_ch >= '0' && func_ch <= '9' ) || func_ch == '_') {
+func_end++;
+continue;
+}
+break;
+}
+if (func_end > func_start) {
+if (g_inside_unsafe_block == 0) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(parser__current_line(ctx)));
+std__io__print(": error: C interop function ");
+const std__string__string func_name = std__string__substring_se( s , (int32_t)( func_start ) , (int32_t)( func_end ) );
+std__io__print(func_name);
+std__io__println(" can only be used inside unsafe blocks.");
+std__os__quit(1);
+}
+}
+break;
+}
+break;
+}
+}
+}
+i++;
+}
+}
+
 void parser__scan_expression_for_addr(std__string__string expr) {
 int32_t pos = 0;
 while (1) {
@@ -7921,7 +8012,8 @@ pos++;
 }
 }
 
-void parser__scan_expression_for_c_calls(std__string__string expr) {
+void parser__scan_expression_for_c_calls(std__string__string expr, structs__ParserContext* ctx) {
+parser__check_c_call_unsafe_rule(expr, ctx);
 if (! parser__contains_c_call ( expr )) {
 return ;
 }
@@ -8190,6 +8282,7 @@ ctx.is_axec = is_axec;
 ctx.check_entry_point = check_entry_point;
 ctx.current_module = current_module;
 ctx.filename = filename;
+ctx.expecting_public = false;
 g_check_shadowing = check_entry_point;
 gstate__debug_print_raw("=== DEBUG TOKENS ===");
 int32_t i = 0;
@@ -8387,7 +8480,7 @@ structs__ASTNode main_node = {0};
 main_node.node_type = std__string__str ( "Function" );
 main_node.data.function.name = std__string__str ( "main" );
 main_node.data.function.return_type = std__string__str ( "" );
-main_node.data.function.is_public = false;
+main_node.data.function.is_public = ctx->expecting_public;
 __list_std__string_t empty_params = {0};
 const uintptr_t params_size = sizeof(__list_std__string_t);
 const __list_std__string_t* heap_params = (__list_std__string_t*)( malloc( params_size ) );
@@ -8577,7 +8670,7 @@ structs__ASTNode model_node = {0};
 model_node.node_type = std__string__str ( "Model" );
 const std__string__string model_name = ctx->tokens->data[ ctx->pos].value;
 model_node.data.model_node.name = model_name;
-model_node.data.model_node.is_public = false;
+model_node.data.model_node.is_public = ctx->expecting_public;
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens) || ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_LBRACE) {
@@ -9011,13 +9104,43 @@ break;
 if (parser__expect ( ctx , lexer__TokenType_RBRACE)) {
 break;
 }
+parser__skip_whitespace(ctx);
+bool saw_val = false;
+bool saw_ref = false;
+while (1) {
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
+}
+const int32_t tt = ctx->tokens->data[ ctx->pos].token_type;
+if (tt == lexer__TokenType_VAL) {
+saw_val = true;
+ctx->pos++;
+parser__skip_whitespace(ctx);
+continue;
+}
+else if (tt == lexer__TokenType_REF) {
+saw_ref = true;
+ctx->pos++;
+parser__skip_whitespace(ctx);
+continue;
+}
+break;
+}
 if (! parser__expect ( ctx , lexer__TokenType_IDENTIFIER)) {
 std__string__string err = parser__format_error( ctx , std__string__str ( "Expected type name in overload mapping" ) );
 std__errors__enforce_raw(false, err.data);
 return ;
 }
-const lexer__Token type_token = parser__consume( ctx );
-__list_std__string_push(&type_names, type_token.value);
+const lexer__Token base_type_token = parser__consume( ctx );
+std__string__string prefix = std__string__str( "" );
+if (saw_val) {
+prefix = std__string__concat ( prefix , std__string__str ( "val " ) );
+}
+if (saw_ref) {
+prefix = std__string__concat ( prefix , std__string__str ( "ref " ) );
+}
+const std__string__string stored_type = std__string__concat( prefix , base_type_token.value);
+__list_std__string_push(&type_names, stored_type);
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_STAR)) {
 parser__consume(ctx);
@@ -9143,7 +9266,9 @@ return ;
 if (token_type == lexer__TokenType_PUB) {
 ctx->pos++;
 parser__skip_whitespace(ctx);
+ctx->expecting_public = true;
 parser__parse_top_level(ctx, ast);
+ctx->expecting_public = false;
 return ;
 }
 if (token_type == lexer__TokenType_MACRO) {
@@ -9543,7 +9668,7 @@ std__os__quit(1);
 }
 func.data.function.name = func_name;
 func.data.function.return_type = std__string__str ( "" );
-func.data.function.is_public = false;
+func.data.function.is_public = ctx->expecting_public;
 func.data.function.is_generic = false;
 ctx->pos++;
 parser__skip_whitespace(ctx);
@@ -9598,70 +9723,10 @@ ctx->pos++;
 parser__skip_whitespace(ctx);
 }
 }
-if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
-std__io__println("DEBUG parse_function: missing '(' after function name");
-std__string__string dbg = std__string__str( "  func_name = " );
-dbg = std__string__concat ( dbg , func_name );
-gstate__debug_print_str(dbg);
-const char buffer[64] = { };
-dbg = std__string__str ( "  ctx.pos = " );
-dbg = std__string__concat_c ( dbg , std__string__int_to_str ( ctx->pos, (char*)( buffer ) ) );
-dbg = std__string__concat ( dbg , std__string__str ( " / " ) );
-dbg = std__string__concat_c ( dbg , std__string__int_to_str ( len_ptr(ctx->tokens) , (char*)( buffer ) ) );
-gstate__debug_print_str(dbg);
-if (ctx->pos< len_ptr(ctx->tokens)) {
-dbg = std__string__str ( "  current token type = " );
-dbg = std__string__concat_c ( dbg , std__string__int_to_str ( ctx->tokens->data[ ctx->pos].token_type, (char*)( buffer ) ) );
-dbg = std__string__concat ( dbg , std__string__str ( ", value = '" ) );
-dbg = std__string__concat ( dbg , ctx->tokens->data[ ctx->pos].value);
-dbg = std__string__concat ( dbg , std__string__str ( "'" ) );
-gstate__debug_print_str(dbg);
-}
-else {
-gstate__debug_print_raw("  current token = <eof>");
-}
-int32_t start_dbg = ctx->pos- 5;
-if (start_dbg < 0) {
-start_dbg = 0;
-}
-int32_t end_dbg = ctx->pos+ 5;
-const int32_t total_tokens = len_ptr(ctx->tokens);
-if (end_dbg > total_tokens) {
-end_dbg = total_tokens;
-}
-std__io__println("  Surrounding tokens:");
-int32_t i_dbg = start_dbg;
-while (1) {
-if (i_dbg >= end_dbg) {
-break;
-}
-const lexer__Token tok_dbg = ctx->tokens->data[ i_dbg ];
-const char buffer2[64] = { };
-dbg = std__string__str ( "    [" );
-dbg = std__string__concat_c ( dbg , std__string__int_to_str ( i_dbg , (char*)( buffer2 ) ) );
-dbg = std__string__concat ( dbg , std__string__str ( "] type=" ) );
-dbg = std__string__concat_c ( dbg , std__string__int_to_str ( tok_dbg.token_type, (char*)( buffer2 ) ) );
-dbg = std__string__concat ( dbg , std__string__str ( ", value='" ) );
-dbg = std__string__concat ( dbg , tok_dbg.value);
-dbg = std__string__concat ( dbg , std__string__str ( "'" ) );
-gstate__debug_print_str(dbg);
-i_dbg = i_dbg + 1;
-}
-std__string__string err = std__string__str( "Expected '(' after function name" );
-if (ctx->pos< len_ptr(ctx->tokens)) {
-err = std__string__concat ( err , std__string__str ( " instead got " ) );
-err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
-}
-else {
-err = std__string__concat ( err , std__string__str ( " instead got <eof>" ) );
-}
-err = std__string__concat ( err , std__string__str ( " in function " ) );
-err = std__string__concat ( err , func_name );
-std__errors__enforce_raw(false, err.data);
-return func;
-}
-parser__consume(ctx);
+parser__skip_whitespace(ctx);
 __list_std__string_t params = {0};
+if (parser__expect ( ctx , lexer__TokenType_LPAREN)) {
+parser__consume(ctx);
 std__string__string current_param = std__string__str( "" );
 int32_t paren_depth_params = 0;
 while (1) {
@@ -9740,6 +9805,73 @@ const __list_std__string_t* heap_params = (__list_std__string_t*)( malloc( param
 if (heap_params != nil) {
 memcpy(heap_params, &params, params_size);
 func.data.function.params = heap_params;
+}
+}
+}
+else {
+parser__skip_whitespace(ctx);
+if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACE) {
+}
+else {
+std__string__string dbg = std__string__str( "  func_name = " );
+dbg = std__string__concat ( dbg , func_name );
+gstate__debug_print_str(dbg);
+const char buffer[64] = { };
+dbg = std__string__str ( "  ctx.pos = " );
+dbg = std__string__concat_c ( dbg , std__string__int_to_str ( ctx->pos, (char*)( buffer ) ) );
+dbg = std__string__concat ( dbg , std__string__str ( " / " ) );
+dbg = std__string__concat_c ( dbg , std__string__int_to_str ( len_ptr(ctx->tokens) , (char*)( buffer ) ) );
+gstate__debug_print_str(dbg);
+if (ctx->pos< len_ptr(ctx->tokens)) {
+dbg = std__string__str ( "  current token type = " );
+dbg = std__string__concat_c ( dbg , std__string__int_to_str ( ctx->tokens->data[ ctx->pos].token_type, (char*)( buffer ) ) );
+dbg = std__string__concat ( dbg , std__string__str ( ", value = '" ) );
+dbg = std__string__concat ( dbg , ctx->tokens->data[ ctx->pos].value);
+dbg = std__string__concat ( dbg , std__string__str ( "'" ) );
+gstate__debug_print_str(dbg);
+}
+else {
+gstate__debug_print_raw("  current token = <eof>");
+}
+int32_t start_dbg = ctx->pos- 5;
+if (start_dbg < 0) {
+start_dbg = 0;
+}
+int32_t end_dbg = ctx->pos+ 5;
+const int32_t total_tokens = len_ptr(ctx->tokens);
+if (end_dbg > total_tokens) {
+end_dbg = total_tokens;
+}
+std__io__println("  Surrounding tokens:");
+int32_t i_dbg = start_dbg;
+while (1) {
+if (i_dbg >= end_dbg) {
+break;
+}
+const lexer__Token tok_dbg = ctx->tokens->data[ i_dbg ];
+const char buffer2[64] = { };
+dbg = std__string__str ( "    [" );
+dbg = std__string__concat_c ( dbg , std__string__int_to_str ( i_dbg , (char*)( buffer2 ) ) );
+dbg = std__string__concat ( dbg , std__string__str ( "] type=" ) );
+dbg = std__string__concat_c ( dbg , std__string__int_to_str ( tok_dbg.token_type, (char*)( buffer2 ) ) );
+dbg = std__string__concat ( dbg , std__string__str ( ", value='" ) );
+dbg = std__string__concat ( dbg , tok_dbg.value);
+dbg = std__string__concat ( dbg , std__string__str ( "'" ) );
+gstate__debug_print_str(dbg);
+i_dbg = i_dbg + 1;
+}
+std__string__string err = std__string__str( "Expected '(' after function name" );
+if (ctx->pos< len_ptr(ctx->tokens)) {
+err = std__string__concat ( err , std__string__str ( " instead got " ) );
+err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
+}
+else {
+err = std__string__concat ( err , std__string__str ( " instead got <eof>" ) );
+}
+err = std__string__concat ( err , std__string__str ( " in function " ) );
+err = std__string__concat ( err , func_name );
+std__errors__enforce_raw(false, err.data);
+return func;
 }
 }
 parser__skip_whitespace(ctx);
@@ -10422,6 +10554,7 @@ lnode.children = heap_list;
 return lnode;
 }
 if (token_type == lexer__TokenType_SWITCH) {
+const int32_t switch_line = token.line;
 parser__consume(ctx);
 parser__skip_whitespace(ctx);
 std__string__string switch_expr = std__string__str( "" );
@@ -10446,26 +10579,38 @@ std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
-int32_t depth = 1;
+parser__push_scope();
+structs__ASTNode lnode = {0};
+lnode.node_type = std__string__str ( "Switch" );
+lnode.line = switch_line;
+lnode.source_file = ctx->filename;
+lnode.data.switch_node.expression = switch_expr;
+__list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
-const lexer__Token t = parser__peek( ctx );
-if (t.token_type== lexer__TokenType_LBRACE) {
-depth = depth + 1;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
 }
-else if (t.token_type== lexer__TokenType_RBRACE) {
-depth = depth - 1;
-if (depth == 0) {
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
+if (std__string__str_len ( stmt.node_type) > 0) {
+__list_structs__ASTNode_push(&body, stmt);
 }
-parser__consume(ctx);
 }
-node.node_type = std__string__str ( "Switch" );
-return node;
+parser__pop_scope();
+const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
+if (heap_list != nil) {
+memcpy(heap_list, &body, list_size);
+lnode.children = heap_list;
+}
+return lnode;
 }
 if (token_type == lexer__TokenType_IF) {
 const int32_t if_line = token.line;
@@ -11187,7 +11332,7 @@ node.data.declaration.type_name = type_name;
 node.data.declaration.ref_depth = 0;
 parser__register_variable(var_name.value, false, decl_line, ctx->filename);
 parser__scan_expression_for_addr(initializer);
-parser__scan_expression_for_c_calls(initializer);
+parser__scan_expression_for_c_calls(initializer, ctx);
 parser__scan_expression_for_usage(initializer);
 gstate__debug_print_raw("\n[DEBUG] VAL declaration details:");
 gstate__debug_print_raw("\n[DEBUG]   name:");
@@ -11361,7 +11506,7 @@ if (! is_constructor) {
 parser__register_for_mutation_tracking(var_name.value);
 }
 parser__scan_expression_for_addr(initializer);
-parser__scan_expression_for_c_calls(initializer);
+parser__scan_expression_for_c_calls(initializer, ctx);
 parser__scan_expression_for_usage(initializer);
 if (parser__contains_c_call ( initializer )) {
 parser__mark_variable_mutated(var_name.value);
@@ -11588,7 +11733,7 @@ parser__consume(ctx);
 }
 parser__skip_whitespace(ctx);
 parser__scan_expression_for_addr(args_str);
-parser__scan_expression_for_c_calls(args_str);
+parser__scan_expression_for_c_calls(args_str, ctx);
 parser__scan_expression_for_usage(args_str);
 parser__scan_function_args_for_ref_params(args_str);
 bool is_assignment = false;
@@ -11943,7 +12088,7 @@ if (parser__expect ( ctx , lexer__TokenType_SEMICOLON)) {
 parser__consume(ctx);
 }
 parser__scan_expression_for_addr(args_str2);
-parser__scan_expression_for_c_calls(args_str2);
+parser__scan_expression_for_c_calls(args_str2, ctx);
 parser__scan_expression_for_usage(args_str2);
 parser__scan_function_args_for_ref_params(args_str2);
 node.node_type = std__string__str ( "FunctionCall" );
@@ -12511,7 +12656,7 @@ return node;
 }
 expr = parser__expand_macros_in_expression ( expr );
 parser__scan_expression_for_addr(expr);
-parser__scan_expression_for_c_calls(expr);
+parser__scan_expression_for_c_calls(expr, ctx);
 parser__scan_expression_for_usage(expr);
 node.node_type = std__string__str ( "Assignment" );
 node.data.assignment.variable = ident_name;
@@ -12604,7 +12749,7 @@ trimmed_assign = std__string__substring_se ( trimmed_assign , (uintptr_t)( std__
 expr = trimmed_assign;
 }
 parser__scan_expression_for_addr(expr);
-parser__scan_expression_for_c_calls(expr);
+parser__scan_expression_for_c_calls(expr, ctx);
 parser__scan_expression_for_usage(expr);
 node.node_type = std__string__str ( "Assignment" );
 node.data.assignment.variable = ident_name;
@@ -12731,6 +12876,11 @@ break;
 }
 const structs__ASTNode stmt = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( stmt.node_type) > 0) {
+if (std__string__equals_c ( stmt.node_type, "Function" )) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "top-level platform blocks cannot contain functions, move the function outside the platform block" ) );
+std__io__println(err);
+std__os__quit(1);
+}
 parser__add_child_to_ast(&node, stmt);
 }
 }
@@ -13133,6 +13283,7 @@ std__errors__enforce_raw(false, err.data);
 return node;
 }
 parser__consume(ctx);
+g_inside_unsafe_block = g_inside_unsafe_block + 1;
 __list_structs__ASTNode_t body = {0};
 while (1) {
 parser__skip_whitespace(ctx);
@@ -13148,6 +13299,7 @@ if (std__string__str_len ( stmt.node_type) > 0) {
 __list_structs__ASTNode_push(&body, stmt);
 }
 }
+g_inside_unsafe_block = g_inside_unsafe_block - 1;
 node.node_type = std__string__str ( "Unsafe" );
 const uintptr_t list_size_ast = sizeof(__list_structs__ASTNode_t);
 __list_structs__ASTNode_t* heap_body = (__list_structs__ASTNode_t*)( malloc( list_size_ast ) );
@@ -13605,28 +13757,39 @@ std__errors__enforce_raw(false, "Expected '{' after case value");
 return node;
 }
 parser__consume(ctx);
-int32_t depth = 1;
+parser__push_scope();
+structs__ASTNode cnode = {0};
+cnode.node_type = std__string__str ( "Case" );
+cnode.line = token.line;
+cnode.source_file = ctx->filename;
+cnode.data.case_node.value = case_value;
+cnode.data.case_node.is_default = false;
+__list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
-const lexer__Token t = parser__peek( ctx );
-if (t.token_type== lexer__TokenType_LBRACE) {
-depth = depth + 1;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
 }
-else if (t.token_type== lexer__TokenType_RBRACE) {
-depth = depth - 1;
-if (depth == 0) {
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+const structs__ASTNode stmt = parser__parse_statement_helper( ctx , scope );
+if (std__string__str_len ( stmt.node_type) > 0) {
+__list_structs__ASTNode_push(&body, stmt);
 }
-parser__consume(ctx);
 }
-node.node_type = std__string__str ( "Case" );
-node.data.case_node.value = case_value;
-node.data.case_node.is_default = false;
-return node;
+parser__pop_scope();
+const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
+if (heap_list != nil) {
+memcpy(heap_list, &body, list_size);
+cnode.children = heap_list;
+}
+return cnode;
 }
 if (token_type == lexer__TokenType_DEFAULT) {
 parser__consume(ctx);
@@ -13636,28 +13799,39 @@ std__errors__enforce_raw(false, "Expected '{' after default");
 return node;
 }
 parser__consume(ctx);
-int32_t depth = 1;
+parser__push_scope();
+structs__ASTNode cnode = {0};
+cnode.node_type = std__string__str ( "Case" );
+cnode.line = token.line;
+cnode.source_file = ctx->filename;
+cnode.data.case_node.value = std__string__str ( "" );
+cnode.data.case_node.is_default = true;
+__list_structs__ASTNode_t body = {0};
 while (1) {
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 break;
 }
-const lexer__Token t = parser__peek( ctx );
-if (t.token_type== lexer__TokenType_LBRACE) {
-depth = depth + 1;
+parser__skip_whitespace(ctx);
+if (ctx->pos>= len_ptr(ctx->tokens)) {
+break;
 }
-else if (t.token_type== lexer__TokenType_RBRACE) {
-depth = depth - 1;
-if (depth == 0) {
+if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_RBRACE) {
 parser__consume(ctx);
 break;
 }
+const structs__ASTNode stmt = parser__parse_statement_helper( ctx , scope );
+if (std__string__str_len ( stmt.node_type) > 0) {
+__list_structs__ASTNode_push(&body, stmt);
 }
-parser__consume(ctx);
 }
-node.node_type = std__string__str ( "Case" );
-node.data.case_node.value = std__string__str ( "" );
-node.data.case_node.is_default = true;
-return node;
+parser__pop_scope();
+const uintptr_t list_size = sizeof(__list_structs__ASTNode_t);
+const __list_structs__ASTNode_t* heap_list = (__list_structs__ASTNode_t*)( malloc( list_size ) );
+if (heap_list != nil) {
+memcpy(heap_list, &body, list_size);
+cnode.children = heap_list;
+}
+return cnode;
 }
 parser__consume(ctx);
 return node;
@@ -13961,10 +14135,14 @@ break;
 }
 const structs__ASTNode child = children->data[ i ];
 if (std__string__equals_c ( child.node_type, "Function" )) {
+if (child.data.function.is_public) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.function.name, true);
 }
+}
 else if (std__string__equals_c ( child.node_type, "Model" )) {
+if (child.data.model_node.is_public) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.model_node.name, true);
+}
 }
 else if (std__string__equals_c ( child.node_type, "Enum" )) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.enum_node.name, true);
@@ -14391,6 +14569,86 @@ import_is_axec = true;
 }
 structs__ASTNode import_ast = parser__parse( &toks , import_is_axec , false , use_mod , module_path );
 const std__string__string import_base = imports__get_dir_from_path( module_path );
+if (! child.data.use_node.import_all& & child.data.use_node.imports!= nil) {
+const __list_structs__ASTNode_t* import_children = import_ast.children;
+if (import_children != nil) {
+int32_t j = 0;
+while (1) {
+if (j >= len_v((*import_children))) {
+break;
+}
+const structs__ASTNode import_child = import_children->data[ j ];
+if (std__string__equals_c ( import_child.node_type, "Function" )) {
+const std__string__string func_name = import_child.data.function.name;
+bool is_requested = false;
+int32_t k = 0;
+while (1) {
+if (k >= len_v((*child.data.use_node.imports))) {
+break;
+}
+if (std__string__compare ( child.data.use_node.imports->data[ k ], func_name ) == 0) {
+is_requested = true;
+break;
+}
+k++;
+}
+if (is_requested && ! import_child.data.function.is_public) {
+if (! std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+std__io__print("error: cannot import non-public function '");
+std__io__print(func_name);
+std__io__print("' from module '");
+std__io__print(use_mod);
+std__io__println("'");
+exit(1);
+}
+}
+}
+else if (std__string__equals_c ( import_child.node_type, "Model" )) {
+const std__string__string model_name = import_child.data.model_node.name;
+bool is_requested = false;
+int32_t k = 0;
+while (1) {
+if (k >= len_v((*child.data.use_node.imports))) {
+break;
+}
+if (std__string__compare ( child.data.use_node.imports->data[ k ], model_name ) == 0) {
+is_requested = true;
+break;
+}
+k++;
+}
+if (is_requested && ! import_child.data.model_node.is_public) {
+if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+}
+else {
+std__io__print("error: cannot import non-public model '");
+std__io__print(model_name);
+std__io__print("' from module '");
+std__io__print(use_mod);
+std__io__println("'");
+exit(1);
+}
+}
+}
+else if (std__string__equals_c ( import_child.node_type, "Enum" )) {
+const std__string__string enum_name = import_child.data.enum_node.name;
+bool is_requested = false;
+int32_t k = 0;
+while (1) {
+if (k >= len_v((*child.data.use_node.imports))) {
+break;
+}
+if (std__string__compare ( child.data.use_node.imports->data[ k ], enum_name ) == 0) {
+is_requested = true;
+break;
+}
+k++;
+}
+}
+j++;
+}
+}
+}
 import_ast = imports__process_imports ( &import_ast , import_base , import_is_axec , module_path , false , use_mod );
 imports__merge_imported_module(ast, &import_ast, use_mod);
 }
@@ -14411,8 +14669,6 @@ return * ast;
 #endif
 #ifdef _WIN32
 #endif
-#ifndef _WIN32
-#endif
 #ifdef __APPLE__
 #endif
 #ifdef _WIN32
@@ -14426,8 +14682,6 @@ return * ast;
 #ifndef _WIN32
 #endif
 #ifdef _WIN32
-#endif
-#ifndef _WIN32
 #endif
 #ifdef __APPLE__
 #endif
@@ -15748,6 +16002,11 @@ std__string__string result = axe_type;
 if (std__string__has_prefix ( result , std__string__str ( "mut " ) )) {
 result = std__string__strip ( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
 return renderer__map_axe_type_to_c( result );
+}
+if (std__string__has_prefix ( result , std__string__str ( "val " ) )) {
+const std__string__string base = std__string__strip( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
+const std__string__string mapped_base = renderer__map_axe_type_to_c( base );
+return std__string__concat( std__string__str ( "const " ) , mapped_base );
 }
 if (std__string__has_prefix ( result , std__string__str ( "list(" ) )) {
 const int32_t close_paren = std__string__find_char_from( result , (char)( 41 ) , (uintptr_t)( 0 ) );
@@ -17434,6 +17693,58 @@ return std__string__str( "%d" );
 
 std__string__string renderer__lookup_expression_type(std__string__string expr) {
 const std__string__string e = std__string__strip( expr );
+const int32_t dot_pos = std__string__find_char_from( e , '.' , (uintptr_t)( 0 ) );
+if (dot_pos > 0) {
+const std__string__string base_expr = std__string__strip( std__string__substring_se ( e , 0 , dot_pos ) );
+const std__string__string remaining_expr = std__string__strip( std__string__substr ( e , dot_pos + 1 , std__string__str_len ( e ) - dot_pos - 1 ) );
+std__string__string base_type = {0};
+if (std__maps__StringStringMap__contains( &g_var_types , base_expr )) {
+base_type = std__maps__StringStringMap__get( &g_var_types , base_expr );
+}
+else {
+base_type = base_expr;
+}
+if (std__string__str_len ( base_type ) == 0) {
+return std__string__str( "i32" );
+}
+const int32_t next_dot_pos = std__string__find_char_from( remaining_expr , '.' , (uintptr_t)( 0 ) );
+std__string__string field_to_lookup = {0};
+std__string__string remaining_after_lookup = {0};
+if (next_dot_pos > 0) {
+field_to_lookup = std__string__strip ( std__string__substring_se ( remaining_expr , 0 , next_dot_pos ) );
+remaining_after_lookup = std__string__strip ( std__string__substr ( remaining_expr , next_dot_pos , std__string__str_len ( remaining_expr ) - next_dot_pos ) );
+}
+else {
+field_to_lookup = remaining_expr;
+remaining_after_lookup = std__string__str ( "" );
+}
+const std__string__string field_type = renderer__lookup_field_type( base_type , field_to_lookup );
+std__string__string actual_field_type = {0};
+if (std__string__str_len ( field_type ) == 0) {
+if (std__maps__StringStringMap__contains( &g_model_names , base_type )) {
+const std__string__string canonical_name = std__maps__StringStringMap__get( &g_model_names , base_type );
+const std__string__string canonical_field_type = renderer__lookup_field_type( canonical_name , field_to_lookup );
+if (std__string__str_len ( canonical_field_type ) > 0) {
+actual_field_type = canonical_field_type;
+}
+else {
+return std__string__str( "i32" );
+}
+}
+else {
+return std__string__str( "i32" );
+}
+}
+else {
+actual_field_type = field_type;
+}
+if (std__string__str_len ( remaining_after_lookup ) > 0 && std__string__has_prefix ( remaining_after_lookup , std__string__str ( "." ) )) {
+const std__string__string next_remaining = std__string__strip( std__string__substr ( remaining_after_lookup , 1 , std__string__str_len ( remaining_after_lookup ) - 1 ) );
+const std__string__string next_expr = std__string__concat( std__string__concat ( actual_field_type , std__string__str ( "." ) ) , next_remaining );
+return renderer__lookup_expression_type( next_expr );
+}
+return actual_field_type;
+}
 if (std__maps__StringStringMap__contains( &g_var_types , e )) {
 return std__maps__StringStringMap__get( &g_var_types , e );
 }
@@ -17556,16 +17867,37 @@ const std__string__string e = expressions.data[ i_part ];
 const std__string__string etype = renderer__lookup_expression_type( e );
 const std__string__string processed_e = renderer__process_expression( e );
 if (std__string__str_len ( etype ) > 0 && ( std__string__equals_c ( etype , "string" ) || std__string__has_suffix ( etype , std__string__str ( "_string" ) ) || std__string__equals_c ( etype , "std__string__string" ) )) {
-code = std__string__concat ( code , std__string__str ( "{ struct std__string__string _s = " ) );
+code = std__string__concat_c ( code , "{ struct std__string__string _s = " );
 code = std__string__concat ( code , processed_e );
-code = std__string__concat ( code , std__string__str ( "; memcpy(_axe_interp_p, _s.data, _s.len); _axe_interp_p += _s.len; } " ) );
+code = std__string__concat_c ( code , "; memcpy(_axe_interp_p, _s.data, _s.len); _axe_interp_p += _s.len; } " );
+}
+else if (std__string__str_len ( etype ) > 0 && ( std__string__has_prefix ( etype , std__string__str ( "ref char" ) ) || std__string__has_suffix ( etype , std__string__str ( "char*" ) ) )) {
+code = std__string__concat_c ( code , "memcpy(_axe_interp_p, " );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , ", strlen(" );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , ")); _axe_interp_p += strlen(" );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , "); " );
 }
 else {
-code = std__string__concat ( code , std__string__str ( "{ int _len = snprintf(_axe_interp_p, 32, \"" ) );
-code = std__string__concat ( code , renderer__get_type_format_specifier ( etype ) );
-code = std__string__concat ( code , std__string__str ( "\", " ) );
+const std__string__string format_spec = renderer__get_type_format_specifier( etype );
+if (std__string__equals_c ( format_spec , "%s" )) {
+code = std__string__concat_c ( code , "memcpy(_axe_interp_p, " );
 code = std__string__concat ( code , processed_e );
-code = std__string__concat ( code , std__string__str ( "); _axe_interp_p += _len; } " ) );
+code = std__string__concat_c ( code , ", strlen(" );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , ")); _axe_interp_p += strlen(" );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , "); " );
+}
+else {
+code = std__string__concat_c ( code , "{ int _len = snprintf(_axe_interp_p, 32, \"" );
+code = std__string__concat ( code , format_spec );
+code = std__string__concat_c ( code , "\", " );
+code = std__string__concat ( code , processed_e );
+code = std__string__concat_c ( code , "); _axe_interp_p += _len; } " );
+}
 }
 }
 i_part = i_part + 1;
@@ -18960,7 +19292,7 @@ std__string__StringBuilder__destroy(&sb_final);
 const std__string__string first_pass = std__string__strip( out_final );
 gstate__debug_print_raw("\nFIRST PASS:");
 gstate__debug_print_str(first_pass);
-const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
+const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
 const std__string__string addr_fixed2 = renderer__rewrite_adr( fixed );
@@ -20364,7 +20696,7 @@ i++;
 result = std__string__StringBuilder__to_string( &sb_prog );
 std__string__StringBuilder__destroy(&sb_prog);
 }
-result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
+result = std__string__replace_all ( result , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 std__string__string fixed_result = std__string__str( "" );
 int32_t start_idx = 0;
 int32_t idx_line = 0;
@@ -22727,6 +23059,54 @@ break;
 }
 return std__string__StringBuilder__to_string( &sb_if );
 }
+if (std__string__equals_c ( node_type , "Switch" )) {
+const std__string__string switch_expr_raw = ast->data.switch_node.expression;
+const std__string__string switch_expr = std__string__strip( switch_expr_raw );
+const std__string__string cond_norm = renderer__process_expression( switch_expr );
+std__string__StringBuilder sb_switch = std__string__StringBuilder__init( 2048 );
+std__string__StringBuilder__append_c(&sb_switch, "switch (");
+std__string__StringBuilder__append(&sb_switch, cond_norm);
+std__string__StringBuilder__append_c(&sb_switch, ") {\n");
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* cases = ast->children;
+int32_t ci = 0;
+while (1) {
+if (ci >= len_v((*cases))) {
+break;
+}
+const structs__ASTNode* cnode = &(cases->data[ ci ]);
+if (std__string__equals_c ( cnode->node_type, "Case" )) {
+if (cnode->data.case_node.is_default) {
+std__string__StringBuilder__append_c(&sb_switch, "default: {\n");
+}
+else {
+const std__string__string raw_val = std__string__strip( cnode->data.case_node.value);
+const std__string__string case_val = renderer__process_expression( raw_val );
+std__string__StringBuilder__append_c(&sb_switch, "case ");
+std__string__StringBuilder__append(&sb_switch, case_val);
+std__string__StringBuilder__append_c(&sb_switch, ": {\n");
+}
+if (cnode->children!= nil) {
+const __list_structs__ASTNode_t* body = cnode->children;
+int32_t bi = 0;
+while (1) {
+if (bi >= len_v((*body))) {
+break;
+}
+const std__string__string child_code = renderer__generate_c( &(body->data[ bi ]) );
+std__string__StringBuilder__append(&sb_switch, child_code);
+bi = bi + 1;
+}
+}
+std__string__StringBuilder__append_c(&sb_switch, "break;\n}");
+std__string__StringBuilder__append_c(&sb_switch, "\n");
+}
+ci++;
+}
+}
+std__string__StringBuilder__append_c(&sb_switch, "}\n");
+return std__string__StringBuilder__to_string( &sb_switch );
+}
 if (std__string__equals_c ( node_type , "Unsafe" )) {
 const __list_structs__ASTNode_t* body = ast->data.unsafe_node.body;
 std__string__StringBuilder sb_unsafe = std__string__StringBuilder__init( 1024 );
@@ -23148,8 +23528,6 @@ return result;
 #endif
 #ifdef _WIN32
 #endif
-#ifndef _WIN32
-#endif
 #ifdef __APPLE__
 #endif
 #ifdef _WIN32
@@ -23163,8 +23541,6 @@ return result;
 #ifndef _WIN32
 #endif
 #ifdef _WIN32
-#endif
-#ifndef _WIN32
 #endif
 #ifdef __APPLE__
 #endif
@@ -23257,7 +23633,7 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.9");
+std__io__println("Axe v0.0.10");
 std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025)\n");
 std__os__quit(0);
 }
