@@ -687,6 +687,7 @@ typedef struct structs__ASTNode {
     struct std__string__string source_file;
     union {
         struct {
+            bool is_public;
             struct std__string__string name;
             struct std__string__string param_name;
             struct std__string__string call_expr;
@@ -808,6 +809,7 @@ typedef struct structs__ASTNode {
             __list_std__string_t* union_member_types;
         } model_node;
         struct {
+            bool is_public;
             struct std__string__string name;
             __list_std__string_t* values;
         } enum_node;
@@ -1382,7 +1384,7 @@ void builds__filter_and_print_errors(std__string__string output);
 bool builds__has_double_underscore(std__string__string name);
 void builds__prefix_root_enums(structs__ASTNode* node, std__string__string mprefix);
 void builds__prefix_root_functions(structs__ASTNode* node, std__string__string mprefix);
-void builds__print_ast_node(structs__ASTNode* node, int32_t indent);
+void builds__print_ast_node(structs__ASTNode* node, std__string__string prefix, bool is_last);
 bool builds__has_entry_tag(__list_std__string_t* tags);
 void builds__count_entry_points(structs__ASTNode* node, int32_t* main_count, int32_t* custom_entry_count, int32_t* test_count);
 bool builds__validate_entry_points(structs__ASTNode* node, std__string__string filename);
@@ -1952,10 +1954,76 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
     bool: std__io__print_bool \
     )(x)
 
-#define gstate__debug_print(x) _Generic((x), \
-    std__string__string: gstate__debug_print_str, \
-    char*: gstate__debug_print_raw, \
-    int32_t: gstate__debug_print_int \
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
@@ -2030,12 +2098,6 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
     bool: std__io__print_bool \
     )(x)
 
-#define gstate__debug_print(x) _Generic((x), \
-    std__string__string: gstate__debug_print_str, \
-    char*: gstate__debug_print_raw, \
-    int32_t: gstate__debug_print_int \
-    )(x)
-
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2082,90 +2144,6 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
     double: std__io__print_f64, \
     int64_t: std__io__print_i64, \
     bool: std__io__print_bool \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define gstate__debug_print(x) _Generic((x), \
-    std__string__string: gstate__debug_print_str, \
-    char*: gstate__debug_print_raw, \
-    int32_t: gstate__debug_print_int \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool \
-    )(x)
-
-#define gstate__debug_print(x) _Generic((x), \
-    std__string__string: gstate__debug_print_str, \
-    char*: gstate__debug_print_raw, \
-    int32_t: gstate__debug_print_int \
     )(x)
 
 bool std__algorithms__list_contains__T2_bool__T_BoolList(std__lists__BoolList lst, bool value) {
@@ -4308,27 +4286,35 @@ ci = ci + 1;
 }
 }
 
-void builds__print_ast_node(structs__ASTNode* node, int32_t indent) {
+void builds__print_ast_node(structs__ASTNode* node, std__string__string prefix, bool is_last) {
 if (node == nil) {
 return ;
 }
-int32_t ii = 0;
-while (1) {
-if (ii >= indent) {
-break;
+std__string__string line = std__string__str( "" );
+if (is_last) {
+line = std__string__concat ( prefix , std__string__str ( "└─ " ) );
 }
-std__io__print("  ");
-ii++;
+else {
+line = std__string__concat ( prefix , std__string__str ( "├─ " ) );
 }
-std__io__println(node->node_type);
+std__io__println(std__string__concat(line, node->node_type));
 if (node->children!= nil) {
 const __list_structs__ASTNode_t* chs = node->children;
 int32_t ci = 0;
+const int32_t total = len_v((*chs));
 while (1) {
-if (ci >= len_v((*chs))) {
+if (ci >= total) {
 break;
 }
-builds__print_ast_node(&(chs->data[ci]), indent + 1);
+const bool child_is_last = ( ci == total - 1 );
+std__string__string new_prefix = {0};
+if (is_last) {
+new_prefix = std__string__concat ( prefix , std__string__str ( "   " ) );
+}
+else {
+new_prefix = std__string__concat ( prefix , std__string__str ( "│  " ) );
+}
+builds__print_ast_node(&(chs->data[ci]), new_prefix, child_is_last);
 ci++;
 }
 }
@@ -4481,7 +4467,8 @@ return true;
 }
 const bool do_print_ast = print_ast;
 if (do_print_ast) {
-builds__print_ast_node(&ast, 0);
+builds__print_ast_node(&ast, std__string__str(""), true);
+std__os__quit(0);
 }
 if (! quiet_mode) {
 std__io__println("5 | Lowering");
@@ -9042,6 +9029,7 @@ ctx->pos++;
 }
 structs__ASTNode enum_node = {0};
 enum_node.node_type = std__string__str ( "Enum" );
+enum_node.data.enum_node.is_public = ctx->expecting_public;
 enum_node.data.enum_node.name = enum_name;
 const uintptr_t list_size = sizeof(__list_std__string_t);
 __list_std__string_t* heap_list = (__list_std__string_t*)( malloc( list_size ) );
@@ -9313,6 +9301,7 @@ return ;
 parser__consume(ctx);
 structs__ASTNode overload_node = {0};
 overload_node.node_type = std__string__str ( "Overload" );
+overload_node.data.overload_node.is_public = ctx->expecting_public;
 overload_node.data.overload_node.name = overload_name.value;
 overload_node.data.overload_node.param_name = param_name;
 overload_node.data.overload_node.call_expr = call_expr;
@@ -12175,6 +12164,21 @@ parser__scan_expression_for_addr(args_str2);
 parser__scan_expression_for_c_calls(args_str2, ctx);
 parser__scan_expression_for_usage(args_str2);
 parser__scan_function_args_for_ref_params(args_str2);
+if (std__string__equals_c ( ident_name , "C" )) {
+std__string__string call_repr = std__string__concat( std__string__str ( "C." ) , member_name );
+call_repr = std__string__concat ( call_repr , std__string__str ( "(" ) );
+call_repr = std__string__concat ( call_repr , args_str2 );
+call_repr = std__string__concat ( call_repr , std__string__str ( ")" ) );
+if (g_inside_unsafe_block == 0) {
+std__io__print(ctx->filename);
+std__io__print(":");
+std__io__print(std__string__i32_to_string(parser__current_line(ctx)));
+std__io__print(": error: C interop function ");
+std__io__print(member_name);
+std__io__println(" can only be used inside unsafe blocks.");
+std__os__quit(1);
+}
+}
 node.node_type = std__string__str ( "FunctionCall" );
 std__string__string full_name = ident_name;
 if (std__string__equals_c ( ident_name , "C" )) {
@@ -14196,7 +14200,14 @@ std__maps__StringBoolMap__set(&m, &arena, child.data.model_node.name, true);
 }
 }
 else if (std__string__equals_c ( child.node_type, "Enum" )) {
+if (child.data.enum_node.is_public) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.enum_node.name, true);
+}
+}
+else if (std__string__equals_c ( child.node_type, "Overload" )) {
+if (child.data.overload_node.is_public) {
+std__maps__StringBoolMap__set(&m, &arena, child.data.overload_node.name, true);
+}
 }
 i++;
 }
@@ -14518,6 +14529,10 @@ imports__prefix_types_in_node(&child, module_prefix, &exported);
 }
 else if (std__string__equals_c ( child.node_type, "Enum" )) {
 const std__string__string enum_name = child.data.enum_node.name;
+if (! child.data.enum_node.is_public) {
+i++;
+continue;
+}
 if (imports__check_symbol_exists_in_program ( program , enum_name )) {
 std__io__print("error: imported symbol '");
 std__io__print(enum_name);
@@ -14566,6 +14581,20 @@ j++;
 }
 }
 else if (std__string__equals_c ( child.node_type, "Overload" )) {
+const std__string__string ovl_name = child.data.overload_node.name;
+if (! child.data.overload_node.is_public) {
+i++;
+continue;
+}
+if (imports__check_symbol_exists_in_program ( program , ovl_name )) {
+std__io__print("error: imported symbol '");
+std__io__print(ovl_name);
+std__io__print("' from module '");
+std__io__print(use_module);
+std__io__println("' shadows a local declaration");
+exit(1);
+}
+imports__register_imported_symbol(ovl_name);
 imports__prefix_types_in_node(&child, module_prefix, &exported);
 }
 imports__append_child(program, child);
@@ -14694,6 +14723,43 @@ is_requested = true;
 break;
 }
 k++;
+}
+if (is_requested && ! import_child.data.enum_node.is_public) {
+if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+}
+else {
+std__io__print("error: cannot import non-public enum '");
+std__io__print(enum_name);
+std__io__print("' from module '");
+std__io__print(use_mod);
+std__io__println("'");
+exit(1);
+}
+}
+}
+else if (std__string__equals_c ( import_child.node_type, "Overload" )) {
+const std__string__string ovl_name = import_child.data.overload_node.name;
+bool is_requested2 = false;
+int32_t kk = 0;
+while (1) {
+if (kk >= len_v((*child.data.use_node.imports))) {
+break;
+}
+if (std__string__compare ( child.data.use_node.imports->data[ kk ], ovl_name ) == 0) {
+is_requested2 = true;
+break;
+}
+kk++;
+}
+if (is_requested2 && ! import_child.data.overload_node.is_public) {
+if (! std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+std__io__print("error: cannot import non-public overload '");
+std__io__print(ovl_name);
+std__io__print("' from module '");
+std__io__print(use_mod);
+std__io__println("'");
+exit(1);
+}
 }
 }
 j++;
@@ -15024,6 +15090,30 @@ if (std__string__has_prefix ( trimmed , std__string__str ( "'" ) ) && std__strin
 return std__string__str( "char" );
 }
 const char first_char = std__string__get_char( trimmed , 0 );
+if (std__string__has_prefix ( trimmed , std__string__str ( "(" ) ) && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
+const std__string__string inner_paren = std__string__strip( std__string__substring_se ( trimmed , 1 , std__string__str_len ( trimmed ) - 1 ) );
+if (std__string__str_len ( inner_paren ) > 0) {
+return renderer__infer_expression_type( inner_paren );
+}
+}
+if (std__string__get_char ( trimmed , 0 ) == '*') {
+const std__string__string inner_name = std__string__strip( std__string__substring_se ( trimmed , 1 , (int32_t)( std__string__str_len ( trimmed ) ) ) );
+if (std__string__str_len ( inner_name ) > 0) {
+std__string__string inner_type3 = std__string__str( "" );
+if (std__maps__StringStringMap__contains( &g_var_types , inner_name )) {
+inner_type3 = std__maps__StringStringMap__get( &g_var_types , inner_name );
+}
+else {
+inner_type3 = renderer__infer_expression_type ( inner_name );
+}
+if (std__string__str_len ( inner_type3 ) > 0) {
+if (std__string__has_prefix ( inner_type3 , std__string__str ( "ref " ) )) {
+return std__string__strip( std__string__substr ( inner_type3 , 4 , std__string__str_len ( inner_type3 ) - 4 ) );
+}
+return inner_type3;
+}
+}
+}
 bool is_numeric = false;
 if (( first_char >= '0' && first_char <= '9' )) {
 is_numeric = true;
@@ -15116,6 +15206,66 @@ const std__string__string inner_expr = std__string__strip( std__string__substrin
 const std__string__string inner_type = renderer__infer_expression_type( inner_expr );
 if (std__string__str_len ( inner_type ) > 0) {
 return std__string__concat( std__string__str ( "ref " ) , inner_type );
+}
+}
+}
+}
+if (std__string__has_prefix ( trimmed , std__string__str ( "deref" ) ) && std__string__str_len ( trimmed ) > 5) {
+const int32_t after_deref = 5;
+int32_t k2 = after_deref;
+while (1) {
+if (k2 >= std__string__str_len ( trimmed )) {
+break;
+}
+const char ws2 = std__string__get_char( trimmed , k2 );
+if (ws2 != ' ' && ws2 != '\t' && ws2 != '\n') {
+break;
+}
+k2++;
+}
+if (k2 < std__string__str_len ( trimmed ) && std__string__get_char ( trimmed , k2 ) == '(') {
+const int32_t paren_start = k2 + 1;
+int32_t paren_end = paren_start;
+int32_t depth2 = 1;
+bool in_arg_str2 = false;
+bool in_arg_char2 = false;
+while (1) {
+if (paren_end >= std__string__str_len ( trimmed ) || depth2 == 0) {
+break;
+}
+const char pc2 = std__string__get_char( trimmed , paren_end );
+if (pc2 == '"' && ! in_arg_char2) {
+in_arg_str2 = ! in_arg_str2;
+}
+else if (pc2 == '\'' && ! in_arg_str2) {
+in_arg_char2 = ! in_arg_char2;
+}
+else if (! in_arg_str2 && ! in_arg_char2) {
+if (pc2 == '(') {
+depth2++;
+}
+else if (pc2 == ')') {
+depth2--;
+}
+}
+if (depth2 > 0) {
+paren_end++;
+}
+}
+if (depth2 == 0 && paren_end == std__string__str_len ( trimmed ) - 1) {
+const std__string__string inner_expr = std__string__strip( std__string__substring_se ( trimmed , paren_start , paren_end ) );
+std__string__string inner_type = std__string__str( "" );
+if (std__maps__StringStringMap__contains( &g_var_types , inner_expr )) {
+inner_type = std__maps__StringStringMap__get( &g_var_types , inner_expr );
+}
+else {
+inner_type = renderer__infer_expression_type ( inner_expr );
+}
+if (std__string__str_len ( inner_type ) > 0) {
+if (std__string__has_prefix ( inner_type , std__string__str ( "ref " ) )) {
+return std__string__strip( std__string__substr ( inner_type , 4 , std__string__str_len ( inner_type ) - 4 ) );
+}
+return inner_type;
 }
 }
 }
@@ -24266,7 +24416,7 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.10");
+std__io__println("Axe v0.0.11");
 std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025)\n");
 std__os__quit(0);
 }
