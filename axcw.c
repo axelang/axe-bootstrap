@@ -25567,7 +25567,6 @@ return result;
 int main(int argc, char** argv) {
 __axe_argc = argc;
 __axe_argv = argv;
-SetConsoleOutputCP(65001);
 const std__arena__Arena arena = std__arena__Arena__create( 1024 );
 const std__lists__StringList* args = std__os__get_cmdline_args( &arena );
 if (args->len< 2) {
