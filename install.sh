@@ -67,7 +67,7 @@ if command -v ldconfig >/dev/null 2>&1; then
     fi
 fi
 
-"$CC" axcw.c -o axe $LIBS -fmax-errors=1 -Wno-everything
+"$CC" axc.c -o axe $LIBS -fmax-errors=1 -Wno-everything
 
 git clone --depth=1 "$AXE_REPO" "$TMP_DIR/axe"
 
