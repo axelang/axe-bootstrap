@@ -31,22 +31,6 @@
 #include <unistd.h>
 #include <dirent.h>
 #endif
-#include <execinfo.h>
-#include <signal.h>
-#include <unistd.h>
-
-static void axe_segv_handler(int sig) {
-    const char* name = (sig == SIGSEGV ? "SIGSEGV" : (sig == SIGABRT ? "SIGABRT" : "SIGNAL"));
-    fprintf(stderr, "Fatal: %s received.\n", name);
-    void* frames[64];
-    int n = backtrace(frames, 64);
-    if (n > 0) {
-        fprintf(stderr, "Backtrace (%d frames):\n", n);
-        backtrace_symbols_fd(frames, n, fileno(stderr));
-    }
-    fflush(stderr);
-    _exit(139);
-}
 
 int __axe_argc = 0;
 char** __axe_argv = NULL;
@@ -523,6 +507,7 @@ typedef struct __list_lexer__Token_t __list_lexer__Token_t;
 typedef struct __list_int32_t_t __list_int32_t_t;
 typedef struct __list_bool_t __list_bool_t;
 typedef struct __list_structs__MacroDef_t __list_structs__MacroDef_t;
+typedef struct __list_std__string__StringBuilder_t __list_std__string__StringBuilder_t;
 typedef struct __list_int64_t_t __list_int64_t_t;
 typedef struct __list_structs__ASTNode_ptr_t __list_structs__ASTNode_ptr_t;
 #ifndef _WIN32
@@ -624,7 +609,6 @@ typedef enum {
     lexer__TokenType_DEF,
     lexer__TokenType_VAL,
     lexer__TokenType_MAIN,
-    lexer__TokenType_MOD,
     lexer__TokenType_DEFAULT,
     lexer__TokenType_LOOP,
     lexer__TokenType_NEW,
@@ -673,6 +657,12 @@ typedef struct __list_structs__MacroDef_t {
     int len;
     int capacity;
 } __list_structs__MacroDef_t;
+
+typedef struct __list_std__string__StringBuilder_t {
+    std__string__StringBuilder* data;
+    int len;
+    int capacity;
+} __list_std__string__StringBuilder_t;
 
 typedef struct __list_int64_t_t {
     int64_t* data;
@@ -788,6 +778,7 @@ typedef struct structs__ParserContext {
     struct std__string__string filename;
     bool in_test_block;
     bool expecting_public;
+    struct std__string__string extern_symbol;
     struct std__string__string current_model;
 } structs__ParserContext;
 
@@ -951,6 +942,7 @@ typedef struct structs__ASTNode {
             __list_std__string_t* params;
             struct std__string__string return_type;
             struct std__string__string symbol;
+            bool is_public;
         } extern_node;
         struct {
             __list_structs__ASTNode_t* body;
@@ -1085,158 +1077,6 @@ typedef struct std__maps__BoolLongMap {
     std__lists__BoolList* keys;
     std__lists__LongList* values;
 } std__maps__BoolLongMap;
-
-static inline __list_structs__ASTNode_t __list_structs__ASTNode_init(void) {
-    __list_structs__ASTNode_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_structs__ASTNode_push(__list_structs__ASTNode_t* list, structs__ASTNode item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        structs__ASTNode* new_data = (structs__ASTNode*)realloc(list->data, new_capacity * sizeof(structs__ASTNode));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_std__string_t __list_std__string_init(void) {
-    __list_std__string_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_std__string_push(__list_std__string_t* list, std__string__string item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        std__string__string* new_data = (std__string__string*)realloc(list->data, new_capacity * sizeof(std__string__string));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_lexer__Token_t __list_lexer__Token_init(void) {
-    __list_lexer__Token_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_lexer__Token_push(__list_lexer__Token_t* list, lexer__Token item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        lexer__Token* new_data = (lexer__Token*)realloc(list->data, new_capacity * sizeof(lexer__Token));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_int32_t_t __list_int32_t_init(void) {
-    __list_int32_t_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_int32_t_push(__list_int32_t_t* list, int32_t item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        int32_t* new_data = (int32_t*)realloc(list->data, new_capacity * sizeof(int32_t));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_bool_t __list_bool_init(void) {
-    __list_bool_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_bool_push(__list_bool_t* list, bool item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        bool* new_data = (bool*)realloc(list->data, new_capacity * sizeof(bool));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_structs__MacroDef_t __list_structs__MacroDef_init(void) {
-    __list_structs__MacroDef_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_structs__MacroDef_push(__list_structs__MacroDef_t* list, structs__MacroDef item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        structs__MacroDef* new_data = (structs__MacroDef*)realloc(list->data, new_capacity * sizeof(structs__MacroDef));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_int64_t_t __list_int64_t_init(void) {
-    __list_int64_t_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_int64_t_push(__list_int64_t_t* list, int64_t item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        int64_t* new_data = (int64_t*)realloc(list->data, new_capacity * sizeof(int64_t));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
-
-static inline __list_structs__ASTNode_ptr_t __list_structs__ASTNode_ptr_init(void) {
-    __list_structs__ASTNode_ptr_t list;
-    list.data = NULL;
-    list.len = 0;
-    list.capacity = 0;
-    return list;
-}
-
-static inline void __list_structs__ASTNode_ptr_push(__list_structs__ASTNode_ptr_t* list, structs__ASTNode* item) {
-    if (list->len >= list->capacity) {
-        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
-        structs__ASTNode** new_data = (structs__ASTNode**)realloc(list->data, new_capacity * sizeof(structs__ASTNode*));
-        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
-        list->data = new_data;
-        list->capacity = new_capacity;
-    }
-    list->data[list->len++] = item;
-}
 
 void axc__print_help_and_exit();
 bool std__algorithms__list_contains__T2_bool__T_std__lists__BoolList(std__lists__BoolList lst, bool value);
@@ -1394,7 +1234,8 @@ std__errors__error std__errors__error__create(char* msg);
 void std__errors__error__print_self(std__errors__error err);
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
-void std__errors__enforce(bool condition, std__errors__error err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 void std__errors__enforce_raw(bool condition, char* msg);
 std__errors__error std__errors__test_error();
 #ifdef _WIN32
@@ -1407,6 +1248,8 @@ std__errors__error std__errors__test_error();
 #endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1462,12 +1305,16 @@ std__string__string std__os__get_short_filename(std__string__string path);
 #endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1506,6 +1353,7 @@ std__string__string gstate__get_target_triple();
 void gstate__set_sysroot_path(std__string__string path);
 std__string__string gstate__get_sysroot_path();
 void gstate__set_compile_only(bool v);
+void gstate__set_no_windows_header(bool v);
 bool gstate__get_compile_only();
 void gstate__set_library_paths(std__lists__StringList* paths);
 std__lists__StringList* gstate__get_library_paths();
@@ -1723,6 +1571,7 @@ bool parser__contains_c_call(std__string__string s);
 void parser__check_c_call_unsafe_rule(std__string__string s, structs__ParserContext* ctx);
 void parser__scan_expression_for_addr(std__string__string expr);
 void parser__scan_expression_for_c_calls(std__string__string expr, structs__ParserContext* ctx);
+bool parser__is_simple_put_expression(std__string__string expr);
 void parser__scan_function_args_for_ref_params(std__string__string args_str);
 void parser__check_null_usage(structs__ParserContext* ctx, std__string__string ident);
 bool parser__has_function_call_in_expression(std__string__string expr);
@@ -1764,6 +1613,8 @@ std__string__string imports__prefix_type_name(std__string__string type_name, std
 void imports__prefix_types_in_node(structs__ASTNode* node, std__string__string module_prefix, std__maps__StringBoolMap* exported);
 bool imports__check_symbol_exists_in_program(structs__ASTNode* program, std__string__string symbol_name);
 void imports__merge_imported_module(structs__ASTNode* program, structs__ASTNode* imported, std__string__string use_module);
+std__maps__StringBoolMap imports__build_import_set(__list_std__string_t* imports);
+void imports__validate_import_visibility(std__string__string symbol_name, bool is_public, std__string__string use_mod, std__maps__StringBoolMap* import_set, std__string__string symbol_type);
 structs__ASTNode imports__process_imports(structs__ASTNode* ast, std__string__string base_dir, bool is_axec, std__string__string current_file, bool is_top_level, std__string__string module_name);
 void imports__expand_macros_in_ast(structs__ASTNode* ast);
 #ifdef _WIN32
@@ -1794,8 +1645,12 @@ void imports__expand_macros_in_ast(structs__ASTNode* ast);
 #endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1893,6 +1748,7 @@ std__string__string renderer__rewrite_function_calls(std__string__string expr);
 std__string__string renderer__rewrite_global_scope_refs(std__string__string expr);
 std__string__string renderer__rewrite_global_var_refs(std__string__string expr);
 void renderer__check_variable_declared(std__string__string name);
+std__string__string renderer__convert_union_member_init(std__string__string expr);
 std__string__string renderer__process_expression(std__string__string expr);
 std__string__string renderer__generate_stack_trace_headers();
 std__string__string renderer__generate_stack_trace_setup();
@@ -1921,6 +1777,8 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
 #endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1955,6 +1813,7 @@ std__string__string sysroot_path = {0};
 bool compile_only = false;
 std__lists__StringList* library_paths = nil;
 std__lists__StringList* link_libraries = nil;
+bool no_windows_header = false;
 int32_t g_lexer_current_line;
 std__maps__StringStringMap g_type_aliases = {0};
 std__maps__StringBoolMap g_imported_modules = {0};
@@ -2031,7 +1890,179 @@ std__string__string g_current_module_prefix = {0};
 std__string__string g_current_model = {0};
 std__maps__StringBoolMap g_current_function_type_params = {0};
 std__string__string g_expected_return_type = {0};
+bool g_inside_non_matching_when;
 bool g_emit_line_directives;
+static inline __list_structs__ASTNode_t __list_structs__ASTNode_init(void) {
+    __list_structs__ASTNode_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_structs__ASTNode_push(__list_structs__ASTNode_t* list, structs__ASTNode item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        structs__ASTNode* new_data = (structs__ASTNode*)realloc(list->data, new_capacity * sizeof(structs__ASTNode));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_std__string_t __list_std__string_init(void) {
+    __list_std__string_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_std__string_push(__list_std__string_t* list, std__string__string item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        std__string__string* new_data = (std__string__string*)realloc(list->data, new_capacity * sizeof(std__string__string));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_lexer__Token_t __list_lexer__Token_init(void) {
+    __list_lexer__Token_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_lexer__Token_push(__list_lexer__Token_t* list, lexer__Token item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        lexer__Token* new_data = (lexer__Token*)realloc(list->data, new_capacity * sizeof(lexer__Token));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_int32_t_t __list_int32_t_init(void) {
+    __list_int32_t_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_int32_t_push(__list_int32_t_t* list, int32_t item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        int32_t* new_data = (int32_t*)realloc(list->data, new_capacity * sizeof(int32_t));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_bool_t __list_bool_init(void) {
+    __list_bool_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_bool_push(__list_bool_t* list, bool item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        bool* new_data = (bool*)realloc(list->data, new_capacity * sizeof(bool));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_structs__MacroDef_t __list_structs__MacroDef_init(void) {
+    __list_structs__MacroDef_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_structs__MacroDef_push(__list_structs__MacroDef_t* list, structs__MacroDef item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        structs__MacroDef* new_data = (structs__MacroDef*)realloc(list->data, new_capacity * sizeof(structs__MacroDef));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_std__string__StringBuilder_t __list_std__string__StringBuilder_init(void) {
+    __list_std__string__StringBuilder_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_std__string__StringBuilder_push(__list_std__string__StringBuilder_t* list, std__string__StringBuilder item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        std__string__StringBuilder* new_data = (std__string__StringBuilder*)realloc(list->data, new_capacity * sizeof(std__string__StringBuilder));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_int64_t_t __list_int64_t_init(void) {
+    __list_int64_t_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_int64_t_push(__list_int64_t_t* list, int64_t item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        int64_t* new_data = (int64_t*)realloc(list->data, new_capacity * sizeof(int64_t));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
+static inline __list_structs__ASTNode_ptr_t __list_structs__ASTNode_ptr_init(void) {
+    __list_structs__ASTNode_ptr_t list;
+    list.data = NULL;
+    list.len = 0;
+    list.capacity = 0;
+    return list;
+}
+
+static inline void __list_structs__ASTNode_ptr_push(__list_structs__ASTNode_ptr_t* list, structs__ASTNode* item) {
+    if (list->len >= list->capacity) {
+        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;
+        structs__ASTNode** new_data = (structs__ASTNode**)realloc(list->data, new_capacity * sizeof(structs__ASTNode*));
+        if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); exit(1); }
+        list->data = new_data;
+        list->capacity = new_capacity;
+    }
+    list->data[list->len++] = item;
+}
+
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 
 #define std__io__println(x) _Generic((x), \
@@ -2518,6 +2549,9 @@ std__io__println("  -q, --quiet       Suppress all output");
 std__io__println("  -I<path>          Pass a C include directory");
 std__io__println("  -L<path>          Add C library search path");
 std__io__println("  -l<name>          Link against C library (e.g. -lm, -lSDL2)");
+#ifdef _WIN32
+std__io__println("  --nowin           Do not include windows.h automatically");
+#endif
 std__io__println("  --syntax-check    Check syntax only (no code generation)");
 std__io__println("  --target <triple> Cross-compile for target (e.g. x86_64-w64-mingw32)");
 std__io__println("  --sysroot <path>  Specify sysroot for cross-compilation");
@@ -2604,7 +2638,7 @@ std__arena__Arena std__arena__Arena__create(uintptr_t size) {
 std__arena__Arena arena = {0};
 arena.buffer = malloc ( size * 100 );
 if (arena.buffer== 0) {
-std__errors__panic__T_std__errors__error(std__errors__error__create(                     std__string__concat(std__string__str("Arena: failed to allocate "),                     std__string__i32_to_string((int32_t)(size * 100))).data                 ));
+std__errors__panic__T_std__errors__error(std__errors__error__create(                      std__string__concat(std__string__str("Arena: failed to allocate "),                      std__string__i32_to_string((int32_t)(size * 100))).data                  ));
 }
 arena.capacity = size * 100;
 arena.offset = 0;
@@ -4054,7 +4088,13 @@ std__errors__error__print_self(std__errors__error__create(err));
 exit(1);
 }
 
-void std__errors__enforce(bool condition, std__errors__error err) {
+void std__errors__enforce__T_char_(bool condition, char* err) {
+if (! condition) {
+std__errors__panic__T_std__errors__error(std__errors__error__create(err));
+}
+}
+
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err) {
 if (! condition) {
 std__errors__panic__T_std__errors__error(err);
 }
@@ -5511,6 +5551,10 @@ return sysroot_path;
 
 void gstate__set_compile_only(bool v) {
 compile_only = v;
+}
+
+void gstate__set_no_windows_header(bool v) {
+no_windows_header = v;
 }
 
 bool gstate__get_compile_only() {
@@ -8252,10 +8296,6 @@ else if (lexer__str_equals ( source , "mut" , pos , 3 , source_len ) && lexer__c
 __list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_MUT, "mut"));
 pos = pos + 3;
 }
-else if (lexer__str_equals ( source , "mod" , pos , 3 , source_len ) && lexer__check_boundary ( source , pos + 3 , source_len )) {
-__list_lexer__Token_push(&tokens, lexer__create_token(lexer__TokenType_MOD, "mod"));
-pos = pos + 3;
-}
 else {
 const int32_t start = pos;
 while (1) {
@@ -9396,6 +9436,63 @@ pos = pos + 1;
 }
 }
 
+bool parser__is_simple_put_expression(std__string__string expr) {
+const std__string__string trimmed = std__string__strip( expr );
+if (std__string__str_len ( trimmed ) == 0) {
+return false;
+}
+std__string__string inner = trimmed;
+if (std__string__has_prefix ( trimmed , std__string__str ( "(" ) ) && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
+inner = std__string__strip ( std__string__substring_se ( trimmed , 1 , std__string__str_len ( trimmed ) - 1 ) );
+}
+if (std__string__has_prefix ( inner , std__string__str ( "\"" ) ) && std__string__has_suffix ( inner , std__string__str ( "\"" ) )) {
+return true;
+}
+if (std__string__has_prefix ( inner , std__string__str ( "'" ) ) && std__string__has_suffix ( inner , std__string__str ( "'" ) )) {
+return true;
+}
+const char first_char = std__string__get_char( inner , 0 );
+bool is_number = false;
+if (first_char >= '0' && first_char <= '9') {
+is_number = true;
+}
+else if (first_char == '-' && std__string__str_len ( inner ) > 1) {
+const char second_char = std__string__get_char( inner , 1 );
+if (( second_char >= '0' && second_char <= '9' ) || second_char == '.') {
+is_number = true;
+}
+}
+if (is_number) {
+int32_t i = 0;
+bool has_dot = false;
+while (1) {
+if (i >= std__string__str_len ( inner )) {
+break;
+}
+const char ch = std__string__get_char( inner , i );
+if (ch >= '0' && ch <= '9') {
+}
+else if (ch == '.') {
+if (has_dot) {
+return false;
+}
+has_dot = true;
+}
+else if (ch == '-') {
+if (i != 0) {
+return false;
+}
+}
+else {
+return false;
+}
+i++;
+}
+return true;
+}
+return false;
+}
+
 void parser__scan_function_args_for_ref_params(std__string__string args_str) {
 __list_std__string_t args = {0};
 std__string__StringBuilder current_arg = std__string__StringBuilder__init( 128 );
@@ -9475,12 +9572,23 @@ exit(1);
 bool parser__has_function_call_in_expression(std__string__string expr) {
 int32_t i = 0;
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
+bool in_string = false;
+char string_char = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+if (ch == '"' || ch == '\'') {
+if (! in_string) {
+in_string = true;
+string_char = ch;
+}
+else if (ch == string_char) {
+in_string = false;
+}
+}
+if (! in_string && ( ( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_' )) {
 const int32_t id_start = i;
 int32_t id_end = i;
 while (1) {
@@ -9526,12 +9634,23 @@ return false;
 std__string__string parser__extract_function_name(std__string__string expr) {
 int32_t i = 0;
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
+bool in_string = false;
+char string_char = 0;
 while (1) {
 if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_') {
+if (ch == '"' || ch == '\'') {
+if (! in_string) {
+in_string = true;
+string_char = ch;
+}
+else if (ch == string_char) {
+in_string = false;
+}
+}
+if (! in_string && ( ( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ch == '_' )) {
 const int32_t id_start = i;
 int32_t id_end = i;
 while (1) {
@@ -9732,6 +9851,7 @@ ctx.check_entry_point = check_entry_point;
 ctx.current_module = current_module;
 ctx.filename = filename;
 ctx.expecting_public = false;
+ctx.extern_symbol = std__string__str ( "" );
 ctx.current_model = std__string__str ( "" );
 g_check_shadowing = check_entry_point;
 gstate__debug_print_raw("=== DEBUG TOKENS ===");
@@ -9798,7 +9918,7 @@ if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 std__string__string err = std__string__str( "Expected '(' after macro name" );
 err = std__string__concat ( err , std__string__str ( " instead got " ) );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
-std__errors__enforce(false, std__errors__error__create(err.data));
+std__errors__enforce__T_std__errors__error(false, std__errors__error__create(err.data));
 return ;
 }
 parser__consume(ctx);
@@ -10031,7 +10151,7 @@ return ;
 }
 if (token_type == lexer__TokenType_LBRACKET) {
 __list_std__string_t tags = {0};
-std__string__string extern_symbol = std__string__str( "" );
+ctx->extern_symbol = std__string__str ( "" );
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_IDENTIFIER) {
@@ -10043,7 +10163,7 @@ if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== 
 ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_STR) {
-extern_symbol = ctx->tokens->data[ ctx->pos].value;
+ctx->extern_symbol = ctx->tokens->data[ ctx->pos].value;
 ctx->pos++;
 parser__skip_whitespace(ctx);
 }
@@ -10082,12 +10202,13 @@ if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== 
 ctx->pos++;
 parser__skip_whitespace(ctx);
 }
-if (std__string__str_len ( extern_symbol ) > 0 && ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_EXTERN) {
+if (std__string__str_len ( ctx->extern_symbol) > 0 && ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_EXTERN) {
 structs__ASTNode extern_node = parser__parse_statement_helper( ctx , &(ctx->current_scope) );
 if (std__string__str_len ( extern_node.node_type) > 0) {
-extern_node.data.extern_node.symbol = extern_symbol;
+extern_node.data.extern_node.symbol = ctx->extern_symbol;
 parser__add_child_to_ast(ast, extern_node);
 }
+ctx->extern_symbol = std__string__str ( "" );
 return ;
 }
 if (ctx->pos< len_ptr(ctx->tokens) && ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_DEF) {
@@ -10125,7 +10246,7 @@ ctx->pos++;
 parser__skip_whitespace(ctx);
 if (ctx->pos>= len_ptr(ctx->tokens)) {
 std__string__string err = std__string__str( "Expected model name after 'model'" );
-std__errors__enforce(false, std__errors__error__create(err.data));
+std__errors__enforce__T_std__errors__error(false, std__errors__error__create(err.data));
 return ;
 }
 if (ctx->tokens->data[ ctx->pos].token_type== lexer__TokenType_LBRACE) {
@@ -10153,7 +10274,7 @@ return ;
 if (ctx->tokens->data[ ctx->pos].token_type!= lexer__TokenType_IDENTIFIER) {
 std__string__string err = std__string__str( "Expected model name after 'model', instead got: " );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
-std__errors__enforce(false, std__errors__error__create(err.data));
+std__errors__enforce__T_std__errors__error(false, std__errors__error__create(err.data));
 return ;
 }
 structs__ASTNode model_node = {0};
@@ -10784,7 +10905,7 @@ if (! parser__expect ( ctx , lexer__TokenType_LPAREN)) {
 std__string__string err = std__string__str( "Expected '(' after macro name" );
 err = std__string__concat ( err , std__string__str ( " instead got " ) );
 err = std__string__concat ( err , ctx->tokens->data[ ctx->pos].value);
-std__errors__enforce(false, std__errors__error__create(err.data));
+std__errors__enforce__T_std__errors__error(false, std__errors__error__create(err.data));
 return ;
 }
 parser__consume(ctx);
@@ -12945,7 +13066,13 @@ std__string__string err = parser__format_error( ctx , std__string__str ( "Expect
 std__errors__enforce_raw(false, err.data);
 return node;
 }
-__list_std__string_push(&messages, std__string__strip(expr));
+const std__string__string trimmed_expr = std__string__strip( expr );
+if (! parser__is_simple_put_expression ( trimmed_expr )) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "'put' statement only accepts literals (strings, numbers, characters). Use 'print' or 'println' for variables and expressions" ) );
+std__errors__enforce_raw(false, err.data);
+return node;
+}
+__list_std__string_push(&messages, trimmed_expr);
 __list_bool_push(&flags, true);
 parser__scan_expression_for_addr(expr);
 parser__scan_expression_for_c_calls(expr, ctx);
@@ -15393,6 +15520,10 @@ std__io__println(")");
 std__os__quit(1);
 }
 node.data.extern_node.return_type = extern_return_type;
+node.data.extern_node.is_public = ctx->expecting_public;
+if (std__string__str_len ( ctx->extern_symbol) > 0) {
+node.data.extern_node.symbol = ctx->extern_symbol;
+}
 return node;
 }
 if (token_type == lexer__TokenType_USE) {
@@ -16004,6 +16135,11 @@ if (child.data.macro_node.is_public) {
 std__maps__StringBoolMap__set(&m, &arena, child.data.macro_node.name, true);
 }
 }
+else if (std__string__equals_c ( child.node_type, "Extern" )) {
+if (child.data.extern_node.is_public) {
+std__maps__StringBoolMap__set(&m, &arena, child.data.extern_node.function_name, true);
+}
+}
 i++;
 }
 return m;
@@ -16358,7 +16494,18 @@ imports__register_imported_symbol(var_name);
 }
 else if (std__string__equals_c ( child.node_type, "Extern" )) {
 const std__string__string func_name = child.data.extern_node.function_name;
+if (child.data.extern_node.is_public) {
+if (imports__check_symbol_exists_in_program ( program , func_name )) {
+std__io__print("error: imported symbol '");
+std__io__print(func_name);
+std__io__print("' from module '");
+std__io__print(use_module);
+std__io__println("' shadows a local declaration");
+exit(1);
+}
 imports__register_imported_symbol(func_name);
+}
+imports__prefix_types_in_node(&child, module_prefix, &exported);
 }
 else if (std__string__equals_c ( child.node_type, "Platform" )) {
 if (child.children!= nil) {
@@ -16378,7 +16525,11 @@ plat_children->data[j] = pchild;
 }
 else if (std__string__equals_c ( pchild.node_type, "Extern" )) {
 const std__string__string func_name = pchild.data.extern_node.function_name;
+if (pchild.data.extern_node.is_public) {
 imports__register_imported_symbol(func_name);
+}
+imports__prefix_types_in_node(&pchild, module_prefix, &exported);
+plat_children->data[j] = pchild;
 }
 else if (std__string__equals_c ( pchild.node_type, "Declaration" )) {
 const std__string__string var_name = pchild.data.declaration.name;
@@ -16429,6 +16580,36 @@ parser__macros_add(prefixed_name, defn);
 }
 imports__append_child(program, child);
 i++;
+}
+}
+
+std__maps__StringBoolMap imports__build_import_set(__list_std__string_t* imports) {
+std__arena__Arena arena = std__arena__Arena__create( 1024 );
+std__maps__StringBoolMap import_set = (*std__maps__StringBoolMap__create( &arena , 64 ));
+int32_t i = 0;
+while (1) {
+if (i >= len_v((*imports))) {
+break;
+}
+std__maps__StringBoolMap__set(&import_set, &arena, imports->data[i], true);
+i++;
+}
+return import_set;
+}
+
+void imports__validate_import_visibility(std__string__string symbol_name, bool is_public, std__string__string use_mod, std__maps__StringBoolMap* import_set, std__string__string symbol_type) {
+if (! std__maps__StringBoolMap__contains( import_set , symbol_name )) {
+return ;
+}
+if (! is_public && ! std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+std__io__print("error: cannot import non-public ");
+std__io__print(symbol_type);
+std__io__print(" '");
+std__io__print(symbol_name);
+std__io__print("' from module '");
+std__io__print(use_mod);
+std__io__println("'");
+exit(1);
 }
 }
 
@@ -16496,6 +16677,8 @@ macro_idx++;
 }
 }
 if (! child.data.use_node.import_all&& child.data.use_node.imports!= nil) {
+const std__maps__StringBoolMap import_set = imports__build_import_set( child.data.use_node.imports);
+const bool is_std = std__string__has_prefix( use_mod , std__string__str ( "std." ) );
 const __list_structs__ASTNode_t* import_children = import_ast.children;
 if (import_children != nil) {
 int32_t j = 0;
@@ -16504,49 +16687,14 @@ if (j >= len_v((*import_children))) {
 break;
 }
 const structs__ASTNode import_child = import_children->data[ j ];
-if (std__string__equals_c ( import_child.node_type, "Function" )) {
+const std__string__string node_type = import_child.node_type;
+if (std__string__equals_c ( node_type , "Function" )) {
 const std__string__string func_name = import_child.data.function.name;
-bool is_requested = false;
-int32_t k = 0;
-while (1) {
-if (k >= len_v((*child.data.use_node.imports))) {
-break;
+imports__validate_import_visibility(func_name, import_child.data.function.is_public, use_mod, &import_set, std__string__str("function"));
 }
-if (std__string__compare ( child.data.use_node.imports->data[ k ], func_name ) == 0) {
-is_requested = true;
-break;
-}
-k++;
-}
-if (is_requested && ! import_child.data.function.is_public) {
-if (! std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
-std__io__print("error: cannot import non-public function '");
-std__io__print(func_name);
-std__io__print("' from module '");
-std__io__print(use_mod);
-std__io__println("'");
-exit(1);
-}
-}
-}
-else if (std__string__equals_c ( import_child.node_type, "Model" )) {
+else if (std__string__equals_c ( node_type , "Model" )) {
 const std__string__string model_name = import_child.data.model_node.name;
-bool is_requested = false;
-int32_t k = 0;
-while (1) {
-if (k >= len_v((*child.data.use_node.imports))) {
-break;
-}
-if (std__string__compare ( child.data.use_node.imports->data[ k ], model_name ) == 0) {
-is_requested = true;
-break;
-}
-k++;
-}
-if (is_requested && ! import_child.data.model_node.is_public) {
-if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
-}
-else {
+if (std__maps__StringBoolMap__contains( &import_set , model_name ) && ! import_child.data.model_node.is_public&& ! is_std) {
 std__io__print("error: cannot import non-public model '");
 std__io__print(model_name);
 std__io__print("' from module '");
@@ -16555,25 +16703,9 @@ std__io__println("'");
 exit(1);
 }
 }
-}
-else if (std__string__equals_c ( import_child.node_type, "Enum" )) {
+else if (std__string__equals_c ( node_type , "Enum" )) {
 const std__string__string enum_name = import_child.data.enum_node.name;
-bool is_requested = false;
-int32_t k = 0;
-while (1) {
-if (k >= len_v((*child.data.use_node.imports))) {
-break;
-}
-if (std__string__compare ( child.data.use_node.imports->data[ k ], enum_name ) == 0) {
-is_requested = true;
-break;
-}
-k++;
-}
-if (is_requested && ! import_child.data.enum_node.is_public) {
-if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
-}
-else {
+if (std__maps__StringBoolMap__contains( &import_set , enum_name ) && ! import_child.data.enum_node.is_public&& ! is_std) {
 std__io__print("error: cannot import non-public enum '");
 std__io__print(enum_name);
 std__io__print("' from module '");
@@ -16582,50 +16714,13 @@ std__io__println("'");
 exit(1);
 }
 }
-}
-else if (std__string__equals_c ( import_child.node_type, "Overload" )) {
+else if (std__string__equals_c ( node_type , "Overload" )) {
 const std__string__string ovl_name = import_child.data.overload_node.name;
-bool is_requested2 = false;
-int32_t kk = 0;
-while (1) {
-if (kk >= len_v((*child.data.use_node.imports))) {
-break;
+imports__validate_import_visibility(ovl_name, import_child.data.overload_node.is_public, use_mod, &import_set, std__string__str("overload"));
 }
-if (std__string__compare ( child.data.use_node.imports->data[ kk ], ovl_name ) == 0) {
-is_requested2 = true;
-break;
-}
-kk++;
-}
-if (is_requested2 && ! import_child.data.overload_node.is_public) {
-if (! std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
-std__io__print("error: cannot import non-public overload '");
-std__io__print(ovl_name);
-std__io__print("' from module '");
-std__io__print(use_mod);
-std__io__println("'");
-exit(1);
-}
-}
-}
-else if (std__string__equals_c ( import_child.node_type, "Macro" )) {
+else if (std__string__equals_c ( node_type , "Macro" )) {
 const std__string__string macro_name = import_child.data.macro_node.name;
-bool is_requested = false;
-int32_t k = 0;
-while (1) {
-if (k >= len_v((*child.data.use_node.imports))) {
-break;
-}
-if (std__string__compare ( child.data.use_node.imports->data[ k ], macro_name ) == 0) {
-is_requested = true;
-break;
-}
-k++;
-}
-if (is_requested && ! import_child.data.macro_node.is_public) {
-if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
-}
-else {
+if (std__maps__StringBoolMap__contains( &import_set , macro_name ) && ! import_child.data.macro_node.is_public&& ! is_std) {
 std__io__print("error: cannot import non-public macro '");
 std__io__print(macro_name);
 std__io__print("' from module '");
@@ -16634,6 +16729,9 @@ std__io__println("'");
 exit(1);
 }
 }
+else if (std__string__equals_c ( node_type , "Extern" )) {
+const std__string__string extern_name = import_child.data.extern_node.function_name;
+imports__validate_import_visibility(extern_name, import_child.data.extern_node.is_public, use_mod, &import_set, std__string__str("extern"));
 }
 j++;
 }
@@ -16913,6 +17011,7 @@ g_expected_return_type = std__string__str ( "" );
 g_emit_line_directives = false;
 g_current_source_file = std__string__str ( "" );
 g_current_line = 0;
+g_inside_non_matching_when = false;
 std__maps__StringStringMap__set(&g_type_mappings, &g_renderer_arena, std__string__str("i8"), std__string__str("int8_t"));
 std__maps__StringStringMap__set(&g_type_mappings, &g_renderer_arena, std__string__str("u8"), std__string__str("uint8_t"));
 std__maps__StringStringMap__set(&g_type_mappings, &g_renderer_arena, std__string__str("i16"), std__string__str("int16_t"));
@@ -17334,7 +17433,13 @@ if (std__string__equals_c ( trimmed , "nil" )) {
 return std__string__str( "ref void" );
 }
 if (std__maps__StringStringMap__contains( &g_var_types , trimmed )) {
-return std__maps__StringStringMap__get( &g_var_types , trimmed );
+std__string__string var_type = std__maps__StringStringMap__get( &g_var_types , trimmed );
+if (g_current_type_mapping != nil && std__string__str_len ( var_type ) > 0) {
+if (std__maps__StringStringMap__contains( g_current_type_mapping , var_type )) {
+var_type = std__maps__StringStringMap__get( g_current_type_mapping , var_type );
+}
+}
+return var_type;
 }
 if (std__string__has_prefix ( trimmed , std__string__str ( "&" ) )) {
 std__string__string inner = std__string__strip( std__string__substr ( trimmed , 1 , std__string__str_len ( trimmed ) - 1 ) );
@@ -17563,6 +17668,12 @@ return std__string__str( "" );
 }
 
 void renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth) {
+if (g_inside_non_matching_when) {
+return ;
+}
+if (g_current_type_mapping == nil && std__maps__StringBoolMap__size( &g_current_function_type_params ) > 0) {
+return ;
+}
 if (depth > 10) {
 return ;
 }
@@ -18345,6 +18456,7 @@ const int32_t kw_len = (int32_t)( std__string__str_len ( keyword ) );
 if (expr_len == 0 || kw_len == 0) {
 return expr;
 }
+const bool is_mod_keyword = std__string__compare( keyword , std__string__str ( "mod" ) ) == 0;
 std__string__StringBuilder sb = std__string__StringBuilder__init( (uintptr_t)( expr_len + 32 ) );
 bool in_string = false;
 bool in_char_literal = false;
@@ -18411,6 +18523,18 @@ is_word = false;
 }
 }
 if (is_word) {
+if (is_mod_keyword) {
+if (g_current_source_file.data!= nil) {
+std__io__print(std__os__get_short_filename(g_current_source_file));
+}
+else {
+std__io__print("(null)");
+}
+std__io__print(":");
+std__io__print(std__string__i32_to_string(g_current_line));
+std__io__print(": error: 'mod' is deprecated, use '%' instead\n");
+std__os__quit(1);
+}
 if (i > 0) {
 const char prev_ch = std__string__get_char( expr , i - 1 );
 if (prev_ch != ' ') {
@@ -19910,12 +20034,25 @@ std__string__string base_ident2 = ident;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , ident )) {
 base_ident2 = std__maps__StringStringMap__get( &g_function_prefixes , ident );
 }
+int32_t num_type_params = 0;
+if (std__maps__StringLongMap__contains( &g_generic_function_asts , base_ident2 )) {
+const int64_t gen_ast_ptr2 = std__maps__StringLongMap__get( &g_generic_function_asts , base_ident2 );
+const structs__ASTNode* gen_ast2 = (structs__ASTNode*)( gen_ast_ptr2 );
+const __list_std__string_t* type_params2 = gen_ast2->data.function.type_params;
+if (type_params2 != nil) {
+num_type_params = len_v((*type_params2));
+}
+}
 std__string__StringBuilder__append(&sb, base_ident2);
-if (std__string__str_len ( type2 ) > 0 && std__string__str_len ( type1 ) > 0) {
+if (num_type_params == 2 && std__string__str_len ( type2 ) > 0 && std__string__str_len ( type1 ) > 0) {
 std__string__StringBuilder__append_c(&sb, "__T2_");
 std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type2)));
 std__string__StringBuilder__append_c(&sb, "__T_");
 std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type1)));
+}
+else if (num_type_params == 1 && std__string__str_len ( type2 ) > 0) {
+std__string__StringBuilder__append_c(&sb, "__T_");
+std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type2)));
 }
 else if (std__string__str_len ( type1 ) > 0) {
 std__string__StringBuilder__append_c(&sb, "__T_");
@@ -20461,7 +20598,7 @@ continue;
 }
 if (! in_string && ! in_char_literal && ch == '[') {
 bool is_array_literal = true;
-if (i > 0 && std__string__get_char ( expr , i - 1 ) != ' ' && std__string__get_char ( expr , i - 1 ) != '\t' && std__string__get_char ( expr , i - 1 ) != '\n' && std__string__get_char ( expr , i - 1 ) != '\r') {
+if (i > 0 && std__string__get_char ( expr , i - 1 ) != ' ' && std__string__get_char ( expr , i - 1 ) != '\t' && std__string__get_char ( expr , i - 1 ) != '\n' && std__string__get_char ( expr , i - 1 ) != '\r' && std__string__get_char ( expr , i - 1 ) != '=') {
 is_array_literal = false;
 }
 if (! is_array_literal) {
@@ -20469,7 +20606,17 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-const int32_t type_start = i + 1;
+int32_t type_start = i + 1;
+while (1) {
+if (type_start >= expr_len) {
+break;
+}
+const char ws_ch = std__string__get_char( expr , type_start );
+if (ws_ch != ' ' && ws_ch != '\t' && ws_ch != '\n' && ws_ch != '\r') {
+break;
+}
+type_start++;
+}
 int32_t type_end = - 1;
 int32_t bracket_depth = 1;
 int32_t p = type_start;
@@ -20492,23 +20639,33 @@ p++;
 }
 if (type_end > type_start) {
 const std__string__string type_str = std__string__strip( std__string__substring_se ( expr , type_start , type_end ) );
-const int32_t next_pos = type_end + 1;
-if (next_pos < expr_len && std__string__get_char ( expr , next_pos ) == '[') {
+int32_t next_pos = type_end + 1;
+while (1) {
+if (next_pos >= expr_len) {
+break;
+}
+const char ws_ch2 = std__string__get_char( expr , next_pos );
+if (ws_ch2 != ' ' && ws_ch2 != '\t' && ws_ch2 != '\n' && ws_ch2 != '\r') {
+break;
+}
+next_pos++;
+}
+if (next_pos < expr_len && std__string__get_char ( expr , next_pos ) == '{') {
 const int32_t values_start = next_pos + 1;
 int32_t values_end = - 1;
-bracket_depth = 1;
+int32_t brace_depth = 1;
 p = values_start;
 while (1) {
 if (p >= expr_len) {
 break;
 }
 const char cp = std__string__get_char( expr , p );
-if (cp == '[') {
-bracket_depth++;
+if (cp == '{') {
+brace_depth++;
 }
-else if (cp == ']') {
-bracket_depth--;
-if (bracket_depth == 0) {
+else if (cp == '}') {
+brace_depth--;
+if (brace_depth == 0) {
 values_end = p;
 break;
 }
@@ -22221,7 +22378,7 @@ return ;
 if (std__string__equals_c ( name , "true" ) || std__string__equals_c ( name , "false" ) || std__string__equals_c ( name , "nil" )) {
 return ;
 }
-if (std__string__equals_c ( name , "mod" ) || std__string__equals_c ( name , "and" ) || std__string__equals_c ( name , "or" ) || std__string__equals_c ( name , "not" ) || std__string__equals_c ( name , "xor" )) {
+if (std__string__equals_c ( name , "and" ) || std__string__equals_c ( name , "or" ) || std__string__equals_c ( name , "not" ) || std__string__equals_c ( name , "xor" )) {
 return ;
 }
 if (std__maps__StringStringMap__contains( &g_var_types , name )) {
@@ -22281,6 +22438,89 @@ std__io__println("");
 exit(1);
 }
 
+std__string__string renderer__convert_union_member_init(std__string__string expr) {
+const std__string__string trimmed = std__string__strip( expr );
+const int32_t brace_idx = std__string__find_char_from( trimmed , '{' , (uintptr_t)( 0 ) );
+if (brace_idx <= 0 || std__string__get_char ( trimmed , std__string__str_len ( trimmed ) - 1 ) != '}') {
+return expr;
+}
+const std__string__string member_name = std__string__strip( std__string__substring_se ( trimmed , 0 , brace_idx ) );
+if (std__string__str_len ( member_name ) == 0 || std__string__find_char_from ( member_name , '.' , (uintptr_t)( 0 ) ) >= 0) {
+return expr;
+}
+const char first_char = std__string__get_char( member_name , 0 );
+if (first_char < 'a' || first_char > 'z') {
+return expr;
+}
+const std__string__string inner = std__string__substring_se( trimmed , brace_idx + 1 , (int32_t)( std__string__str_len ( trimmed ) - 1 ) );
+std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( trimmed ) + 10 );
+std__string__StringBuilder__append_c(&sb, "{ .");
+std__string__StringBuilder__append(&sb, member_name);
+std__string__StringBuilder__append_c(&sb, " = { ");
+std__string__StringBuilder sb_inner = std__string__StringBuilder__init( std__string__str_len ( inner ) + 16 );
+int32_t depth = 0;
+bool first_field = true;
+int32_t i = 0;
+const int32_t inner_len = (int32_t)( std__string__str_len ( inner ) );
+while (1) {
+if (i >= inner_len) {
+break;
+}
+const char ch = std__string__get_char( inner , i );
+if (ch == '{' || ch == '(') {
+depth++;
+std__string__StringBuilder__append_char(&sb_inner, ch);
+}
+else if (ch == '}' || ch == ')') {
+depth--;
+std__string__StringBuilder__append_char(&sb_inner, ch);
+}
+else if (ch == ',' && depth == 0) {
+const std__string__string part = std__string__strip( std__string__StringBuilder__to_string( &sb_inner ) );
+if (std__string__str_len ( part ) > 0) {
+const int32_t colon_pos = std__string__find_char_from( part , ':' , (uintptr_t)( 0 ) );
+if (colon_pos >= 0) {
+const std__string__string field_name = std__string__strip( std__string__substring_se ( part , 0 , colon_pos ) );
+const std__string__string field_value = std__string__strip( std__string__substr ( part , colon_pos + 1 , (int32_t)( std__string__str_len ( part ) - colon_pos - 1 ) ) );
+if (! first_field) {
+std__string__StringBuilder__append_c(&sb, ", ");
+}
+std__string__StringBuilder__append_c(&sb, ".");
+std__string__StringBuilder__append(&sb, field_name);
+std__string__StringBuilder__append_c(&sb, " = ");
+std__string__StringBuilder__append(&sb, field_value);
+first_field = false;
+}
+}
+std__string__StringBuilder__clear(&sb_inner);
+}
+else {
+std__string__StringBuilder__append_char(&sb_inner, ch);
+}
+i++;
+}
+const std__string__string part_last = std__string__strip( std__string__StringBuilder__to_string( &sb_inner ) );
+std__string__StringBuilder__destroy(&sb_inner);
+if (std__string__str_len ( part_last ) > 0) {
+const int32_t colon_pos_last = std__string__find_char_from( part_last , ':' , (uintptr_t)( 0 ) );
+if (colon_pos_last >= 0) {
+const std__string__string field_name_last = std__string__strip( std__string__substring_se ( part_last , 0 , colon_pos_last ) );
+const std__string__string field_value_last = std__string__strip( std__string__substr ( part_last , colon_pos_last + 1 , (int32_t)( std__string__str_len ( part_last ) - colon_pos_last - 1 ) ) );
+if (! first_field) {
+std__string__StringBuilder__append_c(&sb, ", ");
+}
+std__string__StringBuilder__append_c(&sb, ".");
+std__string__StringBuilder__append(&sb, field_name_last);
+std__string__StringBuilder__append_c(&sb, " = ");
+std__string__StringBuilder__append(&sb, field_value_last);
+}
+}
+std__string__StringBuilder__append_c(&sb, " } }");
+const std__string__string result = std__string__StringBuilder__to_string( &sb );
+std__string__StringBuilder__destroy(&sb);
+return result;
+}
+
 std__string__string renderer__process_expression(std__string__string expr) {
 std__string__string trimmed = std__string__strip( expr );
 renderer__check_variable_declared(trimmed);
@@ -22322,7 +22562,7 @@ break;
 }
 }
 }
-j = j + 1;
+j++;
 }
 if (depth == 0 && j > open_idx) {
 const std__string__string inner_raw = std__string__strip( std__string__substring_se ( trimmed , open_idx + 1 , j ) );
@@ -22829,6 +23069,7 @@ std__string__string renderer__generate_specialized_function_prototype(structs__A
 if (ast == nil) {
 return std__string__str( "" );
 }
+const std__maps__StringStringMap* saved_type_mapping = g_current_type_mapping;
 g_current_type_mapping = type_mapping;
 std__string__string return_type = ast->data.function.return_type;
 if (std__string__str_len ( return_type ) == 0) {
@@ -22889,7 +23130,7 @@ pidx++;
 std__string__StringBuilder__append_c(&sb_spec, ");\n");
 const std__string__string result_spec = std__string__StringBuilder__to_string( &sb_spec );
 std__string__StringBuilder__destroy(&sb_spec);
-g_current_type_mapping = nil;
+g_current_type_mapping = saved_type_mapping;
 return result_spec;
 }
 
@@ -22997,57 +23238,50 @@ array_suffix = suffix;
 }
 }
 const std__string__string emitted_name = var_name;
-if (is_mutable) {
-result = std__string__concat ( result , mapped_type );
-result = std__string__concat_c ( result , " " );
-result = std__string__concat ( result , emitted_name );
+std__string__StringBuilder sb_decl = std__string__StringBuilder__init( 256 );
+if (! is_mutable) {
+std__string__StringBuilder__append_c(&sb_decl, "const ");
+}
+std__string__StringBuilder__append(&sb_decl, mapped_type);
+std__string__StringBuilder__append_char(&sb_decl, ' ');
+std__string__StringBuilder__append(&sb_decl, emitted_name);
 if (std__string__str_len ( array_suffix ) > 0) {
-result = std__string__concat ( result , array_suffix );
-}
-}
-else {
-result = std__string__concat_c ( result , "const " );
-result = std__string__concat ( result , mapped_type );
-result = std__string__concat_c ( result , " " );
-result = std__string__concat ( result , emitted_name );
-if (std__string__str_len ( array_suffix ) > 0) {
-result = std__string__concat ( result , array_suffix );
-}
+std__string__StringBuilder__append(&sb_decl, array_suffix);
 }
 if (std__string__str_len ( initializer ) > 0) {
 const std__string__string trimmed = std__string__strip( initializer );
 const int32_t brace_idx = std__string__find_char_from( trimmed , '{' , (uintptr_t)( 0 ) );
+std__string__StringBuilder__append_c(&sb_decl, " = ");
 if (brace_idx >= 0) {
 const std__string__string type_part = std__string__strip( std__string__substring_se ( trimmed , 0 , brace_idx ) );
-const std__string__string brace_part = std__string__substring_se( trimmed , brace_idx , (int32_t)( std__string__str_len ( trimmed ) ) );
 if (std__string__str_len ( type_part ) > 0) {
-result = std__string__concat_c ( result , " = " );
-result = std__string__concat ( result , brace_part );
+const std__string__string brace_part = std__string__substring_se( trimmed , brace_idx , (int32_t)( std__string__str_len ( trimmed ) ) );
+std__string__StringBuilder__append(&sb_decl, brace_part);
 }
 else {
-result = std__string__concat_c ( result , " = " );
-result = std__string__concat ( result , trimmed );
+std__string__StringBuilder__append(&sb_decl, trimmed);
 }
 }
 else {
 const std__string__string processed_init = renderer__process_expression( trimmed );
-result = std__string__concat_c ( result , " = " );
-result = std__string__concat ( result , processed_init );
+std__string__StringBuilder__append(&sb_decl, processed_init);
 }
 }
 else {
 const char first_char = std__string__get_char( mapped_type , 0 );
 if (first_char >= 'A' && first_char <= 'Z') {
-result = std__string__concat_c ( result , " = {0}" );
+std__string__StringBuilder__append_c(&sb_decl, " = {0}");
 }
 else if (std__string__has_prefix ( mapped_type , std__string__str ( "__list_" ) )) {
-result = std__string__concat_c ( result , " = {0}" );
+std__string__StringBuilder__append_c(&sb_decl, " = {0}");
 }
 else if (std__string__has_prefix ( mapped_type , std__string__str ( "std__" ) )) {
-result = std__string__concat_c ( result , " = {0}" );
+std__string__StringBuilder__append_c(&sb_decl, " = {0}");
 }
 }
-result = std__string__concat_c ( result , ";\n" );
+std__string__StringBuilder__append_c(&sb_decl, ";\n");
+result = std__string__StringBuilder__to_string( &sb_decl );
+std__string__StringBuilder__destroy(&sb_decl);
 return result;
 }
 
@@ -23247,12 +23481,14 @@ std__lists__StringList__clear(g_posix_external_headers);
 renderer__collect_external_imports(ast, std__string__str(""), &ext_arena);
 renderer__collect_foreign_types(ast);
 renderer__build_function_signatures(ast);
-std__string__StringBuilder sb_header = std__string__StringBuilder__init( 8192 );
-std__string__StringBuilder sb_protos = std__string__StringBuilder__init( 8192 );
-std__string__StringBuilder sb_bodies = std__string__StringBuilder__init( 16384 );
-std__string__StringBuilder sb_specs = std__string__StringBuilder__init( 16384 );
-std__string__StringBuilder__append_c(&sb_header,             "#define nil ((void*)0)\n#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#define len_ptr(x) ((x)->len)\n#define len_v(x) ((&(x))->len)\n#define len(x) len_v(x)\n");
+std__string__StringBuilder sb_header = std__string__StringBuilder__init( 32768 );
+std__string__StringBuilder sb_protos = std__string__StringBuilder__init( 32768 );
+std__string__StringBuilder sb_bodies = std__string__StringBuilder__init( 65536 );
+std__string__StringBuilder sb_specs = std__string__StringBuilder__init( 32768 );
+std__string__StringBuilder__append_c(&sb_header,              "#define nil ((void*)0)\n#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#define len_ptr(x) ((x)->len)\n#define len_v(x) ((&(x))->len)\n#define len(x) len_v(x)\n");
+if (! no_windows_header) {
 std__string__StringBuilder__append_c(&sb_header, "\n#ifdef _WIN32\n#define NOMINMAX\n#define NOGDI\n#define WIN32_LEAN_AND_MEAN\n#include <windows.h>\n#endif\n");
+}
 std__string__StringBuilder__append_c(&sb_header, "\n#ifdef __APPLE__\n#include <ctype.h>\n#include <mach-o/dyld.h>\n#endif\n");
 int32_t ghi = 0;
 while (1) {
@@ -23635,20 +23871,21 @@ if (std__string__str_len ( cname ) == 0) {
 cname = mname;
 }
 if (! std__maps__StringIntMap__contains( &model_indices , cname )) {
+const int32_t idx = model_names_list->len;
 std__lists__StringList__push(model_names_list, &model_arena, cname);
-std__maps__StringIntMap__set(&model_indices, &model_arena, cname, model_names_list->len- 1);
+std__maps__StringIntMap__set(&model_indices, &model_arena, cname, idx);
 }
 }
 collect_idx = collect_idx + 1;
 }
 const int32_t num_models = model_names_list->len;
-std__lists__StringList* deps_lists = std__lists__StringList__create( &model_arena , num_models + 1 );
+__list_std__string__StringBuilder_t deps_sbs = {0};
 int32_t dep_init = 0;
 while (1) {
 if (dep_init >= num_models) {
 break;
 }
-std__lists__StringList__push(deps_lists, &model_arena, std__string__str(""));
+__list_std__string__StringBuilder_push(&deps_sbs, std__string__StringBuilder__init(64));
 dep_init = dep_init + 1;
 }
 int32_t build_deps_idx = 0;
@@ -23667,8 +23904,9 @@ const int32_t this_model_idx = std__maps__StringIntMap__get( &model_indices , th
 const __list_std__string_t* ftypes = bdep_child->data.model_node.field_types;
 if (ftypes != nil) {
 int32_t ft_idx = 0;
+const int32_t ftypes_len = len_v((*ftypes));
 while (1) {
-if (ft_idx >= len_v((*ftypes))) {
+if (ft_idx >= ftypes_len) {
 break;
 }
 const std__string__string ftype = ftypes->data[ ft_idx ];
@@ -23681,17 +23919,17 @@ mapped_type = base_type;
 }
 if (std__maps__StringIntMap__contains( &model_indices , mapped_type )) {
 if (std__string__compare ( mapped_type , this_model_name ) != 0) {
-const std__string__string current_deps = std__lists__StringList__get( deps_lists , this_model_idx );
-if (std__string__str_len ( current_deps ) == 0) {
-deps_lists->data[this_model_idx] = mapped_type;
+const std__string__StringBuilder* current_sb = &(deps_sbs.data[ this_model_idx ]);
+const int32_t current_len = current_sb->len;
+if (current_len == 0) {
+std__string__StringBuilder__append(current_sb, mapped_type);
 }
-else if (std__string__find_substr ( current_deps , mapped_type ) < 0) {
-std__string__StringBuilder sb_deps = std__string__StringBuilder__init( std__string__str_len ( current_deps ) + std__string__str_len ( mapped_type ) + 1 );
-std__string__StringBuilder__append(&sb_deps, current_deps);
-std__string__StringBuilder__append_c(&sb_deps, ",");
-std__string__StringBuilder__append(&sb_deps, mapped_type);
-deps_lists->data[this_model_idx] = std__string__StringBuilder__to_string( &sb_deps );
-std__string__StringBuilder__destroy(&sb_deps);
+else {
+const std__string__string current_str = std__string__StringBuilder__to_string( current_sb );
+if (std__string__find_substr ( current_str , mapped_type ) < 0) {
+std__string__StringBuilder__append_c(current_sb, ",");
+std__string__StringBuilder__append(current_sb, mapped_type);
+}
 }
 }
 }
@@ -23701,8 +23939,9 @@ ft_idx = ft_idx + 1;
 const __list_std__string_t* union_types = bdep_child->data.model_node.union_member_types;
 if (union_types != nil) {
 int32_t ut_idx = 0;
+const int32_t union_types_len = len_v((*union_types));
 while (1) {
-if (ut_idx >= len_v((*union_types))) {
+if (ut_idx >= union_types_len) {
 break;
 }
 const std__string__string utype = union_types->data[ ut_idx ];
@@ -23715,25 +23954,36 @@ umapped_type = ubase_type;
 }
 if (std__maps__StringIntMap__contains( &model_indices , umapped_type )) {
 if (std__string__compare ( umapped_type , this_model_name ) != 0) {
-const std__string__string current_deps = std__lists__StringList__get( deps_lists , this_model_idx );
-if (std__string__str_len ( current_deps ) == 0) {
-deps_lists->data[this_model_idx] = umapped_type;
+const std__string__StringBuilder* current_sb = &(deps_sbs.data[ this_model_idx ]);
+const int32_t current_len = current_sb->len;
+if (current_len == 0) {
+std__string__StringBuilder__append(current_sb, umapped_type);
 }
-else if (std__string__find_substr ( current_deps , umapped_type ) < 0) {
-std__string__StringBuilder sb_udeps = std__string__StringBuilder__init( std__string__str_len ( current_deps ) + std__string__str_len ( umapped_type ) + 1 );
-std__string__StringBuilder__append(&sb_udeps, current_deps);
-std__string__StringBuilder__append_c(&sb_udeps, ",");
-std__string__StringBuilder__append(&sb_udeps, umapped_type);
-deps_lists->data[this_model_idx] = std__string__StringBuilder__to_string( &sb_udeps );
-std__string__StringBuilder__destroy(&sb_udeps);
-}
-}
-}
-ut_idx++;
+else {
+const std__string__string current_str = std__string__StringBuilder__to_string( current_sb );
+if (std__string__find_substr ( current_str , umapped_type ) < 0) {
+std__string__StringBuilder__append_c(current_sb, ",");
+std__string__StringBuilder__append(current_sb, umapped_type);
 }
 }
 }
-build_deps_idx++;
+}
+ut_idx = ut_idx + 1;
+}
+}
+}
+build_deps_idx = build_deps_idx + 1;
+}
+std__lists__StringList* deps_lists = std__lists__StringList__create( &model_arena , num_models + 1 );
+int32_t finalize_idx = 0;
+while (1) {
+if (finalize_idx >= num_models) {
+break;
+}
+const std__string__string dep_str = std__string__StringBuilder__to_string( &(deps_sbs.data[ finalize_idx ]) );
+std__lists__StringList__push(deps_lists, &model_arena, dep_str);
+std__string__StringBuilder__destroy(&(deps_sbs.data[finalize_idx]));
+finalize_idx = finalize_idx + 1;
 }
 std__lists__IntList* visit_state = std__lists__IntList__create( &model_arena , num_models + 1 );
 int32_t vs_init = 0;
@@ -23873,24 +24123,28 @@ if (std__string__equals_c ( scan_node->node_type, "WhenBranch" )) {
 const __list_std__string_t* tp_list = scan_node->data.when_branch.type_params;
 const __list_std__string_t* ct_list = scan_node->data.when_branch.concrete_types;
 if (tp_list != nil && ct_list != nil) {
-std__string__string constraint_str = std__string__str( "" );
+std__string__StringBuilder sb_constraint = std__string__StringBuilder__init( 128 );
 int32_t cti = 0;
+const int32_t tp_list_len = len_v((*tp_list));
 while (1) {
-if (cti >= len_v((*tp_list))) {
+if (cti >= tp_list_len) {
 break;
 }
 if (cti > 0) {
-constraint_str = std__string__concat ( constraint_str , std__string__str ( "," ) );
+std__string__StringBuilder__append_char(&sb_constraint, ',');
 }
-constraint_str = std__string__concat ( constraint_str , tp_list->data[ cti ]);
-constraint_str = std__string__concat ( constraint_str , std__string__str ( ":" ) );
-constraint_str = std__string__concat ( constraint_str , ct_list->data[ cti ]);
+std__string__StringBuilder__append(&sb_constraint, tp_list->data[cti]);
+std__string__StringBuilder__append_char(&sb_constraint, ':');
+std__string__StringBuilder__append(&sb_constraint, ct_list->data[cti]);
 cti++;
 }
+const std__string__string constraint_str = std__string__StringBuilder__to_string( &sb_constraint );
+std__string__StringBuilder__destroy(&sb_constraint);
 bool found = false;
 int32_t fi = 0;
+const int32_t collected_len = len_v(collected_constraints);
 while (1) {
-if (fi >= len_v(collected_constraints)) {
+if (fi >= collected_len) {
 break;
 }
 if (std__string__equals_c ( collected_constraints.data[ fi ], constraint_str.data)) {
@@ -23937,7 +24191,7 @@ constraint_str2 = when_types->data[ branch_idx2 ];
 else {
 constraint_str2 = collected_constraints.data[ branch_idx2 ];
 }
-std__string__StringBuilder sb_spec_name2 = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder sb_spec_name2 = std__string__StringBuilder__init( 512 );
 std__string__string base_name_for_spec2 = proto_child->data.function.name;
 if (std__maps__StringStringMap__contains( &g_function_prefixes , base_name_for_spec2 )) {
 base_name_for_spec2 = std__maps__StringStringMap__get( &g_function_prefixes , base_name_for_spec2 );
@@ -24054,6 +24308,59 @@ pi++;
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append_c(&sb_protos, "#endif\n");
 }
+}
+if (std__string__equals_c ( proto_child->node_type, "Extern" )) {
+const std__string__string extern_func_name = proto_child->data.extern_node.function_name;
+const __list_std__string_t* extern_params = proto_child->data.extern_node.params;
+const std__string__string extern_ret_type = proto_child->data.extern_node.return_type;
+const bool is_public = proto_child->data.extern_node.is_public;
+if (! is_public) {
+i_proto++;
+continue;
+}
+std__string__StringBuilder sb_extern = std__string__StringBuilder__init( 512 );
+std__string__string mapped_extern_ret = std__string__str( "void" );
+if (std__string__str_len ( extern_ret_type ) > 0) {
+mapped_extern_ret = renderer__map_axe_type_to_c ( extern_ret_type );
+}
+std__string__StringBuilder__append(&sb_extern, mapped_extern_ret);
+std__string__StringBuilder__append_char(&sb_extern, ' ');
+std__string__StringBuilder__append(&sb_extern, extern_func_name);
+std__string__StringBuilder__append_char(&sb_extern, '(');
+if (extern_params != nil) {
+int32_t ep_idx = 0;
+while (1) {
+if (ep_idx >= len_v((*extern_params))) {
+break;
+}
+if (ep_idx > 0) {
+std__string__StringBuilder__append_c(&sb_extern, ", ");
+}
+const std__string__string eparam = extern_params->data[ ep_idx ];
+if (std__string__equals_c ( eparam , "..." )) {
+std__string__StringBuilder__append_c(&sb_extern, "...");
+}
+else {
+const int32_t ep_colon = std__string__find_char_from( eparam , ':' , (uintptr_t)( 0 ) );
+if (ep_colon >= 0) {
+const std__string__string ep_name = std__string__strip( std__string__substring_se ( eparam , 0 , ep_colon ) );
+const std__string__string ep_type = std__string__strip( std__string__substr ( eparam , ep_colon + 1 , std__string__str_len ( eparam ) - ep_colon - 1 ) );
+const std__string__string mapped_ep_type = renderer__map_axe_type_to_c( ep_type );
+std__string__StringBuilder__append(&sb_extern, mapped_ep_type);
+std__string__StringBuilder__append_char(&sb_extern, ' ');
+std__string__StringBuilder__append(&sb_extern, ep_name);
+}
+else {
+std__string__StringBuilder__append(&sb_extern, eparam);
+}
+}
+ep_idx++;
+}
+}
+std__string__StringBuilder__append_c(&sb_extern, ");\n");
+const std__string__string extern_proto = std__string__StringBuilder__to_string( &sb_extern );
+std__string__StringBuilder__destroy(&sb_extern);
+std__string__StringBuilder__append(&sb_protos, extern_proto);
 }
 i_proto++;
 }
@@ -24320,7 +24627,7 @@ ld2++;
 }
 }
 }
-std__string__StringBuilder sb_final = std__string__StringBuilder__init( 128000 );
+std__string__StringBuilder sb_final = std__string__StringBuilder__init( 256000 );
 std__string__StringBuilder__append(&sb_final, std__string__StringBuilder__to_string(&sb_header));
 std__string__StringBuilder__append(&sb_final, std__string__StringBuilder__to_string(&sb_protos));
 std__string__StringBuilder__append(&sb_final, std__string__StringBuilder__to_string(&g_specialization_prototypes_sb));
@@ -24333,21 +24640,24 @@ std__string__StringBuilder__destroy(&sb_bodies);
 std__string__StringBuilder__destroy(&sb_specs);
 std__string__StringBuilder__destroy(&sb_final);
 result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
-std__string__string fixed_result = std__string__str( "" );
+std__string__StringBuilder sb_fixed = std__string__StringBuilder__init( std__string__str_len ( result ) + 1024 );
 int32_t start_idx = 0;
 int32_t idx_line = 0;
+const int32_t result_len = (int32_t)( std__string__str_len ( result ) );
 while (1) {
-if (idx_line >= std__string__str_len ( result )) {
+if (idx_line >= result_len) {
 if (start_idx < idx_line) {
 const std__string__string last_line = std__string__substring_se( result , start_idx , idx_line );
-std__string__string line_fixed = last_line;
 const std__string__string trimmed_last = std__string__strip( last_line );
+const int32_t last_line_len = (int32_t)( std__string__str_len ( last_line ) );
+bool needs_fix = false;
+int32_t fix_pos = - 1;
 if (std__string__has_suffix ( trimmed_last , std__string__str ( ");" ) )) {
 int32_t eq_pos = - 1;
 bool in_string_eq = false;
 int32_t ei = 0;
 while (1) {
-if (ei >= std__string__str_len ( last_line )) {
+if (ei >= last_line_len) {
 break;
 }
 const char ec = std__string__get_char( last_line , ei );
@@ -24366,7 +24676,7 @@ int32_t close_p = 0;
 bool in_string_p = false;
 int32_t pi = eq_pos + 1;
 while (1) {
-if (pi >= std__string__str_len ( last_line )) {
+if (pi >= last_line_len) {
 break;
 }
 const char c = std__string__get_char( last_line , pi );
@@ -24387,17 +24697,15 @@ break;
 pi = pi + 1;
 }
 if (close_p == open_p + 1) {
-int32_t semi_idx = - 1;
-int32_t sj = std__string__str_len( last_line ) - 1;
+int32_t semi_idx = last_line_len - 1;
 while (1) {
-if (sj < 0) {
+if (semi_idx < 0) {
 break;
 }
-if (std__string__get_char ( last_line , sj ) == ';') {
-semi_idx = sj;
+if (std__string__get_char ( last_line , semi_idx ) == ';') {
 break;
 }
-sj = sj - 1;
+semi_idx = semi_idx - 1;
 }
 if (semi_idx > 0) {
 int32_t close_idx = semi_idx - 1;
@@ -24413,30 +24721,36 @@ continue;
 break;
 }
 if (close_idx >= 0 && std__string__get_char ( last_line , close_idx ) == ')') {
-std__string__string tmp = std__string__str( "" );
-tmp = std__string__concat ( tmp , std__string__substring_se ( last_line , 0 , (int32_t)( close_idx ) ) );
-tmp = std__string__concat ( tmp , std__string__substring_se ( last_line , close_idx + 1 , (int32_t)( std__string__str_len ( last_line ) ) ) );
-line_fixed = tmp;
+needs_fix = true;
+fix_pos = close_idx;
 }
 }
 }
 }
 }
-fixed_result = std__string__concat ( fixed_result , line_fixed );
+if (needs_fix && fix_pos >= 0) {
+std__string__StringBuilder__append(&sb_fixed, std__string__substring_se(last_line, 0, fix_pos));
+std__string__StringBuilder__append(&sb_fixed, std__string__substring_se(last_line, fix_pos + 1, last_line_len));
+}
+else {
+std__string__StringBuilder__append(&sb_fixed, last_line);
+}
 }
 break;
 }
 const char ch = std__string__get_char( result , idx_line );
 if (ch == '\n') {
 const std__string__string line = std__string__substring_se( result , start_idx , idx_line + 1 );
-std__string__string line_fixed2 = line;
 const std__string__string trimmed = std__string__strip( line );
+const int32_t line_len = (int32_t)( std__string__str_len ( line ) );
+bool needs_fix2 = false;
+int32_t fix_pos2 = - 1;
 if (std__string__has_suffix ( trimmed , std__string__str ( ");" ) ) && ! std__string__has_prefix ( trimmed , std__string__str ( "return " ) )) {
 int32_t eq_pos2 = - 1;
 bool in_string_eq2 = false;
 int32_t ei2 = 0;
 while (1) {
-if (ei2 >= std__string__str_len ( line )) {
+if (ei2 >= line_len) {
 break;
 }
 const char ec2 = std__string__get_char( line , ei2 );
@@ -24455,7 +24769,7 @@ int32_t close_p2 = 0;
 bool in_string_p2 = false;
 int32_t pi2 = eq_pos2 + 1;
 while (1) {
-if (pi2 >= std__string__str_len ( line )) {
+if (pi2 >= line_len) {
 break;
 }
 const char c2 = std__string__get_char( line , pi2 );
@@ -24476,17 +24790,15 @@ break;
 pi2 = pi2 + 1;
 }
 if (close_p2 == open_p2 + 1) {
-int32_t semi_idx2 = - 1;
-int32_t sj2 = std__string__str_len( line ) - 1;
+int32_t semi_idx2 = line_len - 1;
 while (1) {
-if (sj2 < 0) {
+if (semi_idx2 < 0) {
 break;
 }
-if (std__string__get_char ( line , sj2 ) == ';') {
-semi_idx2 = sj2;
+if (std__string__get_char ( line , semi_idx2 ) == ';') {
 break;
 }
-sj2 = sj2 - 1;
+semi_idx2 = semi_idx2 - 1;
 }
 if (semi_idx2 > 0) {
 int32_t close_idx2 = semi_idx2 - 1;
@@ -24502,23 +24814,29 @@ continue;
 break;
 }
 if (close_idx2 >= 0 && std__string__get_char ( line , close_idx2 ) == ')') {
-std__string__string tmp2 = std__string__str( "" );
-tmp2 = std__string__concat ( tmp2 , std__string__substring_se ( line , 0 , (int32_t)( close_idx2 ) ) );
-tmp2 = std__string__concat ( tmp2 , std__string__substring_se ( line , close_idx2 + 1 , (int32_t)( std__string__str_len ( line ) ) ) );
-line_fixed2 = tmp2;
+needs_fix2 = true;
+fix_pos2 = close_idx2;
 }
 }
 }
 }
 }
-fixed_result = std__string__concat ( fixed_result , line_fixed2 );
+if (needs_fix2 && fix_pos2 >= 0) {
+std__string__StringBuilder__append(&sb_fixed, std__string__substring_se(line, 0, fix_pos2));
+std__string__StringBuilder__append(&sb_fixed, std__string__substring_se(line, fix_pos2 + 1, line_len));
+}
+else {
+std__string__StringBuilder__append(&sb_fixed, line);
+}
 start_idx = idx_line + 1;
 }
 idx_line = idx_line + 1;
 }
+const std__string__string fixed_result = std__string__StringBuilder__to_string( &sb_fixed );
 if (std__string__str_len ( fixed_result ) > 0) {
 result = fixed_result;
 }
+std__string__StringBuilder__destroy(&sb_fixed);
 }
 if (std__string__equals_c ( node_type , "Program" )) {
 result = renderer__strip_all_c_prefixes ( result );
@@ -24645,6 +24963,7 @@ std__string__StringBuilder__append(&sb_test, array_suffix);
 }
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__str_len ( trimmed_init ) > 0) {
+trimmed_init = renderer__rewrite_array_literals ( trimmed_init );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "[" ) ) && std__string__has_suffix ( trimmed_init , std__string__str ( "]" ) )) {
 const std__string__string elements_str = std__string__substring_se( trimmed_init , 1 , std__string__str_len ( trimmed_init ) - 1 );
 const std__string__string elements_trimmed = std__string__strip( elements_str );
@@ -24966,7 +25285,7 @@ g_current_module_prefix = old_prefix;
 std__maps__StringBoolMap__clear(&g_current_function_type_params);
 return std__string__str( "" );
 }
-std__string__StringBuilder sb_all_funcs = std__string__StringBuilder__init( 8192 );
+std__string__StringBuilder sb_all_funcs = std__string__StringBuilder__init( 32768 );
 int32_t branch_idx = 0;
 int32_t constraint_list_len = 0;
 if (has_top_level_when) {
@@ -25060,6 +25379,7 @@ spec_return_type = std__string__str ( "void" );
 if (std__maps__StringStringMap__contains( &type_mapping , return_type )) {
 spec_return_type = std__maps__StringStringMap__get( &type_mapping , return_type );
 }
+const std__maps__StringStringMap* saved_type_mapping = g_current_type_mapping;
 g_current_type_mapping = &type_mapping;
 const std__string__string mapped_ret = renderer__map_axe_type_to_c( spec_return_type );
 std__string__StringBuilder sb_func = std__string__StringBuilder__init( 4096 );
@@ -25212,7 +25532,7 @@ i_defer++;
 defer_idx++;
 }
 }
-g_current_type_mapping = nil;
+g_current_type_mapping = saved_type_mapping;
 }
 std__string__StringBuilder__append_c(&sb_func, "}\n\n");
 const std__string__string func_code = std__string__StringBuilder__to_string( &sb_func );
@@ -25389,8 +25709,6 @@ param_idx++;
 }
 }
 std__string__StringBuilder__append_c(&sb_func, ") {\n");
-result = std__string__StringBuilder__to_string( &sb_func );
-std__string__StringBuilder__destroy(&sb_func);
 if (ast->children!= nil) {
 const __list_structs__ASTNode_t* children = ast->children;
 int32_t i = 0;
@@ -25399,11 +25717,13 @@ if (i >= len_v((*children))) {
 break;
 }
 const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
-result = std__string__concat ( result , child_code );
+std__string__StringBuilder__append(&sb_func, child_code);
 i++;
 }
 }
-result = std__string__concat_c ( result , "}\n\n" );
+std__string__StringBuilder__append_c(&sb_func, "}\n\n");
+result = std__string__StringBuilder__to_string( &sb_func );
+std__string__StringBuilder__destroy(&sb_func);
 g_current_model = old_model;
 g_current_module_prefix = old_prefix;
 std__maps__StringBoolMap__clear(&g_current_function_type_params);
@@ -25923,7 +26243,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(value_expr));
+const std__string__string converted_value = renderer__convert_union_member_init( value_expr );
+std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value));
 first_field = false;
 }
 }
@@ -25949,7 +26270,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name_last);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(value_expr_last));
+const std__string__string converted_value_last = renderer__convert_union_member_init( value_expr_last );
+std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value_last));
 first_field = false;
 }
 }
@@ -26004,7 +26326,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name2);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(value_expr2));
+const std__string__string converted_value2 = renderer__convert_union_member_init( value_expr2 );
+std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value2));
 first_field2 = false;
 }
 }
@@ -26030,7 +26353,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name_last2);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(value_expr_last2));
+const std__string__string converted_value_last2 = renderer__convert_union_member_init( value_expr_last2 );
+std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value_last2));
 first_field2 = false;
 }
 }
@@ -27204,7 +27528,8 @@ if (ci >= len_v((*tp_list))) {
 break;
 }
 const std__string__string tp = tp_list->data[ ci ];
-const std__string__string ct_expected = ct_list->data[ ci ];
+const std__string__string ct_expected_axe = ct_list->data[ ci ];
+const std__string__string ct_expected = renderer__map_axe_type_to_c( ct_expected_axe );
 if (std__maps__StringStringMap__contains( g_current_type_mapping , tp )) {
 const std__string__string ct_actual = std__maps__StringStringMap__get( g_current_type_mapping , tp );
 if (loud_logger) {
@@ -28082,6 +28407,11 @@ else {
 mapped_nested_type = std__string__concat ( std__string__str ( "struct " ) , c_nested_model_name );
 }
 }
+if (std__string__compare ( nested_type_raw , model_name ) == 0 || std__string__compare ( c_nested_model_name , model_name ) == 0) {
+if (! std__string__has_suffix ( mapped_nested_type , std__string__str ( "*" ) )) {
+mapped_nested_type = std__string__concat ( mapped_nested_type , std__string__str ( "*" ) );
+}
+}
 std__string__StringBuilder__append_c(&sb, "            ");
 std__string__StringBuilder__append(&sb, mapped_nested_type);
 std__string__StringBuilder__append_char(&sb, ' ');
@@ -28118,6 +28448,11 @@ mapped_member_type = c_member_model_name;
 }
 else {
 mapped_member_type = std__string__concat ( std__string__str ( "struct " ) , c_member_model_name );
+}
+}
+if (std__string__compare ( member_type_raw , model_name ) == 0 || std__string__compare ( c_member_model_name , model_name ) == 0) {
+if (! std__string__has_suffix ( mapped_member_type , std__string__str ( "*" ) )) {
+mapped_member_type = std__string__concat ( mapped_member_type , std__string__str ( "*" ) );
 }
 }
 std__string__StringBuilder__append_c(&sb, "        ");
@@ -28399,8 +28734,6 @@ return result;
 int main(int argc, char** argv) {
 __axe_argc = argc;
 __axe_argv = argv;
-    signal(SIGSEGV, axe_segv_handler);
-    signal(SIGABRT, axe_segv_handler);
 const std__arena__Arena arena = std__arena__Arena__create( 1024 );
 const std__lists__StringList* args = std__os__get_cmdline_args( &arena );
 if (args->len< 2) {
@@ -28441,6 +28774,11 @@ gstate__set_bootstrap_mode(true);
 i++;
 continue;
 }
+if (std__string__equals_c ( arg , "--nowin" )) {
+gstate__set_no_windows_header(true);
+i++;
+continue;
+}
 if (std__string__equals_c ( arg , "--sysroot" ) && i + 1 < args->len) {
 const std__string__string sysroot = std__lists__StringList__get( args , i + 1 );
 gstate__set_sysroot_path(sysroot);
@@ -28462,7 +28800,7 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.14");
+std__io__println("Axe v0.0.15");
 std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025)\n");
 std__os__quit(0);
 }
