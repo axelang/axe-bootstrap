@@ -31,6 +31,22 @@
 #include <unistd.h>
 #include <dirent.h>
 #endif
+#include <execinfo.h>
+#include <signal.h>
+#include <unistd.h>
+
+static void axe_segv_handler(int sig) {
+    const char* name = (sig == SIGSEGV ? "SIGSEGV" : (sig == SIGABRT ? "SIGABRT" : "SIGNAL"));
+    fprintf(stderr, "Fatal: %s received.\n", name);
+    void* frames[64];
+    int n = backtrace(frames, 64);
+    if (n > 0) {
+        fprintf(stderr, "Backtrace (%d frames):\n", n);
+        backtrace_symbols_fd(frames, n, fileno(stderr));
+    }
+    fflush(stderr);
+    _exit(139);
+}
 
 int __axe_argc = 0;
 char** __axe_argv = NULL;
@@ -237,6 +253,17 @@ struct std__lists__BoolList;
 struct std__string__StringBuilder;
 struct std__string__string;
 struct std__os__ExecResult;
+struct std__string__StringBuilder;
+struct std__string__string;
+struct std__errors__error;
+struct std__lists__IntList;
+struct std__lists__FloatList;
+struct std__lists__CharList;
+struct std__lists__LongList;
+struct std__lists__DoubleList;
+struct std__lists__StringList;
+struct std__lists__BoolList;
+struct std__arena__Arena;
 struct std__maps__StringIntMap;
 struct std__maps__StringFloatMap;
 struct std__maps__StringBoolMap;
@@ -257,7 +284,86 @@ struct std__maps__LongBoolMap;
 struct std__maps__FloatLongMap;
 struct std__maps__FloatBoolMap;
 struct std__maps__BoolLongMap;
+struct std__lists__IntList;
+struct std__lists__FloatList;
+struct std__lists__CharList;
+struct std__lists__LongList;
+struct std__lists__DoubleList;
+struct std__lists__StringList;
+struct std__lists__BoolList;
+struct std__arena__Arena;
+struct std__string__StringBuilder;
+struct std__string__string;
 struct std__errors__error;
+struct structs__MacroDef;
+struct structs__ParserContext;
+struct structs__Scope;
+struct structs__ASTNode;
+struct std__lists__IntList;
+struct std__lists__FloatList;
+struct std__lists__CharList;
+struct std__lists__LongList;
+struct std__lists__DoubleList;
+struct std__lists__StringList;
+struct std__lists__BoolList;
+struct std__string__StringBuilder;
+struct std__string__string;
+struct std__maps__StringIntMap;
+struct std__maps__StringFloatMap;
+struct std__maps__StringBoolMap;
+struct std__maps__StringStringMap;
+struct std__maps__StringLongMap;
+struct std__maps__IntIntMap;
+struct std__maps__FloatIntMap;
+struct std__maps__IntFloatMap;
+struct std__maps__FloatFloatMap;
+struct std__maps__IntBoolMap;
+struct std__maps__BoolIntMap;
+struct std__maps__FloatBoolMap;
+struct std__maps__BoolFloatMap;
+struct std__maps__BoolBoolMap;
+struct std__maps__LongLongMap;
+struct std__maps__LongFloatMap;
+struct std__maps__LongBoolMap;
+struct std__maps__FloatLongMap;
+struct std__maps__FloatBoolMap;
+struct std__maps__BoolLongMap;
+struct std__arena__Arena;
+struct backends__qbe__renderer__QBEFunctionContext;
+struct structs__MacroDef;
+struct structs__ParserContext;
+struct structs__Scope;
+struct structs__ASTNode;
+struct std__lists__IntList;
+struct std__lists__FloatList;
+struct std__lists__CharList;
+struct std__lists__LongList;
+struct std__lists__DoubleList;
+struct std__lists__StringList;
+struct std__lists__BoolList;
+struct std__string__StringBuilder;
+struct std__string__string;
+struct std__maps__StringIntMap;
+struct std__maps__StringFloatMap;
+struct std__maps__StringBoolMap;
+struct std__maps__StringStringMap;
+struct std__maps__StringLongMap;
+struct std__maps__IntIntMap;
+struct std__maps__FloatIntMap;
+struct std__maps__IntFloatMap;
+struct std__maps__FloatFloatMap;
+struct std__maps__IntBoolMap;
+struct std__maps__BoolIntMap;
+struct std__maps__FloatBoolMap;
+struct std__maps__BoolFloatMap;
+struct std__maps__BoolBoolMap;
+struct std__maps__LongLongMap;
+struct std__maps__LongFloatMap;
+struct std__maps__LongBoolMap;
+struct std__maps__FloatLongMap;
+struct std__maps__FloatBoolMap;
+struct std__maps__BoolLongMap;
+struct std__arena__Arena;
 struct std__os__ExecResult;
 struct std__string__StringBuilder;
 struct std__string__string;
@@ -470,6 +576,17 @@ typedef struct std__lists__BoolList std__lists__BoolList;
 typedef struct std__string__StringBuilder std__string__StringBuilder;
 typedef struct std__string__string std__string__string;
 typedef struct std__os__ExecResult std__os__ExecResult;
+typedef struct std__string__StringBuilder std__string__StringBuilder;
+typedef struct std__string__string std__string__string;
+typedef struct std__errors__error std__errors__error;
+typedef struct std__lists__IntList std__lists__IntList;
+typedef struct std__lists__FloatList std__lists__FloatList;
+typedef struct std__lists__CharList std__lists__CharList;
+typedef struct std__lists__LongList std__lists__LongList;
+typedef struct std__lists__DoubleList std__lists__DoubleList;
+typedef struct std__lists__StringList std__lists__StringList;
+typedef struct std__lists__BoolList std__lists__BoolList;
+typedef struct std__arena__Arena std__arena__Arena;
 typedef struct std__maps__StringIntMap std__maps__StringIntMap;
 typedef struct std__maps__StringFloatMap std__maps__StringFloatMap;
 typedef struct std__maps__StringBoolMap std__maps__StringBoolMap;
@@ -490,7 +607,86 @@ typedef struct std__maps__LongBoolMap std__maps__LongBoolMap;
 typedef struct std__maps__FloatLongMap std__maps__FloatLongMap;
 typedef struct std__maps__FloatBoolMap std__maps__FloatBoolMap;
 typedef struct std__maps__BoolLongMap std__maps__BoolLongMap;
+typedef struct std__lists__IntList std__lists__IntList;
+typedef struct std__lists__FloatList std__lists__FloatList;
+typedef struct std__lists__CharList std__lists__CharList;
+typedef struct std__lists__LongList std__lists__LongList;
+typedef struct std__lists__DoubleList std__lists__DoubleList;
+typedef struct std__lists__StringList std__lists__StringList;
+typedef struct std__lists__BoolList std__lists__BoolList;
+typedef struct std__arena__Arena std__arena__Arena;
+typedef struct std__string__StringBuilder std__string__StringBuilder;
+typedef struct std__string__string std__string__string;
 typedef struct std__errors__error std__errors__error;
+typedef struct structs__MacroDef structs__MacroDef;
+typedef struct structs__ParserContext structs__ParserContext;
+typedef struct structs__Scope structs__Scope;
+typedef struct structs__ASTNode structs__ASTNode;
+typedef struct std__lists__IntList std__lists__IntList;
+typedef struct std__lists__FloatList std__lists__FloatList;
+typedef struct std__lists__CharList std__lists__CharList;
+typedef struct std__lists__LongList std__lists__LongList;
+typedef struct std__lists__DoubleList std__lists__DoubleList;
+typedef struct std__lists__StringList std__lists__StringList;
+typedef struct std__lists__BoolList std__lists__BoolList;
+typedef struct std__string__StringBuilder std__string__StringBuilder;
+typedef struct std__string__string std__string__string;
+typedef struct std__maps__StringIntMap std__maps__StringIntMap;
+typedef struct std__maps__StringFloatMap std__maps__StringFloatMap;
+typedef struct std__maps__StringBoolMap std__maps__StringBoolMap;
+typedef struct std__maps__StringStringMap std__maps__StringStringMap;
+typedef struct std__maps__StringLongMap std__maps__StringLongMap;
+typedef struct std__maps__IntIntMap std__maps__IntIntMap;
+typedef struct std__maps__FloatIntMap std__maps__FloatIntMap;
+typedef struct std__maps__IntFloatMap std__maps__IntFloatMap;
+typedef struct std__maps__FloatFloatMap std__maps__FloatFloatMap;
+typedef struct std__maps__IntBoolMap std__maps__IntBoolMap;
+typedef struct std__maps__BoolIntMap std__maps__BoolIntMap;
+typedef struct std__maps__FloatBoolMap std__maps__FloatBoolMap;
+typedef struct std__maps__BoolFloatMap std__maps__BoolFloatMap;
+typedef struct std__maps__BoolBoolMap std__maps__BoolBoolMap;
+typedef struct std__maps__LongLongMap std__maps__LongLongMap;
+typedef struct std__maps__LongFloatMap std__maps__LongFloatMap;
+typedef struct std__maps__LongBoolMap std__maps__LongBoolMap;
+typedef struct std__maps__FloatLongMap std__maps__FloatLongMap;
+typedef struct std__maps__FloatBoolMap std__maps__FloatBoolMap;
+typedef struct std__maps__BoolLongMap std__maps__BoolLongMap;
+typedef struct std__arena__Arena std__arena__Arena;
+typedef struct backends__qbe__renderer__QBEFunctionContext backends__qbe__renderer__QBEFunctionContext;
+typedef struct structs__MacroDef structs__MacroDef;
+typedef struct structs__ParserContext structs__ParserContext;
+typedef struct structs__Scope structs__Scope;
+typedef struct structs__ASTNode structs__ASTNode;
+typedef struct std__lists__IntList std__lists__IntList;
+typedef struct std__lists__FloatList std__lists__FloatList;
+typedef struct std__lists__CharList std__lists__CharList;
+typedef struct std__lists__LongList std__lists__LongList;
+typedef struct std__lists__DoubleList std__lists__DoubleList;
+typedef struct std__lists__StringList std__lists__StringList;
+typedef struct std__lists__BoolList std__lists__BoolList;
+typedef struct std__string__StringBuilder std__string__StringBuilder;
+typedef struct std__string__string std__string__string;
+typedef struct std__maps__StringIntMap std__maps__StringIntMap;
+typedef struct std__maps__StringFloatMap std__maps__StringFloatMap;
+typedef struct std__maps__StringBoolMap std__maps__StringBoolMap;
+typedef struct std__maps__StringStringMap std__maps__StringStringMap;
+typedef struct std__maps__StringLongMap std__maps__StringLongMap;
+typedef struct std__maps__IntIntMap std__maps__IntIntMap;
+typedef struct std__maps__FloatIntMap std__maps__FloatIntMap;
+typedef struct std__maps__IntFloatMap std__maps__IntFloatMap;
+typedef struct std__maps__FloatFloatMap std__maps__FloatFloatMap;
+typedef struct std__maps__IntBoolMap std__maps__IntBoolMap;
+typedef struct std__maps__BoolIntMap std__maps__BoolIntMap;
+typedef struct std__maps__FloatBoolMap std__maps__FloatBoolMap;
+typedef struct std__maps__BoolFloatMap std__maps__BoolFloatMap;
+typedef struct std__maps__BoolBoolMap std__maps__BoolBoolMap;
+typedef struct std__maps__LongLongMap std__maps__LongLongMap;
+typedef struct std__maps__LongFloatMap std__maps__LongFloatMap;
+typedef struct std__maps__LongBoolMap std__maps__LongBoolMap;
+typedef struct std__maps__FloatLongMap std__maps__FloatLongMap;
+typedef struct std__maps__FloatBoolMap std__maps__FloatBoolMap;
+typedef struct std__maps__BoolLongMap std__maps__BoolLongMap;
+typedef struct std__arena__Arena std__arena__Arena;
 typedef struct std__os__ExecResult std__os__ExecResult;
 typedef struct std__string__StringBuilder std__string__StringBuilder;
 typedef struct std__string__string std__string__string;
@@ -1078,6 +1274,11 @@ typedef struct std__maps__BoolLongMap {
     std__lists__LongList* values;
 } std__maps__BoolLongMap;
 
+typedef struct backends__qbe__renderer__QBEFunctionContext {
+    struct std__maps__StringStringMap var_registers;
+    int32_t param_count;
+} backends__qbe__renderer__QBEFunctionContext;
+
 void axc__print_help_and_exit();
 bool std__algorithms__list_contains__T2_bool__T_std__lists__BoolList(std__lists__BoolList lst, bool value);
 bool std__algorithms__list_contains__T2_float__T_std__lists__FloatList(std__lists__FloatList lst, float value);
@@ -1113,6 +1314,22 @@ void std__io__println_bool(bool value);
 int32_t std__io__read_i32();
 float std__io__read_f32();
 std__string__string std__io__read_str(std__arena__Arena arena);
+void std__io__eprint_char(char value);
+void std__io__eprintln_char(char value);
+void std__io__eprint_chrptr(char* value);
+void std__io__eprintln_chrptr(char* value);
+void std__io__eprint_str(std__string__string value);
+void std__io__eprintln_str(std__string__string value);
+void std__io__eprint_f32(float value);
+void std__io__eprintln_f32(float value);
+void std__io__eprintln_f64(double value);
+void std__io__eprint_f64(double value);
+void std__io__eprintln_i64(int64_t value);
+void std__io__eprint_i64(int64_t value);
+void std__io__eprint_i32(int32_t value);
+void std__io__eprintln_i32(int32_t value);
+void std__io__eprint_bool(bool value);
+void std__io__eprintln_bool(bool value);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1353,6 +1570,8 @@ std__string__string gstate__get_target_triple();
 void gstate__set_sysroot_path(std__string__string path);
 std__string__string gstate__get_sysroot_path();
 void gstate__set_compile_only(bool v);
+void gstate__set_backend_type(std__string__string backend);
+std__string__string gstate__get_backend_type();
 void gstate__set_no_windows_header(bool v);
 bool gstate__get_compile_only();
 void gstate__set_library_paths(std__lists__StringList* paths);
@@ -1602,6 +1821,7 @@ void imports__add_processed_module(std__string__string path);
 bool imports__is_module_processed(std__string__string path);
 std__string__string imports__get_module_prefix(std__string__string module_name);
 std__string__string imports__get_dir_from_path(std__string__string path);
+std__string__string imports__normalize_path(std__string__string path);
 std__string__string imports__join_path(std__string__string base_dir, std__string__string rel);
 std__string__string imports__make_module_path(std__string__string base_dir, std__string__string use_module);
 void imports__append_child(structs__ASTNode* program, structs__ASTNode child);
@@ -1669,94 +1889,96 @@ void std__errors__enforce__T_std__errors__error(bool condition, std__errors__err
 #endif
 #ifdef __APPLE__
 #endif
-std__string__string renderer__get_prefix_from_mangled(std__string__string name);
-void renderer__set_source_file(std__string__string filename);
-void renderer__set_emit_line_directives(bool v);
-void renderer__renderer_add_prefix(std__string__string original, std__string__string prefixed);
-bool renderer__has_external_header(std__string__string header_name);
-std__string__string renderer__resolve_self(std__string__string axe_type);
-std__string__string renderer__platform_macro_start(std__string__string platform_name);
-static std__string__string renderer__emit_line_directive(int32_t line);
-void renderer__initialize_renderer();
-std__string__string renderer__get_type_base_name(std__string__string t);
-bool renderer__types_match(std__string__string actual_type, std__string__string expected_type);
-bool renderer__constraints_match(std__string__string actual_constraints, std__string__string expected_constraints);
-static bool renderer__is_builtin_type(std__string__string type_name);
-std__string__string renderer__extract_base_type(std__string__string type_name);
-static bool renderer__is_language_keyword(std__string__string name);
-bool renderer__is_all_upper_or_underscore(std__string__string name);
-static bool renderer__is_c_constant(std__string__string name);
-static bool renderer__is_builtin_function(std__string__string name);
-bool renderer__is_valid_symbol(std__string__string symbol_name);
-void renderer__validate_type_imported(std__string__string type_name);
-void renderer__register_function_signature(std__string__string func_name, __list_std__string_t* params, std__string__string ret_type, std__arena__Arena* arena);
-std__string__string renderer__infer_expression_type(std__string__string expr);
-void renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth);
-void renderer__collect_function_signatures(structs__ASTNode* node, std__arena__Arena* arena, std__string__string prefix);
-void renderer__collect_foreign_types(structs__ASTNode* node);
-void renderer__build_function_signatures(structs__ASTNode* ast);
-void renderer__collect_external_imports(structs__ASTNode* node, std__string__string current_platform, std__arena__Arena* arena);
-std__string__string renderer__get_base_type_from_field(std__string__string field_type);
-std__string__string renderer__normalize_numeric_dots(std__string__string s);
-bool renderer__is_escaped_quote(std__string__string expr, int32_t pos);
-std__string__string renderer__replace_keyword_outside_strings(std__string__string expr, std__string__string keyword, std__string__string replacement);
-std__string__string renderer__replace_substr_outside_strings(std__string__string expr, std__string__string old_sub, std__string__string replacement);
-std__string__string renderer__apply_extern_aliases(std__string__string expr);
-std__string__string renderer__replace_function_name_outside_strings(std__string__string expr, std__string__string old_name, std__string__string new_name);
-bool renderer__is_ident_char(char ch);
-std__string__string renderer__rewrite_pointer_member_accesses(std__string__string expr);
-void renderer__register_function_prefix(std__string__string full_name);
-void renderer__collect_function_prefixes(structs__ASTNode* node);
-void renderer__build_function_prefixes(structs__ASTNode* ast);
-std__string__string renderer__map_type(std__string__string axe_type);
-std__string__string renderer__canonical_model_c_name(std__string__string name);
-std__string__string renderer__map_axe_type_to_c(std__string__string axe_type);
-std__string__string renderer__sanitize_list_element_name(std__string__string c_elem);
-std__string__string renderer__collapse_duplicate_segments(std__string__string s);
-bool renderer__is_pointer_type(std__string__string type_str);
-std__string__string renderer__extract_base_model_name(std__string__string type_str);
-std__string__string renderer__lookup_field_type(std__string__string model_name, std__string__string field_name);
-bool renderer__is_pointer_field(std__string__string model_name, std__string__string field_name);
-std__string__string renderer__parse_ident_at(std__string__string expr, int32_t* pos);
-void renderer__skip_ws_at(std__string__string expr, int32_t* pos);
-std__string__string renderer__rewrite_ref_member_access(std__string__string expr);
-std__string__string renderer__sanitize_c_identifier(std__string__string name);
-std__string__string renderer__rewrite_generic_calls(std__string__string expr);
-std__string__string renderer__rewrite_method_calls(std__string__string expr);
-std__string__string renderer__rewrite_function_prefixes(std__string__string expr);
-std__string__string renderer__rewrite_sizeof_types(std__string__string expr);
-std__string__string renderer__rewrite_casts(std__string__string expr);
-std__string__string renderer__rewrite_array_literals(std__string__string expr);
-void renderer__add_list_element(std__string__string c_elem);
-void renderer__scan_for_list_types(structs__ASTNode* node);
-std__string__string renderer__format_model_field_type(std__string__string field_type);
-std__string__string renderer__process_parameter_type(std__string__string param_type);
-std__string__string renderer__int_to_ascii(int32_t n);
-std__string__string renderer__get_type_format_specifier(std__string__string var_type);
-std__string__string renderer__lookup_expression_type(std__string__string expr);
-std__string__string renderer__process_interpolated_string(std__string__string interp_content, bool return_struct);
-bool renderer__is_token_char(char c);
-bool renderer__is_ident_start(char c);
-int32_t renderer__c_prefix_end_index(std__string__string s);
-std__string__string renderer__collapse_duplicate_segments_once(std__string__string s);
-std__string__string renderer__strip_all_c_prefixes(std__string__string s);
-std__string__string renderer__rewrite_enum_member_refs(std__string__string s);
-std__string__string renderer__rewrite_adr(std__string__string expr);
-std__string__string renderer__rewrite_dereference(std__string__string expr);
-std__string__string renderer__rewrite_len_calls(std__string__string expr);
-std__string__string renderer__rewrite_function_calls(std__string__string expr);
-std__string__string renderer__rewrite_global_scope_refs(std__string__string expr);
-std__string__string renderer__rewrite_global_var_refs(std__string__string expr);
-void renderer__check_variable_declared(std__string__string name);
-std__string__string renderer__convert_union_member_init(std__string__string expr);
-std__string__string renderer__process_expression(std__string__string expr);
-std__string__string renderer__generate_stack_trace_headers();
-std__string__string renderer__generate_stack_trace_setup();
-std__string__string renderer__generate_function_prototype(structs__ASTNode* ast);
-std__string__string renderer__generate_specialized_function_prototype(structs__ASTNode* ast, std__maps__StringStringMap* type_mapping, std__string__string spec_func_name);
-std__string__string renderer__generate_global_decl(structs__ASTNode* ast);
-void renderer__discover_types(structs__ASTNode* ast);
-std__string__string renderer__generate_c(structs__ASTNode* ast);
+std__string__string backends__c__renderer__get_prefix_from_mangled(std__string__string name);
+void backends__c__renderer__set_source_file(std__string__string filename);
+void backends__c__renderer__set_emit_line_directives(bool v);
+void backends__c__renderer_add_prefix(std__string__string original, std__string__string prefixed);
+bool backends__c__renderer__has_external_header(std__string__string header_name);
+std__string__string backends__c__renderer__resolve_self(std__string__string axe_type);
+std__string__string backends__c__renderer__platform_macro_start(std__string__string platform_name);
+static std__string__string backends__c__renderer__emit_line_directive(int32_t line);
+void backends__c__renderer__initialize_renderer();
+std__string__string backends__c__renderer__get_type_base_name(std__string__string t);
+bool backends__c__renderer__types_match(std__string__string actual_type, std__string__string expected_type);
+bool backends__c__renderer__constraints_match(std__string__string actual_constraints, std__string__string expected_constraints);
+static bool backends__c__renderer__is_builtin_type(std__string__string type_name);
+std__string__string backends__c__renderer__extract_base_type(std__string__string type_name);
+static bool backends__c__renderer__is_language_keyword(std__string__string name);
+bool backends__c__renderer__is_all_upper_or_underscore(std__string__string name);
+static bool backends__c__renderer__is_c_constant(std__string__string name);
+static bool backends__c__renderer__is_builtin_function(std__string__string name);
+bool backends__c__renderer__is_valid_symbol(std__string__string symbol_name);
+void backends__c__renderer__validate_type_imported(std__string__string type_name);
+void backends__c__renderer__register_function_signature(std__string__string func_name, __list_std__string_t* params, std__string__string ret_type, std__arena__Arena* arena);
+std__string__string backends__c__renderer__infer_expression_type(std__string__string expr);
+void backends__c__renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth);
+void backends__c__renderer__collect_function_signatures(structs__ASTNode* node, std__arena__Arena* arena, std__string__string prefix);
+void backends__c__renderer__collect_foreign_types(structs__ASTNode* node);
+void backends__c__renderer__build_function_signatures(structs__ASTNode* ast);
+void backends__c__renderer__collect_external_imports(structs__ASTNode* node, std__string__string current_platform, std__arena__Arena* arena);
+std__string__string backends__c__renderer__get_base_type_from_field(std__string__string field_type);
+std__string__string backends__c__renderer__normalize_numeric_dots(std__string__string s);
+bool backends__c__renderer__is_escaped_quote(std__string__string expr, int32_t pos);
+std__string__string backends__c__renderer__replace_keyword_outside_strings(std__string__string expr, std__string__string keyword, std__string__string replacement);
+std__string__string backends__c__renderer__replace_substr_outside_strings(std__string__string expr, std__string__string old_sub, std__string__string replacement);
+std__string__string backends__c__renderer__apply_extern_aliases(std__string__string expr);
+std__string__string backends__c__renderer__replace_function_name_outside_strings(std__string__string expr, std__string__string old_name, std__string__string new_name);
+bool backends__c__renderer__is_ident_char(char ch);
+std__string__string backends__c__renderer__rewrite_pointer_member_accesses(std__string__string expr);
+void backends__c__renderer__register_function_prefix(std__string__string full_name);
+void backends__c__renderer__collect_function_prefixes(structs__ASTNode* node);
+void backends__c__renderer__build_function_prefixes(structs__ASTNode* ast);
+std__string__string backends__c__renderer__map_type(std__string__string axe_type);
+std__string__string backends__c__renderer__canonical_model_c_name(std__string__string name);
+std__string__string backends__c__renderer__map_axe_type_to_c(std__string__string axe_type);
+std__string__string backends__c__renderer__sanitize_list_element_name(std__string__string c_elem);
+std__string__string backends__c__renderer__collapse_duplicate_segments(std__string__string s);
+bool backends__c__renderer__is_pointer_type(std__string__string type_str);
+std__string__string backends__c__renderer__extract_base_model_name(std__string__string type_str);
+std__string__string backends__c__renderer__lookup_field_type(std__string__string model_name, std__string__string field_name);
+bool backends__c__renderer__is_pointer_field(std__string__string model_name, std__string__string field_name);
+std__string__string backends__c__renderer__parse_ident_at(std__string__string expr, int32_t* pos);
+void backends__c__renderer__skip_ws_at(std__string__string expr, int32_t* pos);
+std__string__string backends__c__renderer__rewrite_ref_member_access(std__string__string expr);
+std__string__string backends__c__renderer__sanitize_c_identifier(std__string__string name);
+std__string__string backends__c__renderer__rewrite_generic_calls(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_method_calls(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_function_prefixes(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_sizeof_types(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_casts(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_array_literals(std__string__string expr);
+void backends__c__renderer__add_list_element(std__string__string c_elem);
+void backends__c__renderer__scan_for_list_types(structs__ASTNode* node);
+std__string__string backends__c__renderer__format_model_field_type(std__string__string field_type);
+std__string__string backends__c__renderer__process_parameter_type(std__string__string param_type);
+std__string__string backends__c__renderer__int_to_ascii(int32_t n);
+std__string__string backends__c__renderer__get_type_format_specifier(std__string__string var_type);
+std__string__string backends__c__renderer__lookup_expression_type(std__string__string expr);
+std__string__string backends__c__renderer__process_interpolated_string(std__string__string interp_content, bool return_struct);
+bool backends__c__renderer__is_token_char(char c);
+bool backends__c__renderer__is_ident_start(char c);
+int32_t backends__c__renderer__c_prefix_end_index(std__string__string s);
+std__string__string backends__c__renderer__collapse_duplicate_segments_once(std__string__string s);
+std__string__string backends__c__renderer__strip_all_c_prefixes(std__string__string s);
+std__string__string backends__c__renderer__rewrite_enum_member_refs(std__string__string s);
+bool backends__c__renderer__is_numeric_literal(std__string__string s);
+bool backends__c__renderer__is_string_literal(std__string__string s);
+std__string__string backends__c__renderer__rewrite_adr(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_dereference(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_len_calls(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_function_calls(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_global_scope_refs(std__string__string expr);
+std__string__string backends__c__renderer__rewrite_global_var_refs(std__string__string expr);
+void backends__c__renderer__check_variable_declared(std__string__string name);
+std__string__string backends__c__renderer__convert_union_member_init(std__string__string expr);
+std__string__string backends__c__renderer__process_expression(std__string__string expr);
+std__string__string backends__c__renderer__generate_stack_trace_headers();
+std__string__string backends__c__renderer__generate_stack_trace_setup();
+std__string__string backends__c__renderer__generate_function_prototype(structs__ASTNode* ast);
+std__string__string backends__c__renderer__generate_specialized_function_prototype(structs__ASTNode* ast, std__maps__StringStringMap* type_mapping, std__string__string spec_func_name);
+std__string__string backends__c__renderer__generate_global_decl(structs__ASTNode* ast);
+void backends__c__renderer__discover_types(structs__ASTNode* ast);
+std__string__string backends__c__renderer__generate_c(structs__ASTNode* ast);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1775,10 +1997,83 @@ std__string__string renderer__generate_c(structs__ASTNode* ast);
 #endif
 #ifdef __APPLE__
 #endif
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
 void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
 void std__errors__enforce__T_char_(bool condition, char* err);
 void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
+void std__errors__panic__T_std__errors__error(std__errors__error err);
+void std__errors__panic__T_char_(char* err);
+void std__errors__enforce__T_char_(bool condition, char* err);
+void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
+void backends__llvm__renderer__initialize_llvm_renderer();
+std__string__string backends__llvm__renderer__next_register();
+std__string__string backends__llvm__renderer__next_block();
+void backends__llvm__renderer__add_string_constant(std__string__string str_value);
+std__string__string backends__llvm__renderer__axe_type_to_llvm(std__string__string axe_type);
+void backends__llvm__renderer__llvm_renderer_add_prefix(std__string__string original, std__string__string prefixed);
+void backends__llvm__renderer__analyze_imports_for_prefixes(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__generate_llvm(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_ast_node(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_declaration(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_assignment(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__process_interpolated_string_llvm(std__string__string interp_content);
+bool backends__llvm__renderer__has_interpolation_markers(std__string__string s);
+std__string__string backends__llvm__renderer__extract_interpolation_content(std__string__string s);
+std__string__string backends__llvm__renderer__render_function_call(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_if(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_loop(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_program(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_function(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_return(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_print(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_overload(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_model(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_model_instantiation(structs__ASTNode* ast);
+std__string__string backends__llvm__renderer__render_member_access(structs__ASTNode* ast);
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
+void backends__qbe__renderer__initialize_qbe_renderer();
+std__string__string backends__qbe__renderer__next_qbe_register();
+std__string__string backends__qbe__renderer__generate_qbe(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_ast_node(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_program(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__extract_base_function_name(std__string__string qualified_name);
+std__string__string backends__qbe__renderer__render_qbe_function(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_function_body(__list_structs__ASTNode_t* children);
+std__string__string backends__qbe__renderer__render_qbe_declaration(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_print(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_return(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_model(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_function_call(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_overload(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_extern(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_test(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_unsafe(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__resolve_member_access(std__string__string expr);
+std__string__string backends__qbe__renderer__process_qbe_expression(std__string__string expr);
+std__string__string backends__qbe__renderer__resolve_variable_reference(std__string__string expr);
+std__string__string backends__qbe__renderer__process_member_access_expression(std__string__string expr);
+std__string__string backends__qbe__renderer__process_c_function_calls(std__string__string expr);
+std__string__string backends__qbe__renderer__fix_float_literals(std__string__string expr);
+bool backends__qbe__renderer__is_float_literal(std__string__string expr);
+bool backends__qbe__renderer__contains_function_call(std__string__string expr);
+std__string__string backends__qbe__renderer__render_function_call_expression(std__string__string expr, std__string__string result_reg);
+std__string__string backends__qbe__renderer__extract_function_name(std__string__string expr);
+std__string__string backends__qbe__renderer__convert_to_qbe_function_name(std__string__string func_name);
+std__string__string backends__qbe__renderer__render_qbe_member_access(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_assignment(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_if(structs__ASTNode* ast);
+std__string__string backends__qbe__renderer__render_qbe_loop(structs__ASTNode* ast);
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -1814,6 +2109,7 @@ bool compile_only = false;
 std__lists__StringList* library_paths = nil;
 std__lists__StringList* link_libraries = nil;
 bool no_windows_header = false;
+std__string__string backend_type = {0};
 int32_t g_lexer_current_line;
 std__maps__StringStringMap g_type_aliases = {0};
 std__maps__StringBoolMap g_imported_modules = {0};
@@ -1892,6 +2188,34 @@ std__maps__StringBoolMap g_current_function_type_params = {0};
 std__string__string g_expected_return_type = {0};
 bool g_inside_non_matching_when;
 bool g_emit_line_directives;
+std__string__StringBuilder g_llvm_sb = {0};
+int32_t g_block_counter;
+int32_t g_register_counter;
+std__maps__StringStringMap g_var_registers = {0};
+std__maps__StringBoolMap g_function_decls = {0};
+std__maps__StringStringMap g_overload_mappings = {0};
+std__maps__StringStringMap g_model_definitions = {0};
+std__maps__StringStringMap g_model_field_types = {0};
+bool g_llvm_initialized = false;
+__list_std__string_t g_temp_prefixes = {0};
+int32_t g_string_counter;
+__list_std__string_t g_string_constants = {0};
+std__arena__Arena g_llvm_arena = {0};
+std__string__StringBuilder g_qbe_sb = {0};
+int32_t g_qbe_register_counter;
+std__maps__StringStringMap g_qbe_var_registers = {0};
+backends__qbe__renderer__QBEFunctionContext* g_current_function_context;
+std__maps__StringStringMap g_qbe_var_types = {0};
+std__maps__StringStringMap g_qbe_model_definitions = {0};
+std__maps__StringIntMap g_qbe_model_field_offsets = {0};
+int32_t g_qbe_string_counter = 0;
+int32_t g_qbe_function_counter = 0;
+std__maps__StringStringMap g_qbe_function_map = {0};
+std__maps__StringStringMap g_qbe_string_literals = {0};
+std__maps__StringStringMap g_qbe_overloads = {0};
+std__maps__StringStringMap g_qbe_externs = {0};
+bool g_qbe_initialized = false;
+std__arena__Arena g_qbe_arena = {0};
 static inline __list_structs__ASTNode_t __list_structs__ASTNode_init(void) {
     __list_structs__ASTNode_t list;
     list.data = NULL;
@@ -2091,56 +2415,30 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool, \
-    uintptr_t: std__io__println_i64 \
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
     )(x)
 
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool, \
-    uintptr_t: std__io__print_i64 \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool, \
-    uintptr_t: std__io__println_i64 \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool, \
-    uintptr_t: std__io__print_i64 \
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
@@ -2169,56 +2467,30 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool, \
-    uintptr_t: std__io__println_i64 \
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
     )(x)
 
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool, \
-    uintptr_t: std__io__print_i64 \
-    )(x)
-
-#define std__io__println(x) _Generic((x), \
-    std__string__string: std__io__println_str, \
-    char*: std__io__println_chrptr, \
-    const char*: std__io__println_chrptr, \
-    int32_t: std__io__println_i32, \
-    char: std__io__println_char, \
-    float: std__io__println_f32, \
-    double: std__io__println_f64, \
-    int64_t: std__io__println_i64, \
-    bool: std__io__println_bool, \
-    uintptr_t: std__io__println_i64 \
-    )(x)
-
-#define std__io__print(x) _Generic((x), \
-    std__string__string: std__io__print_str, \
-    char*: std__io__print_chrptr, \
-    const char*: std__io__print_chrptr, \
-    int32_t: std__io__print_i32, \
-    char: std__io__print_char, \
-    float: std__io__print_f32, \
-    double: std__io__print_f64, \
-    int64_t: std__io__print_i64, \
-    bool: std__io__print_bool, \
-    uintptr_t: std__io__print_i64 \
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define std__io__println(x) _Generic((x), \
@@ -2247,6 +2519,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2273,6 +2571,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2297,6 +2621,240 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     int64_t: std__io__print_i64, \
     bool: std__io__print_bool, \
     uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -2331,6 +2889,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2357,6 +2941,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2381,6 +2991,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     int64_t: std__io__print_i64, \
     bool: std__io__print_bool, \
     uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -2415,6 +3051,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2441,6 +3103,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2465,6 +3153,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     int64_t: std__io__print_i64, \
     bool: std__io__print_bool, \
     uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -2499,6 +3213,32 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     uintptr_t: std__io__print_i64 \
     )(x)
 
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
 #define std__io__println(x) _Generic((x), \
     std__string__string: std__io__println_str, \
     char*: std__io__println_chrptr, \
@@ -2523,6 +3263,200 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
     int64_t: std__io__print_i64, \
     bool: std__io__print_bool, \
     uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define gstate__debug_print(x) _Generic((x), \
+    std__string__string: gstate__debug_print_str, \
+    char*: gstate__debug_print_raw, \
+    int32_t: gstate__debug_print_int \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define gstate__debug_print(x) _Generic((x), \
+    std__string__string: gstate__debug_print_str, \
+    char*: gstate__debug_print_raw, \
+    int32_t: gstate__debug_print_int \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
+    )(x)
+
+#define std__io__println(x) _Generic((x), \
+    std__string__string: std__io__println_str, \
+    char*: std__io__println_chrptr, \
+    const char*: std__io__println_chrptr, \
+    int32_t: std__io__println_i32, \
+    char: std__io__println_char, \
+    float: std__io__println_f32, \
+    double: std__io__println_f64, \
+    int64_t: std__io__println_i64, \
+    bool: std__io__println_bool, \
+    uintptr_t: std__io__println_i64 \
+    )(x)
+
+#define std__io__print(x) _Generic((x), \
+    std__string__string: std__io__print_str, \
+    char*: std__io__print_chrptr, \
+    const char*: std__io__print_chrptr, \
+    int32_t: std__io__print_i32, \
+    char: std__io__print_char, \
+    float: std__io__print_f32, \
+    double: std__io__print_f64, \
+    int64_t: std__io__print_i64, \
+    bool: std__io__print_bool, \
+    uintptr_t: std__io__print_i64 \
+    )(x)
+
+#define std__io__eprintln(x) _Generic((x), \
+    std__string__string: std__io__eprintln_str, \
+    char*: std__io__eprintln_chrptr, \
+    const char*: std__io__eprintln_chrptr, \
+    int32_t: std__io__eprintln_i32, \
+    char: std__io__eprintln_char, \
+    float: std__io__eprintln_f32, \
+    double: std__io__eprintln_f64, \
+    int64_t: std__io__eprintln_i64, \
+    bool: std__io__eprintln_bool, \
+    uintptr_t: std__io__eprintln_i64 \
+    )(x)
+
+#define std__io__eprint(x) _Generic((x), \
+    std__string__string: std__io__eprint_str, \
+    char*: std__io__eprint_chrptr, \
+    const char*: std__io__eprint_chrptr, \
+    int32_t: std__io__eprint_i32, \
+    char: std__io__eprint_char, \
+    float: std__io__eprint_f32, \
+    double: std__io__eprint_f64, \
+    int64_t: std__io__eprint_i64, \
+    bool: std__io__eprint_bool, \
+    uintptr_t: std__io__eprint_i64 \
     )(x)
 
 #define gstate__debug_print(x) _Generic((x), \
@@ -2543,6 +3477,7 @@ std__io__println("  -tokens           Print lexer tokens and exit");
 std__io__println("  -ast              Print the parsed AST and exit");
 std__io__println("  -dll              Build shared instead of standalone executable");
 std__io__println("  --release         Build in release mode");
+std__io__println("  --backend <name>  Build with C, LLVM, or QBE backend");
 std__io__println("  --bootstrap       Emit without line directives");
 std__io__println("  -l, --loud        Loud debug output");
 std__io__println("  -q, --quiet       Suppress all output");
@@ -2638,7 +3573,7 @@ std__arena__Arena std__arena__Arena__create(uintptr_t size) {
 std__arena__Arena arena = {0};
 arena.buffer = malloc ( size * 100 );
 if (arena.buffer== 0) {
-std__errors__panic__T_std__errors__error(std__errors__error__create(                      std__string__concat(std__string__str("Arena: failed to allocate "),                      std__string__i32_to_string((int32_t)(size * 100))).data                  ));
+std__errors__panic__T_std__errors__error(std__errors__error__create(                     std__string__concat(std__string__str("Arena: failed to allocate "),                     std__string__i32_to_string((int32_t)(size * 100))).data                 ));
 }
 arena.capacity = size * 100;
 arena.offset = 0;
@@ -2784,6 +3719,80 @@ const uintptr_t buffer_size = 1024;
 char* buffer = std__arena__Arena__alloc_array( &arena , sizeof(char) , buffer_size );
 scanf("%1023s", buffer);
 return std__string__str( buffer );
+}
+
+void std__io__eprint_char(char value) {
+fprintf(stderr, "%c", value);
+}
+
+void std__io__eprintln_char(char value) {
+fprintf(stderr, "%c\n", value);
+}
+
+void std__io__eprint_chrptr(char* value) {
+fprintf(stderr, "%s", value);
+}
+
+void std__io__eprintln_chrptr(char* value) {
+fprintf(stderr, "%s\n", value);
+}
+
+void std__io__eprint_str(std__string__string value) {
+fprintf(stderr, "%s", value.data);
+}
+
+void std__io__eprintln_str(std__string__string value) {
+fprintf(stderr, "%s\n", value.data);
+}
+
+void std__io__eprint_f32(float value) {
+fprintf(stderr, "%.10f", value);
+}
+
+void std__io__eprintln_f32(float value) {
+fprintf(stderr, "%.10f\n", value);
+}
+
+void std__io__eprintln_f64(double value) {
+fprintf(stderr, "%.10f\n", value);
+}
+
+void std__io__eprint_f64(double value) {
+fprintf(stderr, "%.10f", value);
+}
+
+void std__io__eprintln_i64(int64_t value) {
+fprintf(stderr, "%ld\n", value);
+}
+
+void std__io__eprint_i64(int64_t value) {
+fprintf(stderr, "%ld", value);
+}
+
+void std__io__eprint_i32(int32_t value) {
+fprintf(stderr, "%d", value);
+}
+
+void std__io__eprintln_i32(int32_t value) {
+fprintf(stderr, "%d\n", value);
+}
+
+void std__io__eprint_bool(bool value) {
+if (value) {
+fprintf(stderr, "true");
+}
+else {
+fprintf(stderr, "false");
+}
+}
+
+void std__io__eprintln_bool(bool value) {
+if (value) {
+fprintf(stderr, "true\n");
+}
+else {
+fprintf(stderr, "false\n");
+}
 }
 
 #ifdef _WIN32
@@ -4225,7 +5234,7 @@ return out;
 std__string__string std__os__read_file(std__string__string path) {
 FILE* f = fopen ( path.data, "rb" );
 if (( ! f )) {
-std__errors__panic__T_std__errors__error(std__errors__error__create("Failed to open file"));
+return std__string__str( "" );
 }
 fseek(f, 0, SEEK_END);
 const uintptr_t size = ftell ( f );
@@ -4759,7 +5768,13 @@ std__string__string new_name = builds__to_c_identifier( mprefix );
 new_name = std__string__concat ( new_name , std__string__str ( "__" ) );
 new_name = std__string__concat ( new_name , fname );
 node->data.function.name = new_name;
-renderer__renderer_add_prefix(fname, new_name);
+const std__string__string backend = gstate__get_backend_type( );
+if (std__string__equals_c ( backend , "c" )) {
+backends__c__renderer_add_prefix(fname, new_name);
+}
+else if (std__string__equals_c ( backend , "llvm" )) {
+backends__llvm__renderer__llvm_renderer_add_prefix(fname, new_name);
+}
 }
 }
 }
@@ -4876,7 +5891,7 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-builds__count_entry_points(&(children->data[i]), main_count, custom_entry_count, test_count);
+builds__count_entry_points(&(children->data[i]),                 main_count,                 custom_entry_count,                 test_count);
 i++;
 }
 }
@@ -5074,22 +6089,51 @@ if (! quiet_mode) {
 std__io__println("10| PFCCG V");
 }
 builds__prefix_root_enums(&ast, module_prefix);
-renderer__initialize_renderer();
+const std__string__string backend = gstate__get_backend_type( );
+if (std__string__equals_c ( backend , "llvm" )) {
+backends__llvm__renderer__initialize_llvm_renderer();
+}
+else if (std__string__equals_c ( backend , "qbe" )) {
+backends__qbe__renderer__initialize_qbe_renderer();
+}
+else {
+backends__c__renderer__initialize_renderer();
+}
 builds__prefix_root_functions(&ast, module_prefix);
-renderer__set_source_file(filename);
+backends__c__renderer__set_source_file(filename);
 if (bootstrap_mode) {
-renderer__set_emit_line_directives(false);
+backends__c__renderer__set_emit_line_directives(false);
 }
 if (! quiet_mode) {
 std__io__println("11| GEN");
 }
-const std__string__string c_code = renderer__generate_c( &ast );
-if (std__string__str_len ( c_code ) == 0) {
+std__string__string generated_code = {0};
+std__string__string code_file = {0};
+if (std__string__equals_c ( backend , "llvm" )) {
+generated_code = backends__llvm__renderer__generate_llvm ( &ast );
+code_file = builds__replace_extension ( filename , std__string__str ( ".ll" ) );
+if (std__string__str_len ( generated_code ) == 0) {
+std__io__println("Error: Failed to generate LLVM IR code");
+return false;
+}
+}
+else if (std__string__equals_c ( backend , "qbe" )) {
+generated_code = backends__qbe__renderer__generate_qbe ( &ast );
+code_file = builds__replace_extension ( filename , std__string__str ( ".ssa" ) );
+if (std__string__str_len ( generated_code ) == 0) {
+std__io__println("Error: Failed to generate QBE IR code");
+return false;
+}
+}
+else {
+generated_code = backends__c__renderer__generate_c ( &ast );
+code_file = builds__replace_extension ( filename , std__string__str ( ".c" ) );
+if (std__string__str_len ( generated_code ) == 0) {
 std__io__println("Error: Failed to generate C code");
 return false;
 }
-const std__string__string c_filename = builds__replace_extension( filename , std__string__str ( ".c" ) );
-std__os__write_file(c_filename, c_code);
+}
+std__os__write_file(code_file, generated_code);
 if (! quiet_mode) {
 std__io__println("12| Last compilation pass");
 }
@@ -5124,7 +6168,56 @@ return false;
 }
 }
 }
-std__string__string compile_cmd = std__string__concat( compiler , std__string__str ( " " ) );
+std__string__string compile_cmd = {0};
+if (std__string__equals_c ( backend , "qbe" )) {
+const std__string__string base_name = std__string__substring_se( filename , 0 , (int32_t)( std__string__str_len ( filename ) ) - 4 );
+const std__string__string asm_filename = std__string__concat( base_name , std__string__str ( ".s" ) );
+std__string__string qbe_cmd = std__string__str( "qbe -o " );
+qbe_cmd = std__string__concat ( qbe_cmd , asm_filename );
+qbe_cmd = std__string__concat ( qbe_cmd , std__string__str ( " " ) );
+qbe_cmd = std__string__concat ( qbe_cmd , code_file );
+const std__os__ExecResult qbe_result = std__os__exec_capture( qbe_cmd );
+if (qbe_result.exit_code!= 0) {
+std__io__println("Error: QBE compilation failed");
+std__io__println(qbe_result.output);
+return false;
+}
+const std__string__string qbe_exe_filename = builds__get_output_filename( output_filename , filename );
+std__string__string link_cmd = {0};
+const bool clang_available = builds__command_exists( std__string__str ( "clang" ) );
+const bool gcc_available = builds__command_exists( std__string__str ( "gcc" ) );
+if (clang_available) {
+link_cmd = std__string__str ( "clang " );
+}
+else if (gcc_available) {
+link_cmd = std__string__str ( "gcc " );
+}
+else {
+std__io__println("Error: No C toolchain found in PATH, cannot link.");
+return false;
+}
+link_cmd = std__string__concat ( link_cmd , asm_filename );
+link_cmd = std__string__concat ( link_cmd , std__string__str ( " -g -Wno-everything -O0 -o " ) );
+link_cmd = std__string__concat ( link_cmd , qbe_exe_filename );
+const std__os__ExecResult link_result = std__os__exec_capture( link_cmd );
+const int32_t exit_code = link_result.exit_code;
+if (exit_code != 0) {
+builds__filter_and_print_errors(link_result.output);
+return false;
+}
+if (keep_emitted_file) {
+std__io__println("Keeping emitted ASM and QBE IR.");
+}
+else {
+std__os__delete_file(asm_filename);
+std__os__delete_file(code_file);
+}
+std__io__println("Compiled.");
+return true;
+}
+else {
+compile_cmd = std__string__concat ( compiler , std__string__str ( " " ) );
+}
 const std__string__string target_triple = gstate__get_target_triple( );
 if (std__string__str_len ( target_triple ) > 0) {
 if (! quiet_mode) {
@@ -5144,7 +6237,7 @@ compile_cmd = std__string__concat_c ( compile_cmd , "--sysroot=" );
 compile_cmd = std__string__concat ( compile_cmd , sysroot_path );
 compile_cmd = std__string__concat_c ( compile_cmd , " " );
 }
-compile_cmd = std__string__concat ( compile_cmd , c_filename );
+compile_cmd = std__string__concat ( compile_cmd , code_file );
 const bool is_shared = build_shared_lib;
 if (is_shared) {
 #ifdef _WIN32
@@ -5182,7 +6275,7 @@ lp_idx++;
 }
 }
 const std__string__string toolchain_root = std__os__get_executable_dir( );
-if (renderer__has_external_header ( std__string__str ( "pcre.h" ) )) {
+if (std__string__equals_c ( backend , "c" ) && backends__c__renderer__has_external_header ( std__string__str ( "pcre.h" ) )) {
 compile_cmd = std__string__concat_c ( compile_cmd , " -DPCRE_STATIC" );
 #ifdef _WIN32
 compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
@@ -5275,16 +6368,32 @@ const std__os__ExecResult result = std__os__exec_capture( compile_cmd );
 const int32_t exit_code = result.exit_code;
 if (exit_code != 0) {
 builds__filter_and_print_errors(result.output);
+if (needs_omp && std__string__str_contains_c ( result.output, "omp" )) {
+#ifdef __linux__
+std__io__println("\nNote: If you're seeing OpenMP-related linker errors, install libomp:");
+std__io__println("  Ubuntu/Debian: sudo apt install libomp-dev");
+std__io__println("  Fedora/RHEL:   sudo dnf install libomp-devel");
+std__io__println("  Arch Linux:    sudo pacman -S libomp");
+#endif
+}
 return false;
 }
 const bool keep_file = keep_emitted_file;
 if (keep_file) {
 if (! quiet_mode) {
+if (std__string__equals_c ( backend , "llvm" )) {
+std__io__println("Keeping emitted LLVM IR.");
+}
+else if (std__string__equals_c ( backend , "qbe" )) {
+std__io__println("Keeping emitted QBE IR.");
+}
+else {
 std__io__println("Keeping emitted C.");
 }
 }
+}
 else {
-std__os__delete_file(c_filename);
+std__os__delete_file(code_file);
 }
 if (! quiet_mode) {
 std__io__println("Compiled.");
@@ -5551,6 +6660,17 @@ return sysroot_path;
 
 void gstate__set_compile_only(bool v) {
 compile_only = v;
+}
+
+void gstate__set_backend_type(std__string__string backend) {
+backend_type = backend;
+}
+
+std__string__string gstate__get_backend_type() {
+if (std__string__str_len ( backend_type ) == 0) {
+return std__string__str( "c" );
+}
+return backend_type;
 }
 
 void gstate__set_no_windows_header(bool v) {
@@ -10758,6 +11878,11 @@ const std__string__string stored_type = std__string__concat( prefix , base_type_
 __list_std__string_push(&type_names, stored_type);
 parser__skip_whitespace(ctx);
 if (parser__expect ( ctx , lexer__TokenType_STAR)) {
+if (! saw_ref) {
+std__string__string err = parser__format_error( ctx , std__string__str ( "C-style pointer syntax (e.g., 'char*') is not allowed in overloads. Use 'ref char' instead." ) );
+std__errors__enforce_raw(false, err.data);
+return ;
+}
 parser__consume(ctx);
 const int32_t last_idx = len_v(type_names) - 1;
 type_names.data[last_idx] = std__string__concat ( type_names.data[ last_idx ], std__string__str ( "*" ) );
@@ -11404,6 +12529,9 @@ current_param = std__string__concat ( current_param , std__string__str ( "ref " 
 }
 else if (t.token_type== lexer__TokenType_MUT) {
 current_param = std__string__concat ( current_param , std__string__str ( "mut " ) );
+}
+else if (t.token_type== lexer__TokenType_VAL) {
+current_param = std__string__concat ( current_param , std__string__str ( "val " ) );
 }
 else {
 current_param = std__string__concat ( current_param , t.value);
@@ -15860,14 +16988,33 @@ return std__maps__StringBoolMap__contains( &g_processed_modules , path );
 }
 
 std__string__string imports__get_module_prefix(std__string__string module_name) {
-std__string__string result = std__string__str( "" );
+std__string__string normalized_name = module_name;
+if (std__string__has_prefix ( module_name , std__string__str ( "./" ) ) || std__string__has_prefix ( module_name , std__string__str ( "../" ) )) {
+const int32_t lenp = (int32_t)( std__string__str_len ( module_name ) );
+int32_t last_slash = - 1;
 int32_t i = 0;
-const int32_t n = (int32_t)( std__string__str_len ( module_name ) );
 while (1) {
-if (i >= n) {
+if (i >= lenp) {
 break;
 }
 const char ch = std__string__get_char( module_name , i );
+if (ch == '/' || ch == '\\') {
+last_slash = i;
+}
+i++;
+}
+if (last_slash >= 0 && last_slash + 1 < lenp) {
+normalized_name = std__string__substring_se ( module_name , last_slash + 1 , lenp );
+}
+}
+std__string__string result = std__string__str( "" );
+int32_t j = 0;
+const int32_t n = (int32_t)( std__string__str_len ( normalized_name ) );
+while (1) {
+if (j >= n) {
+break;
+}
+const char ch = std__string__get_char( normalized_name , j );
 if (ch == '.') {
 result = std__string__concat ( result , std__string__str ( "__" ) );
 }
@@ -15875,10 +17022,10 @@ else if (ch == '-') {
 result = std__string__concat ( result , std__string__str ( "_" ) );
 }
 else {
-const std__string__string tmp = std__string__substring_se( module_name , i , i + 1 );
+const std__string__string tmp = std__string__substring_se( normalized_name , j , j + 1 );
 result = std__string__concat ( result , tmp );
 }
-i++;
+j++;
 }
 return result;
 }
@@ -15898,15 +17045,81 @@ i--;
 }
 }
 
+std__string__string imports__normalize_path(std__string__string path) {
+const std__lists__StringList* components = std__lists__StringList__create( &g_model_names_arena , 32 );
+std__string__string current = std__string__str( "" );
+const int32_t path_len = (int32_t)( std__string__str_len ( path ) );
+int32_t i = 0;
+while (1) {
+if (i >= path_len) {
+if (std__string__str_len ( current ) > 0) {
+std__lists__StringList__push(components, &g_model_names_arena, current);
+}
+break;
+}
+const char ch = std__string__get_char( path , i );
+if (ch == '/' || ch == '\\') {
+if (std__string__str_len ( current ) > 0) {
+std__lists__StringList__push(components, &g_model_names_arena, current);
+current = std__string__str ( "" );
+}
+}
+else {
+current = std__string__concat ( current , std__string__substring_se ( path , i , i + 1 ) );
+}
+i++;
+}
+std__lists__StringList* normalized = std__lists__StringList__create( &g_model_names_arena , 32 );
+int32_t j = 0;
+while (1) {
+if (j >= components->len) {
+break;
+}
+const std__string__string component = std__lists__StringList__get( components , j );
+if (std__string__equals_c ( component , ".." )) {
+if (normalized->len> 0) {
+normalized->len--;
+}
+}
+else if (! std__string__equals_c ( component , "." ) && std__string__str_len ( component ) > 0) {
+std__lists__StringList__push(normalized, &g_model_names_arena, component);
+}
+j++;
+}
+std__string__string result = std__string__str( "" );
+int32_t k = 0;
+while (1) {
+if (k >= normalized->len) {
+break;
+}
+if (k > 0) {
+result = std__string__concat ( result , std__string__str ( "/" ) );
+}
+result = std__string__concat ( result , std__lists__StringList__get( normalized , k ) );
+k++;
+}
+if (std__string__str_len ( path ) > 0 && std__string__get_char ( path , 0 ) == '/') {
+result = std__string__concat ( std__string__str ( "/" ) , result );
+}
+return result;
+}
+
 std__string__string imports__join_path(std__string__string base_dir, std__string__string rel) {
 if (std__string__str_len ( base_dir ) == 0 || std__string__equals_c ( base_dir , "." )) {
 return rel;
 }
 const char last = std__string__get_char( base_dir , std__string__str_len ( base_dir ) - 1 );
+std__string__string path = {0};
 if (last == '/' || last == '\\') {
-return std__string__concat( base_dir , rel );
+path = std__string__concat ( base_dir , rel );
 }
-return std__string__concat( std__string__concat ( base_dir , std__string__str ( "/" ) ) , rel );
+else {
+path = std__string__concat ( std__string__concat ( base_dir , std__string__str ( "/" ) ) , rel );
+}
+if (std__string__find_substr ( path , std__string__str ( "../" ) ) >= 0) {
+return imports__normalize_path( path );
+}
+return path;
 }
 
 std__string__string imports__make_module_path(std__string__string base_dir, std__string__string use_module) {
@@ -16645,10 +17858,39 @@ structs__ASTNode child = program_children->data[ idx ];
 if (std__string__equals_c ( child.node_type, "Use" )) {
 const std__string__string use_mod = child.data.use_node.module_name;
 const std__string__string module_path = imports__make_module_path( effective_base , use_mod );
+if (! std__os__file_exists ( module_path )) {
+std__io__print("Cannot find module '");
+std__io__print(use_mod);
+std__io__print("'\n");
+std__io__print("Searched for: ");
+std__io__print(module_path);
+std__io__print("\n");
+if (std__string__has_prefix ( use_mod , std__string__str ( "std." ) )) {
+std__io__print("Note: Standard library modules are searched in:\n");
+std__io__print("    - $AXE_HOME/std/\n");
+std__io__print("    - compiler/std/\n");
+std__io__print("    - ../std/\n");
+std__io__print("    - executable_dir/std/\n");
+std__io__print("    - ~/.axe/std/\n");
+}
+else if (std__string__has_prefix ( use_mod , std__string__str ( "./" ) ) || std__string__has_prefix ( use_mod , std__string__str ( "../" ) )) {
+std__io__print("Note: Relative imports are resolved from: ");
+std__io__print(effective_base);
+std__io__print("\n");
+}
+else {
+std__io__print("Note: Module imports are resolved from: ");
+std__io__print(effective_base);
+std__io__print("\n");
+}
+std__errors__panic__T_std__errors__error(std__errors__error__create("Module not found"));
+}
 const std__string__string src = std__os__read_file( module_path );
 if (std__string__str_len ( src ) == 0) {
-idx = idx + 1;
-continue;
+std__io__print(std__string__str("Error: Failed to read module file: "));
+std__io__print(module_path);
+std__io__print(std__string__str("\n"));
+std__errors__panic__T_std__errors__error(std__errors__error__create("Failed to read module"));
 }
 const __list_lexer__Token_t toks = lexer__lex( src );
 bool import_is_axec = false;
@@ -16872,7 +18114,7 @@ i++;
 #endif
 #ifdef __APPLE__
 #endif
-std__string__string renderer__get_prefix_from_mangled(std__string__string name) {
+std__string__string backends__c__renderer__get_prefix_from_mangled(std__string__string name) {
 const int32_t n = (int32_t)( std__string__str_len ( name ) );
 int32_t i = n - 2;
 while (1) {
@@ -16887,24 +18129,24 @@ i--;
 return std__string__str( "" );
 }
 
-void renderer__set_source_file(std__string__string filename) {
+void backends__c__renderer__set_source_file(std__string__string filename) {
 g_current_source_file = filename;
 }
 
-void renderer__set_emit_line_directives(bool v) {
+void backends__c__renderer__set_emit_line_directives(bool v) {
 g_emit_line_directives = v;
 }
 
-void renderer__renderer_add_prefix(std__string__string original, std__string__string prefixed) {
+void backends__c__renderer_add_prefix(std__string__string original, std__string__string prefixed) {
 std__arena__Arena arena = std__arena__Arena__create( 1024 );
 std__maps__StringStringMap__set(&g_function_prefixes, &arena, original, prefixed);
 }
 
-bool renderer__has_external_header(std__string__string header_name) {
+bool backends__c__renderer__has_external_header(std__string__string header_name) {
 return std__lists__StringList__contains( g_global_external_headers , header_name ) || std__lists__StringList__contains( g_windows_external_headers , header_name ) || std__lists__StringList__contains( g_posix_external_headers , header_name ) || std__lists__StringList__contains( g_linux_external_headers , header_name ) || std__lists__StringList__contains( g_macos_external_headers , header_name ) || std__lists__StringList__contains( g_freebsd_external_headers , header_name ) || std__lists__StringList__contains( g_openbsd_external_headers , header_name ) || std__lists__StringList__contains( g_netbsd_external_headers , header_name ) || std__lists__StringList__contains( g_dragonflybsd_external_headers , header_name );
 }
 
-std__string__string renderer__resolve_self(std__string__string axe_type) {
+std__string__string backends__c__renderer__resolve_self(std__string__string axe_type) {
 if (std__string__str_len ( g_current_model ) == 0) {
 return axe_type;
 }
@@ -16915,7 +18157,7 @@ const std__string__string res = std__string__replace_all( axe_type , std__string
 return res;
 }
 
-std__string__string renderer__platform_macro_start(std__string__string platform_name) {
+std__string__string backends__c__renderer__platform_macro_start(std__string__string platform_name) {
 if (std__string__equals_c ( platform_name , "windows" )) {
 return std__string__str( "#ifdef _WIN32\n" );
 }
@@ -16943,7 +18185,7 @@ return std__string__str( "#ifdef __DragonFly__\n" );
 return std__string__str( "" );
 }
 
-static inline std__string__string renderer__emit_line_directive(int32_t line) {
+static inline std__string__string backends__c__renderer__emit_line_directive(int32_t line) {
 if (! g_emit_line_directives || line <= 0) {
 return std__string__str( "" );
 }
@@ -16963,7 +18205,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-void renderer__initialize_renderer() {
+void backends__c__renderer__initialize_renderer() {
 g_renderer_arena = std__arena__Arena__create( 1024 * 1024 );
 g_type_mappings = (*std__maps__StringStringMap__create( &g_renderer_arena , 128 ));
 g_function_return_types = (*std__maps__StringStringMap__create( &g_renderer_arena , 1024 ));
@@ -17031,7 +18273,7 @@ std__maps__StringStringMap__set(&g_type_mappings, &g_renderer_arena, std__string
 std__maps__StringStringMap__set(&g_type_mappings, &g_renderer_arena, std__string__str("ptrdiff"), std__string__str("isize"));
 }
 
-std__string__string renderer__get_type_base_name(std__string__string t) {
+std__string__string backends__c__renderer__get_type_base_name(std__string__string t) {
 const int32_t tlen = (int32_t)( std__string__str_len ( t ) );
 int32_t i = tlen - 2;
 while (1) {
@@ -17046,7 +18288,7 @@ i--;
 return t;
 }
 
-bool renderer__types_match(std__string__string actual_type, std__string__string expected_type) {
+bool backends__c__renderer__types_match(std__string__string actual_type, std__string__string expected_type) {
 if (loud_logger) {
 std__io__print("types_match: '");
 std__io__print(actual_type);
@@ -17054,13 +18296,13 @@ std__io__print("' vs '");
 std__io__print(expected_type);
 std__io__println("'");
 }
-const std__string__string actual_type_res = renderer__resolve_self( actual_type );
-const std__string__string expected_type_res = renderer__resolve_self( expected_type );
+const std__string__string actual_type_res = backends__c__renderer__resolve_self( actual_type );
+const std__string__string expected_type_res = backends__c__renderer__resolve_self( expected_type );
 if (std__string__compare ( actual_type_res , expected_type_res ) == 0) {
 return true;
 }
-const std__string__string actual_base = renderer__get_type_base_name( actual_type_res );
-const std__string__string expected_base = renderer__get_type_base_name( expected_type_res );
+const std__string__string actual_base = backends__c__renderer__get_type_base_name( actual_type_res );
+const std__string__string expected_base = backends__c__renderer__get_type_base_name( expected_type_res );
 if (std__string__compare ( actual_base , expected_base ) == 0) {
 if (std__string__compare ( actual_base , std__string__str ( "error" ) ) == 0) {
 return true;
@@ -17099,7 +18341,7 @@ return true;
 return false;
 }
 
-bool renderer__constraints_match(std__string__string actual_constraints, std__string__string expected_constraints) {
+bool backends__c__renderer__constraints_match(std__string__string actual_constraints, std__string__string expected_constraints) {
 if (std__string__compare ( actual_constraints , expected_constraints ) == 0) {
 return true;
 }
@@ -17129,7 +18371,7 @@ const std__string__string e_param = std__string__substring_se( e_pair , 0 , e_co
 if (std__string__compare ( a_param , e_param ) == 0) {
 const std__string__string a_type = std__string__substring_se( a_pair , a_colon + 1 , (int32_t)( std__string__str_len ( a_pair ) ) );
 const std__string__string e_type = std__string__substring_se( e_pair , e_colon + 1 , (int32_t)( std__string__str_len ( e_pair ) ) );
-if (! renderer__types_match ( a_type , e_type )) {
+if (! backends__c__renderer__types_match ( a_type , e_type )) {
 return false;
 }
 }
@@ -17146,11 +18388,11 @@ e_start = e_end + 1;
 return a_start >= alen && e_start >= elen;
 }
 
-static inline bool renderer__is_builtin_type(std__string__string type_name) {
+static inline bool backends__c__renderer__is_builtin_type(std__string__string type_name) {
 return std__string__equals_c( type_name , "i8" ) || std__string__equals_c ( type_name , "u8" ) || std__string__equals_c ( type_name , "i16" ) || std__string__equals_c ( type_name , "u16" ) || std__string__equals_c ( type_name , "i32" ) || std__string__equals_c ( type_name , "u32" ) || std__string__equals_c ( type_name , "i64" ) || std__string__equals_c ( type_name , "u64" ) || std__string__equals_c ( type_name , "isize" ) || std__string__equals_c ( type_name , "usize" ) || std__string__equals_c ( type_name , "f32" ) || std__string__equals_c ( type_name , "f64" ) || std__string__equals_c ( type_name , "bool" ) || std__string__equals_c ( type_name , "char" ) || std__string__equals_c ( type_name , "void" ) || std__string__equals_c ( type_name , "byte" ) || std__string__equals_c ( type_name , "rchar" ) || std__string__equals_c ( type_name , "ptrdiff" ) || std__string__equals_c ( type_name , "Self" );
 }
 
-std__string__string renderer__extract_base_type(std__string__string type_name) {
+std__string__string backends__c__renderer__extract_base_type(std__string__string type_name) {
 std__string__string result = std__string__strip( type_name );
 while (1) {
 bool changed = false;
@@ -17187,7 +18429,7 @@ paren_pos++;
 }
 if (depth == 0) {
 result = std__string__strip ( std__string__substring_se ( result , 5 , paren_pos ) );
-return renderer__extract_base_type( result );
+return backends__c__renderer__extract_base_type( result );
 }
 }
 const int32_t br_idx = std__string__find_char_from( result , '[' , (uintptr_t)( 0 ) );
@@ -17205,7 +18447,7 @@ break;
 return result;
 }
 
-static inline bool renderer__is_language_keyword(std__string__string name) {
+static inline bool backends__c__renderer__is_language_keyword(std__string__string name) {
 if (std__string__equals_c ( name , "union" ) || std__string__equals_c ( name , "generic" )) {
 return true;
 }
@@ -17215,7 +18457,7 @@ return true;
 return false;
 }
 
-bool renderer__is_all_upper_or_underscore(std__string__string name) {
+bool backends__c__renderer__is_all_upper_or_underscore(std__string__string name) {
 if (std__string__str_len ( name ) == 0) {
 return false;
 }
@@ -17234,19 +18476,19 @@ i++;
 return true;
 }
 
-static inline bool renderer__is_c_constant(std__string__string name) {
+static inline bool backends__c__renderer__is_c_constant(std__string__string name) {
 return std__string__equals_c( name , "NULL" ) || std__string__equals_c ( name , "TRUE" ) || std__string__equals_c ( name , "FALSE" ) || std__string__equals_c ( name , "EOF" ) || std__string__equals_c ( name , "SEEK_SET" ) || std__string__equals_c ( name , "SEEK_CUR" ) || std__string__equals_c ( name , "SEEK_END" ) || std__string__has_prefix ( name , std__string__str ( "STDIN" ) ) || std__string__has_prefix ( name , std__string__str ( "STDOUT" ) ) || std__string__has_prefix ( name , std__string__str ( "STDERR" ) ) || std__string__has_prefix ( name , std__string__str ( "INT_" ) ) || std__string__has_prefix ( name , std__string__str ( "UINT_" ) ) || std__string__has_prefix ( name , std__string__str ( "SIZE_" ) ) || std__string__has_prefix ( name , std__string__str ( "PATH_" ) ) || std__string__has_prefix ( name , std__string__str ( "NAME_" ) ) || std__string__has_prefix ( name , std__string__str ( "S_IS" ) ) || std__string__has_prefix ( name , std__string__str ( "_S_IF" ) ) || std__string__has_prefix ( name , std__string__str ( "_A_" ) ) || std__string__has_prefix ( name , std__string__str ( "WEXITSTATUS" ) ) || std__string__equals_c ( name , "RAND_MAX" );
 }
 
-static inline bool renderer__is_builtin_function(std__string__string name) {
+static inline bool backends__c__renderer__is_builtin_function(std__string__string name) {
 return std__string__equals_c( name , "append" ) || std__string__equals_c ( name , "len" ) || std__string__equals_c ( name , "assert" ) || std__string__equals_c ( name , "cast" ) || std__string__equals_c ( name , "deref" ) || std__string__equals_c ( name , "addr" ) || std__string__equals_c ( name , "sizeof" ) || std__string__equals_c ( name , "malloc" ) || std__string__equals_c ( name , "free" ) || std__string__equals_c ( name , "memcpy" ) || std__string__equals_c ( name , "memset" ) || std__string__equals_c ( name , "memmove" ) || std__string__equals_c ( name , "strlen" ) || std__string__equals_c ( name , "strcmp" ) || std__string__equals_c ( name , "strcpy" ) || std__string__equals_c ( name , "printf" ) || std__string__equals_c ( name , "sprintf" ) || std__string__equals_c ( name , "fprintf" ) || std__string__equals_c ( name , "fopen" ) || std__string__equals_c ( name , "fclose" ) || std__string__equals_c ( name , "fread" ) || std__string__equals_c ( name , "fwrite" ) || std__string__equals_c ( name , "exit" ) || std__string__equals_c ( name , "abort" ) || std__string__equals_c ( name , "atexit" ) || ( name . len >= 2 && name . data [ 0 ] == 'C' && ( name . data [ 1 ] == '.' || ( name . data [ 1 ] == ' ' && std__string__find_char_from ( name , '.' , (uintptr_t)( 1 ) ) > 0 ) ) );
 }
 
-bool renderer__is_valid_symbol(std__string__string symbol_name) {
-return std__string__str_len( symbol_name ) == 0 || renderer__is_builtin_type ( symbol_name ) || renderer__is_language_keyword ( symbol_name ) || std__string__has_prefix ( std__string__strip ( symbol_name ) , std__string__str ( "list(" ) ) || std__maps__StringBoolMap__contains( &g_opaque_types , symbol_name ) || std__maps__StringBoolMap__contains( &g_foreign_types , symbol_name ) || imports__is_symbol_imported ( symbol_name ) || std__maps__StringStringMap__contains( &g_model_names , symbol_name ) || std__maps__StringBoolMap__contains( &g_enum_names , symbol_name ) || std__string__has_prefix ( symbol_name , std__string__str ( "struct " ) ) || std__maps__StringBoolMap__contains( &g_current_function_type_params , symbol_name );
+bool backends__c__renderer__is_valid_symbol(std__string__string symbol_name) {
+return std__string__str_len( symbol_name ) == 0 || backends__c__renderer__is_builtin_type ( symbol_name ) || backends__c__renderer__is_language_keyword ( symbol_name ) || std__string__has_prefix ( std__string__strip ( symbol_name ) , std__string__str ( "list(" ) ) || std__maps__StringBoolMap__contains( &g_opaque_types , symbol_name ) || std__maps__StringBoolMap__contains( &g_foreign_types , symbol_name ) || imports__is_symbol_imported ( symbol_name ) || std__maps__StringStringMap__contains( &g_model_names , symbol_name ) || std__maps__StringBoolMap__contains( &g_enum_names , symbol_name ) || std__string__has_prefix ( symbol_name , std__string__str ( "struct " ) ) || std__maps__StringBoolMap__contains( &g_current_function_type_params , symbol_name );
 }
 
-void renderer__validate_type_imported(std__string__string type_name) {
+void backends__c__renderer__validate_type_imported(std__string__string type_name) {
 if (std__string__str_len ( type_name ) == 0) {
 return ;
 }
@@ -17273,17 +18515,17 @@ if (depth == 0) {
 return ;
 }
 }
-const std__string__string base_type = renderer__extract_base_type( type_name );
+const std__string__string base_type = backends__c__renderer__extract_base_type( type_name );
 if (std__string__str_len ( base_type ) == 0) {
 return ;
 }
-if (renderer__is_builtin_type ( base_type )) {
+if (backends__c__renderer__is_builtin_type ( base_type )) {
 return ;
 }
 if (std__string__find_char_from ( base_type , '_' , (uintptr_t)( 0 ) ) >= 0) {
 return ;
 }
-if (! renderer__is_valid_symbol ( base_type )) {
+if (! backends__c__renderer__is_valid_symbol ( base_type )) {
 if (g_current_source_file.data!= nil) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
 }
@@ -17299,7 +18541,7 @@ exit(1);
 }
 }
 
-void renderer__register_function_signature(std__string__string func_name, __list_std__string_t* params, std__string__string ret_type, std__arena__Arena* arena) {
+void backends__c__renderer__register_function_signature(std__string__string func_name, __list_std__string_t* params, std__string__string ret_type, std__arena__Arena* arena) {
 const std__string__string old_model = g_current_model;
 if (std__string__str_len ( g_current_model ) == 0) {
 int32_t dot_pos = std__string__find_char_from( func_name , '.' , (uintptr_t)( 0 ) );
@@ -17321,14 +18563,14 @@ si++;
 }
 if (last_sep >= 0) {
 const std__string__string model_candidate = std__string__substring_se( func_name , 0 , last_sep );
-const std__string__string canon = renderer__canonical_model_c_name( model_candidate );
+const std__string__string canon = backends__c__renderer__canonical_model_c_name( model_candidate );
 if (std__string__str_len ( canon ) > 0) {
 g_current_model = canon;
 }
 }
 }
 }
-const std__string__string res_ret = renderer__resolve_self( ret_type );
+const std__string__string res_ret = backends__c__renderer__resolve_self( ret_type );
 if (std__string__str_len ( res_ret ) > 0) {
 std__maps__StringStringMap__set(&g_function_return_types, arena, func_name, res_ret);
 }
@@ -17357,7 +18599,7 @@ else {
 const int32_t colon_pos = std__string__find_char_from( param , ':' , (uintptr_t)( 0 ) );
 if (colon_pos >= 0) {
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
-const std__string__string res_type = renderer__resolve_self( param_type );
+const std__string__string res_type = backends__c__renderer__resolve_self( param_type );
 if (i > 0) {
 std__string__StringBuilder__append_c(&sb_types, ",");
 }
@@ -17372,7 +18614,7 @@ std__maps__StringStringMap__set(&g_function_param_types, arena, func_name, types
 g_current_model = old_model;
 }
 
-std__string__string renderer__infer_expression_type(std__string__string expr) {
+std__string__string backends__c__renderer__infer_expression_type(std__string__string expr) {
 const std__string__string trimmed = std__string__strip( expr );
 if (std__string__str_len ( trimmed ) == 0) {
 return std__string__str( "void" );
@@ -17387,7 +18629,7 @@ const char first_char = std__string__get_char( trimmed , 0 );
 if (std__string__has_prefix ( trimmed , std__string__str ( "(" ) ) && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
 const std__string__string inner_paren = std__string__strip( std__string__substring_se ( trimmed , 1 , std__string__str_len ( trimmed ) - 1 ) );
 if (std__string__str_len ( inner_paren ) > 0) {
-return renderer__infer_expression_type( inner_paren );
+return backends__c__renderer__infer_expression_type( inner_paren );
 }
 }
 if (std__string__get_char ( trimmed , 0 ) == '*') {
@@ -17398,7 +18640,7 @@ if (std__maps__StringStringMap__contains( &g_var_types , inner_name )) {
 inner_type3 = std__maps__StringStringMap__get( &g_var_types , inner_name );
 }
 else {
-inner_type3 = renderer__infer_expression_type ( inner_name );
+inner_type3 = backends__c__renderer__infer_expression_type ( inner_name );
 }
 if (std__string__str_len ( inner_type3 ) > 0) {
 if (std__string__has_prefix ( inner_type3 , std__string__str ( "ref " ) )) {
@@ -17452,7 +18694,7 @@ if (std__maps__StringStringMap__contains( &g_var_types , inner )) {
 inner_type = std__maps__StringStringMap__get( &g_var_types , inner );
 }
 else {
-inner_type = renderer__infer_expression_type ( inner );
+inner_type = backends__c__renderer__infer_expression_type ( inner );
 }
 if (std__string__str_len ( inner_type ) > 0) {
 return std__string__concat( std__string__str ( "ref " ) , inner_type );
@@ -17503,7 +18745,7 @@ paren_end++;
 }
 if (depth == 0 && paren_end == std__string__str_len ( trimmed ) - 1) {
 const std__string__string inner_expr = std__string__strip( std__string__substring_se ( trimmed , paren_start , paren_end ) );
-const std__string__string inner_type = renderer__infer_expression_type( inner_expr );
+const std__string__string inner_type = backends__c__renderer__infer_expression_type( inner_expr );
 if (std__string__str_len ( inner_type ) > 0) {
 return std__string__concat( std__string__str ( "ref " ) , inner_type );
 }
@@ -17559,7 +18801,7 @@ if (std__maps__StringStringMap__contains( &g_var_types , inner_expr )) {
 inner_type = std__maps__StringStringMap__get( &g_var_types , inner_expr );
 }
 else {
-inner_type = renderer__infer_expression_type ( inner_expr );
+inner_type = backends__c__renderer__infer_expression_type ( inner_expr );
 }
 if (std__string__str_len ( inner_type ) > 0) {
 if (std__string__has_prefix ( inner_type , std__string__str ( "ref " ) )) {
@@ -17577,10 +18819,10 @@ const int32_t args_start = paren_idx + 1;
 const int32_t args_end = std__string__str_len( trimmed ) - 1;
 if (args_end > args_start) {
 const std__string__string args_str = std__string__strip( std__string__substring_se ( trimmed , args_start , args_end ) );
-renderer__validate_function_call(func_name, args_str, 0);
+backends__c__renderer__validate_function_call(func_name, args_str, 0);
 }
 else {
-renderer__validate_function_call(func_name, std__string__str(""), 0);
+backends__c__renderer__validate_function_call(func_name, std__string__str(""), 0);
 }
 std__string__string lookup_name = func_name;
 const int32_t br_sq = std__string__find_char_from( func_name , '[' , (uintptr_t)( 0 ) );
@@ -17614,13 +18856,13 @@ __list_std__string_push(&parts, std__string__strip(lastp));
 std__string__StringBuilder__destroy(&sbt);
 if (len_v(parts) == 1) {
 mangled = std__string__concat ( mangled , std__string__str ( "__T_" ) );
-mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts.data[ 0 ]) ) );
+mangled = std__string__concat ( mangled , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts.data[ 0 ]) ) );
 }
 else if (len_v(parts) == 2) {
 mangled = std__string__concat ( mangled , std__string__str ( "__T2_" ) );
-mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts.data[ 1 ]) ) );
+mangled = std__string__concat ( mangled , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts.data[ 1 ]) ) );
 mangled = std__string__concat ( mangled , std__string__str ( "__T_" ) );
-mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts.data[ 0 ]) ) );
+mangled = std__string__concat ( mangled , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts.data[ 0 ]) ) );
 }
 else {
 bool first = true;
@@ -17632,7 +18874,7 @@ break;
 if (! first) {
 mangled = std__string__concat ( mangled , std__string__str ( "__" ) );
 }
-mangled = std__string__concat ( mangled , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts.data[ idxp ]) ) );
+mangled = std__string__concat ( mangled , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts.data[ idxp ]) ) );
 first = false;
 idxp++;
 }
@@ -17667,7 +18909,7 @@ return std__string__str( "usize" );
 return std__string__str( "" );
 }
 
-void renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth) {
+void backends__c__renderer__validate_function_call(std__string__string func_name, std__string__string args_str, int32_t depth) {
 if (g_inside_non_matching_when) {
 return ;
 }
@@ -17677,7 +18919,7 @@ return ;
 if (depth > 10) {
 return ;
 }
-if (renderer__is_builtin_function ( func_name )) {
+if (backends__c__renderer__is_builtin_function ( func_name )) {
 return ;
 }
 if (std__string__find_char_from ( func_name , '"' , (uintptr_t)( 0 ) ) >= 0 || std__string__find_char_from ( func_name , ',' , (uintptr_t)( 0 ) ) >= 0) {
@@ -17691,7 +18933,7 @@ return ;
 }
 if (std__string__has_suffix ( func_name , std__string__str ( "]" ) ) && std__string__find_char_from ( func_name , '[' , (uintptr_t)( 0 ) ) < 0) {
 const std__string__string maybe_type = std__string__strip( std__string__replace_all ( func_name , std__string__str ( "]" ) , std__string__str ( "" ) ) );
-if (std__string__str_len ( maybe_type ) > 0 && ( renderer__is_builtin_type ( maybe_type ) || std__maps__StringStringMap__contains( &g_model_names , maybe_type ) || imports__is_symbol_imported ( maybe_type ) )) {
+if (std__string__str_len ( maybe_type ) > 0 && ( backends__c__renderer__is_builtin_type ( maybe_type ) || std__maps__StringStringMap__contains( &g_model_names , maybe_type ) || imports__is_symbol_imported ( maybe_type ) )) {
 return ;
 }
 }
@@ -17707,11 +18949,11 @@ if (i >= args_len) {
 break;
 }
 const char ch = std__string__get_char( args_str , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( args_str , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( args_str , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb_arg, ch);
 }
-else if (ch == '\"' && ! in_char_literal && ! renderer__is_escaped_quote ( args_str , i )) {
+else if (ch == '\"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( args_str , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb_arg, ch);
 }
@@ -17768,10 +19010,10 @@ if (j >= std__string__str_len ( arg_expr )) {
 break;
 }
 const char ch = std__string__get_char( arg_expr , j );
-if (ch == '\'' && ! in_string_check && ! renderer__is_escaped_quote ( arg_expr , j )) {
+if (ch == '\'' && ! in_string_check && ! backends__c__renderer__is_escaped_quote ( arg_expr , j )) {
 in_char_literal_check = ! in_char_literal_check;
 }
-else if (ch == '\"' && ! in_char_literal_check && ! renderer__is_escaped_quote ( arg_expr , j )) {
+else if (ch == '\"' && ! in_char_literal_check && ! backends__c__renderer__is_escaped_quote ( arg_expr , j )) {
 in_string_check = ! in_string_check;
 }
 else if (! in_string_check && ! in_char_literal_check) {
@@ -17792,10 +19034,10 @@ if (nested_args_end >= 0) {
 const int32_t nested_args_start = arg_paren + 1;
 if (nested_args_end > nested_args_start) {
 const std__string__string nested_args = std__string__strip( std__string__substring_se ( arg_expr , nested_args_start , nested_args_end ) );
-renderer__validate_function_call(nested_func, nested_args, depth + 1);
+backends__c__renderer__validate_function_call(nested_func, nested_args, depth + 1);
 }
 else {
-renderer__validate_function_call(nested_func, std__string__str(""), depth + 1);
+backends__c__renderer__validate_function_call(nested_func, std__string__str(""), depth + 1);
 }
 }
 }
@@ -17836,13 +19078,13 @@ __list_std__string_push(&parts_v, std__string__strip(lastpv));
 std__string__StringBuilder__destroy(&sbtv);
 if (len_v(parts_v) == 1) {
 mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T_" ) );
-mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts_v.data[ 0 ]) ) );
+mangled_v = std__string__concat ( mangled_v , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts_v.data[ 0 ]) ) );
 }
 else if (len_v(parts_v) == 2) {
 mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T2_" ) );
-mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts_v.data[ 1 ]) ) );
+mangled_v = std__string__concat ( mangled_v , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts_v.data[ 1 ]) ) );
 mangled_v = std__string__concat ( mangled_v , std__string__str ( "__T_" ) );
-mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts_v.data[ 0 ]) ) );
+mangled_v = std__string__concat ( mangled_v , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts_v.data[ 0 ]) ) );
 }
 else {
 bool first_v = true;
@@ -17854,7 +19096,7 @@ break;
 if (! first_v) {
 mangled_v = std__string__concat ( mangled_v , std__string__str ( "__" ) );
 }
-mangled_v = std__string__concat ( mangled_v , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( parts_v.data[ idxpv ]) ) );
+mangled_v = std__string__concat ( mangled_v , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( parts_v.data[ idxpv ]) ) );
 first_v = false;
 idxpv++;
 }
@@ -17903,7 +19145,7 @@ if (std__maps__StringBoolMap__contains( &g_overloads , lookup_name )) {
 if (len_v(arg_list) > 0) {
 const int32_t i2 = 0;
 const std__string__string arg_expr = arg_list.data[ i2 ];
-const std__string__string inferred_type = renderer__infer_expression_type( arg_expr );
+const std__string__string inferred_type = backends__c__renderer__infer_expression_type( arg_expr );
 if (std__string__str_len ( inferred_type ) > 0 && ! std__string__equals_c ( inferred_type , "T" )) {
 if (std__maps__StringStringMap__contains( &g_overload_type_mappings , lookup_name )) {
 const std__string__string allowed_types_str = std__maps__StringStringMap__get( &g_overload_type_mappings , lookup_name );
@@ -17937,8 +19179,8 @@ while (1) {
 if (k >= len_v(allowed_types)) {
 break;
 }
-const std__string__string allowed_type_c = renderer__map_axe_type_to_c( allowed_types.data[ k ]);
-const std__string__string inferred_type_c = renderer__map_axe_type_to_c( inferred_type );
+const std__string__string allowed_type_c = backends__c__renderer__map_axe_type_to_c( allowed_types.data[ k ]);
+const std__string__string inferred_type_c = backends__c__renderer__map_axe_type_to_c( inferred_type );
 if (std__string__compare ( allowed_type_c , inferred_type_c ) == 0) {
 found = true;
 break;
@@ -18061,7 +19303,7 @@ arg_idx = arg_idx + 1;
 continue;
 }
 const std__string__string arg_expr = arg_list.data[ arg_idx ];
-const std__string__string inferred_type = renderer__infer_expression_type( arg_expr );
+const std__string__string inferred_type = backends__c__renderer__infer_expression_type( arg_expr );
 const std__string__string expected_type = expected_types.data[ arg_idx ];
 if (std__string__equals_c ( expected_type , "..." )) {
 arg_idx++;
@@ -18074,17 +19316,17 @@ if (std__maps__StringStringMap__contains( &g_model_names , inferred_type )) {
 g_current_model = inferred_type;
 }
 else {
-const std__string__string base_type = renderer__extract_base_type( inferred_type );
+const std__string__string base_type = backends__c__renderer__extract_base_type( inferred_type );
 if (std__maps__StringStringMap__contains( &g_model_names , base_type )) {
 g_current_model = base_type;
 }
 }
 }
 }
-const std__string__string resolved_expected_type = renderer__resolve_self( expected_type );
+const std__string__string resolved_expected_type = backends__c__renderer__resolve_self( expected_type );
 g_current_model = old_model_for_validation;
-const std__string__string mapped_inferred = renderer__map_axe_type_to_c( inferred_type );
-const std__string__string mapped_expected = renderer__map_axe_type_to_c( resolved_expected_type );
+const std__string__string mapped_inferred = backends__c__renderer__map_axe_type_to_c( inferred_type );
+const std__string__string mapped_expected = backends__c__renderer__map_axe_type_to_c( resolved_expected_type );
 bool is_generic_func = std__maps__StringBoolMap__contains( &g_generic_functions , func_name );
 if (! is_generic_func && std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 const std__string__string prefixed_func = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
@@ -18107,7 +19349,7 @@ std__io__print(inferred_type);
 exit(1);
 }
 if (! std__maps__StringBoolMap__contains( &g_extern_functions , func_name ) && ! is_generic_func) {
-if (std__string__str_len ( inferred_type ) > 0 && ! std__string__equals_c ( inferred_type , "auto" ) && ! renderer__types_match ( mapped_inferred , mapped_expected )) {
+if (std__string__str_len ( inferred_type ) > 0 && ! std__string__equals_c ( inferred_type , "auto" ) && ! backends__c__renderer__types_match ( mapped_inferred , mapped_expected )) {
 if (std__string__has_prefix ( inferred_type , expected_type )) {
 arg_idx++;
 continue;
@@ -18131,7 +19373,7 @@ arg_idx++;
 }
 }
 
-void renderer__collect_function_signatures(structs__ASTNode* node, std__arena__Arena* arena, std__string__string prefix) {
+void backends__c__renderer__collect_function_signatures(structs__ASTNode* node, std__arena__Arena* arena, std__string__string prefix) {
 if (node == nil) {
 return ;
 }
@@ -18143,7 +19385,7 @@ std__string__string reg_name = func_name;
 if (std__string__str_len ( prefix ) > 0) {
 reg_name = std__string__concat ( prefix , func_name );
 }
-renderer__register_function_signature(reg_name, params, ret_type, arena);
+backends__c__renderer__register_function_signature(reg_name, params, ret_type, arena);
 if (node->data.function.is_generic) {
 std__maps__StringBoolMap__set(&g_generic_functions, arena, reg_name, true);
 std__maps__StringLongMap__set(&g_generic_function_asts, arena, reg_name, (int64_t)(node));
@@ -18159,7 +19401,7 @@ const std__string__string func_name = node->data.extern_node.function_name;
 const __list_std__string_t* params = node->data.extern_node.params;
 const std__string__string ret_type = node->data.extern_node.return_type;
 const std__string__string symbol = node->data.extern_node.symbol;
-renderer__register_function_signature(func_name, params, ret_type, arena);
+backends__c__renderer__register_function_signature(func_name, params, ret_type, arena);
 std__maps__StringBoolMap__set(&g_extern_functions, arena, func_name, true);
 if (std__string__str_len ( symbol ) > 0) {
 std__maps__StringStringMap__set(&g_extern_aliases, arena, func_name, symbol);
@@ -18201,7 +19443,7 @@ if (i >= len_v((*children))) {
 break;
 }
 std__string__string model_prefix = std__string__concat( model_name , std__string__str ( "." ) );
-renderer__collect_function_signatures(&(children->data[i]), arena, model_prefix);
+backends__c__renderer__collect_function_signatures(&(children->data[i]), arena, model_prefix);
 i++;
 }
 }
@@ -18215,13 +19457,13 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-renderer__collect_function_signatures(&(children->data[i]), arena, prefix);
+backends__c__renderer__collect_function_signatures(&(children->data[i]), arena, prefix);
 i++;
 }
 }
 }
 
-void renderer__collect_foreign_types(structs__ASTNode* node) {
+void backends__c__renderer__collect_foreign_types(structs__ASTNode* node) {
 if (node == nil) {
 return ;
 }
@@ -18247,18 +19489,18 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-renderer__collect_foreign_types(&(children->data[i]));
+backends__c__renderer__collect_foreign_types(&(children->data[i]));
 i++;
 }
 }
 }
 
-void renderer__build_function_signatures(structs__ASTNode* ast) {
+void backends__c__renderer__build_function_signatures(structs__ASTNode* ast) {
 std__arena__Arena arena = std__arena__Arena__create( 1024 * 1024 );
-renderer__collect_function_signatures(ast, &arena, std__string__str(""));
+backends__c__renderer__collect_function_signatures(ast, &arena, std__string__str(""));
 }
 
-void renderer__collect_external_imports(structs__ASTNode* node, std__string__string current_platform, std__arena__Arena* arena) {
+void backends__c__renderer__collect_external_imports(structs__ASTNode* node, std__string__string current_platform, std__arena__Arena* arena) {
 if (node == nil) {
 return ;
 }
@@ -18320,7 +19562,7 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-renderer__collect_external_imports(&(children->data[i]), platform_name, arena);
+backends__c__renderer__collect_external_imports(&(children->data[i]), platform_name, arena);
 i++;
 }
 }
@@ -18333,13 +19575,13 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-renderer__collect_external_imports(&(children->data[i]), current_platform, arena);
+backends__c__renderer__collect_external_imports(&(children->data[i]), current_platform, arena);
 i++;
 }
 }
 }
 
-std__string__string renderer__get_base_type_from_field(std__string__string field_type) {
+std__string__string backends__c__renderer__get_base_type_from_field(std__string__string field_type) {
 std__string__string t = std__string__strip( field_type );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -18393,7 +19635,7 @@ t = std__string__strip ( std__string__substr ( t , 0 , std__string__str_len ( t 
 return t;
 }
 
-std__string__string renderer__normalize_numeric_dots(std__string__string s) {
+std__string__string backends__c__renderer__normalize_numeric_dots(std__string__string s) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
 const int32_t n = (int32_t)( std__string__str_len ( s ) );
 int32_t i = 0;
@@ -18434,7 +19676,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-bool renderer__is_escaped_quote(std__string__string expr, int32_t pos) {
+bool backends__c__renderer__is_escaped_quote(std__string__string expr, int32_t pos) {
 int32_t backslash_count = 0;
 int32_t j = pos - 1;
 while (1) {
@@ -18450,7 +19692,7 @@ j = j - 1;
 return ( backslash_count % 2 ) == 1;
 }
 
-std__string__string renderer__replace_keyword_outside_strings(std__string__string expr, std__string__string keyword, std__string__string replacement) {
+std__string__string backends__c__renderer__replace_keyword_outside_strings(std__string__string expr, std__string__string keyword, std__string__string replacement) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 const int32_t kw_len = (int32_t)( std__string__str_len ( keyword ) );
 if (expr_len == 0 || kw_len == 0) {
@@ -18466,13 +19708,13 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -18560,7 +19802,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__replace_substr_outside_strings(std__string__string expr, std__string__string old_sub, std__string__string replacement) {
+std__string__string backends__c__renderer__replace_substr_outside_strings(std__string__string expr, std__string__string old_sub, std__string__string replacement) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 const int32_t old_len = (int32_t)( std__string__str_len ( old_sub ) );
 if (expr_len == 0 || old_len == 0) {
@@ -18575,13 +19817,13 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -18608,7 +19850,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__apply_extern_aliases(std__string__string expr) {
+std__string__string backends__c__renderer__apply_extern_aliases(std__string__string expr) {
 std__string__string result = expr;
 int32_t i = 0;
 while (1) {
@@ -18620,36 +19862,36 @@ const std__string__string symbol = (*g_extern_aliases.values) . data [ i ];
 if (std__string__str_len ( func_name ) > 0 && std__string__str_len ( symbol ) > 0) {
 const std__string__string func_call = std__string__concat( func_name , std__string__str ( "(" ) );
 const std__string__string symbol_call = std__string__concat( symbol , std__string__str ( "(" ) );
-result = renderer__replace_substr_outside_strings ( result , func_call , symbol_call );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_call , symbol_call );
 const std__string__string func_call_with_space = std__string__concat( func_name , std__string__str ( " (" ) );
 const std__string__string symbol_call_with_space = std__string__concat( symbol , std__string__str ( " (" ) );
-result = renderer__replace_substr_outside_strings ( result , func_call_with_space , symbol_call_with_space );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_call_with_space , symbol_call_with_space );
 const std__string__string func_call_with_spaces = std__string__concat( func_name , std__string__str ( "  (" ) );
 const std__string__string symbol_call_with_spaces = std__string__concat( symbol , std__string__str ( "  (" ) );
-result = renderer__replace_substr_outside_strings ( result , func_call_with_spaces , symbol_call_with_spaces );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_call_with_spaces , symbol_call_with_spaces );
 const std__string__string func_call_with_more_spaces = std__string__concat( func_name , std__string__str ( "   (" ) );
 const std__string__string symbol_call_with_more_spaces = std__string__concat( symbol , std__string__str ( "   (" ) );
-result = renderer__replace_substr_outside_strings ( result , func_call_with_more_spaces , symbol_call_with_more_spaces );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_call_with_more_spaces , symbol_call_with_more_spaces );
 const std__string__string func_name_space = std__string__concat( func_name , std__string__str ( " " ) );
 const std__string__string symbol_space = std__string__concat( symbol , std__string__str ( " " ) );
-result = renderer__replace_substr_outside_strings ( result , func_name_space , symbol_space );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_name_space , symbol_space );
 const std__string__string func_name_comma = std__string__concat( func_name , std__string__str ( "," ) );
 const std__string__string symbol_comma = std__string__concat( symbol , std__string__str ( "," ) );
-result = renderer__replace_substr_outside_strings ( result , func_name_comma , symbol_comma );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_name_comma , symbol_comma );
 const std__string__string func_name_semicolon = std__string__concat( func_name , std__string__str ( ";" ) );
 const std__string__string symbol_semicolon = std__string__concat( symbol , std__string__str ( ";" ) );
-result = renderer__replace_substr_outside_strings ( result , func_name_semicolon , symbol_semicolon );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_name_semicolon , symbol_semicolon );
 const std__string__string func_name_rparen = std__string__concat( func_name , std__string__str ( ")" ) );
 const std__string__string symbol_rparen = std__string__concat( symbol , std__string__str ( ")" ) );
-result = renderer__replace_substr_outside_strings ( result , func_name_rparen , symbol_rparen );
-result = renderer__replace_function_name_outside_strings ( result , func_name , symbol );
+result = backends__c__renderer__replace_substr_outside_strings ( result , func_name_rparen , symbol_rparen );
+result = backends__c__renderer__replace_function_name_outside_strings ( result , func_name , symbol );
 }
 i++;
 }
 return result;
 }
 
-std__string__string renderer__replace_function_name_outside_strings(std__string__string expr, std__string__string old_name, std__string__string new_name) {
+std__string__string backends__c__renderer__replace_function_name_outside_strings(std__string__string expr, std__string__string old_name, std__string__string new_name) {
 std__string__StringBuilder result = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
@@ -18660,13 +19902,13 @@ while (1) {
 if (i >= expr_len) {
 break;
 }
-if (std__string__get_char ( expr , i ) == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (std__string__get_char ( expr , i ) == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&result, std__string__get_char(expr, i));
 i++;
 continue;
 }
-if (std__string__get_char ( expr , i ) == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (std__string__get_char ( expr , i ) == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&result, std__string__get_char(expr, i));
 i++;
@@ -18708,11 +19950,11 @@ std__string__StringBuilder__destroy(&result);
 return final_result;
 }
 
-bool renderer__is_ident_char(char ch) {
+bool backends__c__renderer__is_ident_char(char ch) {
 return ( ch >= 'a' && ch <= 'z' ) || ( ch >= 'A' && ch <= 'Z' ) || ( ch >= '0' && ch <= '9' ) || ch == '_';
 }
 
-std__string__string renderer__rewrite_pointer_member_accesses(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_pointer_member_accesses(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -18723,19 +19965,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t base_start = i;
 int32_t j = i;
 while (1) {
@@ -18743,7 +19985,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j++;
@@ -18775,13 +20017,13 @@ p++;
 }
 const int32_t member_start = p;
 int32_t m = p;
-if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
+if (m < expr_len && backends__c__renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
 while (1) {
 if (m >= expr_len) {
 break;
 }
 const char cm = std__string__get_char( expr , m );
-if (! renderer__is_token_char ( cm )) {
+if (! backends__c__renderer__is_token_char ( cm )) {
 break;
 }
 m++;
@@ -18826,7 +20068,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-void renderer__register_function_prefix(std__string__string full_name) {
+void backends__c__renderer__register_function_prefix(std__string__string full_name) {
 int32_t last_sep = - 1;
 int32_t j = 0;
 const int32_t n = (int32_t)( std__string__str_len ( full_name ) );
@@ -18874,16 +20116,16 @@ std__maps__StringStringMap__set(&g_function_prefixes, &arena2, partial_name, ful
 }
 }
 
-void renderer__collect_function_prefixes(structs__ASTNode* node) {
+void backends__c__renderer__collect_function_prefixes(structs__ASTNode* node) {
 if (node == nil) {
 return ;
 }
 if (std__string__equals_c ( node->node_type, "Function" )) {
 const std__string__string fn_name = node->data.function.name;
-renderer__register_function_prefix(fn_name);
+backends__c__renderer__register_function_prefix(fn_name);
 }
 if (std__string__equals_c ( node->node_type, "Overload" )) {
-renderer__register_function_prefix(node->data.overload_node.name);
+backends__c__renderer__register_function_prefix(node->data.overload_node.name);
 }
 if (node->children!= nil) {
 const __list_structs__ASTNode_t* children = node->children;
@@ -18892,25 +20134,25 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-renderer__collect_function_prefixes(&(children->data[i]));
+backends__c__renderer__collect_function_prefixes(&(children->data[i]));
 i++;
 }
 }
 }
 
-void renderer__build_function_prefixes(structs__ASTNode* ast) {
+void backends__c__renderer__build_function_prefixes(structs__ASTNode* ast) {
 std__maps__StringStringMap__clear(&g_function_prefixes);
-renderer__collect_function_prefixes(ast);
+backends__c__renderer__collect_function_prefixes(ast);
 }
 
-std__string__string renderer__map_type(std__string__string axe_type) {
+std__string__string backends__c__renderer__map_type(std__string__string axe_type) {
 if (std__maps__StringStringMap__contains( &g_type_mappings , axe_type )) {
 return std__maps__StringStringMap__get( &g_type_mappings , axe_type );
 }
 return axe_type;
 }
 
-std__string__string renderer__canonical_model_c_name(std__string__string name) {
+std__string__string backends__c__renderer__canonical_model_c_name(std__string__string name) {
 if (std__string__str_contains_c ( name , "__" )) {
 if (std__maps__StringStringMap__contains( &g_model_names , name )) {
 return std__maps__StringStringMap__get( &g_model_names , name );
@@ -18921,7 +20163,7 @@ const std__string__string prefixed = std__string__concat( std__string__concat ( 
 if (std__maps__StringStringMap__contains( &g_model_names , prefixed )) {
 return std__maps__StringStringMap__get( &g_model_names , prefixed );
 }
-const std__string__string parent_prefix = renderer__get_prefix_from_mangled( g_current_module_prefix );
+const std__string__string parent_prefix = backends__c__renderer__get_prefix_from_mangled( g_current_module_prefix );
 if (std__string__str_len ( parent_prefix ) > 0) {
 const std__string__string prefixed2 = std__string__concat( std__string__concat ( parent_prefix , std__string__str ( "__" ) ) , name );
 if (std__maps__StringStringMap__contains( &g_model_names , prefixed2 )) {
@@ -18935,8 +20177,8 @@ return std__maps__StringStringMap__get( &g_model_names , name );
 return std__string__str( "" );
 }
 
-std__string__string renderer__map_axe_type_to_c(std__string__string axe_type) {
-const std__string__string res_self = renderer__resolve_self( axe_type );
+std__string__string backends__c__renderer__map_axe_type_to_c(std__string__string axe_type) {
+const std__string__string res_self = backends__c__renderer__resolve_self( axe_type );
 std__string__string result = std__string__strip( res_self );
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , result )) {
 result = std__maps__StringStringMap__get( g_current_type_mapping , result );
@@ -18984,11 +20226,11 @@ std__string__StringBuilder__destroy(&out_sb);
 }
 if (std__string__has_prefix ( result , std__string__str ( "mut " ) )) {
 result = std__string__strip ( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
-return renderer__map_axe_type_to_c( result );
+return backends__c__renderer__map_axe_type_to_c( result );
 }
 if (std__string__has_prefix ( result , std__string__str ( "val " ) )) {
 const std__string__string base = std__string__strip( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
-const std__string__string mapped_base = renderer__map_axe_type_to_c( base );
+const std__string__string mapped_base = backends__c__renderer__map_axe_type_to_c( base );
 return std__string__concat( std__string__str ( "const " ) , mapped_base );
 }
 const int32_t result_len = (int32_t)( std__string__str_len ( result ) );
@@ -19030,14 +20272,14 @@ end_pos++;
 }
 if (depth == 0) {
 const std__string__string element_type = std__string__strip( std__string__substring_se ( result , start_pos , end_pos ) );
-const std__string__string mapped_elem = renderer__map_axe_type_to_c( element_type );
+const std__string__string mapped_elem = backends__c__renderer__map_axe_type_to_c( element_type );
 if (! std__maps__StringBoolMap__contains( &g_current_function_type_params , mapped_elem )) {
-renderer__add_list_element(mapped_elem);
+backends__c__renderer__add_list_element(mapped_elem);
 }
 else {
 return std__string__str( "void" );
 }
-const std__string__string sanitized = renderer__sanitize_list_element_name( mapped_elem );
+const std__string__string sanitized = backends__c__renderer__sanitize_list_element_name( mapped_elem );
 std__string__StringBuilder sb_struct = std__string__StringBuilder__init( std__string__str_len ( sanitized ) + 16 );
 std__string__StringBuilder__append_c(&sb_struct, "__list_");
 std__string__StringBuilder__append(&sb_struct, sanitized);
@@ -19050,9 +20292,9 @@ return struct_name;
 }
 if (std__string__has_suffix ( result , std__string__str ( "[999]" ) )) {
 const std__string__string element_type = std__string__strip( std__string__substring_se ( result , 0 , std__string__str_len ( result ) - 5 ) );
-const std__string__string mapped_elem = renderer__map_axe_type_to_c( element_type );
-renderer__add_list_element(mapped_elem);
-const std__string__string sanitized = renderer__sanitize_list_element_name( mapped_elem );
+const std__string__string mapped_elem = backends__c__renderer__map_axe_type_to_c( element_type );
+backends__c__renderer__add_list_element(mapped_elem);
+const std__string__string sanitized = backends__c__renderer__sanitize_list_element_name( mapped_elem );
 std__string__StringBuilder sb_struct = std__string__StringBuilder__init( std__string__str_len ( sanitized ) + 10 );
 std__string__StringBuilder__append_c(&sb_struct, "__list_");
 std__string__StringBuilder__append(&sb_struct, sanitized);
@@ -19063,12 +20305,12 @@ return struct_name;
 }
 if (std__string__has_prefix ( result , std__string__str ( "ref " ) )) {
 const std__string__string base_type = std__string__strip( std__string__substr ( result , 4 , std__string__str_len ( result ) - 4 ) );
-const std__string__string mapped_base = renderer__map_axe_type_to_c( base_type );
+const std__string__string mapped_base = backends__c__renderer__map_axe_type_to_c( base_type );
 return std__string__concat( mapped_base , std__string__str ( "*" ) );
 }
 if (std__string__has_suffix ( result , std__string__str ( "*" ) )) {
 const std__string__string base_type = std__string__strip( std__string__substring_se ( result , 0 , std__string__str_len ( result ) - 1 ) );
-const std__string__string mapped_base = renderer__map_axe_type_to_c( base_type );
+const std__string__string mapped_base = backends__c__renderer__map_axe_type_to_c( base_type );
 return std__string__concat( mapped_base , std__string__str ( "*" ) );
 }
 const int32_t br_idx = std__string__find_char_from( result , '[' , (uintptr_t)( 0 ) );
@@ -19076,7 +20318,7 @@ if (br_idx >= 0 && std__string__find_char_from ( result , ']' , (uintptr_t)( br_
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( result , 0 , br_idx ) );
 const std__string__string suffix = std__string__substring_se( result , br_idx , (int32_t)( std__string__str_len ( result ) ) );
 if (std__string__str_len ( base_raw ) > 0) {
-const std__string__string mapped_base2 = renderer__map_axe_type_to_c( base_raw );
+const std__string__string mapped_base2 = backends__c__renderer__map_axe_type_to_c( base_raw );
 return std__string__concat( mapped_base2 , suffix );
 }
 }
@@ -19088,12 +20330,12 @@ return std__maps__StringStringMap__get( &g_model_names , result );
 }
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , result )) {
 const std__string__string concrete_type = std__maps__StringStringMap__get( g_current_type_mapping , result );
-return renderer__map_axe_type_to_c( concrete_type );
+return backends__c__renderer__map_axe_type_to_c( concrete_type );
 }
 return result;
 }
 
-std__string__string renderer__sanitize_list_element_name(std__string__string c_elem) {
+std__string__string backends__c__renderer__sanitize_list_element_name(std__string__string c_elem) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( c_elem ) + 32 );
 int32_t i = 0;
 const int32_t n_len = (int32_t)( std__string__str_len ( c_elem ) );
@@ -19133,10 +20375,10 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__collapse_duplicate_segments(std__string__string s) {
+std__string__string backends__c__renderer__collapse_duplicate_segments(std__string__string s) {
 std__string__string current = s;
 while (1) {
-const std__string__string next = renderer__collapse_duplicate_segments_once( current );
+const std__string__string next = backends__c__renderer__collapse_duplicate_segments_once( current );
 if (std__string__compare ( next , current ) == 0) {
 return current;
 }
@@ -19144,7 +20386,7 @@ current = next;
 }
 }
 
-bool renderer__is_pointer_type(std__string__string type_str) {
+bool backends__c__renderer__is_pointer_type(std__string__string type_str) {
 std__string__string t = std__string__strip( type_str );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -19155,7 +20397,7 @@ return true;
 return false;
 }
 
-std__string__string renderer__extract_base_model_name(std__string__string type_str) {
+std__string__string backends__c__renderer__extract_base_model_name(std__string__string type_str) {
 std__string__string t = std__string__strip( type_str );
 if (std__string__has_prefix ( t , std__string__str ( "mut " ) )) {
 t = std__string__strip ( std__string__substr ( t , 4 , std__string__str_len ( t ) - 4 ) );
@@ -19175,7 +20417,7 @@ t = std__string__strip ( std__string__substr ( t , 0 , std__string__str_len ( t 
 return t;
 }
 
-std__string__string renderer__lookup_field_type(std__string__string model_name, std__string__string field_name) {
+std__string__string backends__c__renderer__lookup_field_type(std__string__string model_name, std__string__string field_name) {
 std__string__StringBuilder sb_key = std__string__StringBuilder__init( std__string__str_len ( model_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_key, model_name);
 std__string__StringBuilder__append_c(&sb_key, ".");
@@ -19205,7 +20447,7 @@ return std__string__str( "ref void" );
 return std__string__str( "" );
 }
 
-bool renderer__is_pointer_field(std__string__string model_name, std__string__string field_name) {
+bool backends__c__renderer__is_pointer_field(std__string__string model_name, std__string__string field_name) {
 std__string__StringBuilder sb_fkey = std__string__StringBuilder__init( std__string__str_len ( model_name ) + std__string__str_len ( field_name ) + 1 );
 std__string__StringBuilder__append(&sb_fkey, model_name);
 std__string__StringBuilder__append_c(&sb_fkey, ".");
@@ -19235,13 +20477,13 @@ return true;
 return false;
 }
 
-std__string__string renderer__parse_ident_at(std__string__string expr, int32_t* pos) {
+std__string__string backends__c__renderer__parse_ident_at(std__string__string expr, int32_t* pos) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if ((*pos) >= expr_len) {
 return std__string__str( "" );
 }
 const char ch = std__string__get_char( expr , (*pos) );
-if (! renderer__is_ident_start ( ch )) {
+if (! backends__c__renderer__is_ident_start ( ch )) {
 return std__string__str( "" );
 }
 const int32_t start = (*pos);
@@ -19250,7 +20492,7 @@ if ((*pos) >= expr_len) {
 break;
 }
 const char c = std__string__get_char( expr , (*pos) );
-if (! renderer__is_token_char ( c )) {
+if (! backends__c__renderer__is_token_char ( c )) {
 break;
 }
 (*pos) = (*pos) + 1;
@@ -19258,7 +20500,7 @@ break;
 return std__string__substring_se( expr , start , (*pos) );
 }
 
-void renderer__skip_ws_at(std__string__string expr, int32_t* pos) {
+void backends__c__renderer__skip_ws_at(std__string__string expr, int32_t* pos) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 while (1) {
 if ((*pos) >= expr_len) {
@@ -19272,7 +20514,7 @@ break;
 }
 }
 
-std__string__string renderer__rewrite_ref_member_access(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_ref_member_access(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t pos = 0;
 bool in_string = false;
@@ -19283,13 +20525,13 @@ if (pos >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , pos );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , pos )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , pos )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 pos = pos + 1;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , pos )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , pos )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 pos = pos + 1;
@@ -19300,10 +20542,10 @@ std__string__StringBuilder__append_char(&sb, ch);
 pos = pos + 1;
 continue;
 }
-if (renderer__is_ident_start ( ch )) {
-const std__string__string ident = renderer__parse_ident_at( expr , &pos );
+if (backends__c__renderer__is_ident_start ( ch )) {
+const std__string__string ident = backends__c__renderer__parse_ident_at( expr , &pos );
 int32_t lookahead = pos;
-renderer__skip_ws_at(expr, &lookahead);
+backends__c__renderer__skip_ws_at(expr, &lookahead);
 bool is_member_chain = false;
 if (lookahead < expr_len && std__string__get_char ( expr , lookahead ) == '.') {
 if (lookahead + 1 < expr_len && std__string__get_char ( expr , lookahead + 1 ) != '>') {
@@ -19319,17 +20561,17 @@ bool is_pointer = false;
 std__string__string current_type = std__string__str( "" );
 if (std__maps__StringStringMap__contains( &g_var_types , ident )) {
 current_type = std__maps__StringStringMap__get( &g_var_types , ident );
-if (renderer__is_pointer_type ( current_type )) {
+if (backends__c__renderer__is_pointer_type ( current_type )) {
 is_pointer = true;
 }
 }
-std__string__string base_model_name = renderer__extract_base_model_name( current_type );
+std__string__string base_model_name = backends__c__renderer__extract_base_model_name( current_type );
 pos = lookahead;
 while (1) {
 if (pos >= expr_len) {
 break;
 }
-renderer__skip_ws_at(expr, &pos);
+backends__c__renderer__skip_ws_at(expr, &pos);
 if (pos >= expr_len) {
 break;
 }
@@ -19353,8 +20595,8 @@ pos = pos + 2;
 else {
 pos = pos + 1;
 }
-renderer__skip_ws_at(expr, &pos);
-const std__string__string field_name = renderer__parse_ident_at( expr , &pos );
+backends__c__renderer__skip_ws_at(expr, &pos);
+const std__string__string field_name = backends__c__renderer__parse_ident_at( expr , &pos );
 if (std__string__str_len ( field_name ) == 0) {
 if (has_arrow) {
 chain = std__string__concat ( chain , std__string__str ( "->" ) );
@@ -19368,7 +20610,7 @@ chain = std__string__concat ( chain , std__string__str ( "." ) );
 break;
 }
 std__string__string array_suffix = std__string__str( "" );
-renderer__skip_ws_at(expr, &pos);
+backends__c__renderer__skip_ws_at(expr, &pos);
 if (pos < expr_len && std__string__get_char ( expr , pos ) == '[') {
 const int32_t bracket_start = pos;
 pos = pos + 1;
@@ -19387,7 +20629,7 @@ depth = depth - 1;
 pos = pos + 1;
 }
 const std__string__string bracket_content = std__string__substring_se( expr , bracket_start + 1 , pos - 1 );
-const std__string__string processed_bracket = renderer__rewrite_ref_member_access( bracket_content );
+const std__string__string processed_bracket = backends__c__renderer__rewrite_ref_member_access( bracket_content );
 array_suffix = std__string__concat ( std__string__str ( "[" ) , processed_bracket );
 array_suffix = std__string__concat ( array_suffix , std__string__str ( "]" ) );
 }
@@ -19406,9 +20648,9 @@ if (had_array_access) {
 is_pointer = false;
 }
 if (std__string__str_len ( base_model_name ) > 0) {
-const std__string__string field_type = renderer__lookup_field_type( base_model_name , field_name );
+const std__string__string field_type = backends__c__renderer__lookup_field_type( base_model_name , field_name );
 if (std__string__str_len ( field_type ) > 0) {
-if (renderer__is_pointer_type ( field_type )) {
+if (backends__c__renderer__is_pointer_type ( field_type )) {
 if (! had_array_access) {
 is_pointer = true;
 }
@@ -19416,9 +20658,9 @@ is_pointer = true;
 else {
 is_pointer = false;
 }
-base_model_name = renderer__extract_base_model_name ( field_type );
+base_model_name = backends__c__renderer__extract_base_model_name ( field_type );
 }
-else if (renderer__is_pointer_field ( base_model_name , field_name )) {
+else if (backends__c__renderer__is_pointer_field ( base_model_name , field_name )) {
 if (! had_array_access) {
 is_pointer = true;
 }
@@ -19459,7 +20701,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__sanitize_c_identifier(std__string__string name) {
+std__string__string backends__c__renderer__sanitize_c_identifier(std__string__string name) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( name ) + 16 );
 int32_t i = 0;
 const int32_t len = (int32_t)( std__string__str_len ( name ) );
@@ -19481,7 +20723,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_generic_calls(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_generic_calls(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
 int32_t i = 0;
 bool in_string = false;
@@ -19492,13 +20734,13 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -19509,7 +20751,7 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (renderer__is_ident_start ( ch )) {
+if (backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -19517,7 +20759,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
@@ -19588,11 +20830,11 @@ if (pidx >= std__string__str_len ( type_arg_raw )) {
 break;
 }
 const char pc = std__string__get_char( type_arg_raw , pidx );
-if (pc == '"' && ! in_p_char && ! renderer__is_escaped_quote ( type_arg_raw , pidx )) {
+if (pc == '"' && ! in_p_char && ! backends__c__renderer__is_escaped_quote ( type_arg_raw , pidx )) {
 in_p_str = ! in_p_str;
 std__string__StringBuilder__append_char(&sbt, pc);
 }
-else if (pc == '\'' && ! in_p_str && ! renderer__is_escaped_quote ( type_arg_raw , pidx )) {
+else if (pc == '\'' && ! in_p_str && ! backends__c__renderer__is_escaped_quote ( type_arg_raw , pidx )) {
 in_p_char = ! in_p_char;
 std__string__StringBuilder__append_char(&sbt, pc);
 }
@@ -19626,13 +20868,13 @@ std__string__StringBuilder__destroy(&sbt);
 std__string__StringBuilder__append(&sb, base_ident);
 if (len_v(parts) == 1) {
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(parts.data[0])));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(parts.data[0])));
 }
 else if (len_v(parts) == 2) {
 std__string__StringBuilder__append_c(&sb, "__T2_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(parts.data[1])));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(parts.data[1])));
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(parts.data[0])));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(parts.data[0])));
 }
 else {
 bool first_p = true;
@@ -19644,7 +20886,7 @@ break;
 if (! first_p) {
 std__string__StringBuilder__append_c(&sb, "__");
 }
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(parts.data[ip])));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(parts.data[ip])));
 first_p = false;
 ip++;
 }
@@ -19666,14 +20908,14 @@ break;
 }
 m++;
 }
-if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
+if (m < expr_len && backends__c__renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
 const int32_t method_start = m;
 while (1) {
 if (m >= expr_len) {
 break;
 }
 const char mc = std__string__get_char( expr , m );
-if (! renderer__is_token_char ( mc )) {
+if (! backends__c__renderer__is_token_char ( mc )) {
 break;
 }
 m++;
@@ -19726,7 +20968,7 @@ std__string__StringBuilder__append(&sb, ident);
 std__string__StringBuilder__append_c(&sb, "__");
 std__string__StringBuilder__append(&sb, method_name);
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type_arg2)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(type_arg2)));
 i = m;
 continue;
 }
@@ -19781,14 +21023,14 @@ else {
 inferred_type2 = std__string__str ( "i32" );
 }
 }
-else if (renderer__is_ident_start ( first_ch2 )) {
+else if (backends__c__renderer__is_ident_start ( first_ch2 )) {
 int32_t var_end2 = arg_start2;
 while (1) {
 if (var_end2 >= expr_len) {
 break;
 }
 const char vc2 = std__string__get_char( expr , var_end2 );
-if (! renderer__is_token_char ( vc2 )) {
+if (! backends__c__renderer__is_token_char ( vc2 )) {
 break;
 }
 var_end2++;
@@ -19802,7 +21044,7 @@ inferred_type2 = std__maps__StringStringMap__get( &g_var_types , arg_var_name2 )
 if (std__string__str_len ( inferred_type2 ) > 0) {
 std__string__StringBuilder__append(&sb, full_name);
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(inferred_type2)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(inferred_type2)));
 i = m;
 continue;
 }
@@ -19828,10 +21070,10 @@ if (vmi >= expr_len) {
 break;
 }
 const char vc = std__string__get_char( expr , vmi );
-if (vc == '"' && ! vm_in_char && ! renderer__is_escaped_quote ( expr , vmi )) {
+if (vc == '"' && ! vm_in_char && ! backends__c__renderer__is_escaped_quote ( expr , vmi )) {
 vm_in_str = ! vm_in_str;
 }
-else if (vc == '\'' && ! vm_in_str && ! renderer__is_escaped_quote ( expr , vmi )) {
+else if (vc == '\'' && ! vm_in_str && ! backends__c__renderer__is_escaped_quote ( expr , vmi )) {
 vm_in_char = ! vm_in_char;
 }
 else if (! vm_in_str && ! vm_in_char) {
@@ -19850,10 +21092,10 @@ vmi++;
 }
 if (vm_end > vm_start + 1) {
 const std__string__string vm_args = std__string__strip( std__string__substring_se ( expr , vm_start + 1 , vm_end ) );
-renderer__validate_function_call(check_name, vm_args, 0);
+backends__c__renderer__validate_function_call(check_name, vm_args, 0);
 }
 else if (vm_end > vm_start) {
-renderer__validate_function_call(check_name, std__string__str(""), 0);
+backends__c__renderer__validate_function_call(check_name, std__string__str(""), 0);
 }
 }
 }
@@ -19911,10 +21153,10 @@ if (vi >= expr_len) {
 break;
 }
 const char vc = std__string__get_char( expr , vi );
-if (vc == '"' && ! v_in_char && ! renderer__is_escaped_quote ( expr , vi )) {
+if (vc == '"' && ! v_in_char && ! backends__c__renderer__is_escaped_quote ( expr , vi )) {
 v_in_str = ! v_in_str;
 }
-else if (vc == '\'' && ! v_in_str && ! renderer__is_escaped_quote ( expr , vi )) {
+else if (vc == '\'' && ! v_in_str && ! backends__c__renderer__is_escaped_quote ( expr , vi )) {
 v_in_char = ! v_in_char;
 }
 else if (! v_in_str && ! v_in_char) {
@@ -19933,10 +21175,10 @@ vi = vi + 1;
 }
 if (v_end > v_start + 1) {
 const std__string__string v_args = std__string__strip( std__string__substring_se ( expr , v_start + 1 , v_end ) );
-renderer__validate_function_call(ident, v_args, 0);
+backends__c__renderer__validate_function_call(ident, v_args, 0);
 }
 else if (v_end > v_start) {
-renderer__validate_function_call(ident, std__string__str(""), 0);
+backends__c__renderer__validate_function_call(ident, std__string__str(""), 0);
 }
 }
 }
@@ -19953,10 +21195,10 @@ if (vpos >= expr_len) {
 break;
 }
 const char vc = std__string__get_char( expr , vpos );
-if (vc == '"' && ! v_in_char && ! renderer__is_escaped_quote ( expr , vpos )) {
+if (vc == '"' && ! v_in_char && ! backends__c__renderer__is_escaped_quote ( expr , vpos )) {
 v_in_str = ! v_in_str;
 }
-else if (vc == '\'' && ! v_in_str && ! renderer__is_escaped_quote ( expr , vpos )) {
+else if (vc == '\'' && ! v_in_str && ! backends__c__renderer__is_escaped_quote ( expr , vpos )) {
 v_in_char = ! v_in_char;
 }
 else if (! v_in_str && ! v_in_char) {
@@ -19986,11 +21228,11 @@ if (pi2 >= std__string__str_len ( raw_args )) {
 break;
 }
 const char cc = std__string__get_char( raw_args , pi2 );
-if (cc == '"' && ! in_sbp_char && ! renderer__is_escaped_quote ( raw_args , pi2 )) {
+if (cc == '"' && ! in_sbp_char && ! backends__c__renderer__is_escaped_quote ( raw_args , pi2 )) {
 in_sbp_str = ! in_sbp_str;
 std__string__StringBuilder__append_char(&sbp, cc);
 }
-else if (cc == '\'' && ! in_sbp_str && ! renderer__is_escaped_quote ( raw_args , pi2 )) {
+else if (cc == '\'' && ! in_sbp_str && ! backends__c__renderer__is_escaped_quote ( raw_args , pi2 )) {
 in_sbp_char = ! in_sbp_char;
 std__string__StringBuilder__append_char(&sbp, cc);
 }
@@ -20024,10 +21266,10 @@ std__string__StringBuilder__destroy(&sbp);
 std__string__string type1 = std__string__str( "" );
 std__string__string type2 = std__string__str( "" );
 if (len_v(arg_parts) > 0) {
-type1 = renderer__infer_expression_type ( arg_parts.data[ 0 ]);
+type1 = backends__c__renderer__infer_expression_type ( arg_parts.data[ 0 ]);
 }
 if (len_v(arg_parts) > 1) {
-type2 = renderer__infer_expression_type ( arg_parts.data[ 1 ]);
+type2 = backends__c__renderer__infer_expression_type ( arg_parts.data[ 1 ]);
 }
 if (std__string__str_len ( type1 ) > 0 || std__string__str_len ( type2 ) > 0) {
 std__string__string base_ident2 = ident;
@@ -20046,17 +21288,17 @@ num_type_params = len_v((*type_params2));
 std__string__StringBuilder__append(&sb, base_ident2);
 if (num_type_params == 2 && std__string__str_len ( type2 ) > 0 && std__string__str_len ( type1 ) > 0) {
 std__string__StringBuilder__append_c(&sb, "__T2_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type2)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(type2)));
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type1)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(type1)));
 }
 else if (num_type_params == 1 && std__string__str_len ( type2 ) > 0) {
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type2)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(type2)));
 }
 else if (std__string__str_len ( type1 ) > 0) {
 std__string__StringBuilder__append_c(&sb, "__T_");
-std__string__StringBuilder__append(&sb, renderer__sanitize_c_identifier(renderer__map_axe_type_to_c(type1)));
+std__string__StringBuilder__append(&sb, backends__c__renderer__sanitize_c_identifier(backends__c__renderer__map_axe_type_to_c(type1)));
 }
 i = k;
 continue;
@@ -20076,7 +21318,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_method_calls(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_method_calls(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
 int32_t i = 0;
 bool in_string = false;
@@ -20087,19 +21329,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t base_start = i;
 int32_t j = i;
 while (1) {
@@ -20107,7 +21349,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
@@ -20138,13 +21380,13 @@ k = k + 1;
 }
 const int32_t method_start = k;
 int32_t m = k;
-if (m < expr_len && renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
+if (m < expr_len && backends__c__renderer__is_ident_start ( std__string__get_char ( expr , m ) )) {
 while (1) {
 if (m >= expr_len) {
 break;
 }
 const char cm = std__string__get_char( expr , m );
-if (! renderer__is_token_char ( cm )) {
+if (! backends__c__renderer__is_token_char ( cm )) {
 break;
 }
 m = m + 1;
@@ -20203,7 +21445,7 @@ if (std__string__compare ( inner_model , base ) == 0 || std__string__compare ( i
 fixed_method = std__string__substring_se ( method , inner_sep + 2 , mlen );
 }
 }
-const std__string__string canon = renderer__canonical_model_c_name( base );
+const std__string__string canon = backends__c__renderer__canonical_model_c_name( base );
 std__string__string full_name = std__string__str( "" );
 if (std__string__str_len ( canon ) > 0) {
 full_name = canon;
@@ -20239,7 +21481,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_function_prefixes(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_function_prefixes(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 128 );
 int32_t i = 0;
 bool in_string = false;
@@ -20250,19 +21492,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-const bool is_start = renderer__is_ident_start( ch );
+const bool is_start = backends__c__renderer__is_ident_start( ch );
 if (! in_string && ! in_char_literal && is_start) {
 const int32_t func_start = i;
 int32_t j = i;
@@ -20271,7 +21513,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j++;
@@ -20308,7 +21550,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_sizeof_types(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_sizeof_types(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -20319,19 +21561,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -20339,7 +21581,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j++;
@@ -20404,7 +21646,7 @@ std__string__string normalized_type = std__string__replace_all( raw_type , std__
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " )" ) , std__string__str ( ")" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " (" ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( ") " ) , std__string__str ( ")" ) );
-const std__string__string mapped = renderer__map_axe_type_to_c( normalized_type );
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( normalized_type );
 std__string__StringBuilder__append(&sb, mapped);
 }
 if (end_type < expr_len && std__string__get_char ( expr , end_type ) == ')') {
@@ -20430,7 +21672,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_casts(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_casts(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -20441,19 +21683,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -20461,7 +21703,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
@@ -20489,7 +21731,7 @@ if (p >= expr_len) {
 break;
 }
 const char ct = std__string__get_char( expr , p );
-if (ct == '"' && ! renderer__is_escaped_quote ( expr , p )) {
+if (ct == '"' && ! backends__c__renderer__is_escaped_quote ( expr , p )) {
 in_str_type = ! in_str_type;
 }
 if (! in_str_type && ct == ']') {
@@ -20521,7 +21763,7 @@ if (q >= expr_len) {
 break;
 }
 const char cp = std__string__get_char( expr , q );
-if (cp == '"' && ! renderer__is_escaped_quote ( expr , q )) {
+if (cp == '"' && ! backends__c__renderer__is_escaped_quote ( expr , q )) {
 in_str_paren = ! in_str_paren;
 }
 if (! in_str_paren) {
@@ -20543,12 +21785,12 @@ std__string__string normalized_type = std__string__replace_all( type_raw , std__
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " )" ) , std__string__str ( ")" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( " (" ) , std__string__str ( "(" ) );
 normalized_type = std__string__replace_all ( normalized_type , std__string__str ( ") " ) , std__string__str ( ")" ) );
-const std__string__string mapped_type = renderer__map_axe_type_to_c( normalized_type );
+const std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( normalized_type );
 std__string__StringBuilder__append_char(&sb, '(');
 std__string__StringBuilder__append(&sb, mapped_type);
 std__string__StringBuilder__append_char(&sb, (char)(41));
 const std__string__string inner_expr_str = std__string__substring_se( expr , a + 1 , end_paren );
-const std__string__string rewritten_inner = renderer__rewrite_casts( inner_expr_str );
+const std__string__string rewritten_inner = backends__c__renderer__rewrite_casts( inner_expr_str );
 const std__string__string inner_full = std__string__concat( std__string__str ( "(" ) , std__string__concat ( rewritten_inner , std__string__str ( ")" ) ) );
 std__string__StringBuilder__append(&sb, inner_full);
 i = end_paren + 1;
@@ -20573,7 +21815,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_array_literals(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_array_literals(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -20584,13 +21826,13 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -20674,7 +21916,7 @@ p++;
 }
 if (values_end > values_start) {
 const std__string__string values_str = std__string__strip( std__string__substring_se ( expr , values_start , values_end ) );
-const std__string__string c_type = renderer__map_axe_type_to_c( type_str );
+const std__string__string c_type = backends__c__renderer__map_axe_type_to_c( type_str );
 std__string__StringBuilder array_lit = std__string__StringBuilder__init( std__string__str_len ( c_type ) + std__string__str_len ( values_str ) + 16 );
 std__string__StringBuilder__append_char(&array_lit, '(');
 std__string__StringBuilder__append(&array_lit, c_type);
@@ -20698,7 +21940,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-void renderer__add_list_element(std__string__string c_elem) {
+void backends__c__renderer__add_list_element(std__string__string c_elem) {
 if (std__string__str_len ( c_elem ) == 0 || std__string__equals_c ( c_elem , "T" ) || std__string__equals_c ( c_elem , "U" ) || std__string__equals_c ( c_elem , "K" ) || std__string__equals_c ( c_elem , "V" )) {
 return ;
 }
@@ -20727,7 +21969,7 @@ std__lists__StringList__push(g_list_elements, &arena, c_elem);
 }
 }
 
-void renderer__scan_for_list_types(structs__ASTNode* node) {
+void backends__c__renderer__scan_for_list_types(structs__ASTNode* node) {
 if (node == nil) {
 return ;
 }
@@ -20742,8 +21984,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( tn
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 else if (std__string__has_prefix ( tname , std__string__str ( "list(" ) )) {
@@ -20770,8 +22012,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( tn
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 }
@@ -20802,8 +22044,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( re
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 const __list_std__string_t* params = node->data.function.params;
@@ -20841,8 +22083,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( pa
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 }
@@ -20876,8 +22118,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( re
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 const __list_std__string_t* params = node->data.extern_node.params;
@@ -20915,8 +22157,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( pa
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 }
@@ -20957,8 +22199,8 @@ std__string__string element = std__string__strip( std__string__substring_se ( fi
 if (std__string__has_prefix ( element , std__string__str ( "ref " ) )) {
 element = std__string__strip ( std__string__substr ( element , 4 , std__string__str_len ( element ) - 4 ) );
 }
-const std__string__string mapped = renderer__map_axe_type_to_c( element );
-renderer__add_list_element(mapped);
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( element );
+backends__c__renderer__add_list_element(mapped);
 }
 }
 i++;
@@ -20972,13 +22214,13 @@ while (1) {
 if (idx >= len_v((*chs))) {
 break;
 }
-renderer__scan_for_list_types(&(chs->data[idx]));
+backends__c__renderer__scan_for_list_types(&(chs->data[idx]));
 idx = idx + 1;
 }
 }
 }
 
-std__string__string renderer__format_model_field_type(std__string__string field_type) {
+std__string__string backends__c__renderer__format_model_field_type(std__string__string field_type) {
 std__string__string trimmed = std__string__strip( field_type );
 std__string__string qualifiers = std__string__str( "" );
 while (1) {
@@ -21006,7 +22248,7 @@ break;
 pointer_suffix = std__string__concat ( pointer_suffix , std__string__str ( "*" ) );
 trimmed = std__string__strip ( std__string__substring_se ( trimmed , 0 , len - 1 ) );
 }
-const std__string__string model_name = renderer__canonical_model_c_name( trimmed );
+const std__string__string model_name = backends__c__renderer__canonical_model_c_name( trimmed );
 if (std__string__str_len ( model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , model_name )) {
 trimmed = model_name;
@@ -21024,16 +22266,16 @@ final_result = std__string__concat ( final_result , pointer_suffix );
 return final_result;
 }
 
-std__string__string renderer__process_parameter_type(std__string__string param_type) {
+std__string__string backends__c__renderer__process_parameter_type(std__string__string param_type) {
 const std__string__string result = std__string__strip( param_type );
-const std__string__string mapped = renderer__map_axe_type_to_c( result );
+const std__string__string mapped = backends__c__renderer__map_axe_type_to_c( result );
 if (std__string__find_substr ( mapped , std__string__str ( "__list_" ) ) >= 0 && ! std__string__has_suffix ( mapped , std__string__str ( "*" ) )) {
 return std__string__concat( mapped , std__string__str ( "*" ) );
 }
 return mapped;
 }
 
-std__string__string renderer__int_to_ascii(int32_t n) {
+std__string__string backends__c__renderer__int_to_ascii(int32_t n) {
 if (n == 0) {
 return std__string__str( "0" );
 }
@@ -21071,7 +22313,7 @@ out = std__string__concat ( std__string__str ( "-" ) , out );
 return out;
 }
 
-std__string__string renderer__get_type_format_specifier(std__string__string var_type) {
+std__string__string backends__c__renderer__get_type_format_specifier(std__string__string var_type) {
 const std__string__string t = std__string__strip( var_type );
 if (std__string__equals_c ( t , "int32_t" ) || std__string__has_suffix ( t , std__string__str ( "int32_t" ) )) {
 return std__string__str( "%d" );
@@ -21100,7 +22342,7 @@ return std__string__str( "%c" );
 return std__string__str( "%d" );
 }
 
-std__string__string renderer__lookup_expression_type(std__string__string expr) {
+std__string__string backends__c__renderer__lookup_expression_type(std__string__string expr) {
 const std__string__string e = std__string__strip( expr );
 const int32_t dot_pos = std__string__find_char_from( e , '.' , (uintptr_t)( 0 ) );
 if (dot_pos > 0) {
@@ -21127,12 +22369,12 @@ else {
 field_to_lookup = remaining_expr;
 remaining_after_lookup = std__string__str ( "" );
 }
-const std__string__string field_type = renderer__lookup_field_type( base_type , field_to_lookup );
+const std__string__string field_type = backends__c__renderer__lookup_field_type( base_type , field_to_lookup );
 std__string__string actual_field_type = {0};
 if (std__string__str_len ( field_type ) == 0) {
 if (std__maps__StringStringMap__contains( &g_model_names , base_type )) {
 const std__string__string canonical_name = std__maps__StringStringMap__get( &g_model_names , base_type );
-const std__string__string canonical_field_type = renderer__lookup_field_type( canonical_name , field_to_lookup );
+const std__string__string canonical_field_type = backends__c__renderer__lookup_field_type( canonical_name , field_to_lookup );
 if (std__string__str_len ( canonical_field_type ) > 0) {
 actual_field_type = canonical_field_type;
 }
@@ -21150,7 +22392,7 @@ actual_field_type = field_type;
 if (std__string__str_len ( remaining_after_lookup ) > 0 && std__string__has_prefix ( remaining_after_lookup , std__string__str ( "." ) )) {
 const std__string__string next_remaining = std__string__strip( std__string__substr ( remaining_after_lookup , 1 , std__string__str_len ( remaining_after_lookup ) - 1 ) );
 const std__string__string next_expr = std__string__concat( std__string__concat ( actual_field_type , std__string__str ( "." ) ) , next_remaining );
-return renderer__lookup_expression_type( next_expr );
+return backends__c__renderer__lookup_expression_type( next_expr );
 }
 return actual_field_type;
 }
@@ -21175,7 +22417,7 @@ return std__string__str( "i32" );
 return std__string__str( "i32" );
 }
 
-std__string__string renderer__process_interpolated_string(std__string__string interp_content, bool return_struct) {
+std__string__string backends__c__renderer__process_interpolated_string(std__string__string interp_content, bool return_struct) {
 __list_std__string_t parts = {0};
 __list_std__string_t expressions = {0};
 int32_t pos = 0;
@@ -21186,7 +22428,7 @@ if (pos >= content_len) {
 break;
 }
 const char ch = std__string__get_char( interp_content , pos );
-if (ch == '{' && ! renderer__is_escaped_quote ( interp_content , pos )) {
+if (ch == '{' && ! backends__c__renderer__is_escaped_quote ( interp_content , pos )) {
 if (pos > 0 && std__string__get_char ( interp_content , pos - 1 ) == '$' && sb_part . len > 0) {
 sb_part.len = sb_part.len- 1;
 }
@@ -21273,13 +22515,13 @@ code = std__string__concat ( code , std__string__str ( "\") - 1; " ) );
 }
 if (i_part < len_v(expressions)) {
 const std__string__string e = expressions.data[ i_part ];
-const std__string__string processed_e = renderer__process_expression( e );
-const std__string__string lookup_et = renderer__lookup_expression_type( e );
+const std__string__string processed_e = backends__c__renderer__process_expression( e );
+const std__string__string lookup_et = backends__c__renderer__lookup_expression_type( e );
 std__string__string etype = lookup_et;
 if (std__string__str_len ( etype ) == 0) {
-etype = renderer__infer_expression_type ( e );
+etype = backends__c__renderer__infer_expression_type ( e );
 }
-std__string__string mapped_etype = renderer__map_axe_type_to_c( etype );
+std__string__string mapped_etype = backends__c__renderer__map_axe_type_to_c( etype );
 const int32_t proc_paren = std__string__find_char_from( processed_e , '(' , (uintptr_t)( 0 ) );
 if (proc_paren > 0) {
 const std__string__string proc_fn = std__string__strip( std__string__substring_se ( processed_e , 0 , proc_paren ) );
@@ -21287,14 +22529,14 @@ const int32_t tpos_spec = std__string__find_substr( proc_fn , std__string__str (
 if (tpos_spec > 0) {
 const std__string__string type_arg_spec = std__string__strip( std__string__substring_se ( proc_fn , tpos_spec + 4 , (int32_t)( std__string__str_len ( proc_fn ) ) ) );
 if (std__string__str_len ( type_arg_spec ) > 0) {
-mapped_etype = renderer__map_axe_type_to_c ( type_arg_spec );
+mapped_etype = backends__c__renderer__map_axe_type_to_c ( type_arg_spec );
 etype = type_arg_spec;
 }
 }
 if (std__maps__StringStringMap__contains( &g_function_return_types , proc_fn )) {
 const std__string__string ret_sig = std__maps__StringStringMap__get( &g_function_return_types , proc_fn );
 if (std__string__str_len ( ret_sig ) > 0) {
-mapped_etype = renderer__map_axe_type_to_c ( ret_sig );
+mapped_etype = backends__c__renderer__map_axe_type_to_c ( ret_sig );
 etype = ret_sig;
 }
 }
@@ -21314,7 +22556,7 @@ code = std__string__concat ( code , processed_e );
 code = std__string__concat_c ( code , "); " );
 }
 else {
-const std__string__string format_spec = renderer__get_type_format_specifier( mapped_etype );
+const std__string__string format_spec = backends__c__renderer__get_type_format_specifier( mapped_etype );
 if (std__string__equals_c ( format_spec , "%s" )) {
 code = std__string__concat_c ( code , "memcpy(_axe_interp_p, " );
 code = std__string__concat ( code , processed_e );
@@ -21345,7 +22587,7 @@ code = std__string__concat ( code , std__string__str ( "_axe_interp; })" ) );
 return code;
 }
 
-bool renderer__is_token_char(char c) {
+bool backends__c__renderer__is_token_char(char c) {
 const int32_t c_code = (int32_t)( c );
 if (c_code >= 97 && c_code <= 122) {
 return true;
@@ -21362,7 +22604,7 @@ return true;
 return false;
 }
 
-bool renderer__is_ident_start(char c) {
+bool backends__c__renderer__is_ident_start(char c) {
 const int32_t c_code = (int32_t)( c );
 if (c_code >= 97 && c_code <= 122) {
 return true;
@@ -21376,7 +22618,7 @@ return true;
 return false;
 }
 
-int32_t renderer__c_prefix_end_index(std__string__string s) {
+int32_t backends__c__renderer__c_prefix_end_index(std__string__string s) {
 if (std__string__str_len ( s ) < 2) {
 return - 1;
 }
@@ -21411,7 +22653,7 @@ i++;
 return i;
 }
 
-std__string__string renderer__collapse_duplicate_segments_once(std__string__string s) {
+std__string__string backends__c__renderer__collapse_duplicate_segments_once(std__string__string s) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
 int32_t i = 0;
 const int32_t n = (int32_t)( std__string__str_len ( s ) );
@@ -21491,7 +22733,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__strip_all_c_prefixes(std__string__string s) {
+std__string__string backends__c__renderer__strip_all_c_prefixes(std__string__string s) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 16 );
 int32_t i = 0;
 const int32_t s_len = (int32_t)( std__string__str_len ( s ) );
@@ -21502,13 +22744,13 @@ if (i >= s_len) {
 break;
 }
 const char ch = std__string__get_char( s , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( s , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( s , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( s , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( s , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -21533,7 +22775,7 @@ break;
 }
 prev_idx = prev_idx - 1;
 }
-if (prev_idx < 0 || ! renderer__is_ident_start ( prev_ch )) {
+if (prev_idx < 0 || ! backends__c__renderer__is_ident_start ( prev_ch )) {
 int32_t k = i + 1;
 while (1) {
 if (k >= s_len) {
@@ -21584,7 +22826,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_enum_member_refs(std__string__string s) {
+std__string__string backends__c__renderer__rewrite_enum_member_refs(std__string__string s) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( s ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -21597,13 +22839,13 @@ if (i >= s_len) {
 break;
 }
 const char ch = std__string__get_char( s , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( s , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( s , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( s , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( s , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
@@ -21614,7 +22856,7 @@ std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (renderer__is_ident_start ( ch )) {
+if (backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -21622,7 +22864,7 @@ if (j >= s_len) {
 break;
 }
 const char cj = std__string__get_char( s , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
@@ -21651,7 +22893,7 @@ break;
 }
 k = k + 1;
 }
-if (k < s_len && renderer__is_ident_start ( std__string__get_char ( s , k ) )) {
+if (k < s_len && backends__c__renderer__is_ident_start ( std__string__get_char ( s , k ) )) {
 const int32_t member_start = k;
 int32_t m = k;
 while (1) {
@@ -21659,14 +22901,14 @@ if (m >= s_len) {
 break;
 }
 const char cm = std__string__get_char( s , m );
-if (! renderer__is_token_char ( cm )) {
+if (! backends__c__renderer__is_token_char ( cm )) {
 break;
 }
 m = m + 1;
 }
 const std__string__string member = std__string__substring_se( s , member_start , m );
 if (std__string__str_len ( member ) > 0) {
-const std__string__string enum_c_name = renderer__canonical_model_c_name( ident );
+const std__string__string enum_c_name = backends__c__renderer__canonical_model_c_name( ident );
 if (std__string__str_len ( enum_c_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_c_name )) {
 std__string__StringBuilder__append(&sb, enum_c_name);
 std__string__StringBuilder__append_char(&sb, '_');
@@ -21691,7 +22933,46 @@ gstate__debug_print_str(result);
 return result;
 }
 
-std__string__string renderer__rewrite_adr(std__string__string expr) {
+bool backends__c__renderer__is_numeric_literal(std__string__string s) {
+if (std__string__str_len ( s ) == 0) {
+return false;
+}
+bool has_digit = false;
+int32_t i = 0;
+while (1) {
+if (i >= std__string__str_len ( s )) {
+break;
+}
+const char ch = std__string__get_char( s , i );
+if (ch >= '0' && ch <= '9') {
+has_digit = true;
+}
+else if (ch == '-' || ch == '+') {
+if (i != 0) {
+return false;
+}
+}
+else if (ch == '.' || ch == 'e' || ch == 'E' || ch == 'f' || ch == 'F') {
+}
+else {
+return false;
+}
+i++;
+}
+return has_digit;
+}
+
+bool backends__c__renderer__is_string_literal(std__string__string s) {
+const int32_t length = (int32_t)( std__string__str_len ( s ) );
+if (length < 2) {
+return false;
+}
+const char first = std__string__get_char( s , 0 );
+const char last = std__string__get_char( s , length - 1 );
+return ( first == '"' && last == '"' );
+}
+
+std__string__string backends__c__renderer__rewrite_adr(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -21702,19 +22983,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -21722,7 +23003,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j++;
@@ -21751,10 +23032,10 @@ if (paren_end >= expr_len || depth == 0) {
 break;
 }
 const char pc = std__string__get_char( expr , paren_end );
-if (pc == '"' && ! in_arg_char && ! renderer__is_escaped_quote ( expr , paren_end )) {
+if (pc == '"' && ! in_arg_char && ! backends__c__renderer__is_escaped_quote ( expr , paren_end )) {
 in_arg_str = ! in_arg_str;
 }
-else if (pc == '\'' && ! in_arg_str && ! renderer__is_escaped_quote ( expr , paren_end )) {
+else if (pc == '\'' && ! in_arg_str && ! backends__c__renderer__is_escaped_quote ( expr , paren_end )) {
 in_arg_char = ! in_arg_char;
 }
 else if (! in_arg_str && ! in_arg_char) {
@@ -21771,6 +23052,24 @@ paren_end++;
 }
 if (depth == 0) {
 const std__string__string var_name = std__string__strip( std__string__substring_se ( expr , paren_start , paren_end ) );
+if (backends__c__renderer__is_numeric_literal ( var_name )) {
+std__io__print(std__os__get_short_filename(g_current_source_file));
+std__io__print(":");
+std__io__print(std__string__i32_to_string(g_current_line));
+std__io__print(": error: cannot take address of numeric literal: addr(");
+std__io__print(var_name);
+std__io__println(")");
+exit(1);
+}
+if (backends__c__renderer__is_string_literal ( var_name )) {
+std__io__print(std__os__get_short_filename(g_current_source_file));
+std__io__print(":");
+std__io__print(std__string__i32_to_string(g_current_line));
+std__io__print(": error: cannot take address of string literal: addr(");
+std__io__print(var_name);
+std__io__println(")");
+exit(1);
+}
 const bool has_bracket = std__string__find_char_from( var_name , '[' , (uintptr_t)( 0 ) ) >= 0;
 const bool has_dot = std__string__find_char_from( var_name , '.' , (uintptr_t)( 0 ) ) >= 0;
 if (has_bracket || has_dot) {
@@ -21799,7 +23098,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_dereference(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_dereference(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -21810,19 +23109,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (! in_string && ! in_char_literal && renderer__is_ident_start ( ch )) {
+if (! in_string && ! in_char_literal && backends__c__renderer__is_ident_start ( ch )) {
 const int32_t ident_start = i;
 int32_t j = i;
 while (1) {
@@ -21830,7 +23129,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j++;
@@ -21859,10 +23158,10 @@ if (paren_end >= expr_len || depth == 0) {
 break;
 }
 const char pc = std__string__get_char( expr , paren_end );
-if (pc == '"' && ! in_arg_char && ! renderer__is_escaped_quote ( expr , paren_end )) {
+if (pc == '"' && ! in_arg_char && ! backends__c__renderer__is_escaped_quote ( expr , paren_end )) {
 in_arg_str = ! in_arg_str;
 }
-else if (pc == '\'' && ! in_arg_str && ! renderer__is_escaped_quote ( expr , paren_end )) {
+else if (pc == '\'' && ! in_arg_str && ! backends__c__renderer__is_escaped_quote ( expr , paren_end )) {
 in_arg_char = ! in_arg_char;
 }
 else if (! in_arg_str && ! in_arg_char) {
@@ -21879,7 +23178,25 @@ paren_end++;
 }
 if (depth == 0) {
 const std__string__string var_name = std__string__strip( std__string__substring_se ( expr , paren_start , paren_end ) );
-const std__string__string var_type = renderer__infer_expression_type( var_name );
+if (backends__c__renderer__is_numeric_literal ( var_name )) {
+std__io__print(std__os__get_short_filename(g_current_source_file));
+std__io__print(":");
+std__io__print(std__string__i32_to_string(g_current_line));
+std__io__print(": error: cannot dereference numeric literal: deref(");
+std__io__print(var_name);
+std__io__println(")");
+exit(1);
+}
+if (backends__c__renderer__is_string_literal ( var_name )) {
+std__io__print(std__os__get_short_filename(g_current_source_file));
+std__io__print(":");
+std__io__print(std__string__i32_to_string(g_current_line));
+std__io__print(": error: cannot dereference string literal: deref(");
+std__io__print(var_name);
+std__io__println(")");
+exit(1);
+}
+const std__string__string var_type = backends__c__renderer__infer_expression_type( var_name );
 if (std__string__str_len ( var_type ) > 0) {
 std__string__string check_type = var_type;
 if (std__string__has_prefix ( check_type , std__string__str ( "mut " ) )) {
@@ -21917,7 +23234,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_len_calls(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_len_calls(std__string__string expr) {
 std__string__string result = expr;
 while (1) {
 int32_t start_idx = - 1;
@@ -21954,13 +23271,13 @@ continue;
 bool is_standalone = true;
 if (i > 0) {
 const char prev = std__string__get_char( result , i - 1 );
-if (renderer__is_token_char ( prev )) {
+if (backends__c__renderer__is_token_char ( prev )) {
 is_standalone = false;
 }
 }
 if (is_standalone && i + 3 < result_len) {
 const char after = std__string__get_char( result , i + 3 );
-if (renderer__is_token_char ( after )) {
+if (backends__c__renderer__is_token_char ( after )) {
 is_standalone = false;
 }
 }
@@ -22056,17 +23373,17 @@ base_var = std__string__strip ( std__string__substr ( base_var , 0 , std__string
 }
 if (std__maps__StringStringMap__contains( &g_var_types , base_var )) {
 const std__string__string base_type = std__maps__StringStringMap__get( &g_var_types , base_var );
-const std__string__string model_name = renderer__extract_base_model_name( base_type );
-const std__string__string field_type = renderer__lookup_field_type( model_name , field_name );
+const std__string__string model_name = backends__c__renderer__extract_base_model_name( base_type );
+const std__string__string field_type = backends__c__renderer__lookup_field_type( model_name , field_name );
 if (std__string__str_len ( field_type ) > 0) {
-if (renderer__is_pointer_type ( field_type )) {
+if (backends__c__renderer__is_pointer_type ( field_type )) {
 is_pointer = true;
 if (bracket_pos >= 0) {
 is_pointer = false;
 }
 }
 }
-if (renderer__is_pointer_field ( model_name , field_name )) {
+if (backends__c__renderer__is_pointer_field ( model_name , field_name )) {
 is_pointer = true;
 if (bracket_pos >= 0) {
 is_pointer = false;
@@ -22084,7 +23401,7 @@ base_var = std__string__strip ( std__string__substring_se ( base_var , 0 , brack
 }
 if (std__maps__StringStringMap__contains( &g_var_types , base_var )) {
 const std__string__string var_type = std__maps__StringStringMap__get( &g_var_types , base_var );
-if (renderer__is_pointer_type ( var_type )) {
+if (backends__c__renderer__is_pointer_type ( var_type )) {
 is_pointer = true;
 if (bracket_pos >= 0) {
 is_pointer = false;
@@ -22108,7 +23425,7 @@ result = std__string__concat ( result , after );
 return result;
 }
 
-std__string__string renderer__rewrite_function_calls(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_function_calls(std__string__string expr) {
 std__string__StringBuilder sb = std__string__StringBuilder__init( std__string__str_len ( expr ) + 64 );
 int32_t i = 0;
 bool in_string = false;
@@ -22119,19 +23436,19 @@ if (i >= expr_len) {
 break;
 }
 const char ch = std__string__get_char( expr , i );
-if (ch == '\'' && ! in_string && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '\'' && ! in_string && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_char_literal = ! in_char_literal;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-if (ch == '"' && ! in_char_literal && ! renderer__is_escaped_quote ( expr , i )) {
+if (ch == '"' && ! in_char_literal && ! backends__c__renderer__is_escaped_quote ( expr , i )) {
 in_string = ! in_string;
 std__string__StringBuilder__append_char(&sb, ch);
 i++;
 continue;
 }
-const bool is_id_start = renderer__is_ident_start( ch );
+const bool is_id_start = backends__c__renderer__is_ident_start( ch );
 if (! in_string && ! in_char_literal && is_id_start) {
 const int32_t ident_start = i;
 int32_t j = i;
@@ -22140,7 +23457,7 @@ if (j >= expr_len) {
 break;
 }
 const char cj = std__string__get_char( expr , j );
-if (! renderer__is_token_char ( cj )) {
+if (! backends__c__renderer__is_token_char ( cj )) {
 break;
 }
 j = j + 1;
@@ -22178,7 +23495,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_global_scope_refs(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_global_scope_refs(std__string__string expr) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if (expr_len < 3) {
 return expr;
@@ -22256,7 +23573,7 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__rewrite_global_var_refs(std__string__string expr) {
+std__string__string backends__c__renderer__rewrite_global_var_refs(std__string__string expr) {
 const int32_t expr_len = (int32_t)( std__string__str_len ( expr ) );
 if (expr_len == 0) {
 return expr;
@@ -22320,8 +23637,8 @@ continue;
 if (j < expr_len) {
 const char next_ch = std__string__get_char( expr , j );
 if (next_ch != '(' && next_ch != '.') {
-const bool is_upper_case_const = renderer__is_all_upper_or_underscore( ident );
-if (is_upper_case_const && ! renderer__is_builtin_type ( ident ) && ! renderer__is_language_keyword ( ident ) && ! renderer__is_c_constant ( ident )) {
+const bool is_upper_case_const = backends__c__renderer__is_all_upper_or_underscore( ident );
+if (is_upper_case_const && ! backends__c__renderer__is_builtin_type ( ident ) && ! backends__c__renderer__is_language_keyword ( ident ) && ! backends__c__renderer__is_c_constant ( ident )) {
 if (! imports__is_symbol_imported ( ident ) && ! std__maps__StringBoolMap__contains( &g_emitted_globals , ident ) && ! std__maps__StringBoolMap__contains( &g_foreign_types , ident )) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
 std__io__print(":");
@@ -22346,11 +23663,11 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-void renderer__check_variable_declared(std__string__string name) {
+void backends__c__renderer__check_variable_declared(std__string__string name) {
 if (std__string__str_len ( name ) == 0) {
 return ;
 }
-if (! renderer__is_ident_start ( std__string__get_char ( name , 0 ) )) {
+if (! backends__c__renderer__is_ident_start ( std__string__get_char ( name , 0 ) )) {
 return ;
 }
 int32_t i = 1;
@@ -22358,21 +23675,21 @@ while (1) {
 if (i >= std__string__str_len ( name )) {
 break;
 }
-if (! renderer__is_token_char ( std__string__get_char ( name , i ) )) {
+if (! backends__c__renderer__is_token_char ( std__string__get_char ( name , i ) )) {
 return ;
 }
 i++;
 }
-if (renderer__is_language_keyword ( name )) {
+if (backends__c__renderer__is_language_keyword ( name )) {
 return ;
 }
-if (renderer__is_builtin_type ( name )) {
+if (backends__c__renderer__is_builtin_type ( name )) {
 return ;
 }
-if (renderer__is_builtin_function ( name )) {
+if (backends__c__renderer__is_builtin_function ( name )) {
 return ;
 }
-if (renderer__is_c_constant ( name )) {
+if (backends__c__renderer__is_c_constant ( name )) {
 return ;
 }
 if (std__string__equals_c ( name , "true" ) || std__string__equals_c ( name , "false" ) || std__string__equals_c ( name , "nil" )) {
@@ -22423,7 +23740,7 @@ return ;
 if (std__maps__StringBoolMap__contains( &g_emitted_globals , name )) {
 return ;
 }
-if (renderer__is_all_upper_or_underscore ( name )) {
+if (backends__c__renderer__is_all_upper_or_underscore ( name )) {
 return ;
 }
 if (std__maps__StringBoolMap__contains( &g_current_function_type_params , name )) {
@@ -22438,7 +23755,7 @@ std__io__println("");
 exit(1);
 }
 
-std__string__string renderer__convert_union_member_init(std__string__string expr) {
+std__string__string backends__c__renderer__convert_union_member_init(std__string__string expr) {
 const std__string__string trimmed = std__string__strip( expr );
 const int32_t brace_idx = std__string__find_char_from( trimmed , '{' , (uintptr_t)( 0 ) );
 if (brace_idx <= 0 || std__string__get_char ( trimmed , std__string__str_len ( trimmed ) - 1 ) != '}') {
@@ -22521,19 +23838,19 @@ std__string__StringBuilder__destroy(&sb);
 return result;
 }
 
-std__string__string renderer__process_expression(std__string__string expr) {
+std__string__string backends__c__renderer__process_expression(std__string__string expr) {
 std__string__string trimmed = std__string__strip( expr );
-renderer__check_variable_declared(trimmed);
+backends__c__renderer__check_variable_declared(trimmed);
 bool has_pointer_sugar = false;
 bool in_string = false;
 int32_t i = 0;
-trimmed = renderer__rewrite_generic_calls ( trimmed );
-trimmed = renderer__rewrite_global_scope_refs ( trimmed );
+trimmed = backends__c__renderer__rewrite_generic_calls ( trimmed );
+trimmed = backends__c__renderer__rewrite_global_scope_refs ( trimmed );
 if (std__string__has_prefix ( trimmed , std__string__str ( "__INTERPOLATED__" ) ) && std__string__has_suffix ( trimmed , std__string__str ( "__INTERPOLATED__" ) )) {
 const int32_t inner_len = std__string__str_len( trimmed ) - 32;
 if (inner_len > 0) {
 const std__string__string inner = std__string__substring_se( trimmed , 16 , 16 + inner_len );
-return renderer__apply_extern_aliases( renderer__process_interpolated_string ( inner , false ) );
+return backends__c__renderer__apply_extern_aliases( backends__c__renderer__process_interpolated_string ( inner , false ) );
 }
 }
 const int32_t open_idx = std__string__find_char_from( trimmed , '(' , (uintptr_t)( 0 ) );
@@ -22570,14 +23887,14 @@ if (std__string__has_prefix ( inner_raw , std__string__str ( "__INTERPOLATED__" 
 const int32_t inner_len2 = std__string__str_len( inner_raw ) - 32;
 if (inner_len2 > 0) {
 const std__string__string inner2 = std__string__substring_se( inner_raw , 16 , 16 + inner_len2 );
-return renderer__apply_extern_aliases( renderer__process_interpolated_string ( inner2 , true ) );
+return backends__c__renderer__apply_extern_aliases( backends__c__renderer__process_interpolated_string ( inner2 , true ) );
 }
 }
 }
 }
 }
-trimmed = renderer__rewrite_casts ( trimmed );
-trimmed = renderer__rewrite_array_literals ( trimmed );
+trimmed = backends__c__renderer__rewrite_casts ( trimmed );
+trimmed = backends__c__renderer__rewrite_array_literals ( trimmed );
 while (1) {
 if (i >= std__string__str_len ( trimmed )) {
 break;
@@ -22606,7 +23923,7 @@ break;
 i++;
 }
 bool has_c_prefix = false;
-const int32_t c_prefix_end = renderer__c_prefix_end_index( trimmed );
+const int32_t c_prefix_end = backends__c__renderer__c_prefix_end_index( trimmed );
 if (c_prefix_end >= 0) {
 has_c_prefix = true;
 }
@@ -22617,16 +23934,16 @@ gstate__debug_print_raw("\n[DBG-EXPR] no-sugar/no-C trimmed:");
 gstate__debug_print_str(trimmed);
 const int32_t single_quote_pos = std__string__find_char_from( trimmed , '\'' , (uintptr_t)( 0 ) );
 if (single_quote_pos >= 0) {
-const std__string__string addr_fixed_chars = renderer__rewrite_adr( trimmed );
-const std__string__string deref_fixed_chars = renderer__rewrite_dereference( addr_fixed_chars );
-const std__string__string calls_fixed_chars = renderer__rewrite_function_calls( deref_fixed_chars );
-const std__string__string len_fixed_chars = renderer__rewrite_len_calls( calls_fixed_chars );
-const std__string__string enum_fixed_chars = renderer__rewrite_enum_member_refs( len_fixed_chars );
-const std__string__string prefixes_fixed_chars = renderer__rewrite_function_prefixes( enum_fixed_chars );
-const std__string__string mod_fixed_chars = renderer__replace_keyword_outside_strings( prefixes_fixed_chars , std__string__str ( "mod" ) , std__string__str ( "%" ) );
-const std__string__string and_fixed_chars = renderer__replace_keyword_outside_strings( mod_fixed_chars , std__string__str ( "and" ) , std__string__str ( "&&" ) );
-const std__string__string or_fixed_chars = renderer__replace_keyword_outside_strings( and_fixed_chars , std__string__str ( "or" ) , std__string__str ( "||" ) );
-return renderer__apply_extern_aliases( std__string__strip ( or_fixed_chars ) );
+const std__string__string addr_fixed_chars = backends__c__renderer__rewrite_adr( trimmed );
+const std__string__string deref_fixed_chars = backends__c__renderer__rewrite_dereference( addr_fixed_chars );
+const std__string__string calls_fixed_chars = backends__c__renderer__rewrite_function_calls( deref_fixed_chars );
+const std__string__string len_fixed_chars = backends__c__renderer__rewrite_len_calls( calls_fixed_chars );
+const std__string__string enum_fixed_chars = backends__c__renderer__rewrite_enum_member_refs( len_fixed_chars );
+const std__string__string prefixes_fixed_chars = backends__c__renderer__rewrite_function_prefixes( enum_fixed_chars );
+const std__string__string mod_fixed_chars = backends__c__renderer__replace_keyword_outside_strings( prefixes_fixed_chars , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+const std__string__string and_fixed_chars = backends__c__renderer__replace_keyword_outside_strings( mod_fixed_chars , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+const std__string__string or_fixed_chars = backends__c__renderer__replace_keyword_outside_strings( and_fixed_chars , std__string__str ( "or" ) , std__string__str ( "||" ) );
+return backends__c__renderer__apply_extern_aliases( std__string__strip ( or_fixed_chars ) );
 }
 const std__string__string normalized_only = trimmed;
 std__string__StringBuilder sb_norm = std__string__StringBuilder__init( std__string__str_len ( normalized_only ) + 16 );
@@ -22678,15 +23995,15 @@ knext = knext + 1;
 }
 if (( prev >= '0' && prev <= '9' && next == '.' ) || ( prev == '.' && next >= '0' && next <= '9' )) {
 }
-else if (renderer__is_token_char ( prev ) && renderer__is_token_char ( next )) {
+else if (backends__c__renderer__is_token_char ( prev ) && backends__c__renderer__is_token_char ( next )) {
 if (next == '_') {
 }
 else if (( prev == '+' && next == '=' ) || ( prev == '-' && next == '=' )) {
 }
-else if (renderer__is_ident_start ( prev ) && ! renderer__is_ident_start ( next )) {
+else if (backends__c__renderer__is_ident_start ( prev ) && ! backends__c__renderer__is_ident_start ( next )) {
 std__string__StringBuilder__append_char(&sb_norm, ' ');
 }
-else if (! renderer__is_ident_start ( next )) {
+else if (! backends__c__renderer__is_ident_start ( next )) {
 }
 else {
 std__string__StringBuilder__append_char(&sb_norm, ' ');
@@ -22706,20 +24023,20 @@ std__string__StringBuilder__destroy(&sb_norm);
 const std__string__string norm_no_sugar = std__string__strip( out_norm );
 gstate__debug_print_raw("\n[DBG-EXPR] no-sugar final:");
 gstate__debug_print_str(norm_no_sugar);
-const std__string__string addr_fixed = renderer__rewrite_adr( norm_no_sugar );
-const std__string__string deref_fixed = renderer__rewrite_dereference( addr_fixed );
-const std__string__string ptr_fixed = renderer__rewrite_ref_member_access( deref_fixed );
-const std__string__string methods_fixed = renderer__rewrite_method_calls( ptr_fixed );
-const std__string__string sizeof_fixed = renderer__rewrite_sizeof_types( methods_fixed );
-const std__string__string calls_fixed_no_sugar = renderer__rewrite_function_calls( sizeof_fixed );
-const std__string__string len_fixed_no_sugar = renderer__rewrite_len_calls( calls_fixed_no_sugar );
-const std__string__string enum_fixed_no_sugar = renderer__rewrite_enum_member_refs( len_fixed_no_sugar );
-const std__string__string prefixes_fixed_no_sugar = renderer__rewrite_function_prefixes( enum_fixed_no_sugar );
-const std__string__string global_vars_fixed = renderer__rewrite_global_var_refs( prefixes_fixed_no_sugar );
-const std__string__string mod_fixed_no_sugar = renderer__replace_keyword_outside_strings( global_vars_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
-const std__string__string and_fixed_no_sugar = renderer__replace_keyword_outside_strings( mod_fixed_no_sugar , std__string__str ( "and" ) , std__string__str ( "&&" ) );
-const std__string__string or_fixed_no_sugar = renderer__replace_keyword_outside_strings( and_fixed_no_sugar , std__string__str ( "or" ) , std__string__str ( "||" ) );
-return renderer__apply_extern_aliases( std__string__strip ( or_fixed_no_sugar ) );
+const std__string__string addr_fixed = backends__c__renderer__rewrite_adr( norm_no_sugar );
+const std__string__string deref_fixed = backends__c__renderer__rewrite_dereference( addr_fixed );
+const std__string__string ptr_fixed = backends__c__renderer__rewrite_ref_member_access( deref_fixed );
+const std__string__string methods_fixed = backends__c__renderer__rewrite_method_calls( ptr_fixed );
+const std__string__string sizeof_fixed = backends__c__renderer__rewrite_sizeof_types( methods_fixed );
+const std__string__string calls_fixed_no_sugar = backends__c__renderer__rewrite_function_calls( sizeof_fixed );
+const std__string__string len_fixed_no_sugar = backends__c__renderer__rewrite_len_calls( calls_fixed_no_sugar );
+const std__string__string enum_fixed_no_sugar = backends__c__renderer__rewrite_enum_member_refs( len_fixed_no_sugar );
+const std__string__string prefixes_fixed_no_sugar = backends__c__renderer__rewrite_function_prefixes( enum_fixed_no_sugar );
+const std__string__string global_vars_fixed = backends__c__renderer__rewrite_global_var_refs( prefixes_fixed_no_sugar );
+const std__string__string mod_fixed_no_sugar = backends__c__renderer__replace_keyword_outside_strings( global_vars_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+const std__string__string and_fixed_no_sugar = backends__c__renderer__replace_keyword_outside_strings( mod_fixed_no_sugar , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+const std__string__string or_fixed_no_sugar = backends__c__renderer__replace_keyword_outside_strings( and_fixed_no_sugar , std__string__str ( "or" ) , std__string__str ( "||" ) );
+return backends__c__renderer__apply_extern_aliases( std__string__strip ( or_fixed_no_sugar ) );
 }
 std__string__string result = trimmed;
 gstate__debug_print_raw("\n[DBG-EXPR] raw expr before sugar/C:");
@@ -22771,7 +24088,7 @@ std__string__StringBuilder__destroy(&sb_sugar);
 if (has_c_prefix) {
 result = std__string__substring_se ( result , c_prefix_end , (int32_t)( std__string__str_len ( result ) ) );
 }
-result = renderer__strip_all_c_prefixes ( result );
+result = backends__c__renderer__strip_all_c_prefixes ( result );
 const std__string__string normalized = result;
 gstate__debug_print_raw("\n[DBG-EXPR] after sugar/C before normalize:");
 gstate__debug_print_str(normalized);
@@ -22824,12 +24141,12 @@ kn = kn + 1;
 }
 if (( prev2 >= '0' && prev2 <= '9' && next2 == '.' ) || ( prev2 == '.' && next2 >= '0' && next2 <= '9' )) {
 }
-else if (renderer__is_token_char ( prev2 ) && renderer__is_token_char ( next2 )) {
+else if (backends__c__renderer__is_token_char ( prev2 ) && backends__c__renderer__is_token_char ( next2 )) {
 if (next2 == '_') {
 }
 else if (( prev2 == '+' && next2 == '=' ) || ( prev2 == '-' && next2 == '=' )) {
 }
-else if (! renderer__is_ident_start ( next2 )) {
+else if (! backends__c__renderer__is_ident_start ( next2 )) {
 }
 else {
 std__string__StringBuilder__append_c(&sb_final, " ");
@@ -22852,23 +24169,26 @@ gstate__debug_print_str(first_pass);
 const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
-const std__string__string addr_fixed2 = renderer__rewrite_adr( fixed );
-const std__string__string deref_fixed2 = renderer__rewrite_dereference( addr_fixed2 );
-const std__string__string ptr_fixed2 = renderer__rewrite_ref_member_access( deref_fixed2 );
-const std__string__string methods_fixed2 = renderer__rewrite_method_calls( ptr_fixed2 );
-const std__string__string sizeof_fixed2 = renderer__rewrite_sizeof_types( methods_fixed2 );
-const std__string__string calls_fixed = renderer__rewrite_function_calls( sizeof_fixed2 );
-const std__string__string len_fixed = renderer__rewrite_len_calls( calls_fixed );
-const std__string__string enum_fixed = renderer__rewrite_enum_member_refs( len_fixed );
-const std__string__string prefixes_fixed = renderer__rewrite_function_prefixes( enum_fixed );
-const std__string__string mod_fixed = renderer__replace_keyword_outside_strings( prefixes_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
-const std__string__string and_fixed = renderer__replace_keyword_outside_strings( mod_fixed , std__string__str ( "and" ) , std__string__str ( "&&" ) );
-const std__string__string or_fixed = renderer__replace_keyword_outside_strings( and_fixed , std__string__str ( "or" ) , std__string__str ( "||" ) );
-const std__string__string extern_aliases_fixed = renderer__apply_extern_aliases( std__string__strip ( or_fixed ) );
-return extern_aliases_fixed;
+const std__string__string addr_fixed2 = backends__c__renderer__rewrite_adr( fixed );
+const std__string__string deref_fixed2 = backends__c__renderer__rewrite_dereference( addr_fixed2 );
+const std__string__string ptr_fixed2 = backends__c__renderer__rewrite_ref_member_access( deref_fixed2 );
+const std__string__string methods_fixed2 = backends__c__renderer__rewrite_method_calls( ptr_fixed2 );
+const std__string__string sizeof_fixed2 = backends__c__renderer__rewrite_sizeof_types( methods_fixed2 );
+const std__string__string calls_fixed = backends__c__renderer__rewrite_function_calls( sizeof_fixed2 );
+const std__string__string len_fixed = backends__c__renderer__rewrite_len_calls( calls_fixed );
+const std__string__string enum_fixed = backends__c__renderer__rewrite_enum_member_refs( len_fixed );
+const std__string__string prefixes_fixed = backends__c__renderer__rewrite_function_prefixes( enum_fixed );
+const std__string__string mod_fixed = backends__c__renderer__replace_keyword_outside_strings( prefixes_fixed , std__string__str ( "mod" ) , std__string__str ( "%" ) );
+const std__string__string and_fixed = backends__c__renderer__replace_keyword_outside_strings( mod_fixed , std__string__str ( "and" ) , std__string__str ( "&&" ) );
+const std__string__string or_fixed = backends__c__renderer__replace_keyword_outside_strings( and_fixed , std__string__str ( "or" ) , std__string__str ( "||" ) );
+std__string__string final_result = or_fixed;
+final_result = std__string__replace_all ( final_result , std__string__str ( "." ) , std__string__str ( "." ) );
+const std__string__string extern_aliases_fixed = backends__c__renderer__apply_extern_aliases( std__string__strip ( final_result ) );
+const std__string__string float_literal_fixed = std__string__replace_all( extern_aliases_fixed , std__string__str ( " . " ) , std__string__str ( "." ) );
+return float_literal_fixed;
 }
 
-std__string__string renderer__generate_stack_trace_headers() {
+std__string__string backends__c__renderer__generate_stack_trace_headers() {
 std__string__string code = std__string__str( "" );
 #ifdef _WIN32
 code = std__string__concat_c ( code , "#include <dbghelp.h>\n" );
@@ -22932,7 +24252,7 @@ code = std__string__concat_c ( code , "}\n" );
 return code;
 }
 
-std__string__string renderer__generate_stack_trace_setup() {
+std__string__string backends__c__renderer__generate_stack_trace_setup() {
 std__string__string code = std__string__str( "" );
 #ifdef _WIN32
 code = std__string__concat_c ( code , "    SetUnhandledExceptionFilter(axe_unhandled_exception_filter);\n" );
@@ -22944,7 +24264,7 @@ code = std__string__concat_c ( code , "    signal(SIGABRT, axe_segv_handler);\n"
 return code;
 }
 
-std__string__string renderer__generate_function_prototype(structs__ASTNode* ast) {
+std__string__string backends__c__renderer__generate_function_prototype(structs__ASTNode* ast) {
 if (ast == nil) {
 return std__string__str( "" );
 }
@@ -22987,7 +24307,7 @@ break;
 j = j + 1;
 }
 if (! has_inner_sep) {
-const std__string__string canon_model = renderer__canonical_model_c_name( model_part );
+const std__string__string canon_model = backends__c__renderer__canonical_model_c_name( model_part );
 if (std__string__str_len ( canon_model ) > 0) {
 g_current_model = canon_model;
 std__string__StringBuilder sb_name = std__string__StringBuilder__init( 1256 );
@@ -23008,7 +24328,7 @@ std__string__string return_type = ast->data.function.return_type;
 if (std__string__str_len ( return_type ) == 0) {
 return_type = std__string__str ( "void" );
 }
-const std__string__string mapped_return_type = renderer__map_axe_type_to_c( return_type );
+const std__string__string mapped_return_type = backends__c__renderer__map_axe_type_to_c( return_type );
 std__string__StringBuilder sb = std__string__StringBuilder__init( 1512 );
 bool is_inline = false;
 const __list_std__string_t* tags = ast->data.function.tags;
@@ -23047,7 +24367,7 @@ const int32_t colon_pos = std__string__find_char_from( param , ':' , (uintptr_t)
 if (colon_pos >= 0) {
 const std__string__string param_name = std__string__strip( std__string__substring_se ( param , 0 , colon_pos ) );
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , std__string__str_len ( param ) - colon_pos - 1 ) );
-const std__string__string processed_type = renderer__process_parameter_type( param_type );
+const std__string__string processed_type = backends__c__renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb, processed_type);
 std__string__StringBuilder__append_char(&sb, ' ');
 std__string__StringBuilder__append(&sb, param_name);
@@ -23065,7 +24385,7 @@ g_current_model = old_model;
 return result;
 }
 
-std__string__string renderer__generate_specialized_function_prototype(structs__ASTNode* ast, std__maps__StringStringMap* type_mapping, std__string__string spec_func_name) {
+std__string__string backends__c__renderer__generate_specialized_function_prototype(structs__ASTNode* ast, std__maps__StringStringMap* type_mapping, std__string__string spec_func_name) {
 if (ast == nil) {
 return std__string__str( "" );
 }
@@ -23078,7 +24398,7 @@ return_type = std__string__str ( "void" );
 if (std__maps__StringStringMap__contains( type_mapping , return_type )) {
 return_type = std__maps__StringStringMap__get( type_mapping , return_type );
 }
-const std__string__string mapped_ret = renderer__map_axe_type_to_c( return_type );
+const std__string__string mapped_ret = backends__c__renderer__map_axe_type_to_c( return_type );
 std__string__StringBuilder sb_spec = std__string__StringBuilder__init( 512 );
 const __list_std__string_t* tags = ast->data.function.tags;
 if (tags != nil) {
@@ -23116,7 +24436,7 @@ std__string__string param_type = std__string__strip( std__string__substr ( param
 if (std__maps__StringStringMap__contains( type_mapping , param_type )) {
 param_type = std__maps__StringStringMap__get( type_mapping , param_type );
 }
-const std__string__string processed_param_type = renderer__process_parameter_type( param_type );
+const std__string__string processed_param_type = backends__c__renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb_spec, processed_param_type);
 std__string__StringBuilder__append_char(&sb_spec, ' ');
 std__string__StringBuilder__append(&sb_spec, param_name);
@@ -23134,7 +24454,7 @@ g_current_type_mapping = saved_type_mapping;
 return result_spec;
 }
 
-std__string__string renderer__generate_global_decl(structs__ASTNode* ast) {
+std__string__string backends__c__renderer__generate_global_decl(structs__ASTNode* ast) {
 std__string__string result = std__string__str( "" );
 if (ast == nil) {
 return result;
@@ -23143,8 +24463,8 @@ const std__string__string var_name = ast->data.declaration.name;
 std__string__string type_name = ast->data.declaration.type_name;
 const bool is_mutable = ast->data.declaration.is_mutable;
 const std__string__string initializer = ast->data.declaration.initializer;
-renderer__validate_type_imported(type_name);
-std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
+backends__c__renderer__validate_type_imported(type_name);
+std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( type_name );
 if (std__string__str_len ( type_name ) == 0) {
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "new " ) )) {
@@ -23169,7 +24489,7 @@ end_pos = std__string__str_len ( trimmed_init );
 const std__string__string inferred_name = std__string__strip( std__string__substring_se ( trimmed_init , 0 , end_pos ) );
 if (std__string__str_len ( inferred_name ) > 0) {
 type_name = inferred_name;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 }
 else {
@@ -23178,7 +24498,7 @@ if (brace_pos > 0) {
 const std__string__string inferred_name2 = std__string__strip( std__string__substring_se ( trimmed_init , 0 , brace_pos ) );
 if (std__string__str_len ( inferred_name2 ) > 0) {
 type_name = inferred_name2;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 }
 }
@@ -23221,7 +24541,7 @@ std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 }
-const std__string__string enum_model_name = renderer__canonical_model_c_name( type_name );
+const std__string__string enum_model_name = backends__c__renderer__canonical_model_c_name( type_name );
 if (std__string__str_len ( enum_model_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_model_name )) {
 mapped_type = enum_model_name;
 }
@@ -23232,7 +24552,7 @@ const std__string__string suffix = std__string__substring_se( type_name , br , (
 if (! std__string__equals_c ( suffix , "[999]" )) {
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
-mapped_type = renderer__map_axe_type_to_c ( base_raw );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( base_raw );
 array_suffix = suffix;
 }
 }
@@ -23263,7 +24583,7 @@ std__string__StringBuilder__append(&sb_decl, trimmed);
 }
 }
 else {
-const std__string__string processed_init = renderer__process_expression( trimmed );
+const std__string__string processed_init = backends__c__renderer__process_expression( trimmed );
 std__string__StringBuilder__append(&sb_decl, processed_init);
 }
 }
@@ -23285,7 +24605,7 @@ std__string__StringBuilder__destroy(&sb_decl);
 return result;
 }
 
-void renderer__discover_types(structs__ASTNode* ast) {
+void backends__c__renderer__discover_types(structs__ASTNode* ast) {
 if (ast == nil) {
 return ;
 }
@@ -23293,7 +24613,7 @@ const std__string__string node_type = ast->node_type;
 if (std__string__equals_c ( node_type , "Declaration" )) {
 const std__string__string type_name = ast->data.declaration.type_name;
 if (std__string__str_len ( type_name ) > 0) {
-renderer__map_axe_type_to_c(type_name);
+backends__c__renderer__map_axe_type_to_c(type_name);
 }
 }
 else if (std__string__equals_c ( node_type , "Model" )) {
@@ -23304,7 +24624,7 @@ while (1) {
 if (i >= len_v((*field_types))) {
 break;
 }
-renderer__map_axe_type_to_c(field_types->data[i]);
+backends__c__renderer__map_axe_type_to_c(field_types->data[i]);
 i++;
 }
 }
@@ -23315,7 +24635,7 @@ while (1) {
 if (j >= len_v((*union_types))) {
 break;
 }
-renderer__map_axe_type_to_c(union_types->data[j]);
+backends__c__renderer__map_axe_type_to_c(union_types->data[j]);
 j++;
 }
 }
@@ -23338,7 +24658,7 @@ tpi++;
 }
 }
 if (std__string__str_len ( rt ) > 0) {
-renderer__map_axe_type_to_c(rt);
+backends__c__renderer__map_axe_type_to_c(rt);
 }
 if (params != nil) {
 int32_t k = 0;
@@ -23350,7 +24670,7 @@ const std__string__string pstr = params->data[ k ];
 const int32_t cpos = std__string__find_char_from( pstr , ':' , (uintptr_t)( 0 ) );
 if (cpos >= 0) {
 const std__string__string pt = std__string__strip( std__string__substring_se ( pstr , cpos + 1 , (int32_t)( std__string__str_len ( pstr ) ) ) );
-renderer__map_axe_type_to_c(pt);
+backends__c__renderer__map_axe_type_to_c(pt);
 }
 k++;
 }
@@ -23362,7 +24682,7 @@ while (1) {
 if (i_child >= len_v((*children))) {
 break;
 }
-renderer__discover_types(&(children->data[i_child]));
+backends__c__renderer__discover_types(&(children->data[i_child]));
 i_child++;
 }
 }
@@ -23376,13 +24696,13 @@ while (1) {
 if (i_child >= len_v((*children))) {
 break;
 }
-renderer__discover_types(&(children->data[i_child]));
+backends__c__renderer__discover_types(&(children->data[i_child]));
 i_child++;
 }
 }
 }
 
-std__string__string renderer__generate_c(structs__ASTNode* ast) {
+std__string__string backends__c__renderer__generate_c(structs__ASTNode* ast) {
 if (ast == nil) {
 return std__string__str( "" );
 }
@@ -23404,7 +24724,7 @@ while (1) {
 if (i >= child_count) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_macro, child_code);
 i++;
 }
@@ -23448,7 +24768,7 @@ break;
 }
 const std__string__string axe_type = type_names_ref->data[ i_ov ];
 std__string__string target_name = targets_ref->data[ i_ov ];
-const std__string__string mapped_type = renderer__map_axe_type_to_c( axe_type );
+const std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( axe_type );
 if (std__maps__StringStringMap__contains( &g_function_prefixes , target_name )) {
 const std__string__string prefixed_target = std__maps__StringStringMap__get( &g_function_prefixes , target_name );
 target_name = prefixed_target;
@@ -23478,14 +24798,14 @@ std__arena__Arena ext_arena = std__arena__Arena__create( 4096 );
 std__lists__StringList__clear(g_global_external_headers);
 std__lists__StringList__clear(g_windows_external_headers);
 std__lists__StringList__clear(g_posix_external_headers);
-renderer__collect_external_imports(ast, std__string__str(""), &ext_arena);
-renderer__collect_foreign_types(ast);
-renderer__build_function_signatures(ast);
+backends__c__renderer__collect_external_imports(ast, std__string__str(""), &ext_arena);
+backends__c__renderer__collect_foreign_types(ast);
+backends__c__renderer__build_function_signatures(ast);
 std__string__StringBuilder sb_header = std__string__StringBuilder__init( 32768 );
 std__string__StringBuilder sb_protos = std__string__StringBuilder__init( 32768 );
 std__string__StringBuilder sb_bodies = std__string__StringBuilder__init( 65536 );
 std__string__StringBuilder sb_specs = std__string__StringBuilder__init( 32768 );
-std__string__StringBuilder__append_c(&sb_header,              "#define nil ((void*)0)\n#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#define len_ptr(x) ((x)->len)\n#define len_v(x) ((&(x))->len)\n#define len(x) len_v(x)\n");
+std__string__StringBuilder__append_c(&sb_header,             "#define nil ((void*)0)\n#include <stdio.h>\n#include <stdbool.h>\n#include <stdlib.h>\n#include <string.h>\n#include <stdint.h>\n#define len_ptr(x) ((x)->len)\n#define len_v(x) ((&(x))->len)\n#define len(x) len_v(x)\n");
 if (! no_windows_header) {
 std__string__StringBuilder__append_c(&sb_header, "\n#ifdef _WIN32\n#define NOMINMAX\n#define NOGDI\n#define WIN32_LEAN_AND_MEAN\n#include <windows.h>\n#endif\n");
 }
@@ -23622,12 +24942,12 @@ i_df = i_df + 1;
 std__string__StringBuilder__append_c(&sb_header, "#endif\n");
 }
 if (! is_release_build) {
-const std__string__string stack_headers = renderer__generate_stack_trace_headers( );
+const std__string__string stack_headers = backends__c__renderer__generate_stack_trace_headers( );
 std__string__StringBuilder__append(&sb_header, stack_headers);
 }
 std__string__StringBuilder__append_c(&sb_header, "\nint __axe_argc = 0;\nchar** __axe_argv = NULL;\n\n");
-renderer__build_function_prefixes(ast);
-renderer__build_function_signatures(ast);
+backends__c__renderer__build_function_prefixes(ast);
+backends__c__renderer__build_function_signatures(ast);
 if (ast->children!= nil) {
 std__arena__Arena use_arena = std__arena__Arena__create( 4096 );
 const __list_structs__ASTNode_t* use_children = ast->children;
@@ -23732,7 +25052,7 @@ mi++;
 const __list_structs__ASTNode_t* children = ast->children;
 const int32_t children_len = len_v((*children));
 std__maps__StringBoolMap__clear(&g_list_element_types);
-renderer__discover_types(ast);
+backends__c__renderer__discover_types(ast);
 std__string__StringBuilder sb_fwd = std__string__StringBuilder__init( 8192 );
 int32_t i_models2 = 0;
 while (1) {
@@ -23781,7 +25101,7 @@ if (li >= lst_ref->len) {
 break;
 }
 const std__string__string elemTypeStr = std__lists__StringList__get( lst_ref , li );
-const std__string__string san = renderer__sanitize_list_element_name( elemTypeStr );
+const std__string__string san = backends__c__renderer__sanitize_list_element_name( elemTypeStr );
 std__string__StringBuilder__append_c(&sb_header, "typedef struct __list_");
 std__string__StringBuilder__append(&sb_header, san);
 std__string__StringBuilder__append_c(&sb_header, "_t __list_");
@@ -23815,7 +25135,7 @@ oc++;
 }
 }
 if (has_opaque) {
-const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
+const std__string__string plat_dir = backends__c__renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_header, plat_dir);
 }
@@ -23827,11 +25147,11 @@ break;
 }
 const structs__ASTNode* oc_child2 = &(plat_children2->data[ oc2 ]);
 if (std__string__equals_c ( oc_child2->node_type, "Opaque" )) {
-const std__string__string opaque_code = renderer__generate_c( oc_child2 );
+const std__string__string opaque_code = backends__c__renderer__generate_c( oc_child2 );
 std__string__StringBuilder__append(&sb_header, opaque_code);
 }
 else if (std__string__equals_c ( oc_child2->node_type, "Foreign" )) {
-const std__string__string foreign_code = renderer__generate_c( oc_child2 );
+const std__string__string foreign_code = backends__c__renderer__generate_c( oc_child2 );
 std__string__StringBuilder__append(&sb_header, foreign_code);
 }
 oc2++;
@@ -23850,7 +25170,7 @@ break;
 }
 const structs__ASTNode* enum_child = &(children->data[ i_enums ]);
 if (std__string__equals_c ( enum_child->node_type, "Enum" )) {
-const std__string__string e_code = renderer__generate_c( enum_child );
+const std__string__string e_code = backends__c__renderer__generate_c( enum_child );
 std__string__StringBuilder__append(&sb_header, e_code);
 }
 i_enums = i_enums + 1;
@@ -23866,7 +25186,7 @@ break;
 const structs__ASTNode* collect_child = &(children->data[ collect_idx ]);
 if (std__string__equals_c ( collect_child->node_type, "Model" )) {
 const std__string__string mname = collect_child->data.model_node.name;
-std__string__string cname = renderer__canonical_model_c_name( mname );
+std__string__string cname = backends__c__renderer__canonical_model_c_name( mname );
 if (std__string__str_len ( cname ) == 0) {
 cname = mname;
 }
@@ -23896,7 +25216,7 @@ break;
 const structs__ASTNode* bdep_child = &(children->data[ build_deps_idx ]);
 if (std__string__equals_c ( bdep_child->node_type, "Model" )) {
 const std__string__string raw_model_name = bdep_child->data.model_node.name;
-std__string__string this_model_name = renderer__canonical_model_c_name( raw_model_name );
+std__string__string this_model_name = backends__c__renderer__canonical_model_c_name( raw_model_name );
 if (std__string__str_len ( this_model_name ) == 0) {
 this_model_name = raw_model_name;
 }
@@ -23910,8 +25230,8 @@ if (ft_idx >= ftypes_len) {
 break;
 }
 const std__string__string ftype = ftypes->data[ ft_idx ];
-const std__string__string base_type = renderer__get_base_type_from_field( ftype );
-std__string__string mapped_type = renderer__map_axe_type_to_c( base_type );
+const std__string__string base_type = backends__c__renderer__get_base_type_from_field( ftype );
+std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( base_type );
 if (! std__maps__StringIntMap__contains( &model_indices , mapped_type )) {
 if (std__maps__StringIntMap__contains( &model_indices , base_type )) {
 mapped_type = base_type;
@@ -23945,8 +25265,8 @@ if (ut_idx >= union_types_len) {
 break;
 }
 const std__string__string utype = union_types->data[ ut_idx ];
-const std__string__string ubase_type = renderer__get_base_type_from_field( utype );
-std__string__string umapped_type = renderer__map_axe_type_to_c( ubase_type );
+const std__string__string ubase_type = backends__c__renderer__get_base_type_from_field( utype );
+std__string__string umapped_type = backends__c__renderer__map_axe_type_to_c( ubase_type );
 if (! std__maps__StringIntMap__contains( &model_indices , umapped_type )) {
 if (std__maps__StringIntMap__contains( &model_indices , ubase_type )) {
 umapped_type = ubase_type;
@@ -24078,7 +25398,7 @@ break;
 const structs__ASTNode* find_child = &(children->data[ find_idx ]);
 if (std__string__equals_c ( find_child->node_type, "Model" )) {
 if (std__string__compare ( find_child->data.model_node.name, sorted_name ) == 0) {
-const std__string__string m_code = renderer__generate_c( find_child );
+const std__string__string m_code = backends__c__renderer__generate_c( find_child );
 std__string__StringBuilder__append(&sb_protos, m_code);
 break;
 }
@@ -24217,11 +25537,11 @@ const int32_t colon_pos2 = std__string__find_char_from( one_constraint2 , ':' , 
 if (colon_pos2 > 0) {
 const std__string__string param_name2 = std__string__substring_se( one_constraint2 , 0 , colon_pos2 );
 const std__string__string concrete_tp2_raw = std__string__substring_se( one_constraint2 , colon_pos2 + 1 , (int32_t)( std__string__str_len ( one_constraint2 ) ) );
-const std__string__string concrete_tp2 = renderer__map_axe_type_to_c( concrete_tp2_raw );
+const std__string__string concrete_tp2 = backends__c__renderer__map_axe_type_to_c( concrete_tp2_raw );
 std__string__StringBuilder__append_c(&sb_spec_name2, "__");
 std__string__StringBuilder__append(&sb_spec_name2, param_name2);
 std__string__StringBuilder__append_c(&sb_spec_name2, "_");
-std__string__StringBuilder__append(&sb_spec_name2, renderer__sanitize_c_identifier(concrete_tp2));
+std__string__StringBuilder__append(&sb_spec_name2, backends__c__renderer__sanitize_c_identifier(concrete_tp2));
 }
 constraint_start2 = constraint_idx2 + 1;
 }
@@ -24257,7 +25577,7 @@ tm_start2 = tm_idx2 + 1;
 }
 tm_idx2++;
 }
-const std__string__string spec_proto_code = renderer__generate_specialized_function_prototype( proto_child , &type_mapping2 , spec_func_name2 );
+const std__string__string spec_proto_code = backends__c__renderer__generate_specialized_function_prototype( proto_child , &type_mapping2 , spec_func_name2 );
 if (std__string__str_len ( spec_proto_code ) > 0) {
 std__string__StringBuilder__append(&sb_protos, spec_proto_code);
 }
@@ -24266,7 +25586,7 @@ branch_idx2++;
 i_proto++;
 continue;
 }
-const std__string__string proto_code = renderer__generate_function_prototype( proto_child );
+const std__string__string proto_code = backends__c__renderer__generate_function_prototype( proto_child );
 if (std__string__str_len ( proto_code ) > 0) {
 const std__string__string proto_name = proto_child->data.function.name;
 if (! std__string__equals_c ( proto_name , "main" )) {
@@ -24284,7 +25604,7 @@ std__string__StringBuilder__append(&sb_protos, proto_code);
 }
 if (std__string__equals_c ( proto_child->node_type, "Platform" )) {
 const std__string__string platform_name = proto_child->data.platform_node.platform_name;
-const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
+const std__string__string plat_dir = backends__c__renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_protos, plat_dir);
 }
@@ -24297,7 +25617,7 @@ break;
 }
 const structs__ASTNode* plat_child = &(plat_children->data[ pi ]);
 if (std__string__equals_c ( plat_child->node_type, "Function" )) {
-const std__string__string plat_proto = renderer__generate_function_prototype( plat_child );
+const std__string__string plat_proto = backends__c__renderer__generate_function_prototype( plat_child );
 if (std__string__str_len ( plat_proto ) > 0) {
 std__string__StringBuilder__append(&sb_protos, plat_proto);
 }
@@ -24321,7 +25641,7 @@ continue;
 std__string__StringBuilder sb_extern = std__string__StringBuilder__init( 512 );
 std__string__string mapped_extern_ret = std__string__str( "void" );
 if (std__string__str_len ( extern_ret_type ) > 0) {
-mapped_extern_ret = renderer__map_axe_type_to_c ( extern_ret_type );
+mapped_extern_ret = backends__c__renderer__map_axe_type_to_c ( extern_ret_type );
 }
 std__string__StringBuilder__append(&sb_extern, mapped_extern_ret);
 std__string__StringBuilder__append_char(&sb_extern, ' ');
@@ -24345,7 +25665,7 @@ const int32_t ep_colon = std__string__find_char_from( eparam , ':' , (uintptr_t)
 if (ep_colon >= 0) {
 const std__string__string ep_name = std__string__strip( std__string__substring_se ( eparam , 0 , ep_colon ) );
 const std__string__string ep_type = std__string__strip( std__string__substr ( eparam , ep_colon + 1 , std__string__str_len ( eparam ) - ep_colon - 1 ) );
-const std__string__string mapped_ep_type = renderer__map_axe_type_to_c( ep_type );
+const std__string__string mapped_ep_type = backends__c__renderer__map_axe_type_to_c( ep_type );
 std__string__StringBuilder__append(&sb_extern, mapped_ep_type);
 std__string__StringBuilder__append_char(&sb_extern, ' ');
 std__string__StringBuilder__append(&sb_extern, ep_name);
@@ -24410,7 +25730,7 @@ if (std__string__equals_c ( g_child->node_type, "Declaration" )) {
 const std__string__string var_name = g_child->data.declaration.name;
 if (! std__maps__StringBoolMap__contains( &generated_in_this_pass , var_name )) {
 std__maps__StringBoolMap__set(&generated_in_this_pass, &generated_arena, var_name, true);
-const std__string__string g_code = renderer__generate_global_decl( g_child );
+const std__string__string g_code = backends__c__renderer__generate_global_decl( g_child );
 if (std__string__str_len ( g_code ) > 0) {
 std__string__StringBuilder__append(&sb_protos, g_code);
 }
@@ -24426,7 +25746,7 @@ break;
 }
 const structs__ASTNode* child = &(children->data[ i ]);
 if (std__string__equals_c ( child->node_type, "Overload" )) {
-const std__string__string ov_code = renderer__generate_c( child );
+const std__string__string ov_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_bodies, ov_code);
 std__string__StringBuilder__append_char(&sb_bodies, '\n');
 }
@@ -24441,13 +25761,13 @@ const structs__ASTNode* fn_child = &(children->data[ i ]);
 if (std__string__equals_c ( fn_child->node_type, "Function" )) {
 const std__string__string fn_name = fn_child->data.function.name;
 if (! std__string__equals_c ( fn_name , "main" )) {
-const std__string__string fn_code = renderer__generate_c( fn_child );
+const std__string__string fn_code = backends__c__renderer__generate_c( fn_child );
 std__string__StringBuilder__append(&sb_bodies, fn_code);
 }
 }
 if (std__string__equals_c ( fn_child->node_type, "Platform" )) {
 const std__string__string platform_name = fn_child->data.platform_node.platform_name;
-const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
+const std__string__string plat_dir = backends__c__renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_bodies, plat_dir);
 }
@@ -24462,7 +25782,7 @@ const structs__ASTNode* plat_child = &(plat_children->data[ pi ]);
 if (std__string__equals_c ( plat_child->node_type, "Function" )) {
 const std__string__string plat_fn_name = plat_child->data.function.name;
 if (! std__string__equals_c ( plat_fn_name , "main" )) {
-const std__string__string plat_fn_code = renderer__generate_c( plat_child );
+const std__string__string plat_fn_code = backends__c__renderer__generate_c( plat_child );
 std__string__StringBuilder__append(&sb_bodies, plat_fn_code);
 }
 }
@@ -24484,7 +25804,7 @@ const structs__ASTNode* fnn = &(children->data[ i_main_idx ]);
 if (std__string__equals_c ( fnn->node_type, "Function" )) {
 const std__string__string namecheck = fnn->data.function.name;
 if (std__string__equals_c ( namecheck , "main" )) {
-const std__string__string main_code = renderer__generate_c( fnn );
+const std__string__string main_code = backends__c__renderer__generate_c( fnn );
 std__string__StringBuilder__append(&sb_bodies, main_code);
 break;
 }
@@ -24498,7 +25818,7 @@ break;
 }
 const structs__ASTNode* child2 = &(children->data[ i ]);
 if (! std__string__equals_c ( child2->node_type, "Overload" ) && ! std__string__equals_c ( child2->node_type, "Function" ) && ! std__string__equals_c ( child2->node_type, "Model" ) && ! std__string__equals_c ( child2->node_type, "Enum" ) && ! std__string__equals_c ( child2->node_type, "Declaration" ) && ! std__string__equals_c ( child2->node_type, "Platform" )) {
-const std__string__string child_code = renderer__generate_c( child2 );
+const std__string__string child_code = backends__c__renderer__generate_c( child2 );
 std__string__StringBuilder__append(&sb_bodies, child_code);
 }
 i++;
@@ -24528,7 +25848,7 @@ pc++;
 }
 }
 if (has_non_func_content) {
-const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
+const std__string__string plat_dir = backends__c__renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_bodies, plat_dir);
 }
@@ -24541,7 +25861,7 @@ break;
 }
 const structs__ASTNode* pc_child2 = &(plat_children2->data[ pc2 ]);
 if (! std__string__equals_c ( pc_child2->node_type, "Function" )) {
-const std__string__string pc_code = renderer__generate_c( pc_child2 );
+const std__string__string pc_code = backends__c__renderer__generate_c( pc_child2 );
 std__string__StringBuilder__append(&sb_bodies, pc_code);
 }
 pc2 = pc2 + 1;
@@ -24563,7 +25883,7 @@ const std__string__string f_name = std__lists__StringList__get( g_specialization
 if (std__maps__StringLongMap__contains( &g_generic_function_asts , f_name )) {
 const int64_t ast_ptr_spec = std__maps__StringLongMap__get( &g_generic_function_asts , f_name );
 const structs__ASTNode* gen_ast_spec = (structs__ASTNode*)( ast_ptr_spec );
-const std__string__string spec_code = renderer__generate_c( gen_ast_spec );
+const std__string__string spec_code = backends__c__renderer__generate_c( gen_ast_spec );
 if (std__string__str_len ( spec_code ) > 0) {
 std__string__StringBuilder__append(&sb_specs, spec_code);
 }
@@ -24578,13 +25898,13 @@ if (ld >= lst_ref2->len) {
 break;
 }
 const std__string__string elemType = std__lists__StringList__get( lst_ref2 , ld );
-const std__string__string elemSanDef = renderer__sanitize_list_element_name( elemType );
+const std__string__string elemSanDef = backends__c__renderer__sanitize_list_element_name( elemType );
 std__string__StringBuilder__append_c(&sb_header, "typedef struct __list_");
 std__string__StringBuilder__append(&sb_header, elemSanDef);
 std__string__StringBuilder__append_c(&sb_header, "_t {\n    ");
 std__string__string final_field_type = elemType;
 if (std__string__has_prefix ( elemType , std__string__str ( "list(" ) )) {
-final_field_type = renderer__map_axe_type_to_c ( elemType );
+final_field_type = backends__c__renderer__map_axe_type_to_c ( elemType );
 }
 std__string__StringBuilder__append(&sb_header, final_field_type);
 std__string__StringBuilder__append_c(&sb_header, "* data;\n    int len;\n    int capacity;\n} __list_");
@@ -24598,7 +25918,7 @@ if (ld2 >= lst_ref2->len) {
 break;
 }
 const std__string__string elemType = std__lists__StringList__get( lst_ref2 , ld2 );
-const std__string__string elemSanDef = renderer__sanitize_list_element_name( elemType );
+const std__string__string elemSanDef = backends__c__renderer__sanitize_list_element_name( elemType );
 std__string__StringBuilder__append_c(&sb_protos, "static inline __list_");
 std__string__StringBuilder__append(&sb_protos, elemSanDef);
 std__string__StringBuilder__append_c(&sb_protos, "_t __list_");
@@ -24613,7 +25933,7 @@ std__string__StringBuilder__append(&sb_protos, elemSanDef);
 std__string__StringBuilder__append_c(&sb_protos, "_t* list, ");
 std__string__string final_param_type = elemType;
 if (std__string__has_prefix ( elemType , std__string__str ( "list(" ) )) {
-final_param_type = renderer__map_axe_type_to_c ( elemType );
+final_param_type = backends__c__renderer__map_axe_type_to_c ( elemType );
 }
 std__string__StringBuilder__append(&sb_protos, final_param_type);
 std__string__StringBuilder__append_c(&sb_protos, " item) {\n    if (list->len >= list->capacity) {\n        int new_capacity = list->capacity == 0 ? 8 : list->capacity * 2;\n        ");
@@ -24839,21 +26159,21 @@ result = fixed_result;
 std__string__StringBuilder__destroy(&sb_fixed);
 }
 if (std__string__equals_c ( node_type , "Program" )) {
-result = renderer__strip_all_c_prefixes ( result );
-result = renderer__replace_substr_outside_strings ( result , std__string__str ( "C . " ) , std__string__str ( "" ) );
-result = renderer__replace_substr_outside_strings ( result , std__string__str ( "C." ) , std__string__str ( "" ) );
-result = renderer__replace_substr_outside_strings ( result , std__string__str ( "C__" ) , std__string__str ( "" ) );
-result = renderer__collapse_duplicate_segments ( result );
-result = renderer__rewrite_method_calls ( result );
-result = renderer__rewrite_function_prefixes ( result );
-result = renderer__rewrite_sizeof_types ( result );
-result = renderer__normalize_numeric_dots ( result );
+result = backends__c__renderer__strip_all_c_prefixes ( result );
+result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C." ) , std__string__str ( "" ) );
+result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C." ) , std__string__str ( "" ) );
+result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C__" ) , std__string__str ( "" ) );
+result = backends__c__renderer__collapse_duplicate_segments ( result );
+result = backends__c__renderer__rewrite_method_calls ( result );
+result = backends__c__renderer__rewrite_function_prefixes ( result );
+result = backends__c__renderer__rewrite_sizeof_types ( result );
+result = backends__c__renderer__normalize_numeric_dots ( result );
 }
 if (std__string__equals_c ( node_type , "Test" )) {
 std__string__StringBuilder sb_test = std__string__StringBuilder__init( 4096 );
 std__string__StringBuilder__append_c(&sb_test, "int main(int argc, char** argv) {\n__axe_argc = argc;\n__axe_argv = argv;\n");
 if (! is_release_build) {
-std__string__StringBuilder__append(&sb_test, renderer__generate_stack_trace_setup());
+std__string__StringBuilder__append(&sb_test, backends__c__renderer__generate_stack_trace_setup());
 }
 std__string__StringBuilder__append_c(&sb_test, "    int passed = 0;\n    int failed = 0;\n\n");
 if (ast->children!= nil) {
@@ -24866,7 +26186,7 @@ break;
 const structs__ASTNode* child = &(children->data[ i_test ]);
 if (std__string__equals_c ( child->node_type, "Assert" )) {
 const std__string__string cond_raw = std__string__strip( child->data.assert_node.condition);
-const std__string__string cond_norm = renderer__process_expression( cond_raw );
+const std__string__string cond_norm = backends__c__renderer__process_expression( cond_raw );
 const std__string__string msg = child->data.assert_node.message;
 std__string__StringBuilder__append_c(&sb_test, "    if (");
 std__string__StringBuilder__append(&sb_test, cond_norm);
@@ -24882,7 +26202,7 @@ std__string__string type_name = child->data.declaration.type_name;
 const bool is_mutable = child->data.declaration.is_mutable;
 const std__string__string initializer = child->data.declaration.initializer;
 if (std__string__str_len ( type_name ) == 0 && std__string__str_len ( initializer ) > 0) {
-const std__string__string inferred_tt = renderer__infer_expression_type( std__string__strip ( initializer ) );
+const std__string__string inferred_tt = backends__c__renderer__infer_expression_type( std__string__strip ( initializer ) );
 if (std__string__str_len ( inferred_tt ) > 0) {
 type_name = inferred_tt;
 }
@@ -24891,7 +26211,7 @@ const std__string__string trimmed_i2 = std__string__strip( initializer );
 const int32_t pidx2 = std__string__find_char_from( trimmed_i2 , '(' , (uintptr_t)( 0 ) );
 if (pidx2 > 0) {
 const std__string__string call_name_raw2 = std__string__strip( std__string__substring_se ( trimmed_i2 , 0 , pidx2 ) );
-if (std__string__str_len ( call_name_raw2 ) > 0 && renderer__is_ident_start ( std__string__get_char ( call_name_raw2 , 0 ) )) {
+if (std__string__str_len ( call_name_raw2 ) > 0 && backends__c__renderer__is_ident_start ( std__string__get_char ( call_name_raw2 , 0 ) )) {
 type_name = std__string__str ( "auto" );
 }
 }
@@ -24935,7 +26255,7 @@ std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, element_type);
 }
 }
-std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
+std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( type_name );
 if (std__string__str_len ( type_name ) > 0 && std__string__equals_c ( type_name , "auto" )) {
 mapped_type = std__string__str ( "__auto_type" );
 }
@@ -24946,7 +26266,7 @@ const std__string__string suffix = std__string__substring_se( type_name , br , (
 if (! std__string__equals_c ( suffix , "[999]" )) {
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
-mapped_type = renderer__map_axe_type_to_c ( base_raw );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( base_raw );
 array_suffix = suffix;
 }
 }
@@ -24963,7 +26283,7 @@ std__string__StringBuilder__append(&sb_test, array_suffix);
 }
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__str_len ( trimmed_init ) > 0) {
-trimmed_init = renderer__rewrite_array_literals ( trimmed_init );
+trimmed_init = backends__c__renderer__rewrite_array_literals ( trimmed_init );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "[" ) ) && std__string__has_suffix ( trimmed_init , std__string__str ( "]" ) )) {
 const std__string__string elements_str = std__string__substring_se( trimmed_init , 1 , std__string__str_len ( trimmed_init ) - 1 );
 const std__string__string elements_trimmed = std__string__strip( elements_str );
@@ -25010,11 +26330,11 @@ break;
 paren_end++;
 }
 const std__string__string elem_type_axe = std__string__strip( std__string__substr ( type_name , 5 , paren_end - 5 ) );
-elem_type_c = renderer__map_axe_type_to_c ( elem_type_axe );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( elem_type_axe );
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__maps__StringStringMap__contains( &g_list_of_types , var_name )) {
 const std__string__string element_type_recorded = std__maps__StringStringMap__get( &g_list_of_types , var_name );
-elem_type_c = renderer__map_axe_type_to_c ( element_type_recorded );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( element_type_recorded );
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__maps__StringStringMap__contains( &g_var_types , var_name )) {
 const std__string__string var_type_recorded = std__maps__StringStringMap__get( &g_var_types , var_name );
@@ -25044,7 +26364,7 @@ element_type2 = std__string__strip ( std__string__substr ( var_type_recorded , 5
 else if (std__string__has_suffix ( element_type2 , std__string__str ( "[999]" ) )) {
 element_type2 = std__string__strip ( std__string__substring_se ( var_type_recorded , 0 , std__string__str_len ( var_type_recorded ) - 5 ) );
 }
-elem_type_c = renderer__map_axe_type_to_c ( element_type2 );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( element_type2 );
 }
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__string__has_prefix ( mapped_type , std__string__str ( "__list_" ) )) {
@@ -25054,7 +26374,7 @@ san = std__string__substring_se ( san , 0 , std__string__str_len ( san ) - 2 );
 }
 elem_type_c = san;
 }
-const std__string__string processed_elements = renderer__process_expression( elements_trimmed );
+const std__string__string processed_elements = backends__c__renderer__process_expression( elements_trimmed );
 std__string__StringBuilder__append_c(&sb_test, " = {.data = (");
 std__string__StringBuilder__append(&sb_test, elem_type_c);
 std__string__StringBuilder__append_c(&sb_test, "[]){");
@@ -25066,7 +26386,7 @@ std__string__StringBuilder__append(&sb_test, std__string__i32_to_string(element_
 std__string__StringBuilder__append_c(&sb_test, "}");
 }
 else {
-const std__string__string init_norm = renderer__process_expression( trimmed_init );
+const std__string__string init_norm = backends__c__renderer__process_expression( trimmed_init );
 std__string__StringBuilder__append_c(&sb_test, " = ");
 std__string__StringBuilder__append(&sb_test, init_norm);
 }
@@ -25074,7 +26394,7 @@ std__string__StringBuilder__append(&sb_test, init_norm);
 std__string__StringBuilder__append_c(&sb_test, ";\n");
 }
 else {
-const std__string__string stmt_code = renderer__generate_c( child );
+const std__string__string stmt_code = backends__c__renderer__generate_c( child );
 if (std__string__str_len ( stmt_code ) > 0) {
 const std__string__string buf = stmt_code;
 int32_t idx = 0;
@@ -25105,7 +26425,7 @@ return result;
 }
 if (std__string__equals_c ( node_type , "Assert" )) {
 const std__string__string cond_raw = std__string__strip( ast->data.assert_node.condition);
-const std__string__string cond_norm = renderer__process_expression( cond_raw );
+const std__string__string cond_norm = backends__c__renderer__process_expression( cond_raw );
 const std__string__string msg = ast->data.assert_node.message;
 std__string__StringBuilder sb_assert = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append_c(&sb_assert, "if (");
@@ -25124,7 +26444,7 @@ const bool is_public = ast->data.function.is_public;
 const bool is_generic = ast->data.function.is_generic;
 const std__string__string old_prefix = g_current_module_prefix;
 const std__string__string old_model = g_current_model;
-g_current_module_prefix = renderer__get_prefix_from_mangled ( func_name );
+g_current_module_prefix = backends__c__renderer__get_prefix_from_mangled ( func_name );
 int32_t last_sep = - 1;
 int32_t si = 0;
 const int32_t slen = (int32_t)( std__string__str_len ( func_name ) );
@@ -25139,7 +26459,7 @@ si++;
 }
 if (last_sep >= 0) {
 const std__string__string model_candidate = std__string__substring_se( func_name , 0 , last_sep );
-const std__string__string canon = renderer__canonical_model_c_name( model_candidate );
+const std__string__string canon = backends__c__renderer__canonical_model_c_name( model_candidate );
 if (std__string__str_len ( canon ) > 0) {
 g_current_model = canon;
 }
@@ -25326,11 +26646,11 @@ const int32_t colon_pos = std__string__find_char_from( one_constraint , ':' , (u
 if (colon_pos > 0) {
 const std__string__string param_name = std__string__substring_se( one_constraint , 0 , colon_pos );
 const std__string__string concrete_tp_raw = std__string__substring_se( one_constraint , colon_pos + 1 , (int32_t)( std__string__str_len ( one_constraint ) ) );
-const std__string__string concrete_tp = renderer__map_axe_type_to_c( concrete_tp_raw );
+const std__string__string concrete_tp = backends__c__renderer__map_axe_type_to_c( concrete_tp_raw );
 std__string__StringBuilder__append_c(&sb_spec_name, "__");
 std__string__StringBuilder__append(&sb_spec_name, param_name);
 std__string__StringBuilder__append_c(&sb_spec_name, "_");
-std__string__StringBuilder__append(&sb_spec_name, renderer__sanitize_c_identifier(concrete_tp));
+std__string__StringBuilder__append(&sb_spec_name, backends__c__renderer__sanitize_c_identifier(concrete_tp));
 }
 constraint_start = constraint_idx + 1;
 }
@@ -25365,7 +26685,7 @@ const int32_t tm_colon = std__string__find_char_from( tm_constraint , ':' , (uin
 if (tm_colon > 0) {
 const std__string__string tm_param = std__string__substring_se( tm_constraint , 0 , tm_colon );
 const std__string__string tm_concrete_raw = std__string__substring_se( tm_constraint , tm_colon + 1 , (int32_t)( std__string__str_len ( tm_constraint ) ) );
-const std__string__string tm_concrete = renderer__map_axe_type_to_c( tm_concrete_raw );
+const std__string__string tm_concrete = backends__c__renderer__map_axe_type_to_c( tm_concrete_raw );
 std__maps__StringStringMap__set(&type_mapping, &gen_arena, tm_param, tm_concrete);
 }
 tm_start = tm_idx + 1;
@@ -25381,9 +26701,9 @@ spec_return_type = std__maps__StringStringMap__get( &type_mapping , return_type 
 }
 const std__maps__StringStringMap* saved_type_mapping = g_current_type_mapping;
 g_current_type_mapping = &type_mapping;
-const std__string__string mapped_ret = renderer__map_axe_type_to_c( spec_return_type );
+const std__string__string mapped_ret = backends__c__renderer__map_axe_type_to_c( spec_return_type );
 std__string__StringBuilder sb_func = std__string__StringBuilder__init( 4096 );
-std__string__StringBuilder__append(&sb_func, renderer__emit_line_directive(ast->line));
+std__string__StringBuilder__append(&sb_func, backends__c__renderer__emit_line_directive(ast->line));
 const __list_std__string_t* func_tags = ast->data.function.tags;
 if (func_tags != nil) {
 int32_t tag_idx = 0;
@@ -25429,7 +26749,7 @@ std__string__string param_type = std__string__strip( std__string__substr ( param
 if (std__maps__StringStringMap__contains( &type_mapping , param_type )) {
 param_type = std__maps__StringStringMap__get( &type_mapping , param_type );
 }
-const std__string__string processed_type = renderer__process_parameter_type( param_type );
+const std__string__string processed_type = backends__c__renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb_func, processed_type);
 std__string__StringBuilder__append_char(&sb_func, ' ');
 std__string__StringBuilder__append(&sb_func, param_name);
@@ -25460,7 +26780,7 @@ is_branch_start = true;
 if (is_branch_start) {
 const std__string__string branch_constraint = when_types->data[ next_check_branch ];
 const int32_t b_count = when_counts->data[ next_check_branch ];
-const bool is_match = renderer__constraints_match( constraint_str , branch_constraint );
+const bool is_match = backends__c__renderer__constraints_match( constraint_str , branch_constraint );
 if (is_match) {
 int32_t bi = 0;
 while (1) {
@@ -25469,7 +26789,7 @@ break;
 }
 const int32_t child_idx = ci + bi;
 if (child_idx < len_v((*children))) {
-const std__string__string child_code = renderer__generate_c( &(children->data[ child_idx ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ child_idx ]) );
 std__string__StringBuilder__append(&sb_func, child_code);
 }
 bi++;
@@ -25479,7 +26799,7 @@ ci = ci + b_count;
 next_check_branch++;
 continue;
 }
-const std__string__string common_code = renderer__generate_c( &(children->data[ ci ]) );
+const std__string__string common_code = backends__c__renderer__generate_c( &(children->data[ ci ]) );
 std__string__StringBuilder__append(&sb_func, common_code);
 ci++;
 }
@@ -25507,7 +26827,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_func, child_code);
 reg_idx++;
 }
@@ -25524,7 +26844,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_func, defer_child_code);
 i_defer++;
 }
@@ -25580,7 +26900,7 @@ break;
 j2++;
 }
 if (! has_inner_sep2) {
-const std__string__string canon_model2 = renderer__canonical_model_c_name( model_part2 );
+const std__string__string canon_model2 = backends__c__renderer__canonical_model_c_name( model_part2 );
 if (std__string__str_len ( canon_model2 ) > 0) {
 std__string__StringBuilder sb_fname = std__string__StringBuilder__init( std__string__str_len ( canon_model2 ) + std__string__str_len ( method_part2 ) + 2 );
 std__string__StringBuilder__append(&sb_fname, canon_model2);
@@ -25604,7 +26924,7 @@ return std__string__str( "" );
 std__arena__Arena func_arena = std__arena__Arena__create( 1024 );
 std__maps__StringBoolMap__set(&g_generated_functions, &func_arena, func_name, true);
 std__maps__StringStringMap__clear(&g_var_types);
-renderer__validate_type_imported(return_type);
+backends__c__renderer__validate_type_imported(return_type);
 const __list_std__string_t* fn_params = ast->data.function.params;
 if (fn_params != nil) {
 int32_t pi = 0;
@@ -25618,7 +26938,7 @@ if (cp >= 0) {
 const std__string__string pname = std__string__strip( std__string__substring_se ( p , 0 , cp ) );
 const std__string__string ptype = std__string__strip( std__string__substr ( p , cp + 1 , (int32_t)( std__string__str_len ( p ) - cp - 1 ) ) );
 if (std__string__str_len ( pname ) > 0 && std__string__str_len ( ptype ) > 0) {
-renderer__validate_type_imported(ptype);
+backends__c__renderer__validate_type_imported(ptype);
 std__maps__StringStringMap__set(&g_var_types, &func_arena, pname, ptype);
 }
 }
@@ -25632,7 +26952,7 @@ std__string__StringBuilder__append_c(&sb_main, "int main(int argc, char** argv) 
 std__string__StringBuilder__append_c(&sb_main, "SetConsoleOutputCP(65001);\n");
 #endif
 if (! is_release_build) {
-std__string__StringBuilder__append(&sb_main, renderer__generate_stack_trace_setup());
+std__string__StringBuilder__append(&sb_main, backends__c__renderer__generate_stack_trace_setup());
 }
 if (ast->children!= nil) {
 const __list_structs__ASTNode_t* children = ast->children;
@@ -25641,7 +26961,7 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_main, child_code);
 i++;
 }
@@ -25652,9 +26972,9 @@ return std__string__StringBuilder__to_string( &sb_main );
 if (std__string__str_len ( return_type ) == 0) {
 return_type = std__string__str ( "void" );
 }
-const std__string__string mapped_return_type = renderer__map_axe_type_to_c( return_type );
+const std__string__string mapped_return_type = backends__c__renderer__map_axe_type_to_c( return_type );
 std__string__StringBuilder sb_func = std__string__StringBuilder__init( 4096 );
-std__string__StringBuilder__append(&sb_func, renderer__emit_line_directive(ast->line));
+std__string__StringBuilder__append(&sb_func, backends__c__renderer__emit_line_directive(ast->line));
 const __list_std__string_t* func_tags = ast->data.function.tags;
 if (func_tags != nil) {
 int32_t tag_idx = 0;
@@ -25697,7 +27017,7 @@ const int32_t colon_pos = std__string__find_char_from( param , ':' , (uintptr_t)
 if (colon_pos >= 0) {
 const std__string__string param_name = std__string__strip( std__string__substring_se ( param , 0 , colon_pos ) );
 const std__string__string param_type = std__string__strip( std__string__substr ( param , colon_pos + 1 , (int32_t)( std__string__str_len ( param ) - colon_pos - 1 ) ) );
-const std__string__string processed_type = renderer__process_parameter_type( param_type );
+const std__string__string processed_type = backends__c__renderer__process_parameter_type( param_type );
 std__string__StringBuilder__append(&sb_func, processed_type);
 std__string__StringBuilder__append_char(&sb_func, ' ');
 std__string__StringBuilder__append(&sb_func, param_name);
@@ -25716,7 +27036,7 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_func, child_code);
 i++;
 }
@@ -25759,10 +27079,10 @@ if (brace_pos_ret > 0 && std__string__get_char ( trimmed_ret , (int32_t)( std__s
 const std__string__string prefix_ret = std__string__strip( std__string__substring_se ( trimmed_ret , 0 , brace_pos_ret ) );
 const std__string__string inner_ret = std__string__substring_se( trimmed_ret , brace_pos_ret + 1 , (int32_t)( std__string__str_len ( trimmed_ret ) - 1 ) );
 if (std__string__str_len ( prefix_ret ) > 0) {
-const std__string__string canon_ret = renderer__canonical_model_c_name( prefix_ret );
+const std__string__string canon_ret = backends__c__renderer__canonical_model_c_name( prefix_ret );
 std__string__string c_type_ret = canon_ret;
 if (std__string__str_len ( c_type_ret ) == 0) {
-c_type_ret = renderer__map_axe_type_to_c ( prefix_ret );
+c_type_ret = backends__c__renderer__map_axe_type_to_c ( prefix_ret );
 }
 if (std__string__str_len ( c_type_ret ) > 0) {
 std__string__StringBuilder sb_init_ret = std__string__StringBuilder__init( 512 );
@@ -25803,7 +27123,7 @@ std__string__StringBuilder__append_c(&sb_init_ret, ", ");
 std__string__StringBuilder__append_c(&sb_init_ret, ".");
 std__string__StringBuilder__append(&sb_init_ret, field_name_ret);
 std__string__StringBuilder__append_c(&sb_init_ret, " = ");
-const std__string__string processed_val_ret = renderer__process_expression( value_expr_ret );
+const std__string__string processed_val_ret = backends__c__renderer__process_expression( value_expr_ret );
 std__string__StringBuilder__append(&sb_init_ret, processed_val_ret);
 first_field_ret = false;
 }
@@ -25830,7 +27150,7 @@ std__string__StringBuilder__append_c(&sb_init_ret, ", ");
 std__string__StringBuilder__append_c(&sb_init_ret, ".");
 std__string__StringBuilder__append(&sb_init_ret, field_name_last_ret);
 std__string__StringBuilder__append_c(&sb_init_ret, " = ");
-const std__string__string processed_last_ret = renderer__process_expression( value_expr_last_ret );
+const std__string__string processed_last_ret = backends__c__renderer__process_expression( value_expr_last_ret );
 std__string__StringBuilder__append(&sb_init_ret, processed_last_ret);
 first_field_ret = false;
 }
@@ -25845,7 +27165,7 @@ std__string__StringBuilder__destroy(&sb_init_ret);
 if (std__string__str_len ( processed ) == 0) {
 gstate__debug_print_raw("\n[DBG-CALL] process_expression from Return:");
 gstate__debug_print_str(expr);
-processed = renderer__process_expression ( expr );
+processed = backends__c__renderer__process_expression ( expr );
 }
 std__string__StringBuilder__append(&sb_ret, processed);
 std__string__StringBuilder__append_c(&sb_ret, ";\n");
@@ -25864,8 +27184,8 @@ const std__string__string var_name = ast->data.declaration.name;
 std__string__string type_name = ast->data.declaration.type_name;
 const bool is_mutable = ast->data.declaration.is_mutable;
 const std__string__string initializer = ast->data.declaration.initializer;
-renderer__validate_type_imported(type_name);
-std__string__string mapped_type = renderer__map_axe_type_to_c( type_name );
+backends__c__renderer__validate_type_imported(type_name);
+std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( type_name );
 if (std__string__str_len ( type_name ) == 0) {
 std__string__string trimmed_init = std__string__strip( initializer );
 if (std__string__has_prefix ( trimmed_init , std__string__str ( "new " ) )) {
@@ -25890,7 +27210,7 @@ end_pos = std__string__str_len ( trimmed_init );
 const std__string__string inferred_name = std__string__strip( std__string__substring_se ( trimmed_init , 0 , end_pos ) );
 if (std__string__str_len ( inferred_name ) > 0) {
 type_name = inferred_name;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 }
 else {
@@ -25899,13 +27219,13 @@ if (brace_pos > 0) {
 const std__string__string inferred_name2 = std__string__strip( std__string__substring_se ( trimmed_init , 0 , brace_pos ) );
 if (std__string__str_len ( inferred_name2 ) > 0) {
 type_name = inferred_name2;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 }
 }
 }
 if (std__string__str_len ( type_name ) == 0 && std__string__str_len ( initializer ) > 0) {
-const std__string__string inferred = renderer__infer_expression_type( std__string__strip ( initializer ) );
+const std__string__string inferred = backends__c__renderer__infer_expression_type( std__string__strip ( initializer ) );
 if (std__string__str_len ( inferred ) > 0) {
 if (std__string__equals_c ( inferred , "cast_inferred_type" )) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
@@ -25918,7 +27238,7 @@ exit(1);
 }
 else {
 type_name = inferred;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 }
 if (std__string__str_len ( type_name ) == 0) {
@@ -25926,7 +27246,7 @@ const std__string__string trimmed_init2 = std__string__strip( initializer );
 const int32_t pidx2 = std__string__find_char_from( trimmed_init2 , '(' , (uintptr_t)( 0 ) );
 if (pidx2 > 0) {
 const std__string__string call_name_raw = std__string__strip( std__string__substring_se ( trimmed_init2 , 0 , pidx2 ) );
-if (std__string__str_len ( call_name_raw ) > 0 && renderer__is_ident_start ( std__string__get_char ( call_name_raw , 0 ) )) {
+if (std__string__str_len ( call_name_raw ) > 0 && backends__c__renderer__is_ident_start ( std__string__get_char ( call_name_raw , 0 ) )) {
 mapped_type = std__string__str ( "__auto_type" );
 type_name = std__string__str ( "auto" );
 }
@@ -25949,14 +27269,14 @@ is_numeric_literal = true;
 }
 }
 }
-const std__string__string inferred_init = renderer__infer_expression_type( trimmed_init );
+const std__string__string inferred_init = backends__c__renderer__infer_expression_type( trimmed_init );
 if (std__string__str_len ( inferred_init ) > 0 && ! std__string__equals_c ( inferred_init , "auto" )) {
 if (std__string__equals_c ( inferred_init , "cast_inferred_type" ) && std__string__str_len ( type_name ) > 0) {
 }
 else if (std__string__has_prefix ( inferred_init , std__string__str ( "ref " ) )) {
 if (std__string__str_len ( std__string__strip ( type_name ) ) == 0 || std__string__equals_c ( std__string__strip ( type_name ) , "auto" )) {
 type_name = inferred_init;
-mapped_type = renderer__map_axe_type_to_c ( type_name );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( type_name );
 }
 else if (std__string__has_prefix ( std__string__strip ( type_name ) , std__string__str ( "ref " ) ) || std__string__has_suffix ( std__string__strip ( type_name ) , std__string__str ( "*" ) ) || std__string__equals_c ( std__string__strip ( type_name ) , "string" )) {
 }
@@ -25988,8 +27308,8 @@ exit(1);
 }
 }
 else if (! is_numeric_literal && ! std__string__equals_c ( inferred_init , "ref void" )) {
-const std__string__string mapped_inferred = renderer__map_axe_type_to_c( inferred_init );
-const std__string__string mapped_expected = renderer__map_axe_type_to_c( type_name );
+const std__string__string mapped_inferred = backends__c__renderer__map_axe_type_to_c( inferred_init );
+const std__string__string mapped_expected = backends__c__renderer__map_axe_type_to_c( type_name );
 if (std__string__compare ( mapped_inferred , mapped_expected ) != 0) {
 std__io__print(std__os__get_short_filename(g_current_source_file));
 std__io__print(":");
@@ -26051,7 +27371,7 @@ std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, resolved_element_type);
 }
 }
-const std__string__string enum_model_name = renderer__canonical_model_c_name( type_name );
+const std__string__string enum_model_name = backends__c__renderer__canonical_model_c_name( type_name );
 if (std__string__str_len ( enum_model_name ) > 0 && std__maps__StringBoolMap__contains( &g_enum_names , enum_model_name )) {
 mapped_type = enum_model_name;
 }
@@ -26062,13 +27382,13 @@ const std__string__string suffix = std__string__substring_se( type_name , br , (
 if (! std__string__equals_c ( suffix , "[999]" )) {
 const std__string__string base_raw = std__string__strip( std__string__substring_se ( type_name , 0 , br ) );
 if (std__string__str_len ( base_raw ) > 0) {
-mapped_type = renderer__map_axe_type_to_c ( base_raw );
+mapped_type = backends__c__renderer__map_axe_type_to_c ( base_raw );
 array_suffix = suffix;
 }
 }
 }
 std__string__StringBuilder sb_decl = std__string__StringBuilder__init( 256 );
-const std__string__string line_dir = renderer__emit_line_directive( ast->line);
+const std__string__string line_dir = backends__c__renderer__emit_line_directive( ast->line);
 std__string__StringBuilder__append(&sb_decl, line_dir);
 if (! is_mutable) {
 std__string__StringBuilder__append_c(&sb_decl, "const ");
@@ -26127,11 +27447,11 @@ break;
 paren_end++;
 }
 const std__string__string elem_type_axe = std__string__strip( std__string__substr ( type_name , 5 , paren_end - 5 ) );
-elem_type_c = renderer__map_axe_type_to_c ( elem_type_axe );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( elem_type_axe );
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__maps__StringStringMap__contains( &g_list_of_types , var_name )) {
 const std__string__string element_type_recorded = std__maps__StringStringMap__get( &g_list_of_types , var_name );
-elem_type_c = renderer__map_axe_type_to_c ( element_type_recorded );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( element_type_recorded );
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__maps__StringStringMap__contains( &g_var_types , var_name )) {
 const std__string__string var_type_recorded = std__maps__StringStringMap__get( &g_var_types , var_name );
@@ -26161,7 +27481,7 @@ element_type2 = std__string__strip ( std__string__substr ( var_type_recorded , 5
 else if (std__string__has_suffix ( element_type2 , std__string__str ( "[999]" ) )) {
 element_type2 = std__string__strip ( std__string__substring_se ( var_type_recorded , 0 , std__string__str_len ( var_type_recorded ) - 5 ) );
 }
-elem_type_c = renderer__map_axe_type_to_c ( element_type2 );
+elem_type_c = backends__c__renderer__map_axe_type_to_c ( element_type2 );
 }
 }
 if (std__string__equals_c ( elem_type_c , "int32_t" ) && std__string__has_prefix ( mapped_type , std__string__str ( "__list_" ) )) {
@@ -26171,7 +27491,7 @@ san = std__string__substring_se ( san , 0 , std__string__str_len ( san ) - 2 );
 }
 elem_type_c = san;
 }
-const std__string__string processed_elements = renderer__process_expression( elements_trimmed );
+const std__string__string processed_elements = backends__c__renderer__process_expression( elements_trimmed );
 std__string__StringBuilder__append_c(&sb_decl, " = {.data = (");
 std__string__StringBuilder__append(&sb_decl, elem_type_c);
 std__string__StringBuilder__append_c(&sb_decl, "[]){");
@@ -26243,8 +27563,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-const std__string__string converted_value = renderer__convert_union_member_init( value_expr );
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value));
+const std__string__string converted_value = backends__c__renderer__convert_union_member_init( value_expr );
+std__string__StringBuilder__append(&sb_decl, backends__c__renderer__process_expression(converted_value));
 first_field = false;
 }
 }
@@ -26270,8 +27590,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name_last);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-const std__string__string converted_value_last = renderer__convert_union_member_init( value_expr_last );
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value_last));
+const std__string__string converted_value_last = backends__c__renderer__convert_union_member_init( value_expr_last );
+std__string__StringBuilder__append(&sb_decl, backends__c__renderer__process_expression(converted_value_last));
 first_field = false;
 }
 }
@@ -26326,8 +27646,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name2);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-const std__string__string converted_value2 = renderer__convert_union_member_init( value_expr2 );
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value2));
+const std__string__string converted_value2 = backends__c__renderer__convert_union_member_init( value_expr2 );
+std__string__StringBuilder__append(&sb_decl, backends__c__renderer__process_expression(converted_value2));
 first_field2 = false;
 }
 }
@@ -26353,8 +27673,8 @@ std__string__StringBuilder__append_c(&sb_decl, ", ");
 std__string__StringBuilder__append_c(&sb_decl, ".");
 std__string__StringBuilder__append(&sb_decl, field_name_last2);
 std__string__StringBuilder__append_c(&sb_decl, " = ");
-const std__string__string converted_value_last2 = renderer__convert_union_member_init( value_expr_last2 );
-std__string__StringBuilder__append(&sb_decl, renderer__process_expression(converted_value_last2));
+const std__string__string converted_value_last2 = backends__c__renderer__convert_union_member_init( value_expr_last2 );
+std__string__StringBuilder__append(&sb_decl, backends__c__renderer__process_expression(converted_value_last2));
 first_field2 = false;
 }
 }
@@ -26367,7 +27687,7 @@ std__string__StringBuilder__append_c(&sb_decl, "}");
 }
 }
 else {
-const std__string__string processed_init2 = renderer__process_expression( trimmed );
+const std__string__string processed_init2 = backends__c__renderer__process_expression( trimmed );
 std__string__StringBuilder__append_c(&sb_decl, " = ");
 std__string__StringBuilder__append(&sb_decl, processed_init2);
 }
@@ -26452,7 +27772,7 @@ if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_cur
 expected_type_for_call = std__maps__StringStringMap__get( g_current_type_mapping , type_name );
 }
 g_expected_return_type = expected_type_for_call;
-const std__string__string processed_init = renderer__process_expression( trimmed );
+const std__string__string processed_init = backends__c__renderer__process_expression( trimmed );
 g_expected_return_type = old_expected_type;
 std__string__StringBuilder__append_c(&sb_decl, " = ");
 std__string__StringBuilder__append(&sb_decl, processed_init);
@@ -26477,10 +27797,10 @@ gstate__debug_print_raw("\n[DBG-ASSIGN]   raw expression:");
 gstate__debug_print_str(expression);
 gstate__debug_print_raw("\n[DBG-CALL] process_expression from Assignment.variable:");
 gstate__debug_print_str(variable);
-const std__string__string processed_var = renderer__process_expression( variable );
+const std__string__string processed_var = backends__c__renderer__process_expression( variable );
 gstate__debug_print_raw("\n[DBG-CALL] process_expression from Assignment.expression:");
 gstate__debug_print_str(expression);
-const std__string__string processed_expr = renderer__process_expression( expression );
+const std__string__string processed_expr = backends__c__renderer__process_expression( expression );
 gstate__debug_print_raw("\n[DBG-ASSIGN]   processed variable:");
 gstate__debug_print_str(processed_var);
 gstate__debug_print_raw("\n[DBG-ASSIGN]   processed expression:");
@@ -26534,7 +27854,7 @@ break;
 }
 ri = ri + 1;
 }
-if (ri < std__string__str_len ( processed_expr ) && renderer__is_ident_start ( std__string__get_char ( processed_expr , ri ) )) {
+if (ri < std__string__str_len ( processed_expr ) && backends__c__renderer__is_ident_start ( std__string__get_char ( processed_expr , ri ) )) {
 const int32_t istart = ri;
 int32_t j = ri + 1;
 while (1) {
@@ -26571,7 +27891,7 @@ break;
 }
 k = k + 1;
 }
-if (k < std__string__str_len ( processed_expr ) && renderer__is_ident_start ( std__string__get_char ( processed_expr , k ) )) {
+if (k < std__string__str_len ( processed_expr ) && backends__c__renderer__is_ident_start ( std__string__get_char ( processed_expr , k ) )) {
 const int32_t mstart = k;
 int32_t m = k + 1;
 while (1) {
@@ -26585,7 +27905,7 @@ break;
 m = m + 1;
 }
 const std__string__string member = std__string__substring_se( processed_expr , mstart , m );
-const std__string__string enum_c_name2 = renderer__canonical_model_c_name( enum_ident );
+const std__string__string enum_c_name2 = backends__c__renderer__canonical_model_c_name( enum_ident );
 if (std__string__str_len ( enum_c_name2 ) > 0) {
 std__string__string rebuilt = std__string__str( "" );
 if (ri > 0) {
@@ -26631,6 +27951,7 @@ std__string__StringBuilder__append(&sb_assign, out_rhs);
 std__string__StringBuilder__append_c(&sb_assign, ";\n");
 result = std__string__StringBuilder__to_string( &sb_assign );
 std__string__StringBuilder__destroy(&sb_assign);
+result = std__string__replace_all ( result , std__string__str ( "." ) , std__string__str ( "." ) );
 return result;
 }
 if (std__string__equals_c ( node_type , "MemberAccess" )) {
@@ -26653,7 +27974,7 @@ is_pointer = true;
 }
 else if (std__maps__StringStringMap__contains( &g_var_types , trimmed_obj )) {
 const std__string__string raw_type = std__maps__StringStringMap__get( &g_var_types , trimmed_obj );
-if (renderer__is_pointer_type ( raw_type )) {
+if (backends__c__renderer__is_pointer_type ( raw_type )) {
 is_pointer = true;
 }
 }
@@ -26666,10 +27987,10 @@ std__string__StringBuilder__append(&sb_mem, access_op);
 std__string__StringBuilder__append(&sb_mem, member_name);
 const std__string__string member_chain = std__string__StringBuilder__to_string( &sb_mem );
 std__string__StringBuilder__destroy(&sb_mem);
-const std__string__string processed_chain = renderer__rewrite_ref_member_access( member_chain );
+const std__string__string processed_chain = backends__c__renderer__rewrite_ref_member_access( member_chain );
 const std__string__string trimmed_value = std__string__strip( value );
 if (std__string__str_len ( trimmed_value ) > 0) {
-const std__string__string processed_value = renderer__process_expression( trimmed_value );
+const std__string__string processed_value = backends__c__renderer__process_expression( trimmed_value );
 gstate__debug_print_raw("\n[DEBUG]   processed value:");
 gstate__debug_print_str(processed_value);
 std__string__StringBuilder sb_result_mem = std__string__StringBuilder__init( 256 );
@@ -26695,16 +28016,16 @@ gstate__debug_print_raw("\n[DBG-ARRAYASSIGN]   index:");
 gstate__debug_print_str(index_expr);
 gstate__debug_print_raw("\n[DBG-ARRAYASSIGN]   value:");
 gstate__debug_print_str(value_expr);
-const std__string__string processed_array = renderer__process_expression( array_name );
-const std__string__string processed_index = renderer__process_expression( index_expr );
-const std__string__string processed_value = renderer__process_expression( value_expr );
+const std__string__string processed_array = backends__c__renderer__process_expression( array_name );
+const std__string__string processed_index = backends__c__renderer__process_expression( index_expr );
+const std__string__string processed_value = backends__c__renderer__process_expression( value_expr );
 std__string__StringBuilder sb_arr = std__string__StringBuilder__init( 1256 );
 std__string__StringBuilder__append(&sb_arr, processed_array);
 std__string__StringBuilder__append_char(&sb_arr, '[');
 std__string__StringBuilder__append(&sb_arr, processed_index);
 std__string__StringBuilder__append_char(&sb_arr, ']');
 if (std__string__str_len ( index2_expr ) > 0) {
-const std__string__string processed_index2 = renderer__process_expression( index2_expr );
+const std__string__string processed_index2 = backends__c__renderer__process_expression( index2_expr );
 std__string__StringBuilder__append_char(&sb_arr, '[');
 std__string__StringBuilder__append(&sb_arr, processed_index2);
 std__string__StringBuilder__append_char(&sb_arr, ']');
@@ -26731,7 +28052,7 @@ if (! is_generic_base) {
 is_generic_base = std__maps__StringBoolMap__contains( &g_generic_functions , target_base );
 }
 if (is_generic_base) {
-const std__string__string san_type_chk = renderer__sanitize_c_identifier( renderer__map_axe_type_to_c ( type_arg_chk ) );
+const std__string__string san_type_chk = backends__c__renderer__sanitize_c_identifier( backends__c__renderer__map_axe_type_to_c ( type_arg_chk ) );
 std__string__StringBuilder sb_fix = std__string__StringBuilder__init( std__string__str_len ( target_base ) + std__string__str_len ( san_type_chk ) + 16 );
 std__string__StringBuilder__append(&sb_fix, target_base);
 std__string__StringBuilder__append_c(&sb_fix, "__T_");
@@ -26743,7 +28064,7 @@ std__string__StringBuilder__destroy(&sb_fix);
 const bool has_module_sep = std__string__str_contains_c( func_name , "__" );
 const bool is_method_call = std__string__find_char_from( func_name , '.' , (uintptr_t)( 0 ) ) >= 0;
 const bool is_c_call = ( std__string__str_len ( func_name ) >= 2 && std__string__get_char ( func_name , 0 ) == 'C' && std__string__get_char ( func_name , 1 ) == '.' );
-if (! has_module_sep && ! is_method_call && ! is_c_call && ! renderer__is_builtin_function ( func_name )) {
+if (! has_module_sep && ! is_method_call && ! is_c_call && ! backends__c__renderer__is_builtin_function ( func_name )) {
 if (! std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
 bool is_specialized_generic = false;
 const int32_t t_pos = std__string__find_substr( func_name , std__string__str ( "__T_" ) );
@@ -26799,11 +28120,11 @@ arg_idx++;
 const std__string__string args_str = std__string__StringBuilder__to_string( &combined_args );
 std__string__StringBuilder__destroy(&combined_args);
 if (! is_c_call) {
-renderer__validate_function_call(func_name, args_str, 0);
+backends__c__renderer__validate_function_call(func_name, args_str, 0);
 }
 }
 else if (! is_c_call) {
-renderer__validate_function_call(func_name, std__string__str(""), 0);
+backends__c__renderer__validate_function_call(func_name, std__string__str(""), 0);
 }
 if (std__string__equals_c ( func_name , "append" )) {
 const __list_std__string_t* args = ast->data.func_call.args;
@@ -26858,13 +28179,13 @@ if (contains_in_list_of_types) {
 const std__string__string element_type = std__maps__StringStringMap__get( &g_list_of_types , var_name );
 gstate__debug_print_raw("\n[APPEND] Found in g_list_of_types: ");
 gstate__debug_print_str(element_type);
-const std__string__string c_element_type = renderer__map_axe_type_to_c( element_type );
-const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+const std__string__string c_element_type = backends__c__renderer__map_axe_type_to_c( element_type );
+const std__string__string sanitized_element = backends__c__renderer__sanitize_list_element_name( c_element_type );
 if (! std__maps__StringBoolMap__contains( &g_list_element_types , c_element_type )) {
 std__maps__StringBoolMap__set(&g_list_element_types, &g_renderer_arena, c_element_type, true);
 std__lists__StringList__push(g_list_elements, &g_renderer_arena, c_element_type);
 }
-const std__string__string processed_value = renderer__process_expression( value );
+const std__string__string processed_value = backends__c__renderer__process_expression( value );
 std__string__StringBuilder sb_append = std__string__StringBuilder__init( 1256 );
 std__string__StringBuilder__append_c(&sb_append, "__list_");
 std__string__StringBuilder__append(&sb_append, sanitized_element);
@@ -26947,13 +28268,13 @@ std__string__string resolved_element_type = element_type;
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , element_type )) {
 resolved_element_type = std__maps__StringStringMap__get( g_current_type_mapping , element_type );
 }
-const std__string__string c_element_type = renderer__map_axe_type_to_c( resolved_element_type );
-const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+const std__string__string c_element_type = backends__c__renderer__map_axe_type_to_c( resolved_element_type );
+const std__string__string sanitized_element = backends__c__renderer__sanitize_list_element_name( c_element_type );
 if (! std__maps__StringBoolMap__contains( &g_list_element_types , c_element_type )) {
 std__maps__StringBoolMap__set(&g_list_element_types, &g_renderer_arena, c_element_type, true);
 std__lists__StringList__push(g_list_elements, &g_renderer_arena, c_element_type);
 }
-const std__string__string processed_value = renderer__process_expression( value );
+const std__string__string processed_value = backends__c__renderer__process_expression( value );
 std__string__StringBuilder sb_append2 = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_append2, "__list_");
 std__string__StringBuilder__append(&sb_append2, sanitized_element);
@@ -27037,13 +28358,13 @@ std__string__string resolved_element_type = element_type;
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , element_type )) {
 resolved_element_type = std__maps__StringStringMap__get( g_current_type_mapping , element_type );
 }
-const std__string__string c_element_type = renderer__map_axe_type_to_c( resolved_element_type );
-const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+const std__string__string c_element_type = backends__c__renderer__map_axe_type_to_c( resolved_element_type );
+const std__string__string sanitized_element = backends__c__renderer__sanitize_list_element_name( c_element_type );
 if (! std__maps__StringBoolMap__contains( &g_list_element_types , c_element_type )) {
 std__maps__StringBoolMap__set(&g_list_element_types, &g_renderer_arena, c_element_type, true);
 std__lists__StringList__push(g_list_elements, &g_renderer_arena, c_element_type);
 }
-const std__string__string processed_value = renderer__process_expression( value );
+const std__string__string processed_value = backends__c__renderer__process_expression( value );
 std__string__StringBuilder sb_append2 = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_append2, "__list_");
 std__string__StringBuilder__append(&sb_append2, sanitized_element);
@@ -27101,7 +28422,7 @@ actual_var_type = std__string__StringBuilder__to_string( &sb_resolved );
 }
 }
 if (std__string__str_len ( actual_var_type ) == 0) {
-actual_var_type = renderer__infer_expression_type ( var_name );
+actual_var_type = backends__c__renderer__infer_expression_type ( var_name );
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , actual_var_type )) {
 actual_var_type = std__maps__StringStringMap__get( g_current_type_mapping , actual_var_type );
 }
@@ -27162,13 +28483,13 @@ std__string__string resolved_element_type = element_type;
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , element_type )) {
 resolved_element_type = std__maps__StringStringMap__get( g_current_type_mapping , element_type );
 }
-const std__string__string c_element_type = renderer__map_axe_type_to_c( resolved_element_type );
-const std__string__string sanitized_element = renderer__sanitize_list_element_name( c_element_type );
+const std__string__string c_element_type = backends__c__renderer__map_axe_type_to_c( resolved_element_type );
+const std__string__string sanitized_element = backends__c__renderer__sanitize_list_element_name( c_element_type );
 if (! std__maps__StringBoolMap__contains( &g_list_element_types , c_element_type )) {
 std__maps__StringBoolMap__set(&g_list_element_types, &g_renderer_arena, c_element_type, true);
 std__lists__StringList__push(g_list_elements, &g_renderer_arena, c_element_type);
 }
-const std__string__string processed_value = renderer__process_expression( value );
+const std__string__string processed_value = backends__c__renderer__process_expression( value );
 std__string__StringBuilder sb_append_inferred = std__string__StringBuilder__init( 256 );
 std__string__StringBuilder__append_c(&sb_append_inferred, "__list_");
 std__string__StringBuilder__append(&sb_append_inferred, sanitized_element);
@@ -27206,10 +28527,10 @@ if (is_generic_em && std__string__find_substr ( emitted_name , std__string__str 
 std__string__string inferred1 = std__string__str( "" );
 std__string__string inferred2 = std__string__str( "" );
 if (len_v((*call_args)) > 0) {
-inferred1 = renderer__infer_expression_type ( call_args->data[ 0 ]);
+inferred1 = backends__c__renderer__infer_expression_type ( call_args->data[ 0 ]);
 }
 if (len_v((*call_args)) > 1) {
-inferred2 = renderer__infer_expression_type ( call_args->data[ 1 ]);
+inferred2 = backends__c__renderer__infer_expression_type ( call_args->data[ 1 ]);
 }
 bool expected_type_used = false;
 std__string__string expected_type_for_inference = std__string__str( "" );
@@ -27256,11 +28577,11 @@ if (type_params != nil) {
 bool arg_based_inference = false;
 if (len_v((*type_params)) > 0 && std__string__str_len ( inferred1 ) > 0) {
 const std__string__string tp1 = type_params->data[ 0 ];
-const std__string__string mapped1 = renderer__map_axe_type_to_c( inferred1 );
+const std__string__string mapped1 = backends__c__renderer__map_axe_type_to_c( inferred1 );
 std__string__StringBuilder__append_c(&sb_name, "__");
 std__string__StringBuilder__append(&sb_name, tp1);
 std__string__StringBuilder__append_c(&sb_name, "_");
-std__string__StringBuilder__append(&sb_name, renderer__sanitize_c_identifier(mapped1));
+std__string__StringBuilder__append(&sb_name, backends__c__renderer__sanitize_c_identifier(mapped1));
 std__string__StringBuilder__append(&sb_const, tp1);
 std__string__StringBuilder__append_c(&sb_const, ":");
 std__string__StringBuilder__append(&sb_const , mapped1);
@@ -27268,11 +28589,11 @@ arg_based_inference = true;
 }
 if (len_v((*type_params)) > 1 && std__string__str_len ( inferred2 ) > 0) {
 const std__string__string tp2 = type_params->data[ 1 ];
-const std__string__string mapped2 = renderer__map_axe_type_to_c( inferred2 );
+const std__string__string mapped2 = backends__c__renderer__map_axe_type_to_c( inferred2 );
 std__string__StringBuilder__append_c(&sb_name, "__");
 std__string__StringBuilder__append(&sb_name, tp2);
 std__string__StringBuilder__append_c(&sb_name, "_");
-std__string__StringBuilder__append(&sb_name, renderer__sanitize_c_identifier(mapped2));
+std__string__StringBuilder__append(&sb_name, backends__c__renderer__sanitize_c_identifier(mapped2));
 std__string__StringBuilder__append_c(&sb_const, ",");
 std__string__StringBuilder__append(&sb_const, tp2);
 std__string__StringBuilder__append_c(&sb_const, ":");
@@ -27282,11 +28603,11 @@ arg_based_inference = true;
 if (! arg_based_inference && expected_type_used && std__string__str_len ( expected_type_for_inference ) > 0) {
 if (len_v((*type_params)) > 0) {
 const std__string__string tp1 = type_params->data[ 0 ];
-const std__string__string mapped_expected = renderer__map_axe_type_to_c( expected_type_for_inference );
+const std__string__string mapped_expected = backends__c__renderer__map_axe_type_to_c( expected_type_for_inference );
 std__string__StringBuilder__append_c(&sb_name, "__");
 std__string__StringBuilder__append(&sb_name, tp1);
 std__string__StringBuilder__append_c(&sb_name, "_");
-std__string__StringBuilder__append(&sb_name, renderer__sanitize_c_identifier(mapped_expected));
+std__string__StringBuilder__append(&sb_name, backends__c__renderer__sanitize_c_identifier(mapped_expected));
 std__string__StringBuilder__append(&sb_const, tp1);
 std__string__StringBuilder__append_c(&sb_const, ":");
 std__string__StringBuilder__append(&sb_const, mapped_expected);
@@ -27343,7 +28664,7 @@ tm_start_p = tm_idx_p + 1;
 }
 tm_idx_p++;
 }
-const std__string__string proto = renderer__generate_specialized_function_prototype( gen_ast , &type_mapping_p , newname );
+const std__string__string proto = backends__c__renderer__generate_specialized_function_prototype( gen_ast , &type_mapping_p , newname );
 if (std__string__str_len ( proto ) > 0) {
 std__string__StringBuilder__append(&g_specialization_prototypes_sb, proto);
 std__maps__StringBoolMap__set(&g_emitted_prototypes, &g_renderer_arena, newname, true);
@@ -27354,23 +28675,23 @@ std__maps__StringBoolMap__set(&g_emitted_prototypes, &g_renderer_arena, newname,
 }
 else if (std__string__str_len ( inferred2 ) > 0 && std__string__str_len ( inferred1 ) > 0) {
 newname = std__string__concat ( newname , std__string__str ( "__T2_" ) );
-newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( inferred2 ) ) );
+newname = std__string__concat ( newname , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( inferred2 ) ) );
 newname = std__string__concat ( newname , std__string__str ( "__T_" ) );
-newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( inferred1 ) ) );
+newname = std__string__concat ( newname , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( inferred1 ) ) );
 }
 else if (std__string__str_len ( inferred1 ) > 0) {
 newname = std__string__concat ( newname , std__string__str ( "__T_" ) );
-newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( inferred1 ) ) );
+newname = std__string__concat ( newname , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( inferred1 ) ) );
 }
 else if (expected_type_used && std__string__str_len ( expected_type_for_inference ) > 0) {
 newname = std__string__concat ( newname , std__string__str ( "__T_" ) );
-newname = std__string__concat ( newname , renderer__sanitize_c_identifier ( renderer__map_axe_type_to_c ( expected_type_for_inference ) ) );
+newname = std__string__concat ( newname , backends__c__renderer__sanitize_c_identifier ( backends__c__renderer__map_axe_type_to_c ( expected_type_for_inference ) ) );
 }
 emitted_name = newname;
 }
 }
 }
-emitted_name = renderer__apply_extern_aliases ( emitted_name );
+emitted_name = backends__c__renderer__apply_extern_aliases ( emitted_name );
 std__string__StringBuilder sb_call = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_call, emitted_name);
 std__string__StringBuilder__append_char(&sb_call, '(');
@@ -27385,8 +28706,8 @@ if (arg_idx > 0) {
 std__string__StringBuilder__append_c(&sb_call, ", ");
 }
 const std__string__string raw_arg = args->data[ arg_idx ];
-const std__string__string processed_arg = renderer__process_expression( raw_arg );
-const std__string__string rewritten_arg = renderer__rewrite_generic_calls( processed_arg );
+const std__string__string processed_arg = backends__c__renderer__process_expression( raw_arg );
+const std__string__string rewritten_arg = backends__c__renderer__rewrite_generic_calls( processed_arg );
 std__string__StringBuilder__append(&sb_call, rewritten_arg);
 arg_idx++;
 }
@@ -27394,7 +28715,7 @@ arg_idx++;
 std__string__StringBuilder__append_c(&sb_call, ");\n");
 std__string__string final_call = std__string__StringBuilder__to_string( &sb_call );
 std__string__StringBuilder__destroy(&sb_call);
-final_call = renderer__rewrite_generic_calls ( final_call );
+final_call = backends__c__renderer__rewrite_generic_calls ( final_call );
 return final_call;
 }
 if (std__string__equals_c ( node_type , "Print" )) {
@@ -27424,8 +28745,8 @@ std__string__StringBuilder__append_c(&sb_print, "\");\n");
 else {
 std__string__StringBuilder__append_c(&sb_print, "printf(\"");
 }
-result = renderer__strip_all_c_prefixes ( result );
-result = renderer__rewrite_generic_calls ( result );
+result = backends__c__renderer__strip_all_c_prefixes ( result );
+result = backends__c__renderer__rewrite_generic_calls ( result );
 if (std__string__str_len ( result ) == 0) {
 std__string__StringBuilder__clear(&sb_print);
 std__string__StringBuilder__append_c(&sb_print, "printf(\"");
@@ -27450,7 +28771,7 @@ break;
 }
 if (flags.data[ i ]) {
 std__string__StringBuilder__append_c(&sb_print, ", ");
-const std__string__string processed = renderer__process_expression( messages.data[ i ]);
+const std__string__string processed = backends__c__renderer__process_expression( messages.data[ i ]);
 std__string__StringBuilder__append(&sb_print, processed);
 }
 i++;
@@ -27488,7 +28809,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_loop, child_code);
 reg_idx++;
 }
@@ -27505,7 +28826,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_loop, defer_child_code);
 i_defer++;
 }
@@ -27529,7 +28850,7 @@ break;
 }
 const std__string__string tp = tp_list->data[ ci ];
 const std__string__string ct_expected_axe = ct_list->data[ ci ];
-const std__string__string ct_expected = renderer__map_axe_type_to_c( ct_expected_axe );
+const std__string__string ct_expected = backends__c__renderer__map_axe_type_to_c( ct_expected_axe );
 if (std__maps__StringStringMap__contains( g_current_type_mapping , tp )) {
 const std__string__string ct_actual = std__maps__StringStringMap__get( g_current_type_mapping , tp );
 if (loud_logger) {
@@ -27540,7 +28861,7 @@ std__io__print(ct_actual);
 std__io__print(" vs expected ");
 std__io__println(ct_expected);
 }
-if (! renderer__types_match ( ct_actual , ct_expected )) {
+if (! backends__c__renderer__types_match ( ct_actual , ct_expected )) {
 all_match = false;
 break;
 }
@@ -27564,7 +28885,7 @@ while (1) {
 if (wi >= len_v((*wchildren))) {
 break;
 }
-const std__string__string wchild_code = renderer__generate_c( &(wchildren->data[ wi ]) );
+const std__string__string wchild_code = backends__c__renderer__generate_c( &(wchildren->data[ wi ]) );
 std__string__StringBuilder__append(&sb_when, wchild_code);
 wi++;
 }
@@ -27574,7 +28895,7 @@ return std__string__StringBuilder__to_string( &sb_when );
 if (std__string__equals_c ( node_type , "Platform" )) {
 const std__string__string platform_name = ast->data.platform_node.platform_name;
 std__string__StringBuilder sb_plat = std__string__StringBuilder__init( 1024 );
-const std__string__string plat_dir = renderer__platform_macro_start( platform_name );
+const std__string__string plat_dir = backends__c__renderer__platform_macro_start( platform_name );
 if (std__string__str_len ( plat_dir ) > 0) {
 std__string__StringBuilder__append(&sb_plat, plat_dir);
 }
@@ -27585,7 +28906,7 @@ while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
 std__string__StringBuilder__append(&sb_plat, child_code);
 i++;
 }
@@ -27612,7 +28933,7 @@ while (1) {
 if (k_var >= init_len) {
 break;
 }
-if (! renderer__is_token_char ( std__string__get_char ( init , k_var ) )) {
+if (! backends__c__renderer__is_token_char ( std__string__get_char ( init , k_var ) )) {
 break;
 }
 k_var = k_var + 1;
@@ -27639,7 +28960,7 @@ header = std__string__replace_all ( header , std__string__str ( "+ =" ) , std__s
 header = std__string__replace_all ( header , std__string__str ( "- =" ) , std__string__str ( "-=" ) );
 header = std__string__replace_all ( header , std__string__str ( "+  =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "-  =" ) , std__string__str ( "-=" ) );
-const std__string__string header_norm = renderer__process_expression( header );
+const std__string__string header_norm = backends__c__renderer__process_expression( header );
 std__string__StringBuilder sb_for = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_for, "for (");
 std__string__StringBuilder__append(&sb_for, header_norm);
@@ -27668,7 +28989,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_for, child_code);
 reg_idx++;
 }
@@ -27685,7 +29006,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_for, defer_child_code);
 i_defer++;
 }
@@ -27769,7 +29090,7 @@ header = std__string__replace_all ( header , std__string__str ( "+ =" ) , std__s
 header = std__string__replace_all ( header , std__string__str ( "- =" ) , std__string__str ( "-=" ) );
 header = std__string__replace_all ( header , std__string__str ( "+  =" ) , std__string__str ( "+=" ) );
 header = std__string__replace_all ( header , std__string__str ( "-  =" ) , std__string__str ( "-=" ) );
-const std__string__string header_norm = renderer__process_expression( header );
+const std__string__string header_norm = backends__c__renderer__process_expression( header );
 std__string__StringBuilder sb_pfor = std__string__StringBuilder__init( 1024 );
 std__string__StringBuilder__append_c(&sb_pfor, "#pragma omp parallel for");
 const __list_std__string_t* reduction_clauses = ast->data.parallel_for.reduction_clauses;
@@ -27799,7 +29120,7 @@ while (1) {
 if (i_pfor >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i_pfor ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i_pfor ]) );
 std__string__StringBuilder__append(&sb_pfor, child_code);
 i_pfor = i_pfor + 1;
 }
@@ -27820,7 +29141,7 @@ while (1) {
 if (i_par >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i_par ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i_par ]) );
 std__string__StringBuilder__append(&sb_par, child_code);
 i_par++;
 }
@@ -27838,7 +29159,7 @@ while (1) {
 if (i_single >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i_single ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i_single ]) );
 std__string__StringBuilder__append(&sb_single, child_code);
 i_single = i_single + 1;
 }
@@ -27857,7 +29178,7 @@ break;
 }
 const std__string__string var_name = private_vars->data[ vi ];
 const std__string__string type_name = private_types->data[ vi ];
-const std__string__string c_type = renderer__map_axe_type_to_c( type_name );
+const std__string__string c_type = backends__c__renderer__map_axe_type_to_c( type_name );
 std__string__StringBuilder__append(&sb_ploc, c_type);
 std__string__StringBuilder__append_c(&sb_ploc, " ");
 std__string__StringBuilder__append(&sb_ploc, var_name);
@@ -27900,7 +29221,7 @@ while (1) {
 if (i_ploc >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = renderer__generate_c( &(children->data[ i_ploc ]) );
+const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i_ploc ]) );
 std__string__StringBuilder__append(&sb_ploc, child_code);
 i_ploc = i_ploc + 1;
 }
@@ -27911,9 +29232,9 @@ return std__string__StringBuilder__to_string( &sb_ploc );
 if (std__string__equals_c ( node_type , "ForIn" )) {
 const std__string__string var_name = ast->data.for_in.var_name;
 const std__string__string array_name_raw = ast->data.for_in.array_name;
-std__string__string array_name = renderer__process_expression( array_name_raw );
-array_name = renderer__rewrite_method_calls ( array_name );
-array_name = renderer__rewrite_function_prefixes ( array_name );
+std__string__string array_name = backends__c__renderer__process_expression( array_name_raw );
+array_name = backends__c__renderer__rewrite_method_calls ( array_name );
+array_name = backends__c__renderer__rewrite_function_prefixes ( array_name );
 std__string__string index_var = std__string__str( "_i_" );
 index_var = std__string__concat ( index_var , var_name );
 std__string__string accessor = std__string__str( "." );
@@ -27978,7 +29299,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_forin, child_code);
 reg_idx++;
 }
@@ -27995,7 +29316,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_forin, defer_child_code);
 i_defer++;
 }
@@ -28016,7 +29337,7 @@ break;
 }
 const std__string__string condition = current_if->data.if_node.condition;
 std__string__string trimmed_cond = std__string__strip( condition );
-trimmed_cond = renderer__process_expression ( trimmed_cond );
+trimmed_cond = backends__c__renderer__process_expression ( trimmed_cond );
 if (is_first) {
 std__string__StringBuilder__append_c(&sb_if, "if (");
 }
@@ -28055,7 +29376,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_if, child_code);
 reg_idx++;
 }
@@ -28072,7 +29393,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_if, defer_child_code);
 i_defer++;
 }
@@ -28114,7 +29435,7 @@ if (reg_else_idx >= len_v(regular_else_children)) {
 break;
 }
 const structs__ASTNode* else_child = regular_else_children.data[ reg_else_idx ];
-const std__string__string else_code = renderer__generate_c( else_child );
+const std__string__string else_code = backends__c__renderer__generate_c( else_child );
 std__string__StringBuilder__append(&sb_if, else_code);
 reg_else_idx++;
 }
@@ -28131,7 +29452,7 @@ while (1) {
 if (i_defer >= len_v((*body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_if, defer_child_code);
 i_defer++;
 }
@@ -28155,7 +29476,7 @@ return std__string__StringBuilder__to_string( &sb_if );
 if (std__string__equals_c ( node_type , "Switch" )) {
 const std__string__string switch_expr_raw = ast->data.switch_node.expression;
 const std__string__string switch_expr = std__string__strip( switch_expr_raw );
-const std__string__string cond_norm = renderer__process_expression( switch_expr );
+const std__string__string cond_norm = backends__c__renderer__process_expression( switch_expr );
 std__string__StringBuilder sb_switch = std__string__StringBuilder__init( 2048 );
 std__string__StringBuilder__append_c(&sb_switch, "switch (");
 std__string__StringBuilder__append(&sb_switch, cond_norm);
@@ -28174,7 +29495,7 @@ std__string__StringBuilder__append_c(&sb_switch, "default: {\n");
 }
 else {
 const std__string__string raw_val = std__string__strip( cnode->data.case_node.value);
-const std__string__string case_val = renderer__process_expression( raw_val );
+const std__string__string case_val = backends__c__renderer__process_expression( raw_val );
 std__string__StringBuilder__append_c(&sb_switch, "case ");
 std__string__StringBuilder__append(&sb_switch, case_val);
 std__string__StringBuilder__append_c(&sb_switch, ": {\n");
@@ -28203,7 +29524,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_switch, child_code);
 reg_idx++;
 }
@@ -28220,7 +29541,7 @@ while (1) {
 if (i_defer >= len_v((*defer_body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(defer_body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(defer_body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_switch, defer_child_code);
 i_defer++;
 }
@@ -28263,7 +29584,7 @@ if (reg_idx >= len_v(regular_children)) {
 break;
 }
 const structs__ASTNode* child = regular_children.data[ reg_idx ];
-const std__string__string child_code = renderer__generate_c( child );
+const std__string__string child_code = backends__c__renderer__generate_c( child );
 std__string__StringBuilder__append(&sb_unsafe, child_code);
 reg_idx++;
 }
@@ -28280,7 +29601,7 @@ while (1) {
 if (i_defer >= len_v((*defer_body))) {
 break;
 }
-const std__string__string defer_child_code = renderer__generate_c( &(defer_body->data[ i_defer ]) );
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(defer_body->data[ i_defer ]) );
 std__string__StringBuilder__append(&sb_unsafe, defer_child_code);
 i_defer++;
 }
@@ -28292,10 +29613,10 @@ std__string__string unsafe_result = std__string__StringBuilder__to_string( &sb_u
 std__string__StringBuilder__destroy(&sb_unsafe);
 gstate__debug_print_raw("\n[DBG-UNSAFE] Before method call transformation:");
 gstate__debug_print_str(unsafe_result);
-unsafe_result = renderer__rewrite_method_calls ( unsafe_result );
+unsafe_result = backends__c__renderer__rewrite_method_calls ( unsafe_result );
 gstate__debug_print_raw("\n[DBG-UNSAFE] After method call transformation:");
 gstate__debug_print_str(unsafe_result);
-unsafe_result = renderer__rewrite_function_prefixes ( unsafe_result );
+unsafe_result = backends__c__renderer__rewrite_function_prefixes ( unsafe_result );
 gstate__debug_print_raw("\n[DBG-UNSAFE] After function prefix transformation:");
 gstate__debug_print_str(unsafe_result);
 return unsafe_result;
@@ -28340,7 +29661,7 @@ break;
 const std__string__string field_name = field_names->data[ field_idx ];
 const std__string__string field_type = field_types->data[ field_idx ];
 if (! std__string__equals_c ( field_type , "union" ) && ! std__string__equals_c ( field_type , "model" )) {
-renderer__validate_type_imported(field_type);
+backends__c__renderer__validate_type_imported(field_type);
 }
 std__string__string field_key = model_name;
 field_key = std__string__concat ( field_key , std__string__str ( "." ) );
@@ -28383,7 +29704,7 @@ const std__string__string nested_parent = up.data[ nidx ];
 if (std__string__compare ( nested_parent , member_name ) == 0) {
 const std__string__string nested_name = un.data[ nidx ];
 const std__string__string nested_type_raw = ut.data[ nidx ];
-std__string__string mapped_nested_type = renderer__map_axe_type_to_c( nested_type_raw );
+std__string__string mapped_nested_type = backends__c__renderer__map_axe_type_to_c( nested_type_raw );
 std__string__string nested_array_part = std__string__str( "" );
 if (std__string__has_suffix ( nested_type_raw , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_nested_type , std__string__str ( "*" ) )) {
@@ -28398,7 +29719,7 @@ mapped_nested_type = std__string__substring_se ( mapped_nested_type , 0 , n_brac
 if (std__string__has_prefix ( mapped_nested_type , std__string__str ( "ref " ) )) {
 mapped_nested_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_nested_type , 4 , (int32_t)( std__string__str_len ( mapped_nested_type ) ) ) ) , std__string__str ( "*" ) );
 }
-const std__string__string c_nested_model_name = renderer__canonical_model_c_name( mapped_nested_type );
+const std__string__string c_nested_model_name = backends__c__renderer__canonical_model_c_name( mapped_nested_type );
 if (std__string__str_len ( c_nested_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_nested_model_name )) {
 mapped_nested_type = c_nested_model_name;
@@ -28426,7 +29747,7 @@ std__string__StringBuilder__append(&sb, member_name);
 std__string__StringBuilder__append_c(&sb, ";\n");
 }
 else {
-std__string__string mapped_member_type = renderer__map_axe_type_to_c( member_type_raw );
+std__string__string mapped_member_type = backends__c__renderer__map_axe_type_to_c( member_type_raw );
 std__string__string member_array_part = std__string__str( "" );
 if (std__string__has_suffix ( member_type_raw , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_member_type , std__string__str ( "*" ) )) {
@@ -28441,7 +29762,7 @@ mapped_member_type = std__string__substring_se ( mapped_member_type , 0 , m_brac
 if (std__string__has_prefix ( mapped_member_type , std__string__str ( "ref " ) )) {
 mapped_member_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_member_type , 4 , (int32_t)( std__string__str_len ( mapped_member_type ) ) ) ) , std__string__str ( "*" ) );
 }
-const std__string__string c_member_model_name = renderer__canonical_model_c_name( mapped_member_type );
+const std__string__string c_member_model_name = backends__c__renderer__canonical_model_c_name( mapped_member_type );
 if (std__string__str_len ( c_member_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_member_model_name )) {
 mapped_member_type = c_member_model_name;
@@ -28470,7 +29791,7 @@ std__string__StringBuilder__append(&sb, field_name);
 std__string__StringBuilder__append_c(&sb, ";\n");
 }
 else {
-std__string__string mapped_type = renderer__map_axe_type_to_c( field_type );
+std__string__string mapped_type = backends__c__renderer__map_axe_type_to_c( field_type );
 std__string__string array_part = std__string__str( "" );
 if (std__string__has_suffix ( field_type , std__string__str ( "[999]" ) )) {
 if (! std__string__has_suffix ( mapped_type , std__string__str ( "*" ) )) {
@@ -28485,7 +29806,7 @@ mapped_type = std__string__substring_se ( mapped_type , 0 , bracket_pos );
 if (std__string__has_prefix ( mapped_type , std__string__str ( "ref " ) )) {
 mapped_type = std__string__concat ( std__string__strip ( std__string__substring_se ( mapped_type , 4 , (int32_t)( std__string__str_len ( mapped_type ) ) ) ) , std__string__str ( "*" ) );
 }
-const std__string__string c_model_name = renderer__canonical_model_c_name( mapped_type );
+const std__string__string c_model_name = backends__c__renderer__canonical_model_c_name( mapped_type );
 if (std__string__str_len ( c_model_name ) > 0) {
 if (std__maps__StringBoolMap__contains( &g_enum_names , c_model_name )) {
 mapped_type = c_model_name;
@@ -28686,7 +30007,7 @@ std__string__StringBuilder__append_c(&sb_ptr, "->");
 std__string__StringBuilder__append(&sb_ptr, ptr_memb);
 if (std__string__str_len ( std__string__strip ( ptr_val ) ) > 0) {
 std__string__StringBuilder__append_c(&sb_ptr, " = ");
-const std__string__string processed_ptr_val = renderer__process_expression( ptr_val );
+const std__string__string processed_ptr_val = backends__c__renderer__process_expression( ptr_val );
 std__string__StringBuilder__append(&sb_ptr, processed_ptr_val);
 }
 std__string__StringBuilder__append_c(&sb_ptr, ";\n");
@@ -28717,6 +30038,2073 @@ return result;
 #endif
 #ifndef _WIN32
 #endif
+void backends__llvm__renderer__initialize_llvm_renderer() {
+g_llvm_arena = std__arena__Arena__create( 1024 * 1024 );
+g_var_registers = (*std__maps__StringStringMap__create( &g_llvm_arena , 128 ));
+g_var_types = (*std__maps__StringStringMap__create( &g_llvm_arena , 128 ));
+g_function_decls = (*std__maps__StringBoolMap__create( &g_llvm_arena , 128 ));
+g_function_prefixes = (*std__maps__StringStringMap__create( &g_llvm_arena , 128 ));
+g_overload_mappings = (*std__maps__StringStringMap__create( &g_llvm_arena , 256 ));
+g_model_definitions = (*std__maps__StringStringMap__create( &g_llvm_arena , 128 ));
+g_model_field_types = (*std__maps__StringStringMap__create( &g_llvm_arena , 256 ));
+g_string_counter = 0;
+int32_t i = 0;
+while (1) {
+if (i >= len_v(g_temp_prefixes)) {
+break;
+}
+const std__string__string pair = g_temp_prefixes.data[ i ];
+const int32_t colon_pos = std__string__find_char_from( pair , ':' , (uintptr_t)( 0 ) );
+if (colon_pos > 0) {
+const std__string__string original = std__string__substring_se( pair , 0 , colon_pos );
+const std__string__string prefixed = std__string__substring_se( pair , colon_pos + 1 , (int32_t)( std__string__str_len ( pair ) ) );
+std__maps__StringStringMap__set(&g_function_prefixes,                 &g_llvm_arena,                 original,                 prefixed);
+}
+i++;
+}
+g_llvm_initialized = true;
+}
+
+std__string__string backends__llvm__renderer__next_register() {
+const std__string__string reg = std__string__concat( std__string__str ( "%" ) , std__string__i32_to_string ( g_register_counter ) );
+g_register_counter++;
+return reg;
+}
+
+std__string__string backends__llvm__renderer__next_block() {
+const std__string__string block = std__string__concat( std__string__str ( "block" ) , std__string__i32_to_string ( g_block_counter ) );
+g_block_counter++;
+return block;
+}
+
+void backends__llvm__renderer__add_string_constant(std__string__string str_value) {
+__list_std__string_push(&g_string_constants, str_value);
+g_string_counter++;
+}
+
+std__string__string backends__llvm__renderer__axe_type_to_llvm(std__string__string axe_type) {
+if (std__string__equals_c ( axe_type , "i32" )) {
+return std__string__str( "i32" );
+}
+else if (std__string__equals_c ( axe_type , "i64" )) {
+return std__string__str( "i64" );
+}
+else if (std__string__equals_c ( axe_type , "f32" )) {
+return std__string__str( "float" );
+}
+else if (std__string__equals_c ( axe_type , "f64" )) {
+return std__string__str( "double" );
+}
+else if (std__string__equals_c ( axe_type , "bool" )) {
+return std__string__str( "i1" );
+}
+else if (std__string__equals_c ( axe_type , "string" )) {
+return std__string__str( "i8*" );
+}
+else if (std__maps__StringStringMap__contains( &g_model_definitions , axe_type )) {
+return std__string__concat( std__string__concat ( std__string__str ( "%struct." ) , axe_type ) , std__string__str ( "*" ) );
+}
+return std__string__str( "i32" );
+}
+
+void backends__llvm__renderer__llvm_renderer_add_prefix(std__string__string original, std__string__string prefixed) {
+if (g_llvm_initialized) {
+std__maps__StringStringMap__set(&g_function_prefixes, &g_llvm_arena, original, prefixed);
+}
+else {
+const std__string__string pair = std__string__concat( std__string__concat ( original , std__string__str ( ":" ) ) , prefixed );
+__list_std__string_push(&g_temp_prefixes, pair);
+}
+}
+
+void backends__llvm__renderer__analyze_imports_for_prefixes(structs__ASTNode* ast) {
+if (ast == nil) {
+return ;
+}
+const std__string__string node_type = ast->node_type;
+if (std__string__equals_c ( node_type , "Function" )) {
+const std__string__string func_name = ast->data.function.name;
+const int32_t double_underscore_pos = std__string__find_substr( func_name , std__string__str ( "__" ) );
+if (double_underscore_pos > 0) {
+const std__string__string original_name = std__string__substring_se( func_name , double_underscore_pos + 2 , (int32_t)( std__string__str_len ( func_name ) ) );
+std__maps__StringStringMap__set(&g_function_prefixes,                 &g_llvm_arena,                 original_name,                 func_name);
+}
+}
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+backends__llvm__renderer__analyze_imports_for_prefixes(&(children->data[i]));
+i++;
+}
+}
+}
+
+std__string__string backends__llvm__renderer__generate_llvm(structs__ASTNode* ast) {
+if (ast == nil) {
+return std__string__str( "; Empty AST\n" );
+}
+g_llvm_sb = std__string__StringBuilder__init( 4096 );
+g_block_counter = 0;
+g_register_counter = 1;
+const std__string__string code = backends__llvm__renderer__render_ast_node( ast );
+return code;
+}
+
+std__string__string backends__llvm__renderer__render_ast_node(structs__ASTNode* ast) {
+if (ast == nil) {
+return std__string__str( "" );
+}
+const std__string__string node_type = ast->node_type;
+if (std__string__str_len ( node_type ) == 0) {
+return std__string__str( "" );
+}
+if (std__string__equals_c ( node_type , "Program" )) {
+return backends__llvm__renderer__render_program( ast );
+}
+else if (std__string__equals_c ( node_type , "Function" )) {
+return backends__llvm__renderer__render_function( ast );
+}
+else if (std__string__equals_c ( node_type , "Return" )) {
+return backends__llvm__renderer__render_return( ast );
+}
+else if (std__string__equals_c ( node_type , "Declaration" )) {
+return backends__llvm__renderer__render_declaration( ast );
+}
+else if (std__string__equals_c ( node_type , "Assignment" )) {
+return backends__llvm__renderer__render_assignment( ast );
+}
+else if (std__string__equals_c ( node_type , "FunctionCall" )) {
+return backends__llvm__renderer__render_function_call( ast );
+}
+else if (std__string__equals_c ( node_type , "If" )) {
+return backends__llvm__renderer__render_if( ast );
+}
+else if (std__string__equals_c ( node_type , "Loop" )) {
+return backends__llvm__renderer__render_loop( ast );
+}
+else if (std__string__equals_c ( node_type , "Print" )) {
+return backends__llvm__renderer__render_print( ast );
+}
+else if (std__string__equals_c ( node_type , "Overload" )) {
+return backends__llvm__renderer__render_overload( ast );
+}
+else if (std__string__equals_c ( node_type , "Model" )) {
+return backends__llvm__renderer__render_model( ast );
+}
+else if (std__string__equals_c ( node_type , "ModelInstantiation" )) {
+return backends__llvm__renderer__render_model_instantiation( ast );
+}
+else if (std__string__equals_c ( node_type , "MemberAccess" )) {
+return backends__llvm__renderer__render_member_access( ast );
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__llvm__renderer__render_declaration(structs__ASTNode* ast) {
+const std__string__string name = ast->data.declaration.name;
+const std__string__string type_name = ast->data.declaration.type_name;
+const std__string__string initializer = ast->data.declaration.initializer;
+const std__string__string reg = backends__llvm__renderer__next_register( );
+std__maps__StringStringMap__set(&g_var_registers, &g_llvm_arena, name, reg);
+std__maps__StringStringMap__set(&g_var_types, &g_llvm_arena, name, type_name);
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__maps__StringStringMap__contains( &g_model_definitions , type_name )) {
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = alloca %struct."));
+std__string__StringBuilder__append(&sb, type_name);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (std__string__str_len ( initializer ) > 0 && std__string__str_contains ( initializer , std__string__str ( "{ }" ) )) {
+const std__string__string zero_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, zero_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = bitcast %struct."));
+std__string__StringBuilder__append(&sb, type_name);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(" to i8*\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  call void @llvm.memset.p0i8.i32(i8* "));
+std__string__StringBuilder__append(&sb, zero_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", i8 0, i32 ptrtoint (%struct."));
+std__string__StringBuilder__append(&sb, type_name);
+std__string__StringBuilder__append(&sb, std__string__str("* getelementptr (%struct."));
+std__string__StringBuilder__append(&sb, type_name);
+std__string__StringBuilder__append(&sb, std__string__str(", %struct."));
+std__string__StringBuilder__append(&sb, type_name);
+std__string__StringBuilder__append(&sb, std__string__str("* null, i32 1) to i32), i1 false)\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = alloca i32\n"));
+if (std__string__str_len ( initializer ) > 0) {
+std__string__StringBuilder__append(&sb, std__string__str("  store i32 "));
+std__string__StringBuilder__append(&sb, initializer);
+std__string__StringBuilder__append(&sb, std__string__str(", i32* "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_assignment(structs__ASTNode* ast) {
+const std__string__string variable = ast->data.assignment.variable;
+const std__string__string expression = ast->data.assignment.expression;
+if (! std__maps__StringStringMap__contains( &g_var_registers , variable )) {
+return std__string__str( "" );
+}
+const std__string__string reg = std__maps__StringStringMap__get( &g_var_registers , variable );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+std__string__StringBuilder__append(&sb, std__string__str("  store i32 "));
+std__string__StringBuilder__append(&sb, expression);
+std__string__StringBuilder__append(&sb, std__string__str(", i32* "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__process_interpolated_string_llvm(std__string__string interp_content) {
+__list_std__string_t parts = {0};
+__list_std__string_t expressions = {0};
+int32_t pos = 0;
+std__string__StringBuilder sb_part = std__string__StringBuilder__init( std__string__str_len ( interp_content ) + 16 );
+const int32_t content_len = (int32_t)( std__string__str_len ( interp_content ) );
+while (1) {
+if (pos >= content_len) {
+break;
+}
+const char ch = std__string__get_char( interp_content , pos );
+if (ch == '{') {
+if (pos > 0 && std__string__get_char ( interp_content , pos - 1 ) == '$' && sb_part . len > 0) {
+sb_part.len = sb_part.len- 1;
+}
+__list_std__string_push(&parts, std__string__StringBuilder__to_string(&sb_part));
+std__string__StringBuilder__clear(&sb_part);
+const int32_t brace_start = pos + 1;
+int32_t brace_depth = 1;
+int32_t brace_end = brace_start;
+while (1) {
+if (brace_end >= content_len || brace_depth == 0) {
+break;
+}
+const char cc = std__string__get_char( interp_content , brace_end );
+if (cc == '{') {
+brace_depth = brace_depth + 1;
+}
+else if (cc == '}') {
+brace_depth = brace_depth - 1;
+}
+brace_end = brace_end + 1;
+}
+const std__string__string expr = std__string__strip( std__string__substring_se ( interp_content , brace_start , brace_end - 1 ) );
+__list_std__string_push(&expressions, expr);
+pos = brace_end;
+continue;
+}
+std__string__StringBuilder__append_char(&sb_part, ch);
+pos = pos + 1;
+}
+__list_std__string_push(&parts, std__string__StringBuilder__to_string(&sb_part));
+std__string__StringBuilder__destroy(&sb_part);
+if (len_v(expressions) == 0) {
+return interp_content;
+}
+if (len_v(expressions) > 0) {
+const std__string__string expr = expressions.data[ 0 ];
+if (std__maps__StringStringMap__contains( &g_var_registers , expr )) {
+const std__string__string load_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+std__string__StringBuilder__append(&sb, load_reg);
+return std__string__StringBuilder__to_string( &sb );
+}
+return expr;
+}
+return std__string__str( "0" );
+}
+
+bool backends__llvm__renderer__has_interpolation_markers(std__string__string s) {
+return std__string__has_prefix( s , std__string__str ( "__INTERPOLATED__" ) ) && std__string__has_suffix ( s , std__string__str ( "__INTERPOLATED__" ) );
+}
+
+std__string__string backends__llvm__renderer__extract_interpolation_content(std__string__string s) {
+if (! backends__llvm__renderer__has_interpolation_markers ( s )) {
+return s;
+}
+const int32_t inner_len = std__string__str_len( s ) - 32;
+if (inner_len > 0) {
+return std__string__substring_se( s , 16 , 16 + inner_len );
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__llvm__renderer__render_function_call(structs__ASTNode* ast) {
+const std__string__string func_name_ast = ast->data.func_call.function_name;
+std__string__string func_name = func_name_ast;
+const __list_std__string_t* args = ast->data.func_call.args;
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+if (args != nil && len_v((*args)) > 0) {
+const std__string__string first_arg = std__string__strip( args->data[ 0 ]);
+if (std__maps__StringStringMap__contains( &g_var_types , first_arg )) {
+const std__string__string arg_type = std__maps__StringStringMap__get( &g_var_types , first_arg );
+const std__string__string mapping_key = std__string__concat( std__string__concat ( func_name_ast , std__string__str ( ":" ) ) , arg_type );
+if (std__maps__StringStringMap__contains( &g_overload_mappings , mapping_key )) {
+const std__string__string target_func = std__maps__StringStringMap__get( &g_overload_mappings , mapping_key );
+func_name = target_func;
+}
+}
+const __list_std__string_t arg_list = (*args);
+int32_t i = 0;
+while (1) {
+if (i >= len_v(arg_list)) {
+break;
+}
+const std__string__string arg = std__string__strip( arg_list.data[ i ]);
+if (backends__llvm__renderer__has_interpolation_markers ( arg )) {
+const std__string__string interp_content = backends__llvm__renderer__extract_interpolation_content( arg );
+const std__string__string processed = backends__llvm__renderer__process_interpolated_string_llvm( interp_content );
+arg_list.data[i] = processed;
+}
+else if (std__string__find_char_from ( arg , '.' , (uintptr_t)( 0 ) ) > 0) {
+const int32_t dot_pos = std__string__find_char_from( arg , '.' , (uintptr_t)( 0 ) );
+const std__string__string object_name = std__string__substring_se( arg , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( arg , dot_pos + 1 , (int32_t)( std__string__str_len ( arg ) ) );
+if (std__maps__StringStringMap__contains( &g_var_registers , object_name )) {
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_var_registers , object_name );
+const std__string__string object_type = std__maps__StringStringMap__get( &g_var_types , object_name );
+const std__string__string field_key = std__string__concat( std__string__concat ( object_type , std__string__str ( "." ) ) , member_name );
+if (std__maps__StringStringMap__contains( &g_model_field_types , field_key )) {
+const std__string__string field_ptr_reg = backends__llvm__renderer__next_register( );
+const std__string__string load_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = getelementptr inbounds %struct."));
+std__string__StringBuilder__append(&sb, object_type);
+std__string__StringBuilder__append(&sb, std__string__str(", %struct."));
+std__string__StringBuilder__append(&sb, object_type);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", i32 0, i32 0\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = load i32, i32* "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+arg_list.data[i] = load_reg;
+}
+}
+}
+if (std__maps__StringStringMap__contains( &g_var_registers , arg )) {
+const std__string__string reg = std__maps__StringStringMap__get( &g_var_registers , arg );
+const std__string__string load_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = load i32, i32* "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+i++;
+}
+}
+if (std__maps__StringStringMap__contains( &g_function_prefixes , func_name )) {
+func_name = std__maps__StringStringMap__get( &g_function_prefixes , func_name );
+}
+std__string__StringBuilder__append(&sb, std__string__str("  call void @"));
+std__string__StringBuilder__append(&sb, func_name);
+std__string__StringBuilder__append(&sb, std__string__str("("));
+if (args != nil && len_v((*args)) > 0) {
+const __list_std__string_t arg_list = (*args);
+int32_t i = 0;
+const int32_t load_reg_counter = g_register_counter - len_v(arg_list);
+while (1) {
+if (i >= len_v(arg_list)) {
+break;
+}
+if (i > 0) {
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+}
+const std__string__string arg = std__string__strip( arg_list.data[ i ]);
+if (std__maps__StringStringMap__contains( &g_var_registers , arg )) {
+const std__string__string load_reg = std__string__concat( std__string__str ( "%" ) , std__string__i32_to_string ( load_reg_counter + i ) );
+std__string__StringBuilder__append(&sb, std__string__str("i32 "));
+std__string__StringBuilder__append(&sb, load_reg);
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("i32 "));
+std__string__StringBuilder__append(&sb, arg);
+}
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str(")\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_if(structs__ASTNode* ast) {
+const std__string__string condition = ast->data.if_node.condition;
+const std__string__string then_label = backends__llvm__renderer__next_block( );
+const std__string__string else_label = backends__llvm__renderer__next_block( );
+const std__string__string end_label = backends__llvm__renderer__next_block( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("  br i1 "));
+std__string__StringBuilder__append(&sb, condition);
+std__string__StringBuilder__append(&sb, std__string__str(", label %"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str(", label %"));
+std__string__StringBuilder__append(&sb, else_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__llvm__renderer__render_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("  br label %"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, else_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  br label %"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_loop(structs__ASTNode* ast) {
+const std__string__string loop_label = backends__llvm__renderer__next_block( );
+const std__string__string body_label = backends__llvm__renderer__next_block( );
+const std__string__string end_label = backends__llvm__renderer__next_block( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("  br label %"));
+std__string__StringBuilder__append(&sb, loop_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, loop_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  br label %"));
+std__string__StringBuilder__append(&sb, body_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, body_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__llvm__renderer__render_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("  br label %"));
+std__string__StringBuilder__append(&sb, loop_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n\n"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str(":\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_program(structs__ASTNode* ast) {
+if (ast->children== nil) {
+return std__string__str( "" );
+}
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const structs__ASTNode* child = &(children->data[ i ]);
+backends__llvm__renderer__analyze_imports_for_prefixes(child);
+i++;
+}
+i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__llvm__renderer__render_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&g_llvm_sb, child_code);
+i++;
+}
+std__string__StringBuilder final_sb = std__string__StringBuilder__init( 4096 );
+if (len_v(g_string_constants) > 0) {
+int32_t str_i = 0;
+while (1) {
+if (str_i >= len_v(g_string_constants)) {
+break;
+}
+std__string__StringBuilder__append(&final_sb, std__string__str("@.str"));
+std__string__StringBuilder__append(&final_sb, std__string__i32_to_string(str_i));
+std__string__StringBuilder__append(&final_sb, std__string__str(" = private unnamed_addr constant ["));
+std__string__StringBuilder__append(&final_sb,                 std__string__i32_to_string(std__string__str_len(g_string_constants.data[str_i]) + 1));
+std__string__StringBuilder__append(&final_sb, std__string__str(" x i8] c\""));
+std__string__StringBuilder__append(&final_sb, g_string_constants.data[str_i]);
+std__string__StringBuilder__append(&final_sb, std__string__str("\\00\"\n"));
+str_i++;
+}
+std__string__StringBuilder__append(&final_sb, std__string__str("\n"));
+}
+std__string__StringBuilder__append(&final_sb, std__string__str("declare void @llvm.memset.p0i8.i32(i8* nocapture writeonly, i8, i32, i1 immarg)\n"));
+if (len_v(g_string_constants) > 0) {
+std__string__StringBuilder__append(&final_sb, std__string__str("declare i32 @puts(i8*)\n\n"));
+}
+else {
+std__string__StringBuilder__append(&final_sb, std__string__str("\n"));
+}
+std__string__StringBuilder__append(&final_sb, std__string__StringBuilder__to_string(&g_llvm_sb));
+return std__string__StringBuilder__to_string( &final_sb );
+}
+
+std__string__string backends__llvm__renderer__render_function(structs__ASTNode* ast) {
+const std__string__string func_name = ast->data.function.name;
+const std__string__string return_type = ast->data.function.return_type;
+const __list_std__string_t* params = ast->data.function.params;
+std__string__StringBuilder sb = std__string__StringBuilder__init( 512 );
+std__string__StringBuilder__append(&sb, std__string__str("define "));
+if (std__string__str_len ( return_type ) > 0 && std__string__equals_c ( return_type , "void" )) {
+std__string__StringBuilder__append(&sb, std__string__str("void"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("i32"));
+}
+std__string__StringBuilder__append(&sb, std__string__str(" @"));
+std__string__StringBuilder__append(&sb, func_name);
+std__string__StringBuilder__append(&sb, std__string__str("("));
+if (params != nil && len_v((*params)) > 0) {
+const __list_std__string_t param_list = (*params);
+int32_t i = 0;
+while (1) {
+if (i >= len_v(param_list)) {
+break;
+}
+if (i > 0) {
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+}
+std__string__StringBuilder__append(&sb, std__string__str("i32"));
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str(") {\n"));
+std__string__StringBuilder__append(&sb, std__string__str("entry:\n"));
+bool has_return = false;
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const structs__ASTNode* child = &(children->data[ i ]);
+if (std__string__equals_c ( child->node_type, "Return" )) {
+has_return = true;
+}
+const std__string__string child_code = backends__llvm__renderer__render_ast_node( child );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+}
+if (! has_return) {
+if (std__string__str_len ( return_type ) > 0 && std__string__equals_c ( return_type , "void" )) {
+std__string__StringBuilder__append(&sb, std__string__str("  ret void\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("  ret i32 0\n"));
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("}\n\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_return(structs__ASTNode* ast) {
+const std__string__string expression = std__string__strip( ast->data.return_node.expression);
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__string__str_len ( expression ) > 0) {
+if (std__maps__StringStringMap__contains( &g_var_registers , expression )) {
+const std__string__string reg = std__maps__StringStringMap__get( &g_var_registers , expression );
+const std__string__string load_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = load i32, i32* "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  ret i32 "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("  ret i32 "));
+std__string__StringBuilder__append(&sb, expression);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("  ret void\n"));
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_print(structs__ASTNode* ast) {
+const __list_std__string_t* messages_ref = ast->data.print.messages;
+const __list_bool_t* flags_ref = ast->data.print.is_expressions;
+if (messages_ref == nil || flags_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t messages = (*messages_ref);
+const __list_bool_t flags = (*flags_ref);
+if (len_v(messages) == 0) {
+return std__string__str( "" );
+}
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+if (len_v(messages) == 1 && len_v(flags) == 1 && ! flags.data[ 0 ]) {
+const std__string__string str_id = std__string__i32_to_string( g_string_counter );
+const std__string__string call_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, call_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = call i32 @puts(i8* getelementptr inbounds (["));
+std__string__StringBuilder__append(&sb, std__string__i32_to_string(std__string__str_len(messages.data[0]) + 1));
+std__string__StringBuilder__append(&sb, std__string__str(" x i8], ["));
+std__string__StringBuilder__append(&sb, std__string__i32_to_string(std__string__str_len(messages.data[0]) + 1));
+std__string__StringBuilder__append(&sb, std__string__str(" x i8]* @.str"));
+std__string__StringBuilder__append(&sb, str_id);
+std__string__StringBuilder__append(&sb, std__string__str(", i32 0, i32 0))\n"));
+backends__llvm__renderer__add_string_constant(messages.data[0]);
+return std__string__StringBuilder__to_string( &sb );
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_overload(structs__ASTNode* ast) {
+const std__string__string name = ast->data.overload_node.name;
+const __list_std__string_t* type_names_ref = ast->data.overload_node.type_names;
+const __list_std__string_t* targets_ref = ast->data.overload_node.target_functions;
+if (type_names_ref == nil || targets_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t type_names = (*type_names_ref);
+const __list_std__string_t targets = (*targets_ref);
+const int32_t count = len_v(type_names);
+if (count == 0 || count != len_v(targets)) {
+return std__string__str( "" );
+}
+int32_t i = 0;
+while (1) {
+if (i >= count) {
+break;
+}
+const std__string__string type_name = type_names.data[ i ];
+const std__string__string target_func = targets.data[ i ];
+const std__string__string mapping_key = std__string__concat( std__string__concat ( name , std__string__str ( ":" ) ) , type_name );
+std__maps__StringStringMap__set(&g_overload_mappings,             &g_llvm_arena,             mapping_key,             target_func);
+i++;
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__llvm__renderer__render_model(structs__ASTNode* ast) {
+const std__string__string model_name = ast->data.model_node.name;
+const __list_std__string_t* field_names_ref = ast->data.model_node.field_names;
+const __list_std__string_t* field_types_ref = ast->data.model_node.field_types;
+if (field_names_ref == nil || field_types_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t field_names = (*field_names_ref);
+const __list_std__string_t field_types = (*field_types_ref);
+const int32_t field_count = len_v(field_names);
+if (field_count != len_v(field_types)) {
+return std__string__str( "" );
+}
+std__maps__StringStringMap__set(&g_model_definitions,         &g_llvm_arena,         model_name,         std__string__str("defined"));
+int32_t i = 0;
+while (1) {
+if (i >= field_count) {
+break;
+}
+const std__string__string field_key = std__string__concat( std__string__concat ( model_name , std__string__str ( "." ) ) , field_names.data[ i ]);
+std__maps__StringStringMap__set(&g_model_field_types,             &g_llvm_arena,             field_key,             field_types.data[i]);
+i++;
+}
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("%struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str(" = type { "));
+i = 0;
+while (1) {
+if (i >= field_count) {
+break;
+}
+if (i > 0) {
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+}
+const std__string__string llvm_type = backends__llvm__renderer__axe_type_to_llvm( field_types.data[ i ]);
+std__string__StringBuilder__append(&sb, llvm_type);
+i++;
+}
+std__string__StringBuilder__append(&sb, std__string__str(" }\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_model_instantiation(structs__ASTNode* ast) {
+const std__string__string model_name = ast->data.model_instantiation.model_name;
+const std__string__string var_name = ast->data.model_instantiation.variable_name;
+const __list_std__string_t* field_names_ref = ast->data.model_instantiation.field_names;
+const __list_std__string_t* field_values_ref = ast->data.model_instantiation.field_values;
+const std__string__string alloc_reg = backends__llvm__renderer__next_register( );
+std__maps__StringStringMap__set(&g_var_registers, &g_llvm_arena, var_name, alloc_reg);
+std__maps__StringStringMap__set(&g_var_types, &g_llvm_arena, var_name, model_name);
+std__string__StringBuilder sb = std__string__StringBuilder__init( 512 );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, alloc_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = alloca %struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (field_names_ref == nil || field_values_ref == nil) {
+const std__string__string zero_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, zero_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = bitcast %struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, alloc_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" to i8*\n"));
+std__string__StringBuilder__append(&sb, std__string__str("  call void @llvm.memset.p0i8.i32(i8* "));
+std__string__StringBuilder__append(&sb, zero_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", i8 0, i32 ptrtoint (%struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str("* getelementptr (%struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str(", %struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str("* null, i32 1) to i32), i1 false)\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+const __list_std__string_t field_names = (*field_names_ref);
+const __list_std__string_t field_values = (*field_values_ref);
+const int32_t field_count = len_v(field_names);
+if (field_count != len_v(field_values)) {
+return std__string__str( "" );
+}
+int32_t i = 0;
+while (1) {
+if (i >= field_count) {
+break;
+}
+const std__string__string field_ptr_reg = backends__llvm__renderer__next_register( );
+const std__string__string field_value = field_values.data[ i ];
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = getelementptr inbounds %struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str(", %struct."));
+std__string__StringBuilder__append(&sb, model_name);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, alloc_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", i32 0, i32 "));
+std__string__StringBuilder__append(&sb, std__string__i32_to_string(i));
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+const std__string__string field_key = std__string__concat( std__string__concat ( model_name , std__string__str ( "." ) ) , field_names.data[ i ]);
+const std__string__string field_type = std__maps__StringStringMap__get( &g_model_field_types , field_key );
+const std__string__string llvm_type = backends__llvm__renderer__axe_type_to_llvm( field_type );
+std__string__StringBuilder__append(&sb, std__string__str("  store "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str(" "));
+std__string__StringBuilder__append(&sb, field_value);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+i++;
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__llvm__renderer__render_member_access(structs__ASTNode* ast) {
+const std__string__string object_name = ast->data.member_access.object_name;
+const std__string__string member_name = ast->data.member_access.member_name;
+const std__string__string value = ast->data.member_access.value;
+if (! std__maps__StringStringMap__contains( &g_var_registers , object_name )) {
+return std__string__str( "" );
+}
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_var_registers , object_name );
+const std__string__string object_type = std__maps__StringStringMap__get( &g_var_types , object_name );
+const std__string__string field_key = std__string__concat( std__string__concat ( object_type , std__string__str ( "." ) ) , member_name );
+if (! std__maps__StringStringMap__contains( &g_model_field_types , field_key )) {
+return std__string__str( "" );
+}
+const std__string__string field_type = std__maps__StringStringMap__get( &g_model_field_types , field_key );
+const std__string__string llvm_type = backends__llvm__renderer__axe_type_to_llvm( field_type );
+const std__string__string field_ptr_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = getelementptr inbounds %struct."));
+std__string__StringBuilder__append(&sb, object_type);
+std__string__StringBuilder__append(&sb, std__string__str(", %struct."));
+std__string__StringBuilder__append(&sb, object_type);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", i32 0, i32 0\n"));
+if (std__string__str_len ( value ) > 0) {
+std__string__StringBuilder__append(&sb, std__string__str("  store "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str(" "));
+std__string__StringBuilder__append(&sb, value);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+const std__string__string load_reg = backends__llvm__renderer__next_register( );
+std__string__StringBuilder__append(&sb, std__string__str("  "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" = load "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, llvm_type);
+std__string__StringBuilder__append(&sb, std__string__str("* "));
+std__string__StringBuilder__append(&sb, field_ptr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
+void backends__qbe__renderer__initialize_qbe_renderer() {
+g_qbe_arena = std__arena__Arena__create( 1024 * 1024 );
+g_qbe_var_registers = (*std__maps__StringStringMap__create( &g_qbe_arena , 128 ));
+g_current_function_context = nil;
+g_qbe_var_types = (*std__maps__StringStringMap__create( &g_qbe_arena , 128 ));
+g_qbe_model_definitions = (*std__maps__StringStringMap__create( &g_qbe_arena , 128 ));
+g_qbe_model_field_offsets = (*std__maps__StringIntMap__create( &g_qbe_arena , 256 ));
+g_qbe_string_literals = (*std__maps__StringStringMap__create( &g_qbe_arena , 64 ));
+g_qbe_overloads = (*std__maps__StringStringMap__create( &g_qbe_arena , 64 ));
+g_qbe_externs = (*std__maps__StringStringMap__create( &g_qbe_arena , 64 ));
+g_qbe_function_map = (*std__maps__StringStringMap__create( &g_qbe_arena , 64 ));
+g_qbe_register_counter = 1;
+g_qbe_string_counter = 0;
+g_qbe_initialized = true;
+}
+
+std__string__string backends__qbe__renderer__next_qbe_register() {
+const std__string__string reg = std__string__concat( std__string__str ( "%r" ) , std__string__i32_to_string ( g_qbe_register_counter ) );
+g_qbe_register_counter++;
+return reg;
+}
+
+std__string__string backends__qbe__renderer__generate_qbe(structs__ASTNode* ast) {
+if (ast == nil) {
+return std__string__str( "# Empty AST\n" );
+}
+g_qbe_sb = std__string__StringBuilder__init( 4096 );
+g_qbe_register_counter = 1;
+const std__string__string code = backends__qbe__renderer__render_qbe_ast_node( ast );
+std__string__string fixed_code = std__string__replace_all( code , std__string__str ( "()(" ) , std__string__str ( "(" ) );
+fixed_code = std__string__replace_all ( fixed_code , std__string__str ( "()()" ) , std__string__str ( "()" ) );
+return fixed_code;
+}
+
+std__string__string backends__qbe__renderer__render_qbe_ast_node(structs__ASTNode* ast) {
+if (ast == nil) {
+return std__string__str( "" );
+}
+const std__string__string node_type = ast->node_type;
+if (node_type.data== nil || std__string__str_len ( node_type ) == 0) {
+if (ast->data.function.name.data!= nil && std__string__str_len ( ast->data.function.name) > 0) {
+return backends__qbe__renderer__render_qbe_function( ast );
+}
+else if (ast->data.func_call.args!= nil) {
+return backends__qbe__renderer__render_qbe_function_call( ast );
+}
+else {
+return std__string__str( "" );
+}
+}
+if (std__string__equals_c ( node_type , "Program" )) {
+return backends__qbe__renderer__render_qbe_program( ast );
+}
+else if (std__string__equals_c ( node_type , "Function" )) {
+return backends__qbe__renderer__render_qbe_function( ast );
+}
+else if (std__string__equals_c ( node_type , "Return" )) {
+return backends__qbe__renderer__render_qbe_return( ast );
+}
+else if (std__string__equals_c ( node_type , "Declaration" )) {
+return backends__qbe__renderer__render_qbe_declaration( ast );
+}
+else if (std__string__equals_c ( node_type , "Assignment" )) {
+return backends__qbe__renderer__render_qbe_assignment( ast );
+}
+else if (std__string__equals_c ( node_type , "If" )) {
+return backends__qbe__renderer__render_qbe_if( ast );
+}
+else if (std__string__equals_c ( node_type , "Loop" )) {
+return backends__qbe__renderer__render_qbe_loop( ast );
+}
+else if (std__string__equals_c ( node_type , "Print" )) {
+return backends__qbe__renderer__render_qbe_print( ast );
+}
+else if (std__string__equals_c ( node_type , "Put" )) {
+return backends__qbe__renderer__render_qbe_print( ast );
+}
+else if (std__string__equals_c ( node_type , "Model" )) {
+return backends__qbe__renderer__render_qbe_model( ast );
+}
+else if (std__string__equals_c ( node_type , "FunctionCall" )) {
+return backends__qbe__renderer__render_qbe_function_call( ast );
+}
+else if (std__string__equals_c ( node_type , "Overload" )) {
+return backends__qbe__renderer__render_qbe_overload( ast );
+}
+else if (std__string__equals_c ( node_type , "Extern" )) {
+return backends__qbe__renderer__render_qbe_extern( ast );
+}
+else if (std__string__equals_c ( node_type , "Test" )) {
+return backends__qbe__renderer__render_qbe_test( ast );
+}
+else if (std__string__equals_c ( node_type , "Unsafe" )) {
+return backends__qbe__renderer__render_qbe_unsafe( ast );
+}
+else if (std__string__equals_c ( node_type , "MemberAccess" )) {
+return backends__qbe__renderer__render_qbe_member_access( ast );
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_program(structs__ASTNode* ast) {
+if (ast->children== nil) {
+return std__string__str( "" );
+}
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&g_qbe_sb, child_code);
+i++;
+}
+std__string__StringBuilder final_sb = std__string__StringBuilder__init( 1024 );
+const std__lists__StringList* keys = g_qbe_string_literals.keys;
+int32_t j = 0;
+while (1) {
+if (j >= keys->len) {
+break;
+}
+const std__string__string message = keys->data[ j ];
+const std__string__string str_name = std__maps__StringStringMap__get( &g_qbe_string_literals , message );
+std__string__StringBuilder__append(&final_sb, std__string__str("data $"));
+std__string__StringBuilder__append(&final_sb, str_name);
+std__string__StringBuilder__append(&final_sb, std__string__str(" = { b \""));
+std__string__StringBuilder__append(&final_sb, message);
+std__string__StringBuilder__append(&final_sb, std__string__str("\\0\" }\n"));
+j++;
+}
+if (keys->len> 0) {
+std__string__StringBuilder__append(&final_sb, std__string__str("\n"));
+}
+std__string__StringBuilder__append(&final_sb, std__string__StringBuilder__to_string(&g_qbe_sb));
+return std__string__StringBuilder__to_string( &final_sb );
+}
+
+std__string__string backends__qbe__renderer__extract_base_function_name(std__string__string qualified_name) {
+const int32_t double_underscore_pos = std__string__find_substr( qualified_name , std__string__str ( "__" ) );
+if (double_underscore_pos >= 0) {
+return std__string__substr( qualified_name , double_underscore_pos + 2 , std__string__str_len ( qualified_name ) - double_underscore_pos - 2 );
+}
+return qualified_name;
+}
+
+std__string__string backends__qbe__renderer__render_qbe_function(structs__ASTNode* ast) {
+const std__string__string func_name = ast->data.function.name;
+const std__string__string return_type = ast->data.function.return_type;
+const std__string__string base_name = backends__qbe__renderer__extract_base_function_name( func_name );
+std__maps__StringStringMap__set(&g_qbe_function_map, &g_qbe_arena, base_name, func_name);
+if (ast->children== nil) {
+return std__string__str( "" );
+}
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count == 0) {
+return std__string__str( "" );
+}
+bool has_meaningful_code = false;
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const structs__ASTNode* child = &(children->data[ i ]);
+has_meaningful_code = true;
+break;
+i++;
+}
+if (! has_meaningful_code) {
+return std__string__str( "" );
+}
+backends__qbe__renderer__QBEFunctionContext context = { var_registers : (*std__maps__StringStringMap__create( &g_qbe_arena , 128 )) , param_count : 0 };
+g_current_function_context = &context;
+std__string__StringBuilder sb = std__string__StringBuilder__init( 512 );
+std__string__StringBuilder__append(&sb, std__string__str("export function w $"));
+std__string__StringBuilder__append(&sb, func_name);
+if (ast->data.function.params!= nil && len_v((*ast->data.function.params)) > 0) {
+std__string__StringBuilder__append(&sb, std__string__str("(w %.1) {\n"));
+context.param_count = 1;
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("() {\n"));
+}
+std__string__StringBuilder__append(&sb, std__string__str("@start\n"));
+if (ast->data.function.params!= nil && len_v((*ast->data.function.params)) > 0) {
+const __list_std__string_t params = (*ast->data.function.params);
+int32_t param_idx = 0;
+while (1) {
+if (param_idx >= len_v(params)) {
+break;
+}
+const std__string__string param_str = params.data[ param_idx ];
+std__string__string param_name = param_str;
+const int32_t colon_pos = std__string__find_substr( param_str , std__string__str ( ":" ) );
+if (colon_pos > 0) {
+param_name = std__string__substr ( param_str , 0 , colon_pos );
+}
+param_name = std__string__strip ( param_name );
+if (std__string__has_prefix ( param_name , std__string__str ( "mut " ) )) {
+param_name = std__string__strip ( std__string__substr ( param_name , 4 , std__string__str_len ( param_name ) - 4 ) );
+}
+else if (std__string__has_prefix ( param_name , std__string__str ( "val " ) )) {
+param_name = std__string__strip ( std__string__substr ( param_name , 4 , std__string__str_len ( param_name ) - 4 ) );
+}
+else if (std__string__has_prefix ( param_name , std__string__str ( "ref " ) )) {
+param_name = std__string__strip ( std__string__substr ( param_name , 4 , std__string__str_len ( param_name ) - 4 ) );
+}
+const std__string__string qbe_param_ref = std__string__concat( std__string__str ( "%." ) , std__string__i32_to_string ( param_idx + 1 ) );
+std__maps__StringStringMap__set(&((*g_current_function_context).var_registers), &g_qbe_arena, param_name, qbe_param_ref);
+param_idx++;
+}
+}
+if (std__string__str_contains ( func_name , std__string__str ( "string" ) ) || std__string__str_contains ( func_name , std__string__str ( "str_" ) )) {
+const std__string__string param_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, param_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l alloc8 8\n"));
+std__maps__StringStringMap__set(&((*g_current_function_context).var_registers), &g_qbe_arena, std__string__str("s"), param_reg);
+}
+const std__string__string body_code = backends__qbe__renderer__render_qbe_function_body( children );
+std__string__StringBuilder__append(&sb, body_code);
+std__string__StringBuilder__append(&sb, std__string__str("}\n\n"));
+g_current_function_context = nil;
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_function_body(__list_structs__ASTNode_t* children) {
+const int32_t child_count = len_v((*children));
+std__string__StringBuilder sb = std__string__StringBuilder__init( 512 );
+bool has_return = false;
+int32_t i = 0;
+while (1) {
+if (i >= child_count || has_return) {
+break;
+}
+const structs__ASTNode* child = &(children->data[ i ]);
+const std__string__string child_code = backends__qbe__renderer__render_qbe_ast_node( child );
+if (std__string__str_contains ( child_code , std__string__str ( "ret " ) )) {
+std__string__StringBuilder__append(&sb, child_code);
+has_return = true;
+}
+else if (std__string__equals_c ( child->node_type, "If" ) && std__string__str_contains ( child_code , std__string__str ( "@after_" ) ) && std__string__str_contains ( child_code , std__string__str ( "ret 0" ) )) {
+std__string__StringBuilder__append(&sb, child_code);
+has_return = true;
+}
+else if (std__string__equals_c ( child->node_type, "Loop" ) && std__string__str_contains ( child_code , std__string__str ( "jmp @loop_" ) )) {
+std__string__StringBuilder__append(&sb, child_code);
+has_return = true;
+}
+else {
+std__string__StringBuilder__append(&sb, child_code);
+}
+i++;
+}
+if (! has_return) {
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_declaration(structs__ASTNode* ast) {
+const std__string__string name = ast->data.declaration.name;
+const std__string__string type_name = ast->data.declaration.type_name;
+const std__string__string initializer = ast->data.declaration.initializer;
+const std__string__string reg = backends__qbe__renderer__next_qbe_register( );
+std__maps__StringStringMap__set(&g_qbe_var_registers, &g_qbe_arena, name, reg);
+std__maps__StringStringMap__set(&g_qbe_var_types, &g_qbe_arena, name, type_name);
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__maps__StringStringMap__contains( &g_qbe_model_definitions , type_name )) {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l alloc8 8\n"));
+if (std__string__str_len ( initializer ) > 0 && std__string__str_contains ( initializer , std__string__str ( "{ }" ) )) {
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+const std__string__string offset_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, offset_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 4\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, offset_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+const std__string__string offset_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, offset_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 4\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, offset_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l alloc4 4\n"));
+if (std__string__str_len ( initializer ) > 0) {
+if (backends__qbe__renderer__contains_function_call ( initializer )) {
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+const std__string__string call_code = backends__qbe__renderer__render_function_call_expression( initializer , temp_reg );
+std__string__StringBuilder__append(&sb, call_code);
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__str_contains ( initializer , std__string__str ( "." ) ) && ! backends__qbe__renderer__is_float_literal ( initializer )) {
+const int32_t dot_pos = std__string__find_substr( initializer , std__string__str ( "." ) );
+if (dot_pos > 0) {
+const std__string__string object_name = std__string__substring_se( initializer , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( initializer , dot_pos + 1 , (int32_t)( std__string__str_len ( initializer ) ) );
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+if (std__string__equals_c ( member_name , "len" )) {
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 8\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__equals_c ( member_name , "cap" )) {
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 16\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__equals_c ( member_name , "data" )) {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+std__string__string processed_init = backends__qbe__renderer__process_c_function_calls( initializer );
+processed_init = backends__qbe__renderer__fix_float_literals ( processed_init );
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, processed_init);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__string processed_init = backends__qbe__renderer__process_c_function_calls( initializer );
+processed_init = backends__qbe__renderer__fix_float_literals ( processed_init );
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, processed_init);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__string processed_init = backends__qbe__renderer__process_c_function_calls( initializer );
+processed_init = backends__qbe__renderer__fix_float_literals ( processed_init );
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, processed_init);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    storew 0, "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_print(structs__ASTNode* ast) {
+const __list_std__string_t* messages_ref = ast->data.print.messages;
+const __list_bool_t* flags_ref = ast->data.print.is_expressions;
+if (messages_ref == nil || flags_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t messages = (*messages_ref);
+const __list_bool_t flags = (*flags_ref);
+if (len_v(messages) == 0) {
+return std__string__str( "" );
+}
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+if (len_v(messages) == 1 && len_v(flags) == 1 && ! flags.data[ 0 ]) {
+const std__string__string message = messages.data[ 0 ];
+std__string__string str_name = {0};
+if (std__maps__StringStringMap__contains( &g_qbe_string_literals , message )) {
+str_name = std__maps__StringStringMap__get( &g_qbe_string_literals , message );
+}
+else {
+str_name = std__string__concat ( std__string__str ( "str_" ) , std__string__i32_to_string ( g_qbe_string_counter ) );
+g_qbe_string_counter++;
+std__maps__StringStringMap__set(&g_qbe_string_literals,                 &g_qbe_arena,                 message,                 str_name);
+}
+std__string__StringBuilder__append(&sb, std__string__str("    call $printf(l $"));
+std__string__StringBuilder__append(&sb, str_name);
+std__string__StringBuilder__append(&sb, std__string__str(")\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+if (len_v(messages) >= 2) {
+const std__string__string format_str = messages.data[ 0 ];
+std__string__string str_name = {0};
+if (std__maps__StringStringMap__contains( &g_qbe_string_literals , format_str )) {
+str_name = std__maps__StringStringMap__get( &g_qbe_string_literals , format_str );
+}
+else {
+str_name = std__string__concat ( std__string__str ( "str_" ) , std__string__i32_to_string ( g_qbe_string_counter ) );
+g_qbe_string_counter++;
+std__maps__StringStringMap__set(&g_qbe_string_literals,                 &g_qbe_arena,                 format_str,                 str_name);
+}
+std__string__StringBuilder args_sb = std__string__StringBuilder__init( 256 );
+int32_t i = 1;
+while (1) {
+if (i >= len_v(messages)) {
+break;
+}
+if (flags.data[ i ]) {
+const std__string__string expr = std__string__strip( messages.data[ i ]);
+if (std__string__has_prefix ( expr , std__string__str ( "addr(" ) ) && std__string__has_suffix ( expr , std__string__str ( ")" ) )) {
+const std__string__string var_name = std__string__strip( std__string__substr ( expr , 5 , std__string__str_len ( expr ) - 6 ) );
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , var_name )) {
+const std__string__string var_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , var_name );
+std__string__StringBuilder__append(&args_sb, std__string__str(", l "));
+std__string__StringBuilder__append(&args_sb, var_reg);
+}
+}
+else if (std__maps__StringStringMap__contains( &g_qbe_var_registers , expr )) {
+const std__string__string var_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , expr );
+const std__string__string load_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, var_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&args_sb, std__string__str(", w "));
+std__string__StringBuilder__append(&args_sb, load_reg);
+}
+}
+i++;
+}
+std__string__StringBuilder__append(&sb, std__string__str("    call $printf(l $"));
+std__string__StringBuilder__append(&sb, str_name);
+std__string__StringBuilder__append(&sb, std__string__StringBuilder__to_string(&args_sb));
+std__string__StringBuilder__append(&sb, std__string__str(")\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_return(structs__ASTNode* ast) {
+const std__string__string expression = std__string__strip( ast->data.return_node.expression);
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__string__str_len ( expression ) > 0) {
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , expression )) {
+const std__string__string reg = std__maps__StringStringMap__get( &g_qbe_var_registers , expression );
+const std__string__string load_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    ret "));
+std__string__StringBuilder__append(&sb, load_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (backends__qbe__renderer__contains_function_call ( expression )) {
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+const std__string__string call_code = backends__qbe__renderer__render_function_call_expression( expression , temp_reg );
+std__string__StringBuilder__append(&sb, call_code);
+std__string__StringBuilder__append(&sb, std__string__str("    ret "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__str_contains ( expression , std__string__str ( "." ) )) {
+const int32_t dot_pos = std__string__find_substr( expression , std__string__str ( "." ) );
+if (dot_pos > 0) {
+const std__string__string object_name = std__string__substring_se( expression , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( expression , dot_pos + 1 , (int32_t)( std__string__str_len ( expression ) ) );
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+if (std__string__equals_c ( member_name , "len" )) {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" + 8\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    ret "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__equals_c ( member_name , "cap" )) {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" + 16\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    ret "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+}
+else {
+std__string__string processed_expr = backends__qbe__renderer__process_c_function_calls( expression );
+processed_expr = backends__qbe__renderer__fix_float_literals ( processed_expr );
+std__string__StringBuilder__append(&sb, std__string__str("    ret "));
+std__string__StringBuilder__append(&sb, processed_expr);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_model(structs__ASTNode* ast) {
+const std__string__string model_name = ast->data.model_node.name;
+const __list_std__string_t* field_names_ref = ast->data.model_node.field_names;
+const __list_std__string_t* field_types_ref = ast->data.model_node.field_types;
+if (field_names_ref == nil || field_types_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t field_names = (*field_names_ref);
+const __list_std__string_t field_types = (*field_types_ref);
+const int32_t field_count = len_v(field_names);
+if (field_count != len_v(field_types)) {
+return std__string__str( "" );
+}
+std__maps__StringStringMap__set(&g_qbe_model_definitions,         &g_qbe_arena,         model_name,         std__string__str("defined"));
+int32_t i = 0;
+while (1) {
+if (i >= field_count) {
+break;
+}
+const std__string__string field_key = std__string__concat( std__string__concat ( model_name , std__string__str ( "." ) ) , field_names.data[ i ]);
+std__maps__StringIntMap__set(&g_qbe_model_field_offsets, &g_qbe_arena, field_key, i * 4);
+i++;
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_function_call(structs__ASTNode* ast) {
+if (ast == nil) {
+return std__string__str( "" );
+}
+const std__string__string func_name = ast->data.func_call.function_name;
+const __list_std__string_t* args = ast->data.func_call.args;
+std__string__string resolved_func_name = {0};
+if (func_name.data== nil || std__string__str_len ( func_name ) == 0) {
+if (args != nil && len_v((*args)) >= 1) {
+resolved_func_name = std__string__str ( "printf" );
+}
+else {
+return std__string__str( "" );
+}
+}
+else if (std__maps__StringStringMap__contains( &g_qbe_function_map , func_name )) {
+resolved_func_name = std__maps__StringStringMap__get( &g_qbe_function_map , func_name );
+}
+else {
+resolved_func_name = func_name;
+}
+if (std__string__has_prefix ( func_name , std__string__str ( "C." ) )) {
+resolved_func_name = std__string__substr ( func_name , 2 , std__string__str_len ( func_name ) - 2 );
+}
+else if (std__maps__StringStringMap__contains( &g_qbe_externs , func_name )) {
+resolved_func_name = std__maps__StringStringMap__get( &g_qbe_externs , func_name );
+}
+else if (args != nil && len_v((*args)) > 0) {
+const std__string__string first_arg = args->data[ 0 ];
+if (std__maps__StringStringMap__contains( &g_qbe_var_types , first_arg )) {
+const std__string__string arg_type = std__maps__StringStringMap__get( &g_qbe_var_types , first_arg );
+const std__string__string overload_key = std__string__concat( std__string__concat ( func_name , std__string__str ( ":" ) ) , arg_type );
+if (std__maps__StringStringMap__contains( &g_qbe_overloads , overload_key )) {
+resolved_func_name = std__maps__StringStringMap__get( &g_qbe_overloads , overload_key );
+if (! std__string__str_contains ( resolved_func_name , std__string__str ( "__" ) )) {
+resolved_func_name = std__string__concat ( std__string__str ( "test_overload__" ) , resolved_func_name );
+}
+}
+}
+}
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder args_sb = std__string__StringBuilder__init( 256 );
+if (args != nil) {
+const __list_std__string_t args_list = (*args);
+int32_t i = 0;
+while (1) {
+if (i >= len_v(args_list)) {
+break;
+}
+const std__string__string arg_expr = std__string__strip( args_list.data[ i ]);
+if (i > 0) {
+std__string__StringBuilder__append(&args_sb, std__string__str(", "));
+}
+const std__string__string processed_arg = backends__qbe__renderer__process_qbe_expression( arg_expr );
+std__string__StringBuilder__append(&args_sb, processed_arg);
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("    call $"));
+std__string__StringBuilder__append(&sb, resolved_func_name);
+std__string__StringBuilder__append(&sb, std__string__str("("));
+std__string__string args_str = std__string__StringBuilder__to_string( &args_sb );
+std__string__StringBuilder__append(&sb, args_str);
+std__string__StringBuilder__append(&sb, std__string__str(")\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_overload(structs__ASTNode* ast) {
+const std__string__string overload_name = ast->data.overload_node.name;
+const __list_std__string_t* type_names_ref = ast->data.overload_node.type_names;
+const __list_std__string_t* target_funcs_ref = ast->data.overload_node.target_functions;
+if (type_names_ref == nil || target_funcs_ref == nil) {
+return std__string__str( "" );
+}
+const __list_std__string_t type_names = (*type_names_ref);
+const __list_std__string_t target_funcs = (*target_funcs_ref);
+const int32_t count = len_v(type_names);
+if (count != len_v(target_funcs)) {
+return std__string__str( "" );
+}
+int32_t i = 0;
+while (1) {
+if (i >= count) {
+break;
+}
+const std__string__string type_name = type_names.data[ i ];
+const std__string__string target_func = target_funcs.data[ i ];
+const std__string__string overload_key1 = std__string__concat( std__string__concat ( overload_name , std__string__str ( ":" ) ) , type_name );
+const std__string__string overload_key2 = std__string__concat( std__string__concat ( std__string__str ( "print" ) , std__string__str ( ":" ) ) , type_name );
+std__maps__StringStringMap__set(&g_qbe_overloads, &g_qbe_arena, overload_key1, target_func);
+std__maps__StringStringMap__set(&g_qbe_overloads, &g_qbe_arena, overload_key2, target_func);
+i++;
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_extern(structs__ASTNode* ast) {
+const std__string__string func_name = ast->data.extern_node.function_name;
+const std__string__string symbol = ast->data.extern_node.symbol;
+std__string__string extern_symbol = {0};
+if (std__string__str_len ( symbol ) > 0) {
+extern_symbol = symbol;
+}
+else {
+extern_symbol = func_name;
+}
+std__maps__StringStringMap__set(&g_qbe_externs, &g_qbe_arena, func_name, extern_symbol);
+return std__string__str( "" );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_test(structs__ASTNode* ast) {
+std__string__StringBuilder sb = std__string__StringBuilder__init( 512 );
+std__string__StringBuilder__append(&sb, std__string__str("export function w $main() {\n"));
+std__string__StringBuilder__append(&sb, std__string__str("@start\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+std__string__StringBuilder__append(&sb, std__string__str("}\n\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_unsafe(structs__ASTNode* ast) {
+if (ast->data.unsafe_node.body== nil) {
+return std__string__str( "" );
+}
+const __list_structs__ASTNode_t* body = ast->data.unsafe_node.body;
+const int32_t body_count = len_v((*body));
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+int32_t i = 0;
+while (1) {
+if (i >= body_count) {
+break;
+}
+const std__string__string child_code = backends__qbe__renderer__render_qbe_ast_node( &(body->data[ i ]) );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__resolve_member_access(std__string__string expr) {
+if (! std__string__str_contains ( expr , std__string__str ( "." ) )) {
+return backends__qbe__renderer__resolve_variable_reference( expr );
+}
+const int32_t dot_pos = std__string__find_substr( expr , std__string__str ( "." ) );
+if (dot_pos <= 0) {
+return expr;
+}
+const std__string__string object_name = std__string__substring_se( expr , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( expr , dot_pos + 1 , (int32_t)( std__string__str_len ( expr ) ) );
+if (! std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+return expr;
+}
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+return object_reg;
+}
+
+std__string__string backends__qbe__renderer__process_qbe_expression(std__string__string expr) {
+const std__string__string trimmed = std__string__strip( expr );
+if (std__string__has_prefix ( trimmed , std__string__str ( "addr(" ) ) && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
+const std__string__string var_name = std__string__strip( std__string__substr ( trimmed , 5 , std__string__str_len ( trimmed ) - 6 ) );
+if (g_current_function_context != nil && std__maps__StringStringMap__contains( &((*g_current_function_context) . var_registers) , var_name )) {
+const std__string__string var_reg = std__maps__StringStringMap__get( &((*g_current_function_context) . var_registers) , var_name );
+return std__string__concat( std__string__str ( "l " ) , var_reg );
+}
+else {
+return std__string__concat( std__string__str ( "l " ) , trimmed );
+}
+}
+else if (std__string__str_len ( trimmed ) >= 2 && std__string__get_char ( trimmed , 0 ) == '"' && std__string__get_char ( trimmed , std__string__str_len ( trimmed ) - 1 ) == '"') {
+const std__string__string str_content = std__string__substr( trimmed , 1 , std__string__str_len ( trimmed ) - 2 );
+std__string__string str_name = {0};
+if (std__maps__StringStringMap__contains( &g_qbe_string_literals , str_content )) {
+str_name = std__maps__StringStringMap__get( &g_qbe_string_literals , str_content );
+}
+else {
+str_name = std__string__concat ( std__string__str ( "str_" ) , std__string__i32_to_string ( g_qbe_string_counter ) );
+g_qbe_string_counter++;
+std__maps__StringStringMap__set(&g_qbe_string_literals,                 &g_qbe_arena,                 str_content,                 str_name);
+}
+return std__string__concat( std__string__str ( "l $" ) , str_name );
+}
+else if (g_current_function_context != nil && std__maps__StringStringMap__contains( &((*g_current_function_context) . var_registers) , trimmed )) {
+const std__string__string var_reg = std__maps__StringStringMap__get( &((*g_current_function_context) . var_registers) , trimmed );
+return std__string__concat( std__string__str ( "w " ) , var_reg );
+}
+else {
+return std__string__concat( std__string__str ( "w " ) , trimmed );
+}
+}
+
+std__string__string backends__qbe__renderer__resolve_variable_reference(std__string__string expr) {
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , expr )) {
+return std__maps__StringStringMap__get( &g_qbe_var_registers , expr );
+}
+if (! std__string__str_contains ( expr , std__string__str ( " " ) ) && ! std__string__str_contains ( expr , std__string__str ( "(" ) ) && ! std__string__str_contains ( expr , std__string__str ( ")" ) ) && ! std__string__str_contains ( expr , std__string__str ( "." ) ) && ! std__string__str_contains ( expr , std__string__str ( "\"" ) ) && ! std__string__str_contains ( expr , std__string__str ( "\\" ) ) && std__string__str_len ( expr ) > 0 && std__string__str_len ( expr ) < 20) {
+return std__string__str( "%.1" );
+}
+return expr;
+}
+
+std__string__string backends__qbe__renderer__process_member_access_expression(std__string__string expr) {
+if (! std__string__str_contains ( expr , std__string__str ( "." ) )) {
+return expr;
+}
+const int32_t dot_pos = std__string__find_substr( expr , std__string__str ( "." ) );
+if (dot_pos <= 0) {
+return expr;
+}
+const std__string__string object_name = std__string__substring_se( expr , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( expr , dot_pos + 1 , (int32_t)( std__string__str_len ( expr ) ) );
+if (! std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+return expr;
+}
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__string__equals_c ( member_name , "len" )) {
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 8\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__equals_c ( member_name , "cap" )) {
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 16\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else if (std__string__equals_c ( member_name , "data" )) {
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+return expr;
+}
+return temp_reg;
+}
+
+std__string__string backends__qbe__renderer__process_c_function_calls(std__string__string expr) {
+if (backends__qbe__renderer__contains_function_call ( expr ) && ! std__string__str_contains ( expr , std__string__str ( "C." ) )) {
+return backends__qbe__renderer__resolve_member_access( expr );
+}
+std__string__string result = backends__qbe__renderer__resolve_member_access( expr );
+result = std__string__replace_all ( result , std__string__str ( "C." ) , std__string__str ( "$" ) );
+result = std__string__replace_all ( result , std__string__str ( "$(" ) , std__string__str ( "call $(" ) );
+return result;
+}
+
+std__string__string backends__qbe__renderer__fix_float_literals(std__string__string expr) {
+std__string__string result = std__string__replace_all( expr , std__string__str ( " . " ) , std__string__str ( "." ) );
+result = std__string__strip ( result );
+result = backends__qbe__renderer__resolve_member_access ( result );
+if (std__string__equals_c ( result , "0.0" )) {
+result = std__string__str ( "s_0.0" );
+}
+else if (backends__qbe__renderer__is_float_literal ( result ) && ! std__string__has_prefix ( result , std__string__str ( "s_" ) ) && ! std__string__has_prefix ( result , std__string__str ( "d_" ) )) {
+result = std__string__concat ( std__string__str ( "s_" ) , result );
+}
+return result;
+}
+
+bool backends__qbe__renderer__is_float_literal(std__string__string expr) {
+if (! std__string__str_contains ( expr , std__string__str ( "." ) )) {
+return false;
+}
+if (std__string__str_contains ( expr , std__string__str ( "(" ) )) {
+return false;
+}
+int32_t i = 0;
+bool has_dot = false;
+bool has_digit = false;
+while (1) {
+if (i >= std__string__str_len ( expr )) {
+break;
+}
+const char c = std__string__get_char( expr , i );
+if (c == '.') {
+if (has_dot) {
+return false;
+}
+has_dot = true;
+}
+else if (c >= '0' && c <= '9') {
+has_digit = true;
+}
+else if (c == '-' || c == '+') {
+}
+else if (c == 'e' || c == 'E') {
+}
+else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') {
+return false;
+}
+else if (c == ' ') {
+return false;
+}
+i++;
+}
+return has_dot && has_digit;
+}
+
+bool backends__qbe__renderer__contains_function_call(std__string__string expr) {
+return std__string__str_contains( expr , std__string__str ( "(" ) ) && std__string__str_contains ( expr , std__string__str ( ")" ) ) && ! std__string__str_contains ( expr , std__string__str ( "C." ) );
+}
+
+std__string__string backends__qbe__renderer__render_function_call_expression(std__string__string expr, std__string__string result_reg) {
+std__string__string func_name = parser__extract_function_name( expr );
+func_name = backends__qbe__renderer__convert_to_qbe_function_name ( func_name );
+std__string__string result = std__string__concat( std__string__str ( "    " ) , result_reg );
+result = std__string__concat ( result , std__string__str ( " =w call $" ) );
+result = std__string__concat ( result , func_name );
+result = std__string__concat ( result , std__string__str ( "()\n" ) );
+return result;
+}
+
+std__string__string backends__qbe__renderer__extract_function_name(std__string__string expr) {
+std__string__string clean_expr = std__string__replace_all( expr , std__string__str ( " " ) , std__string__str ( "" ) );
+clean_expr = std__string__replace_all ( clean_expr , std__string__str ( "(" ) , std__string__str ( "" ) );
+clean_expr = std__string__replace_all ( clean_expr , std__string__str ( ")" ) , std__string__str ( "" ) );
+return clean_expr;
+}
+
+std__string__string backends__qbe__renderer__convert_to_qbe_function_name(std__string__string func_name) {
+std__string__string result = std__string__replace_all( func_name , std__string__str ( "." ) , std__string__str ( "__" ) );
+result = std__string__replace_all ( result , std__string__str ( " " ) , std__string__str ( "" ) );
+if (! std__string__str_contains ( result , std__string__str ( "__" ) )) {
+result = std__string__concat ( std__string__str ( "std__io__" ) , result );
+}
+return result;
+}
+
+std__string__string backends__qbe__renderer__render_qbe_member_access(structs__ASTNode* ast) {
+const std__string__string object_name = ast->data.member_access.object_name;
+const std__string__string member_name = ast->data.member_access.member_name;
+if (! std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+return std__string__str( "" );
+}
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+if (std__string__equals_c ( member_name , "len" )) {
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 8\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+else if (std__string__equals_c ( member_name , "cap" )) {
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+const std__string__string addr_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =l add "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", 16\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, addr_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+else if (std__string__equals_c ( member_name , "data" )) {
+const std__string__string temp_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, temp_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w loadw "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+return std__string__str( "" );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_assignment(structs__ASTNode* ast) {
+const std__string__string variable = ast->data.assignment.variable;
+const std__string__string expression = ast->data.assignment.expression;
+std__string__StringBuilder sb = std__string__StringBuilder__init( 128 );
+if (std__string__str_contains ( variable , std__string__str ( "." ) )) {
+const int32_t dot_pos = std__string__find_substr( variable , std__string__str ( "." ) );
+if (dot_pos > 0) {
+const std__string__string object_name = std__string__substring_se( variable , 0 , dot_pos );
+const std__string__string member_name = std__string__substring_se( variable , dot_pos + 1 , (int32_t)( std__string__str_len ( variable ) ) );
+if (std__maps__StringStringMap__contains( &g_qbe_var_registers , object_name )) {
+const std__string__string object_reg = std__maps__StringStringMap__get( &g_qbe_var_registers , object_name );
+std__string__string processed_expr = backends__qbe__renderer__process_c_function_calls( expression );
+processed_expr = backends__qbe__renderer__fix_float_literals ( processed_expr );
+std__string__string offset = std__string__str( "0" );
+if (std__string__equals_c ( member_name , "data" )) {
+offset = std__string__str ( "0" );
+}
+else if (std__string__equals_c ( member_name , "len" )) {
+offset = std__string__str ( "8" );
+}
+else if (std__string__equals_c ( member_name , "cap" )) {
+offset = std__string__str ( "16" );
+}
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, processed_expr);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, object_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" + "));
+std__string__StringBuilder__append(&sb, offset);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+}
+else if (std__maps__StringStringMap__contains( &g_qbe_var_registers , variable )) {
+const std__string__string reg = std__maps__StringStringMap__get( &g_qbe_var_registers , variable );
+std__string__string processed_expr = backends__qbe__renderer__process_c_function_calls( expression );
+processed_expr = backends__qbe__renderer__fix_float_literals ( processed_expr );
+std__string__StringBuilder__append(&sb, std__string__str("    storew "));
+std__string__StringBuilder__append(&sb, processed_expr);
+std__string__StringBuilder__append(&sb, std__string__str(", "));
+std__string__StringBuilder__append(&sb, reg);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_if(structs__ASTNode* ast) {
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+const std__string__string then_label = std__string__concat( std__string__str ( "then_" ) , std__string__i32_to_string ( g_qbe_register_counter ) );
+const std__string__string end_label = std__string__concat( std__string__str ( "end_" ) , std__string__i32_to_string ( g_qbe_register_counter ) );
+g_qbe_register_counter++;
+const std__string__string cond_reg = backends__qbe__renderer__next_qbe_register( );
+std__string__StringBuilder__append(&sb, std__string__str("    "));
+std__string__StringBuilder__append(&sb, cond_reg);
+std__string__StringBuilder__append(&sb, std__string__str(" =w ceqw 1, 1\n"));
+bool has_else = false;
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 1) {
+const std__string__string else_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 1 ]) );
+if (std__string__str_len ( std__string__strip ( else_code ) ) > 0) {
+has_else = true;
+}
+}
+}
+if (has_else) {
+const std__string__string else_label = std__string__concat( std__string__str ( "else_" ) , std__string__i32_to_string ( g_qbe_register_counter - 1 ) );
+std__string__StringBuilder__append(&sb, std__string__str("    jnz "));
+std__string__StringBuilder__append(&sb, cond_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, else_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 0) {
+const std__string__string then_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 0 ]) );
+std__string__StringBuilder__append(&sb, then_code);
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("    jmp @"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, else_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 1) {
+const std__string__string else_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 1 ]) );
+std__string__StringBuilder__append(&sb, else_code);
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, end_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+else {
+const std__string__string skip_label = std__string__concat( std__string__str ( "skip_" ) , std__string__i32_to_string ( g_qbe_register_counter - 1 ) );
+bool then_has_return = false;
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 0) {
+const std__string__string then_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 0 ]) );
+if (std__string__str_contains ( then_code , std__string__str ( "ret " ) )) {
+then_has_return = true;
+}
+}
+}
+if (then_has_return) {
+const std__string__string after_label = std__string__concat( std__string__str ( "after_" ) , std__string__i32_to_string ( g_qbe_register_counter - 1 ) );
+std__string__StringBuilder__append(&sb, std__string__str("    jnz "));
+std__string__StringBuilder__append(&sb, cond_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, after_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 0) {
+const std__string__string then_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 0 ]) );
+std__string__StringBuilder__append(&sb, then_code);
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, after_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("    ret 0\n"));
+}
+else {
+std__string__StringBuilder__append(&sb, std__string__str("    jnz "));
+std__string__StringBuilder__append(&sb, cond_reg);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str(", @"));
+std__string__StringBuilder__append(&sb, skip_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, then_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+if (child_count > 0) {
+const std__string__string then_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ 0 ]) );
+std__string__StringBuilder__append(&sb, then_code);
+if (! std__string__str_contains ( then_code , std__string__str ( "ret " ) )) {
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, skip_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+}
+}
+}
+}
+}
+return std__string__StringBuilder__to_string( &sb );
+}
+
+std__string__string backends__qbe__renderer__render_qbe_loop(structs__ASTNode* ast) {
+std__string__StringBuilder sb = std__string__StringBuilder__init( 256 );
+const std__string__string loop_label = std__string__concat( std__string__str ( "loop_" ) , std__string__i32_to_string ( g_qbe_register_counter ) );
+g_qbe_register_counter++;
+std__string__StringBuilder__append(&sb, std__string__str("@"));
+std__string__StringBuilder__append(&sb, loop_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+if (ast->children!= nil) {
+const __list_structs__ASTNode_t* children = ast->children;
+const int32_t child_count = len_v((*children));
+int32_t i = 0;
+while (1) {
+if (i >= child_count) {
+break;
+}
+const std__string__string child_code = backends__qbe__renderer__render_qbe_ast_node( &(children->data[ i ]) );
+std__string__StringBuilder__append(&sb, child_code);
+i++;
+}
+}
+std__string__StringBuilder__append(&sb, std__string__str("    jmp @"));
+std__string__StringBuilder__append(&sb, loop_label);
+std__string__StringBuilder__append(&sb, std__string__str("\n"));
+return std__string__StringBuilder__to_string( &sb );
+}
+
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -28734,6 +32122,8 @@ return result;
 int main(int argc, char** argv) {
 __axe_argc = argc;
 __axe_argv = argv;
+    signal(SIGSEGV, axe_segv_handler);
+    signal(SIGABRT, axe_segv_handler);
 const std__arena__Arena arena = std__arena__Arena__create( 1024 );
 const std__lists__StringList* args = std__os__get_cmdline_args( &arena );
 if (args->len< 2) {
@@ -28785,6 +32175,12 @@ gstate__set_sysroot_path(sysroot);
 i += 2;
 continue;
 }
+if (std__string__equals_c ( arg , "--backend" ) && i + 1 < args->len) {
+const std__string__string backend = std__lists__StringList__get( args , i + 1 );
+gstate__set_backend_type(backend);
+i += 2;
+continue;
+}
 if (std__string__has_prefix ( arg , std__string__str ( "-I" ) ) && std__string__str_len ( arg ) > 2) {
 const std__string__string inc_path = std__string__substring_se( arg , 2 , (int32_t)( std__string__str_len ( arg ) ) );
 std__lists__StringList__push(inc_paths, &arena, inc_path);
@@ -28800,8 +32196,8 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.15");
-std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025)\n");
+std__io__println("Axe v0.0.16");
+std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025 - 2026)\n");
 std__os__quit(0);
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-l" ) || std__algorithms__strlst_contains_c ( (*args) , "--loud" )) {
@@ -28979,6 +32375,18 @@ typedef struct dirent dirent;
 typedef struct _finddata_t _finddata_t;
 #endif
 #ifdef __APPLE__
+#endif
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
+#endif
+#ifdef _WIN32
+#endif
+#ifndef _WIN32
 #endif
 #ifdef _WIN32
 #endif
