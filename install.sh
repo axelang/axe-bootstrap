@@ -13,11 +13,14 @@ if ! command -v git >/dev/null 2>&1; then
     exit 1
 fi
 
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+
 PREFIX=/usr/local
 AXE_ROOT="$PREFIX/lib/axe"
 AXE_REPO="https://github.com/axelang/axe.git"
 SAW_REPO="https://github.com/axelang/saw.git"
 AXEDOC_REPO="https://github.com/axelang/axedoc.git"
+AXEFMT_REPO="https://github.com/axelang/axefmt.git"
 TMP_DIR="$(mktemp -d)"
 STD_SRC="$TMP_DIR/axe/source/compiler/std"
 EXT_SRC="$TMP_DIR/axe/source/compiler/external"
@@ -100,6 +103,13 @@ git clone --depth=1 "$AXEDOC_REPO" "$TMP_DIR/axedoc"
     install -m 755 axedoc "$AXE_ROOT/axedoc"
 )
 
+git clone --depth=1 "$AXEFMT_REPO" "$TMP_DIR/axefmt"
+(
+    cd "$TMP_DIR/axefmt"
+    "$AXE_ROOT/axe" axefmt.axe
+    install -m 755 axefmt "$AXE_ROOT/axefmt"
+)
+
 USER_FILES="$HOME/.profile $HOME/.bashrc $HOME/.zshrc"
 if [ "$(uname)" = "Darwin" ]; then
     USER_FILES="$USER_FILES $HOME/.zprofile"
@@ -122,6 +132,7 @@ echo "Executables:"
 echo "  axe     -> $AXE_ROOT/axe"
 echo "  saw     -> $AXE_ROOT/saw"
 echo "  axedoc  -> $AXE_ROOT/axedoc"
+echo "  axefmt  -> $AXE_ROOT/axefmt"
 echo "Standard library: $AXE_ROOT/std"
 echo "External: $AXE_ROOT/external"
 echo "Restart your shell."
