@@ -1532,12 +1532,14 @@ void std__errors__panic__T_std__errors__error(std__errors__error err);
 void std__errors__panic__T_char_(char* err);
 void std__errors__enforce__T_char_(bool condition, char* err);
 void std__errors__enforce__T_std__errors__error(bool condition, std__errors__error err);
+std__string__string std__string__reverse(std__string__string s);
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
 #endif
 bool builds__command_exists(std__string__string cmd);
 void builds__filter_and_print_errors(std__string__string output);
+void builds__doctor();
 bool builds__has_double_underscore(std__string__string name);
 void builds__prefix_root_enums(structs__ASTNode* node, std__string__string mprefix);
 void builds__prefix_root_functions(structs__ASTNode* node, std__string__string mprefix);
@@ -1578,6 +1580,10 @@ void gstate__set_library_paths(std__lists__StringList* paths);
 std__lists__StringList* gstate__get_library_paths();
 void gstate__set_link_libraries(std__lists__StringList* libs);
 std__lists__StringList* gstate__get_link_libraries();
+void gstate__set_custom_c_flags(std__string__string flags);
+std__string__string gstate__get_custom_c_flags();
+void gstate__set_show_cc_command(bool v);
+bool gstate__get_show_cc_command();
 void gstate__debug_print_i32(int32_t msg);
 void gstate__debug_print_str(std__string__string msg);
 void gstate__debug_print_raw(char* msg);
@@ -2110,6 +2116,8 @@ std__lists__StringList* library_paths = nil;
 std__lists__StringList* link_libraries = nil;
 bool no_windows_header = false;
 std__string__string backend_type = {0};
+std__string__string custom_c_flags = {0};
+bool show_cc_command = false;
 int32_t g_lexer_current_line;
 std__maps__StringStringMap g_type_aliases = {0};
 std__maps__StringBoolMap g_imported_modules = {0};
@@ -3471,25 +3479,28 @@ std__io__println("");
 std__io__println("Options:");
 std__io__println("  -o <name>         Specify output binary name");
 std__io__println("  -c                Compile only; produce object file (.obj or .o)");
-std__io__println("  -e                Keep the emitted file");
+std__io__println("  -e                Keep the emitted intermediate file");
 std__io__println("  -r                Run the built executable after compilation");
-std__io__println("  -tokens           Print lexer tokens and exit");
-std__io__println("  -ast              Print the parsed AST and exit");
-std__io__println("  -dll              Build shared instead of standalone executable");
-std__io__println("  --release         Build in release mode");
-std__io__println("  --backend <name>  Build with C, LLVM, or QBE backend");
-std__io__println("  --bootstrap       Emit without line directives");
 std__io__println("  -l, --loud        Loud debug output");
 std__io__println("  -q, --quiet       Suppress all output");
 std__io__println("  -I<path>          Pass a C include directory");
 std__io__println("  -L<path>          Add C library search path");
 std__io__println("  -l<name>          Link against C library (e.g. -lm, -lSDL2)");
+std__io__println("  --tokens          Print lexer tokens and exit");
+std__io__println("  --ast             Print the parsed AST and exit");
+std__io__println("  --dll             Build shared instead of standalone executable");
+std__io__println("  --release         Build in release mode");
+std__io__println("  --backend <name>  Build with C, LLVM, or QBE backend");
+std__io__println("  --cflags <flags>  Pass custom flags to the C compiler");
+std__io__println("  --showcc          Show the C compiler command line");
+std__io__println("  --bootstrap       Emit without line directives");
 #ifdef _WIN32
 std__io__println("  --nowin           Do not include windows.h automatically");
 #endif
 std__io__println("  --syntax-check    Check syntax only (no code generation)");
 std__io__println("  --target <triple> Cross-compile for target (e.g. x86_64-w64-mingw32)");
 std__io__println("  --sysroot <path>  Specify sysroot for cross-compilation");
+std__io__println("  --doctor          Show system information and report issues");
 std__io__println("  --version, -v     Show axe version and exit");
 std__io__println("  --help, -h        Show this help message and exit");
 std__io__println("");
@@ -5686,6 +5697,31 @@ return std__string__substring_se( path , idx + 1 , (int32_t)( path.len) );
 #endif
 #ifndef _WIN32
 #endif
+std__string__string std__string__reverse(std__string__string s) {
+std__string__string result = {0};
+result.data = nil;
+result.len = 0;
+result.cap = 0;
+if (s.len== 0) {
+return result;
+}
+result.data = malloc ( s.len+ 1 );
+if (result.data!= nil) {
+uintptr_t i = 0;
+while (1) {
+if (i >= s.len) {
+break;
+}
+result.data[i] = s.data[ s.len- 1 - i ];
+i++;
+}
+result.data[s.len] = '\0';
+result.len = s.len;
+result.cap = s.len+ 1;
+}
+return result;
+}
+
 #ifdef _WIN32
 #endif
 #ifndef _WIN32
@@ -5709,6 +5745,52 @@ if (std__string__str_len ( output ) == 0) {
 return ;
 }
 std__io__println(output);
+}
+
+void builds__doctor() {
+std__io__println("\nSystem Information:");
+std__io__println("------------------");
+#ifdef __linux__
+std__os__exec("uname -a");
+std__os__exec("lsb_release -a 2>/dev/null || cat /etc/*release");
+std__os__exec("grep -m 1 'model name' /proc/cpuinfo || true");
+std__os__exec("grep -c '^processor' /proc/cpuinfo || true");
+std__os__exec("free -h");
+#endif
+#ifdef __APPLE__
+std__os__exec("sw_vers");
+std__io__println("");
+std__os__exec("system_profiler SPHardwareDataType | grep -E 'Model|Processor|Memory'");
+std__io__println("");
+#endif
+#ifdef _WIN32
+std__os__exec("systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\" /C:\"System Type\"");
+std__io__println("");
+#endif
+std__io__println("\nToolchain Checks:");
+std__io__println("----------------");
+const bool cc_ok = builds__command_exists( std__string__str ( "clang" ) ) || builds__command_exists ( std__string__str ( "gcc" ) ) || builds__command_exists ( std__string__str ( "cc" ) );
+if (cc_ok) {
+std__io__println("C Compiler: Found");
+}
+else {
+std__io__println("C Compiler: Not found");
+}
+const bool llvm_ok = builds__command_exists( std__string__str ( "clang" ) );
+if (llvm_ok) {
+std__io__println("LLVM Compiler: Found");
+}
+else {
+std__io__println("LLVM Compiler: Not found");
+}
+const bool qbe_ok = builds__command_exists( std__string__str ( "qbe" ) );
+if (qbe_ok) {
+std__io__println("QBE Compiler: Found");
+}
+else {
+std__io__println("QBE Compiler: Not found");
+}
+std__io__println("\nNote: For detailed compiler diagnostics, run with -l flag");
 }
 
 bool builds__has_double_underscore(std__string__string name) {
@@ -6197,7 +6279,12 @@ std__io__println("Error: No C toolchain found in PATH, cannot link.");
 return false;
 }
 link_cmd = std__string__concat ( link_cmd , asm_filename );
+if (is_release_build) {
+link_cmd = std__string__concat ( link_cmd , std__string__str ( " -Wno-everything -O3 -o " ) );
+}
+else {
 link_cmd = std__string__concat ( link_cmd , std__string__str ( " -g -Wno-everything -O0 -o " ) );
+}
 link_cmd = std__string__concat ( link_cmd , qbe_exe_filename );
 const std__os__ExecResult link_result = std__os__exec_capture( link_cmd );
 const int32_t exit_code = link_result.exit_code;
@@ -6237,7 +6324,9 @@ compile_cmd = std__string__concat_c ( compile_cmd , "--sysroot=" );
 compile_cmd = std__string__concat ( compile_cmd , sysroot_path );
 compile_cmd = std__string__concat_c ( compile_cmd , " " );
 }
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( "\"" ) );
 compile_cmd = std__string__concat ( compile_cmd , code_file );
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( "\"" ) );
 const bool is_shared = build_shared_lib;
 if (is_shared) {
 #ifdef _WIN32
@@ -6274,41 +6363,46 @@ compile_cmd = std__string__concat ( compile_cmd , lib_paths->data[ lp_idx ]);
 lp_idx++;
 }
 }
+const std__string__string custom_flags = gstate__get_custom_c_flags( );
+if (std__string__str_len ( custom_flags ) > 0) {
+compile_cmd = std__string__concat_c ( compile_cmd , " " );
+compile_cmd = std__string__concat ( compile_cmd , custom_flags );
+}
 const std__string__string toolchain_root = std__os__get_executable_dir( );
 if (std__string__equals_c ( backend , "c" ) && backends__c__renderer__has_external_header ( std__string__str ( "pcre.h" ) )) {
 compile_cmd = std__string__concat_c ( compile_cmd , " -DPCRE_STATIC" );
 #ifdef _WIN32
-compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -I\"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include " );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include\" \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/pcre.lib" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/pcre.lib\"" );
 #endif
 #ifdef __linux__
-compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -I\"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include " );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include\" \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-linux/libpcre.a" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-linux/libpcre.a\"" );
 #endif
 #ifdef __APPLE__
-compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -I\"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include " );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/pcre/include\" \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libpcre.a" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libpcre.a\"" );
 #endif
 }
 if (imports__has_imported_module ( std__string__str ( "std/net" ) ) || imports__has_imported_module ( std__string__str ( "net.axe" ) ) || std__string__find_substr ( filename , std__string__str ( "net.axe" ) ) >= 0) {
-compile_cmd = std__string__concat_c ( compile_cmd , " -DCURL_STATICLIB -I" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -DCURL_STATICLIB -I\"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/curl/include" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/curl/include\"" );
 #ifdef _WIN32
-compile_cmd = std__string__concat_c ( compile_cmd , " " );
+compile_cmd = std__string__concat_c ( compile_cmd , " \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/libcurl.lib " );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/libcurl.lib\" \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/zlib.lib" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/zlib.lib\"" );
 compile_cmd = std__string__concat_c ( compile_cmd , " -lws2_32 -lwldap32 -ladvapi32 -lcrypt32" );
 compile_cmd = std__string__concat_c ( compile_cmd , " -lnormaliz -liphlpapi -lsecur32 -lbcrypt" );
 #endif
@@ -6317,23 +6411,29 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -lcurl -lz" );
 #endif
 }
 if (imports__has_imported_module ( std__string__str ( "std/json" ) ) || imports__has_imported_module ( std__string__str ( "json.axe" ) ) || std__string__find_substr ( filename , std__string__str ( "json.axe" ) ) >= 0) {
-compile_cmd = std__string__concat_c ( compile_cmd , " -I" );
+compile_cmd = std__string__concat_c ( compile_cmd , " -I\"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/yyjson/include" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/yyjson/include\"" );
 #ifdef _WIN32
-compile_cmd = std__string__concat_c ( compile_cmd , " " );
+compile_cmd = std__string__concat_c ( compile_cmd , " \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/yyjson.lib" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-windows/yyjson.lib\"" );
 #endif
 #ifdef __linux__
-compile_cmd = std__string__concat_c ( compile_cmd , " " );
+compile_cmd = std__string__concat_c ( compile_cmd , " \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-linux/libyyjson.a" );
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-linux/libyyjson.a\"" );
 #endif
 #ifdef __APPLE__
-compile_cmd = std__string__concat_c ( compile_cmd , " " );
+compile_cmd = std__string__concat_c ( compile_cmd , " \"" );
 compile_cmd = std__string__concat ( compile_cmd , toolchain_root );
-compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libyyjson.a" );
+const std__os__ExecResult arch_result = std__os__exec_capture( std__string__str ( "uname -m" ) );
+if (std__string__str_contains_c ( arch_result.output, "x86_64" )) {
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/x64-lib-macos/libyyjson.a\"" );
+}
+else {
+compile_cmd = std__string__concat_c ( compile_cmd , "/external/lib-macos/libyyjson.a\"" );
+}
 #endif
 }
 const std__lists__StringList* link_libs = gstate__get_link_libraries( );
@@ -6357,13 +6457,29 @@ compile_cmd = std__string__concat_c ( compile_cmd , " -g" );
 #endif
 }
 const bool compile_only = gstate__get_compile_only( );
-if (compile_only) {
-compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything -O0 -c -o " ) );
+std__string__string opt_flag = {0};
+if (is_release_build) {
+opt_flag = std__string__str ( "-O3" );
 }
 else {
-compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything -O0 -o " ) );
+opt_flag = std__string__str ( "-O0" );
 }
+if (compile_only) {
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything " ) );
+compile_cmd = std__string__concat ( compile_cmd , opt_flag );
+compile_cmd = std__string__concat_c ( compile_cmd , " -c -o " );
+}
+else {
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( " -Wno-everything " ) );
+compile_cmd = std__string__concat ( compile_cmd , opt_flag );
+compile_cmd = std__string__concat_c ( compile_cmd , " -o " );
+}
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( "\"" ) );
 compile_cmd = std__string__concat ( compile_cmd , exe_filename );
+compile_cmd = std__string__concat ( compile_cmd , std__string__str ( "\"" ) );
+if (gstate__get_show_cc_command ( )) {
+std__io__println(compile_cmd);
+}
 const std__os__ExecResult result = std__os__exec_capture( compile_cmd );
 const int32_t exit_code = result.exit_code;
 if (exit_code != 0) {
@@ -6401,9 +6517,11 @@ std__io__println("Compiled.");
 const bool do_run = run_after_compile;
 if (do_run) {
 std__string__string run_cmd = exe_filename;
+#ifndef _WIN32
 if (! std__string__str_contains_c ( exe_filename , "/" ) && ! std__string__has_prefix ( exe_filename , std__string__str ( "./" ) )) {
 run_cmd = std__string__concat ( std__string__str ( "./" ) , exe_filename );
 }
+#endif
 if (! quiet_mode) {
 std__io__println(std__string__concat(std__string__str("Running: "), run_cmd));
 std__io__println("");
@@ -6695,6 +6813,22 @@ link_libraries = libs;
 
 std__lists__StringList* gstate__get_link_libraries() {
 return link_libraries;
+}
+
+void gstate__set_custom_c_flags(std__string__string flags) {
+custom_c_flags = flags;
+}
+
+std__string__string gstate__get_custom_c_flags() {
+return custom_c_flags;
+}
+
+void gstate__set_show_cc_command(bool v) {
+show_cc_command = v;
+}
+
+bool gstate__get_show_cc_command() {
+return show_cc_command;
 }
 
 void gstate__debug_print_i32(int32_t msg) {
@@ -18814,6 +18948,39 @@ return inner_type;
 }
 const int32_t paren_idx = std__string__find_char_from( trimmed , '(' , (uintptr_t)( 0 ) );
 if (paren_idx > 0 && std__string__has_suffix ( trimmed , std__string__str ( ")" ) )) {
+bool is_single_call = false;
+int32_t pi2 = paren_idx;
+int32_t depth_call = 0;
+bool in_str_call = false;
+bool in_char_call = false;
+while (1) {
+if (pi2 >= std__string__str_len ( trimmed )) {
+break;
+}
+const char cpc = std__string__get_char( trimmed , pi2 );
+if (cpc == '"' && ! in_char_call && ! backends__c__renderer__is_escaped_quote ( trimmed , pi2 )) {
+in_str_call = ! in_str_call;
+}
+else if (cpc == '\'' && ! in_str_call && ! backends__c__renderer__is_escaped_quote ( trimmed , pi2 )) {
+in_char_call = ! in_char_call;
+}
+else if (! in_str_call && ! in_char_call) {
+if (cpc == '(') {
+depth_call++;
+}
+else if (cpc == ')') {
+depth_call--;
+if (depth_call == 0) {
+if (pi2 == std__string__str_len ( trimmed ) - 1) {
+is_single_call = true;
+}
+break;
+}
+}
+}
+pi2++;
+}
+if (is_single_call) {
 std__string__string func_name = std__string__strip( std__string__substring_se ( trimmed , 0 , paren_idx ) );
 const int32_t args_start = paren_idx + 1;
 const int32_t args_end = std__string__str_len( trimmed ) - 1;
@@ -18904,6 +19071,7 @@ return std__string__str( "i32" );
 }
 if (std__string__equals_c ( func_name , "sizeof" )) {
 return std__string__str( "usize" );
+}
 }
 }
 return std__string__str( "" );
@@ -24166,7 +24334,7 @@ std__string__StringBuilder__destroy(&sb_final);
 const std__string__string first_pass = std__string__strip( out_final );
 gstate__debug_print_raw("\nFIRST PASS:");
 gstate__debug_print_str(first_pass);
-const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "->" ) , std__string__str ( "->" ) );
+const std__string__string fixed = std__string__replace_all( first_pass , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 gstate__debug_print_raw("\nFIXED:");
 gstate__debug_print_str(fixed);
 const std__string__string addr_fixed2 = backends__c__renderer__rewrite_adr( fixed );
@@ -24182,7 +24350,7 @@ const std__string__string mod_fixed = backends__c__renderer__replace_keyword_out
 const std__string__string and_fixed = backends__c__renderer__replace_keyword_outside_strings( mod_fixed , std__string__str ( "and" ) , std__string__str ( "&&" ) );
 const std__string__string or_fixed = backends__c__renderer__replace_keyword_outside_strings( and_fixed , std__string__str ( "or" ) , std__string__str ( "||" ) );
 std__string__string final_result = or_fixed;
-final_result = std__string__replace_all ( final_result , std__string__str ( "." ) , std__string__str ( "." ) );
+final_result = std__string__replace_all ( final_result , std__string__str ( " . " ) , std__string__str ( "." ) );
 const std__string__string extern_aliases_fixed = backends__c__renderer__apply_extern_aliases( std__string__strip ( final_result ) );
 const std__string__string float_literal_fixed = std__string__replace_all( extern_aliases_fixed , std__string__str ( " . " ) , std__string__str ( "." ) );
 return float_literal_fixed;
@@ -25959,7 +26127,7 @@ std__string__StringBuilder__destroy(&sb_protos);
 std__string__StringBuilder__destroy(&sb_bodies);
 std__string__StringBuilder__destroy(&sb_specs);
 std__string__StringBuilder__destroy(&sb_final);
-result = std__string__replace_all ( result , std__string__str ( "->" ) , std__string__str ( "->" ) );
+result = std__string__replace_all ( result , std__string__str ( "(->" ) , std__string__str ( "->" ) );
 std__string__StringBuilder sb_fixed = std__string__StringBuilder__init( std__string__str_len ( result ) + 1024 );
 int32_t start_idx = 0;
 int32_t idx_line = 0;
@@ -26160,7 +26328,7 @@ std__string__StringBuilder__destroy(&sb_fixed);
 }
 if (std__string__equals_c ( node_type , "Program" )) {
 result = backends__c__renderer__strip_all_c_prefixes ( result );
-result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C." ) , std__string__str ( "" ) );
+result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C . " ) , std__string__str ( "" ) );
 result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C." ) , std__string__str ( "" ) );
 result = backends__c__renderer__replace_substr_outside_strings ( result , std__string__str ( "C__" ) , std__string__str ( "" ) );
 result = backends__c__renderer__collapse_duplicate_segments ( result );
@@ -26956,14 +27124,51 @@ std__string__StringBuilder__append(&sb_main, backends__c__renderer__generate_sta
 }
 if (ast->children!= nil) {
 const __list_structs__ASTNode_t* children = ast->children;
+__list_structs__ASTNode_ptr_t regular_children = {0};
+__list_structs__ASTNode_ptr_t defer_children = {0};
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
-std__string__StringBuilder__append(&sb_main, child_code);
+const structs__ASTNode* child = &(children->data[ i ]);
+if (std__string__equals_c ( child->node_type, "Defer" )) {
+__list_structs__ASTNode_ptr_push(&defer_children, child);
+}
+else {
+__list_structs__ASTNode_ptr_push(&regular_children, child);
+}
 i++;
+}
+int32_t reg_idx = 0;
+while (1) {
+if (reg_idx >= len_v(regular_children)) {
+break;
+}
+const structs__ASTNode* child = regular_children.data[ reg_idx ];
+const std__string__string child_code = backends__c__renderer__generate_c( child );
+std__string__StringBuilder__append(&sb_main, child_code);
+reg_idx++;
+}
+int32_t defer_idx = 0;
+while (1) {
+if (defer_idx >= len_v(defer_children)) {
+break;
+}
+const structs__ASTNode* defer_node = defer_children.data[ defer_idx ];
+const __list_structs__ASTNode_t* body = defer_node->data.defer_node.body;
+if (body != nil) {
+int32_t i_defer = 0;
+while (1) {
+if (i_defer >= len_v((*body))) {
+break;
+}
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
+std__string__StringBuilder__append(&sb_main, defer_child_code);
+i_defer++;
+}
+}
+defer_idx++;
 }
 }
 std__string__StringBuilder__append_c(&sb_main, "return 0;\n}\n\n");
@@ -27031,14 +27236,51 @@ param_idx++;
 std__string__StringBuilder__append_c(&sb_func, ") {\n");
 if (ast->children!= nil) {
 const __list_structs__ASTNode_t* children = ast->children;
+__list_structs__ASTNode_ptr_t regular_children = {0};
+__list_structs__ASTNode_ptr_t defer_children = {0};
 int32_t i = 0;
 while (1) {
 if (i >= len_v((*children))) {
 break;
 }
-const std__string__string child_code = backends__c__renderer__generate_c( &(children->data[ i ]) );
-std__string__StringBuilder__append(&sb_func, child_code);
+const structs__ASTNode* child = &(children->data[ i ]);
+if (std__string__equals_c ( child->node_type, "Defer" )) {
+__list_structs__ASTNode_ptr_push(&defer_children, child);
+}
+else {
+__list_structs__ASTNode_ptr_push(&regular_children, child);
+}
 i++;
+}
+int32_t reg_idx = 0;
+while (1) {
+if (reg_idx >= len_v(regular_children)) {
+break;
+}
+const structs__ASTNode* child = regular_children.data[ reg_idx ];
+const std__string__string child_code = backends__c__renderer__generate_c( child );
+std__string__StringBuilder__append(&sb_func, child_code);
+reg_idx++;
+}
+int32_t defer_idx = 0;
+while (1) {
+if (defer_idx >= len_v(defer_children)) {
+break;
+}
+const structs__ASTNode* defer_node = defer_children.data[ defer_idx ];
+const __list_structs__ASTNode_t* body = defer_node->data.defer_node.body;
+if (body != nil) {
+int32_t i_defer = 0;
+while (1) {
+if (i_defer >= len_v((*body))) {
+break;
+}
+const std__string__string defer_child_code = backends__c__renderer__generate_c( &(body->data[ i_defer ]) );
+std__string__StringBuilder__append(&sb_func, defer_child_code);
+i_defer++;
+}
+}
+defer_idx++;
 }
 }
 std__string__StringBuilder__append_c(&sb_func, "}\n\n");
@@ -27332,14 +27574,29 @@ if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_cur
 resolved_type_name = std__maps__StringStringMap__get( g_current_type_mapping , type_name );
 }
 std__maps__StringStringMap__set(&g_var_types, &decl_arena, var_name, resolved_type_name);
-if (std__string__has_prefix ( resolved_type_name , std__string__str ( "list(" ) )) {
+std__string__string base_type_for_list_check = resolved_type_name;
+while (1) {
+bool changed = false;
+if (std__string__has_prefix ( base_type_for_list_check , std__string__str ( "ref " ) )) {
+base_type_for_list_check = std__string__strip ( std__string__substr ( base_type_for_list_check , 4 , std__string__str_len ( base_type_for_list_check ) - 4 ) );
+changed = true;
+}
+if (std__string__has_prefix ( base_type_for_list_check , std__string__str ( "mut " ) )) {
+base_type_for_list_check = std__string__strip ( std__string__substr ( base_type_for_list_check , 4 , std__string__str_len ( base_type_for_list_check ) - 4 ) );
+changed = true;
+}
+if (! changed) {
+break;
+}
+}
+if (std__string__has_prefix ( base_type_for_list_check , std__string__str ( "list(" ) )) {
 int32_t paren_pos = 5;
 int32_t depth = 1;
 while (1) {
-if (paren_pos >= std__string__str_len ( resolved_type_name )) {
+if (paren_pos >= std__string__str_len ( base_type_for_list_check )) {
 break;
 }
-const char ch = std__string__get_char( resolved_type_name , paren_pos );
+const char ch = std__string__get_char( base_type_for_list_check , paren_pos );
 if (ch == '(') {
 depth++;
 }
@@ -27352,7 +27609,7 @@ break;
 paren_pos++;
 }
 if (depth == 0) {
-const std__string__string element_type = std__string__strip( std__string__substring_se ( resolved_type_name , 5 , paren_pos ) );
+const std__string__string element_type = std__string__strip( std__string__substring_se ( base_type_for_list_check , 5 , paren_pos ) );
 std__string__string resolved_element_type = element_type;
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , element_type )) {
 resolved_element_type = std__maps__StringStringMap__get( g_current_type_mapping , element_type );
@@ -27361,8 +27618,8 @@ std__arena__Arena list_arena = std__arena__Arena__create( 2560 );
 std__maps__StringStringMap__set(&g_list_of_types, &list_arena, var_name, resolved_element_type);
 }
 }
-else if (std__string__has_suffix ( resolved_type_name , std__string__str ( "[999]" ) )) {
-const std__string__string element_type = std__string__strip( std__string__substring_se ( resolved_type_name , 0 , std__string__str_len ( resolved_type_name ) - 5 ) );
+else if (std__string__has_suffix ( base_type_for_list_check , std__string__str ( "[999]" ) )) {
+const std__string__string element_type = std__string__strip( std__string__substring_se ( base_type_for_list_check , 0 , std__string__str_len ( base_type_for_list_check ) - 5 ) );
 std__string__string resolved_element_type = element_type;
 if (g_current_type_mapping != nil && std__maps__StringStringMap__contains( g_current_type_mapping , element_type )) {
 resolved_element_type = std__maps__StringStringMap__get( g_current_type_mapping , element_type );
@@ -27936,6 +28193,68 @@ gstate__debug_print_raw("\n[DBG-ASSIGN]   reconstructed RHS (arrow sugar):");
 gstate__debug_print_str(out_rhs);
 }
 }
+const std__string__string rhs_trimmed = std__string__strip( out_rhs );
+const bool has_array_pattern = std__string__has_prefix( rhs_trimmed , std__string__str ( "(" ) ) && std__string__find_substr ( rhs_trimmed , std__string__str ( "[]){" ) ) > 0;
+if (has_array_pattern) {
+const std__string__string var_name_stripped = std__string__strip( fixed_var );
+const bool is_list_var = std__maps__StringStringMap__contains( &g_list_of_types , var_name_stripped );
+if (is_list_var) {
+const std__string__string elem_type = std__maps__StringStringMap__get( &g_list_of_types , var_name_stripped );
+const std__string__string elem_type_c = backends__c__renderer__map_axe_type_to_c( elem_type );
+const int32_t open_brace = std__string__find_char_from( rhs_trimmed , '{' , (uintptr_t)( 0 ) );
+const int32_t close_brace = std__string__find_last_char( rhs_trimmed , '}' );
+if (open_brace > 0 && close_brace > open_brace) {
+const std__string__string elements_str = std__string__substring_se( rhs_trimmed , open_brace + 1 , close_brace );
+int32_t element_count = 0;
+if (std__string__str_len ( std__string__strip ( elements_str ) ) > 0) {
+element_count = 1;
+int32_t depth = 0;
+int32_t idx = 0;
+while (1) {
+if (idx >= std__string__str_len ( elements_str )) {
+break;
+}
+const char ch = std__string__get_char( elements_str , idx );
+if (ch == '(' || ch == '[' || ch == '{') {
+depth++;
+}
+else if (ch == ')' || ch == ']' || ch == '}') {
+depth--;
+}
+else if (ch == ',' && depth == 0) {
+element_count++;
+}
+idx++;
+}
+}
+const std__string__string counter_str = std__string__i32_to_string( g_current_line );
+const std__string__string temp_array_name = std__string__concat( std__string__str ( "__list_literal_array_" ) , counter_str );
+const std__string__string temp_list_name = std__string__concat( std__string__str ( "__list_literal_struct_" ) , counter_str );
+std__string__StringBuilder sb_list_init = std__string__StringBuilder__init( 512 );
+std__string__StringBuilder__append_c(&sb_list_init, "({ ");
+std__string__StringBuilder__append(&sb_list_init, elem_type_c);
+std__string__StringBuilder__append_c(&sb_list_init, " ");
+std__string__StringBuilder__append(&sb_list_init, temp_array_name);
+std__string__StringBuilder__append_c(&sb_list_init, "[] = {");
+std__string__StringBuilder__append(&sb_list_init, elements_str);
+std__string__StringBuilder__append_c(&sb_list_init, "}; __list_");
+std__string__StringBuilder__append(&sb_list_init, elem_type_c);
+std__string__StringBuilder__append_c(&sb_list_init, "_t ");
+std__string__StringBuilder__append(&sb_list_init, temp_list_name);
+std__string__StringBuilder__append_c(&sb_list_init, " = {");
+std__string__StringBuilder__append(&sb_list_init, temp_array_name);
+std__string__StringBuilder__append_c(&sb_list_init, ", ");
+std__string__StringBuilder__append(&sb_list_init, std__string__i32_to_string(element_count));
+std__string__StringBuilder__append_c(&sb_list_init, ", ");
+std__string__StringBuilder__append(&sb_list_init, std__string__i32_to_string(element_count));
+std__string__StringBuilder__append_c(&sb_list_init, "}; &");
+std__string__StringBuilder__append(&sb_list_init, temp_list_name);
+std__string__StringBuilder__append_c(&sb_list_init, "; })");
+out_rhs = std__string__StringBuilder__to_string( &sb_list_init );
+std__string__StringBuilder__destroy(&sb_list_init);
+}
+}
+}
 std__string__StringBuilder sb_assign = std__string__StringBuilder__init( 512 );
 std__string__StringBuilder__append(&sb_assign, out_lhs);
 const std__string__string op = ast->data.assignment.operator;
@@ -27951,7 +28270,7 @@ std__string__StringBuilder__append(&sb_assign, out_rhs);
 std__string__StringBuilder__append_c(&sb_assign, ";\n");
 result = std__string__StringBuilder__to_string( &sb_assign );
 std__string__StringBuilder__destroy(&sb_assign);
-result = std__string__replace_all ( result , std__string__str ( "." ) , std__string__str ( "." ) );
+result = std__string__replace_all ( result , std__string__str ( " . " ) , std__string__str ( "." ) );
 return result;
 }
 if (std__string__equals_c ( node_type , "MemberAccess" )) {
@@ -32181,6 +32500,17 @@ gstate__set_backend_type(backend);
 i += 2;
 continue;
 }
+if (std__string__has_prefix ( arg , std__string__str ( "--cflags=" ) )) {
+const std__string__string flags = std__string__substring_se( arg , 9 , (int32_t)( std__string__str_len ( arg ) ) );
+gstate__set_custom_c_flags(flags);
+i++;
+continue;
+}
+if (std__string__equals_c ( arg , "--showcc" )) {
+gstate__set_show_cc_command(true);
+i++;
+continue;
+}
 if (std__string__has_prefix ( arg , std__string__str ( "-I" ) ) && std__string__str_len ( arg ) > 2) {
 const std__string__string inc_path = std__string__substring_se( arg , 2 , (int32_t)( std__string__str_len ( arg ) ) );
 std__lists__StringList__push(inc_paths, &arena, inc_path);
@@ -32196,7 +32526,7 @@ std__lists__StringList__push(link_libs, &arena, lib_name);
 i++;
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "-v" ) || std__algorithms__strlst_contains_c ( (*args) , "--version" )) {
-std__io__println("Axe v0.0.16");
+std__io__println("Axe v0.0.18");
 std__io__println("Specification and compiler by Navid Momtahen ((C) GPL-3.0, 2025 - 2026)\n");
 std__os__quit(0);
 }
@@ -32215,23 +32545,27 @@ gstate__set_keep_emitted_file(true);
 if (std__algorithms__strlst_contains_c ( (*args) , "-r" )) {
 gstate__set_run_after_compile(true);
 }
+if (std__algorithms__strlst_contains_c ( (*args) , "--doctor" )) {
+builds__doctor();
+std__os__quit(0);
+}
 if (std__algorithms__strlst_contains_c ( (*args) , "--help" ) || std__algorithms__strlst_contains_c ( (*args) , "-h" )) {
 axc__print_help_and_exit();
 }
-if (std__algorithms__strlst_contains_c ( (*args) , "-tokens" )) {
+if (std__algorithms__strlst_contains_c ( (*args) , "--tokens" )) {
 gstate__set_print_tokens(true);
 }
-if (std__algorithms__strlst_contains_c ( (*args) , "-ast" )) {
+if (std__algorithms__strlst_contains_c ( (*args) , "--ast" )) {
 gstate__set_print_ast(true);
 }
-if (std__algorithms__strlst_contains_c ( (*args) , "-dll" )) {
+if (std__algorithms__strlst_contains_c ( (*args) , "--dll" )) {
 gstate__set_build_shared_lib(true);
 }
 if (std__algorithms__strlst_contains_c ( (*args) , "--syntax-check" )) {
 gstate__set_syntax_check_only(true);
 gstate__set_quiet_mode(true);
 }
-if (! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) ) && ! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) )) {
+if (! std__string__has_suffix ( source_file , std__string__str ( ".axe" ) )) {
 source_file = std__string__concat ( source_file , std__string__str ( ".axe" ) );
 }
 const bool is_axec = std__string__has_suffix( source_file , std__string__str ( ".axe" ) );
